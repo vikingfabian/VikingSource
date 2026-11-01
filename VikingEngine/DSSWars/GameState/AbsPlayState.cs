@@ -136,6 +136,7 @@ namespace VikingEngine.DSSWars.GameState
             mapLayerFar = new MapLayer3_Far(crossHeightMap);
             mapLayerMid = new MapLayer2_Mid(mapLayerFar, crossHeightMap);
             mapLayerNear = new MapLayer1_Near(crossHeightMap);
+            DssRef.world.fogTexture.initTexture();
 
             crossHeightMap.init();
 
@@ -293,6 +294,8 @@ namespace VikingEngine.DSSWars.GameState
                 mapLayerNear.asynchUpdate();
                 mapLayerMid.unitsOnMap.asynchUpdate();
                 mapLayerFar.unitsOnMap.asynchUpdate();
+
+                DssRef.world.async_fog_update();
 
             }
             return exitThreads;

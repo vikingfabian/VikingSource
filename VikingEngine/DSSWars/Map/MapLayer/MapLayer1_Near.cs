@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
         public void drawCrossMap(int cameraIndex, LocalPlayer player)
         {
-            crossHeightMap.Draw(cameraIndex, player, -MapHeight2.HeightY * 28f);
+            crossHeightMap.Draw(cameraIndex, player.factionPixelTexture.texture, -MapHeight2.HeightY * 28f);
         }
 
         public void updateAndDraw(bool depth, Effect shader, LightProjection light, int cameraIndex, LocalPlayer player)

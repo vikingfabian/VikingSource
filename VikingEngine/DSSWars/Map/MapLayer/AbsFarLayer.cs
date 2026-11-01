@@ -18,8 +18,12 @@ namespace VikingEngine.DSSWars.Map.MapLayer
         }
 
         public void Draw(int cameraIndex, LocalPlayer player)
-        {
-            crossHeightMap.Draw(cameraIndex, player, 0);
+        {            
+            crossHeightMap.Draw(cameraIndex, player.factionPixelTexture.texture, 0);
+            if (DssRef.storage.ruleset_instance.module_fogOfWar)
+            {
+                crossHeightMap.Draw(cameraIndex, DssRef.world.fogTexture.texture, 0.2f);
+            }
         }
         
     }

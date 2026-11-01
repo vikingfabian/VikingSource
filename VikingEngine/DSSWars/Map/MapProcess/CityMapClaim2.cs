@@ -20,7 +20,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess
 
             IntVector2 center = WP.MaptileToSumTile(city.maptilePos);
             float cityHeight = DssRef.world.subTileGrid.Get(city.maptilePos).groundY;
-            int radius = DssRef.storage.ruleset_instance.CitySizeSetup[(int)city.cityType].claimRadius;
+            int radius = DssRef.storage.ruleset_instance.CitySizeSetup[(int)city.cityType].claimRadius_sum;
             int maxRadius = radius + 4;
             Rectangle2 maxArea = Rectangle2.FromCenterTileAndRadius(center, maxRadius);
             Grid2D_L<float> inflenceMap = new Grid2D_L<float>(maxArea);

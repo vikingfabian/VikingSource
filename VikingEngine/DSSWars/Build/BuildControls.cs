@@ -13,6 +13,7 @@ using VikingEngine;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Defence;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor;
 using VikingEngine.DSSWars.Map.MapData;
@@ -1042,7 +1043,7 @@ namespace VikingEngine.DSSWars.Build
                     HudLib.Label(content, DssRef.lang.Hud_ThisCity);
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsResource_Water));
-                    content.Add(new RbText(string.Format(DssRef.lang.Resource_CurrentAmount, city.res_water.amount)));
+                    content.Add(new RbText(string.Format(DssRef.lang.Resource_CurrentAmount, city.resourceAmount(CityResourceIndex.water))));
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsResource_Water));
                     content.Add(new RbText(string.Format(DssRef.lang.Resource_MaxAmount, city.maxWaterTotal)));

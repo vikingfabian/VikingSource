@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using VikingEngine.Core.DSSWars.Map.MapData;
+using VikingEngine.Core.DSSWars.Map.MapModels;
 using VikingEngine.Core.DSSWars.Map.MapProcess;
 using VikingEngine.DataStream;
 using VikingEngine.DebugExtensions;
@@ -94,6 +95,8 @@ namespace VikingEngine.DSSWars
         public Grid2D_L<MapTile1_1> subTileGrid;
 
          public float storyPlacementScale = 1f;
+
+        public FogPixelTexture fogTexture;
 
         public WorldData()
         {
@@ -406,6 +409,7 @@ namespace VikingEngine.DSSWars
             {
                 storyPlacementScale = (float)MapScale.SizeDimentions(MapSizeCategory.Medium).Area() / Size.Area();
             }
+            fogTexture = new FogPixelTexture();
         }
 
         bool subTileHasRepeatValue(ref MapTile1_1 subtile)

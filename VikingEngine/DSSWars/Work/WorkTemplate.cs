@@ -876,6 +876,7 @@ namespace VikingEngine.DSSWars.Work
 
     enum WorkPriorityType : byte
     {
+        collectWater,
         move,
         wood,
         stone,

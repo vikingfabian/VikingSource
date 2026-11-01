@@ -51,11 +51,12 @@ namespace VikingEngine.Core.DSSWars.Data.GameSetup
         public int maxExpansions;
         public EndlessInt maxWorkForce;
         public IntervalF waterAdd;
+        
         public int startWorkForceHousing;
         public int requiredStaff;
         public int defaultGuardHousing;
 
-        public int claimRadius;
+        public int claimRadius_sum;
 
         public CityHallSetup(CityType cityType, bool foodModule)
         {
@@ -67,7 +68,7 @@ namespace VikingEngine.Core.DSSWars.Data.GameSetup
                     maxWorkForce = CampHall_MaxWorkForce;
                     requiredStaff = 0;
                     defaultGuardHousing = CampHall_GuardHousing;
-                    claimRadius = ClaimRadius_Campsite;
+                    claimRadius_sum = ClaimRadius_Campsite;
                     waterAdd = new IntervalF(WaterAdd_SmallCity, WaterAdd_HeadCity + WaterAdd_RandomAdd);
                     startWorkForceHousing = CampsiteCityStartMaxWorkForce;
                     maxExpansions = 0;
@@ -78,7 +79,7 @@ namespace VikingEngine.Core.DSSWars.Data.GameSetup
                     maxWorkForce = VillageHall_MaxWorkForce;
                     requiredStaff = VillageHall_RequiredStaff;
                     defaultGuardHousing = VillageHall_GuardHousing;
-                    claimRadius = ClaimRadius_Village;
+                    claimRadius_sum = ClaimRadius_Village;
                     waterAdd = new IntervalF(WaterAdd_SmallCity, WaterAdd_SmallCity + WaterAdd_RandomAdd);
                     startWorkForceHousing = SmallCityStartMaxWorkForce;
                     maxExpansions = 2;
@@ -89,7 +90,7 @@ namespace VikingEngine.Core.DSSWars.Data.GameSetup
                     maxWorkForce = TownHall_MaxWorkForce;
                     requiredStaff = TownHall_RequiredStaff;
                     defaultGuardHousing = TownHall_GuardHousing;
-                    claimRadius = ClaimRadius_Town;
+                    claimRadius_sum = ClaimRadius_Town;
                     waterAdd = new IntervalF(WaterAdd_SmallCity, WaterAdd_LargeCity + WaterAdd_RandomAdd);
                     startWorkForceHousing = LargeCityStartMaxWorkForce;
                     maxExpansions = 4;
@@ -98,7 +99,7 @@ namespace VikingEngine.Core.DSSWars.Data.GameSetup
                 case CityType.Capital:                   
                     requiredStaff = CapitalHall_RequiredStaff;
                     defaultGuardHousing = CapitalHall_GuardHousing;
-                    claimRadius = ClaimRadius_Capital;
+                    claimRadius_sum = ClaimRadius_Capital;
 
                     if (foodModule)
                     {

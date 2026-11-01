@@ -1098,7 +1098,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeResources(System.IO.BinaryWriter w)
         {
-            w.Write((short)res_water.amount);
+            w.Write((ushort)waterDepthLevel.Int());
+            //w.Write((short)res_water.amount);
 
             BoolRegister boolRegister = new BoolRegister(CityResourceIndex.COUNT * 2);
             {
@@ -1112,7 +1113,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void readResources(System.IO.BinaryReader r, int subversion)
         {
-            res_water.amount = r.ReadInt16();
+            //res_water.amount = r.ReadInt16();
+            waterDepthLevel.value = r.ReadUInt16();
 
             BoolRegister boolRegister = new BoolRegister(r);
             for (int i = 0; i < CityResourceIndex.COUNT; ++i)
@@ -1123,7 +1125,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeClientResources(System.IO.BinaryWriter w)
         {
-            w.Write((short)res_water.amount);
+            w.Write((ushort)waterDepthLevel.Int());
+            //w.Write((short)res_water.amount);
 
             BoolRegister boolRegister = new BoolRegister(CityResourceIndex.COUNT * 2);
             {
@@ -1137,7 +1140,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void readClientResources(System.IO.BinaryReader r, int subversion)
         {
-            res_water.amount = r.ReadInt16();
+            //res_water.amount = r.ReadInt16();
+            waterDepthLevel.value = r.ReadUInt16();
 
             BoolRegister boolRegister = new BoolRegister(r);
             for (int i = 0; i < CityResourceIndex.COUNT; ++i)
@@ -1841,7 +1845,7 @@ namespace VikingEngine.DSSWars.GameObject
             DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref minMax.min, ref minMax.max);
         }
 
-        public double childAddPerSec()
+        public double childAddPerMin()
         {
             bool requirements = !inBattle;
 
@@ -1857,7 +1861,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (requirements)
             {
-                var result = Bound.Min( workForce.amount / 600.0 * pfaction.GetFaction().growthMultiplier, 0.1);
+                var result = Bound.Min( workForce.amount / 10.0 * pfaction.GetFaction().growthMultiplier, 5);
                 if (cityCulture == CityCulture.LargeFamilies)
                 {
                     result *= 2;
@@ -1894,41 +1898,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void oneSecUpdate(bool minute)
         {
-            const int MinWorkforce = 8;
+            
 
-            int addWorkers = 0;
-            childrenAge0.value += childAddPerSec();
-
-            if (DssRef.time.oneMinute)
-            {
-                addWorkers = childrenAge1;
-                childrenAge1 = childrenAge0.pull();
-
-                if (workForce.amount < MinWorkforce)
-                {
-                    addWorkers += MinWorkforce - workForce.amount;
-                }
-            }
-
-            if (!inBattle)
-            {
-                if (immigrants.HasValue())
-                {
-                    if (workForce.amount + addWorkers < HousingCount_Workers)
-                    {
-                        var immigrantsToWork = immigrants.pull(DssConst.ImmigrantsTransfereSpeed + DssConst.ImmigrantionTent_TransfereSpeedBonus * buildingStructure.ImmigrationTent_count);
-                        addWorkers += immigrantsToWork;
-                    }
-
-                    immigrants.reduceTowardsMinValue(DssConst.ImmigrantsRemovePerSec, DssConst.ImmigrantionTent_Capacity * buildingStructure.ImmigrationTent_count);
-                }
-            }
-
-            workForce.amount = Bound.Max(workForce.amount + addWorkers, HousingCount_Workers);
-
-            nextWater.value += waterAddPerSec;
-            maxWaterTotal = maxWaterBase + buildingStructure.WaterResovoir_count * DssConst.WaterResovoirWaterAdd;
-            res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWaterTotal);
+            //nextWater.value += waterAddPerSec;
+            //maxWaterTotal = maxWaterBase + buildingStructure.WaterResovoir_count * DssConst.WaterResovoirWaterAdd;
+            //res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWaterTotal);
 
             if (starving)
             {
@@ -1957,6 +1931,39 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (minute)
             {
+                const int MinWorkforce = 8;
+
+                int addWorkers = 0;
+                childrenAge0.value += childAddPerMin();
+
+                //if (DssRef.time.oneMinute)
+                //{
+                    addWorkers = childrenAge1;
+                    childrenAge1 = childrenAge0.pull();
+
+                    if (workForce.amount < MinWorkforce)
+                    {
+                        addWorkers += MinWorkforce - workForce.amount;
+                    }
+                //}
+
+                if (!inBattle)
+                {
+                    if (immigrants.HasValue())
+                    {
+                        if (workForce.amount + addWorkers < HousingCount_Workers)
+                        {
+                            var immigrantsToWork = immigrants.pull(DssConst.ImmigrantsTransfereSpeed + DssConst.ImmigrantionTent_TransfereSpeedBonus * buildingStructure.ImmigrationTent_count);
+                            addWorkers += immigrantsToWork;
+                        }
+
+                        immigrants.reduceTowardsMinValue(DssConst.ImmigrantsRemovePerMin, DssConst.ImmigrantionTent_Capacity * buildingStructure.ImmigrationTent_count);
+                    }
+                }
+
+                workForce.amount = Bound.Max(workForce.amount + addWorkers, HousingCount_Workers);
+
+
                 float addNobel = HousingCount_NobelMen * DssConst.NobelHouseMenAddSpeed_PerManHouse;
                 freeNobelMen.amount = Bound.Max(freeNobelMen.amount + Convert.ToInt32(addNobel), HousingCount_NobelMen);
 
@@ -2478,23 +2485,24 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.newLine();
                 HudLib.CityResource(args.content, this, ItemResourceType.Food_G);
 
-                if (resourceAmount(CityResourceIndex.food)/*res_food.amount*/ <= LowAmount)
+                if (DssRef.storage.ruleset_instance.module_foodAndWater)
                 {
-                    if (res_water.amount <= 2)
+                    if (resourceAmount(CityResourceIndex.food) <= LowAmount)
                     {
-                        HudLib.CityResource(args.content, this, ItemResourceType.Water_G);
-                    }
-                    if (resourceAmount(CityResourceIndex.rawFood)/*res_rawFood.amount*/ <= LowAmount)
-                    {
-                        HudLib.CityResource(args.content, this, ItemResourceType.RawFood_G);
-                    }
-                    if (resourceAmount(CityResourceIndex.fuel)/*res_fuel.amount*/ <= LowAmount)
-                    {
-                        HudLib.CityResource(args.content, this, ItemResourceType.Fuel_G);
+                        if (resourceAmount(CityResourceIndex.water) <= 2)
+                        {
+                            HudLib.CityResource(args.content, this, ItemResourceType.Water_G);
+                        }
+                        if (resourceAmount(CityResourceIndex.rawFood) <= LowAmount)
+                        {
+                            HudLib.CityResource(args.content, this, ItemResourceType.RawFood_G);
+                        }
+                        if (resourceAmount(CityResourceIndex.fuel) <= LowAmount)
+                        {
+                            HudLib.CityResource(args.content, this, ItemResourceType.Fuel_G);
+                        }
                     }
                 }
-
-                
             }
         }
 
@@ -2526,7 +2534,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             content.Add(new RbImage(SpriteName.WarsResource_Water));
             content.space();
-            content.Add(new RbText(TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Water) + ": " + string.Format(DssRef.lang.Language_CollectProgress, res_water.amount, maxWaterTotal)));
+            content.Add(new RbText(TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Water) + ": " + string.Format(DssRef.lang.Language_CollectProgress, resourceAmount(CityResourceIndex.water), maxWaterTotal)));
             content.Add(new RbTab(0.4f));
             content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
             content.Add(new RbText(TextLib.OneDecimal(waterAddPerSec)));
@@ -2551,7 +2559,7 @@ namespace VikingEngine.DSSWars.GameObject
                        content.h2(TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Water)).overrideColor = HudLib.TitleColor_Label;
                        content.newLine();
                        content.Add(new RbImage(SpriteName.WarsResource_Water));
-                       content.Add(new RbText(string.Format(DssRef.lang.Resource_CurrentAmount, res_water.amount)));
+                       content.Add(new RbText(string.Format(DssRef.lang.Resource_CurrentAmount, resourceAmount(CityResourceIndex.water))));
 
                        content.text(string.Format(DssRef.lang.Resource_MaxAmount, maxWaterTotal));
 

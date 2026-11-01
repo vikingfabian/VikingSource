@@ -432,6 +432,8 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
+
+
                     //PICK UP
                     if (hostUpdate)
                     {
@@ -490,6 +492,20 @@ namespace VikingEngine.DSSWars.GameObject
                                     bonus = DssConst.StoneCutter_StoneBonus;
                                 }
                                 workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, bonus, WorkPriorityType.stone, pos, workTemplate.Get(WorkPriorityType.stone).value, bonus, distanceValue));
+                            }
+                        }
+                    }
+
+                    bool bNeedMoreWater = needMore(CityResourceIndex.water);
+                    int waterprio = workTemplate.Get(WorkPriorityType.collectWater).value;
+                    if (bNeedMoreWater && waterprio > WorkTemplate.NoPrio)
+                    {
+                        foreach (var waterPool in CityStructure.WorkInstance.WaterCollect)
+                        {
+                            if (work_isFreeTile(waterPool))
+                            {
+                                int distanceValue = -center.SideLength(waterPool);
+                                workQue.Add(new WorkQueMember( WorkType.Mine, NoSubWork, 0,  WorkPriorityType.collectWater, waterPool, waterprio, 0, distanceValue));
                             }
                         }
                     }
@@ -1354,7 +1370,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (work)
             {
                 case WorkType.Plant:
-                    return res_water.amount >= DssConst.PlantWaterCost;
+                    return resourceAmount(CityResourceIndex.water) >= DssConst.PlantWaterCost;
 
                 case WorkType.Craft:
                     {
@@ -1433,7 +1449,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshItemReserve()
         {
-            res_water.reservedUseCount = 0;
+            //res_water.reservedUseCount = 0;
             DssRef.world.flushCityReserves(this);
 
             for (int i = 0; i < workerStatuses.Count; i++)

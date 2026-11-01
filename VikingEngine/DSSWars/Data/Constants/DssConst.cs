@@ -155,10 +155,16 @@ namespace VikingEngine.DSSWars
         //CITY
         public static int TaxPerWorker_copp = 2;
         public static int UpkeepPerServiceMan_copp = 4;
-        public static int UpkeepPerGuard_copp = 4;
-       
+        public static int UpkeepPerGuard_copp = 4;       
         public static int Maxwater = 60;
         public static int WaterResovoirWaterAdd = 20;
+
+
+        public static IntervalF GroundWaterRefillPerMinute = new IntervalF(4, 6);
+        public const double GroundWaterDepthAddPerCollect = 0.1;
+        public const int MinGroundWater = 1;
+        public const int GroundWaterCollectTimePerDepthSec = 5;
+        public const int CollectGroundWaterAmount = 8;
         //public static int ExpandWorkForce = SoldierGroup_DefaultCount * 4;
         //public static int ExpandGuardSize = SoldierGroup_DefaultCount;
 
@@ -199,7 +205,7 @@ namespace VikingEngine.DSSWars
 
       
 
-        public const double ImmigrantsRemovePerSec = 0.1;
+        public const double ImmigrantsRemovePerMin = 5;
         public const int ImmigrantsTransfereSpeed = 5;
         public const int ImmigrantionTent_TransfereSpeedBonus = 2;
         public const int ImmigrantionTent_Capacity = 60;

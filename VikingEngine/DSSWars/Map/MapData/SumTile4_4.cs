@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars.Map.MapData
         public bool IsBorderTile;
         public bool IsFullTile;
 
-        public FogOfWar_ExlporeLevel exlporeLevel = FogOfWar_ExlporeLevel.None;
+        public FogOfWar_ExlporeLevel fogExploreLevel = FogOfWar_ExlporeLevel.None;
 
         //public TileContent tileContent = TileContent.NONE;
         //public byte BorderCount;

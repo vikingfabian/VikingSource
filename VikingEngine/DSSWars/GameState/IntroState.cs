@@ -71,7 +71,6 @@ namespace VikingEngine.DSSWars
             Engine.LoadContent.LoadTexture(LoadedTexture.SpriteSheet, Engine.LoadContent.TexturePath + "Lf3Tiles2");
             bSpriteSheetTexture = true;
 
-
 #if !BLACK
             part++;
             Engine.LoadContent.LoadTexture(LoadedTexture.waterEdge, DssLib.ContentDir + "wave_mask1");

@@ -32,6 +32,7 @@ namespace VikingEngine.DSSWars.GameObject
         /// Starts at 1, increases for each collecting
         /// </summary>
         public FloatingInt waterDepthLevel = new FloatingInt();
+        public float groundWaterRefillPerMinute = (float)Math.Round(DssConst.GroundWaterRefillPerMinute.GetRandom(), 1);
         public int maxWaterBase = DssConst.Maxwater;
         public int maxWaterTotal = DssConst.Maxwater;
         FloatingInt nextWater = new FloatingInt();
@@ -39,7 +40,7 @@ namespace VikingEngine.DSSWars.GameObject
         static GroupedResource Res_Nothing = new GroupedResource() { amount = 100000 };
 
         
-        public GroupedResource res_water = new GroupedResource();
+        //public GroupedResource res_water = new GroupedResource();
         
 
         public bool res_food_safeguard = true;
@@ -161,9 +162,9 @@ namespace VikingEngine.DSSWars.GameObject
                         freeNobelMen.amount += add;
                         return;
 
-                    case ItemResourceType.Water_G:
-                        res_water.amount += add;
-                        return;
+                    //case ItemResourceType.Water_G:
+                    //    res_water.amount += add;
+                    //    return;
 
                     case ItemResourceType.NONE:
                         return;
@@ -318,7 +319,7 @@ namespace VikingEngine.DSSWars.GameObject
                     case ItemResourceType.ServiceMen:
                         return freeServiceMen;
 
-                    case ItemResourceType.Water_G: return res_water;
+                    //case ItemResourceType.Water_G: return res_water;
                     case ItemResourceType.NONE: return Res_Nothing;
 
                 }

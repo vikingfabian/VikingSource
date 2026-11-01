@@ -45,6 +45,8 @@ namespace VikingEngine.DSSWars.Resource
 
             items = new ItemProperties[(int)ItemResourceType.NUM];
 
+            new ItemProperties(ItemResourceType.Water_G, CityResourceIndex.water, DefaultWeight, WorkPriorityType.collectWater, null, null, StorageType.WaterStorage).AddItemSource(new ItemSource(ItemSourceType.Building, Build.BuildAndExpandType.WaterWell));
+
             //men
             new ItemProperties(ItemResourceType.Men, NoCityResource, 0, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE).AddItemSource(new ItemSource(ItemSourceType.Building, Build.BuildAndExpandType.WorkerHut));
             new ItemProperties(ItemResourceType.NobleMen, NoCityResource, 0, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE).AddItemSource(new ItemSource(ItemSourceType.Building, Build.BuildAndExpandType.Noblehouse));

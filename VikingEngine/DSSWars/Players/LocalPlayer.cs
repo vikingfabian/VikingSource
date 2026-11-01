@@ -38,6 +38,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Network;
 using VikingEngine.Sound;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -1952,6 +1953,17 @@ namespace VikingEngine.DSSWars.Players
             if (DssRef.state.host)
             {
                 timePlayed = DssRef.time.TotalIngameTime();
+            }
+
+            if (newGame)
+            {
+                var cities = pfaction.GetFaction().cities;
+
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
+                {
+                    DssRef.world.async_fog_addCityView(citySel);
+                }
             }
         }
 

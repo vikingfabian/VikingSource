@@ -831,8 +831,8 @@ namespace VikingEngine.DSSWars.Work
                     if (available)
                     {
                         subTile.terrainAmount++;
-                        city.res_water.amount -= waterCost;
-
+                        //city.res_water.amount -= waterCost;
+                        city.payResource(CityResourceIndex.water, waterCost, true);
                         gainXp = WorkExperienceType.Farm;                        
                     }
                     break;
@@ -1336,7 +1336,15 @@ namespace VikingEngine.DSSWars.Work
                         int amount = TerrainContent.DefaultMineAmount;
                         gainXp = WorkExperienceType.Mining;
 
-                        if (subTile.mainTerrain == TerrainMainType.Mine)
+                        if (workPriorityType == WorkPriorityType.collectWater)
+                        {
+                            carry = new ItemResource(
+                                 ItemResourceType.Water_G,
+                                DssConst.CollectGroundWaterAmount);
+                            city.waterDepthLevel.value += DssConst.GroundWaterDepthAddPerCollect;
+                            gainXp = WorkExperienceType.Transport;
+                        }
+                        else if (subTile.mainTerrain == TerrainMainType.Mine)
                         {
 
                             var mineType = (TerrainMineType)subTile.subTerrain;

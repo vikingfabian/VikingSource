@@ -71,12 +71,12 @@ namespace VikingEngine.DSSWars.Map.MapModels
             return crossPolygons;
         }
 
-        public void Draw(int cameraIndex, LocalPlayer player, float adjY)
+        public void Draw(int cameraIndex, Texture2D texture/* LocalPlayer player*/, float adjY)
         {
-            if (player.factionPixelTexture != null)
+            if (texture != null)
             {
                 Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-                GeneratedObjColor.effectGround.Texture = player.factionPixelTexture.texture;
+                GeneratedObjColor.effectGround.Texture = texture;//player.factionPixelTexture.texture;
                 heightMapModel.position.Y = adjY;
                 heightMapModel.Draw(cameraIndex);
                 Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
