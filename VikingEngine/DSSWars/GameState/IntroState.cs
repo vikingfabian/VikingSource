@@ -109,19 +109,22 @@ namespace VikingEngine.DSSWars
             part++;
 
             VikingEngine.HUD.Gui.LoadContent();
+#if !ANDROID
             part++;
             DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelModelFolder);
             part++;
             DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelProjectFolder);
             part++;
             UserGeneratedContent.UGClib.GameContentInit();
-            part++;
-#if BLACK
-            BlackMainScene.bgTex = Ref.main.Content.Load<Texture2D>(Core.BlackBolts.Data.MapStorage.ContentFolder + FilePath.Dir +
-                "black bolt_bg");
-#else
-            bgTex = MainMenuState.LoadBg();
 #endif
+
+            part++;
+//#if BLACK
+//            BlackMainScene.bgTex = Ref.main.Content.Load<Texture2D>(Core.BlackBolts.Data.MapStorage.ContentFolder + FilePath.Dir +
+//                "black bolt_bg");
+//#else
+            bgTex = MainMenuState.LoadBg();
+//#endif
             part++;
         }
 
@@ -133,7 +136,7 @@ namespace VikingEngine.DSSWars
             FlagDesign.Init();
             dataProcessPart++;
             Block.Init();
-#if !BLACK
+//#if !BLACK
             dataProcessPart++;
             FlagAndColor.Init();
             dataProcessPart++;
@@ -144,7 +147,7 @@ namespace VikingEngine.DSSWars
             dataProcessPart++;
             BuildLib.Init();
             dataProcessPart++;
-#endif
+//#endif
             GroundPropertiesLib.Init(); 
             dataProcessPart++;
 
@@ -193,10 +196,14 @@ namespace VikingEngine.DSSWars
 
         override protected void asyncStorageLoading(ref int part)
         {  
+
             DssRef.storage = new Data.GameStorage();
+
+#if !ANDROID
             DssRef.storage.Load();
             part++;
             DssRef.storage.meta.CreateImportFolders();
+#endif
             part++;
             new Presentation.Translation().setupLanguage(true);
             part++;
@@ -223,9 +230,8 @@ namespace VikingEngine.DSSWars
             DssRef.models.rawModels_temporary = null;
             Ref.main.criticalContentIsLoaded = true;
             new Achievements();
-            //new GameStats();
+            
             DssRef.stats.startUp.addOne();
-
 
             if (Ref.gamesett.language == LanguageType.NONE)
             {
