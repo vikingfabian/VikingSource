@@ -100,13 +100,13 @@ namespace VikingEngine.ToGG.Commander.Battle
 
         public void ResultAddHitChance(float add)
         {
-            content.Add(new RbText(TextLib.PercentAddText(add)));
+            content.Add(new RbText(TextLib.PercentAddTextF(add)));
             content.Add(new RbImage(BattleDice.ResultIcon(BattleDiceResult.Hit1)));
         }
 
         public void ResultAddRetreatChance(float add)
         {
-            content.Add(new RbText(TextLib.PercentAddText(add)));
+            content.Add(new RbText(TextLib.PercentAddTextF(add)));
             content.Add(new RbImage(BattleDice.ResultIcon(BattleDiceResult.Retreat)));
         }
 

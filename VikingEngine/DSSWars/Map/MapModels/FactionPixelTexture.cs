@@ -191,7 +191,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         },
                         new RbAction1Arg<ItemResourceType>((ItemResourceType resource) => { 
                             resourceFilter = resource;
-                            DssRef.world.BordersUpdated = true;
+                            DssRef.world.CrossMapTextureNeedsUpdate = true;
                         },
                         res)));
 
@@ -221,9 +221,21 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
                         if (tile.sumTile.fogExploreLevel == WorldData.FogOfWarView_None && DssRef.storage.ruleset.module_fogOfWar)
                         {
-                            continue;
+                            texture.SetPixel(loop.Position / TilesPerPixelScale, Color.Black);
                         }
-                        texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.FactionAndTerrainColor(tile, leanY));
+                        else
+                        {
+                            Color color = TileColor.FactionAndTerrainColor(tile, leanY);
+
+                            if (tile.sumTile.fogExploreLevel > WorldData.FogOfWarView_TerrainOnly)
+                            {
+                                texture.SetPixel(loop.Position / TilesPerPixelScale, color);
+                            }
+                            else
+                            {
+                                texture.SetPixel(loop.Position / TilesPerPixelScale, ColorExt.ChangeBrighness(color, -70));
+                            }
+                        }
                     }
 
                     AddCityIcons();
@@ -236,14 +248,25 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
                         if (tile.sumTile.fogExploreLevel == WorldData.FogOfWarView_None && DssRef.storage.ruleset.module_fogOfWar)
                         {
-                            continue;
+                            texture.SetPixel(loop.Position / TilesPerPixelScale, Color.Black);
                         }
-                        Color color = TileColor.BorderAndTerrainColor(tile, leanY, out var groundColor);
-                        if (groundColor)
+                        else
                         {
-                            addTerrainAndBuildingColor(loop.Position, ref color);
+                            Color color = TileColor.BorderAndTerrainColor(tile, leanY, out var groundColor);
+                            if (groundColor)
+                            {
+                                addTerrainAndBuildingColor(loop.Position, ref color);
+                            }
+                            if (tile.sumTile.fogExploreLevel > WorldData.FogOfWarView_TerrainOnly)
+                            {
+                                texture.SetPixel(loop.Position / TilesPerPixelScale, color);
+                            }
+                            else
+                            {
+                                texture.SetPixel(loop.Position / TilesPerPixelScale, ColorExt.ChangeBrighness(color, -70));
+                            }
+                            //texture.SetPixel(loop.Position / TilesPerPixelScale, color);
                         }
-                        texture.SetPixel(loop.Position / TilesPerPixelScale, color);
                     }
                     break;
                 case FactionMapFilter.Minimap:
@@ -257,17 +280,17 @@ namespace VikingEngine.DSSWars.Map.MapModels
                             {
                                 if (tile.sumTile.fogExploreLevel > WorldData.FogOfWarView_TerrainOnly)
                                 {
-                                    texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.MinimapColor(tile, leanY));
+                                    texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.MinimapColor(tile, leanY, playerFaction));
                                 }
                                 else
                                 {
-                                    texture.SetPixel(loop.Position / TilesPerPixelScale, ColorExt.ChangeBrighness(TileColor.MinimapColor(tile, leanY), -70));
+                                    texture.SetPixel(loop.Position / TilesPerPixelScale, ColorExt.ChangeBrighness(TileColor.MinimapColor(tile, leanY, playerFaction), -70));
                                 }
                             }
                         }
                         else
                         {
-                            texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.MinimapColor(tile, leanY));
+                            texture.SetPixel(loop.Position / TilesPerPixelScale, TileColor.MinimapColor(tile, leanY, playerFaction));
                         } 
                     }
                     AddCityIcons();

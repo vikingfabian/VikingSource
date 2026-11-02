@@ -84,6 +84,8 @@ namespace VikingEngine.DSSWars
 
             cities = new SpottedPointerArray(8);
             armies = new SpottedArray<Army>(16);
+
+            fogExplored = DssRef.storage.ruleset_instance.module_fogOfWar == false;
         }
 
         public PFaction Pointer()
@@ -157,11 +159,7 @@ namespace VikingEngine.DSSWars
                 return Ref.netSession.Host();
             }
         }
-        //public void initClient(WorldData world)
-        //{
-        //    initDiplomacy(world);
-        //}
-       
+        
         public void onGameStart(bool newGame)
         {
             player?.onGameStart(newGame);
@@ -1168,7 +1166,7 @@ namespace VikingEngine.DSSWars
 
             cities.Clear();
 
-            DssRef.world.BordersUpdated = true;
+            DssRef.world.CrossMapTextureNeedsUpdate = true;
         }
 
         public List<Faction> adjacentFactions(bool botsOnly)

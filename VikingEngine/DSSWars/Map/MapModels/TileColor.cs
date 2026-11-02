@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
             return color;
         }
 
-        public static Color MinimapColor(CombinedTile tile, int leanY)
+        public static Color MinimapColor(CombinedTile tile, int leanY, Faction playerFaction)
         {
             if (tile.mapTile.IsWater())
             {
@@ -99,7 +99,74 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 //    return WorldData.WaterDarkCol1;
                 //}
             }
-            return FactionAndTerrainColor(tile, leanY);
+            //return FactionAndTerrainColor(tile, leanY);
+            
+                float brightness = 1f - ((int)tile.mapTile.heightValue - MapHeight2.WaterPlaneHeight) * 0.05f;
+
+                PFaction cityFaction = PFaction.Empty;
+            if (tile.sumTile.pcity.HasValue())
+            {
+                City city = tile.sumTile.pcity.City();
+                cityFaction = city.pfaction;
+            }
+                //if (city.IsNetHosted)
+                //{
+                //    lib.DoNothing();
+                //}
+                //int faction = city.factionIndex;
+                float red = 0;
+                float green = 0;
+
+                if (cityFaction.IsEmpty())
+                {
+                    return ColorExt.VeryDarkGray;
+                }
+
+                if (cityFaction == playerFaction.pfaction)
+                {
+                    brightness *= 0.5f;
+                }
+                else
+                {
+                    var rel = DssRef.world.diplomacy.GetRelation(playerFaction.pfaction, cityFaction).Relation;
+
+                    if (rel <= RelationType.RelationTypeN2_Truce)
+                    {
+                        red = 0.2f;
+                    }
+                    else if (rel >= RelationType.RelationType3_Ally)
+                    {
+                        green = 0.2f;
+                    }
+
+                    brightness *= 0.2f;
+                }
+
+            //int distance = city.maptilePos.SideLength(pos);
+
+            //if (distance == 1)
+            //{
+            //    brightness *= 1.5f;
+            //}
+            //else 
+            //if (hasBorder(out bool sameFaction))
+            //{
+            //    if (sameFaction)
+            //    {
+            //        brightness *= 1.25f;
+            //    }
+            //    else
+            //    {
+            //        brightness *= 0.6f;
+            //    }
+            //}
+            if (tile.sumTile.IsBorderTile)
+            {
+                brightness *= 0.6f;
+            }
+
+            return new Color(brightness + red, brightness + green, brightness);
+            
         }
 
         public static Color IconmapColor(CombinedTile tile)

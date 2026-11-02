@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
             var armies = faction_sp.armies.counter();
             while (armies.Next())
             {
-                if (armies.sel.InFogView)
+                if (armies.sel.inFogView)
                 {
                     var groups = armies.sel.groups.counter();
                     while (groups.Next())
@@ -179,7 +179,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 var armies = faction.armies.counter();
                 while (armies.Next())
                 {                   
-                    if (armies.sel.InFogView && armies.sel.strengthValue > 0)
+                    if (armies.sel.inFogView && armies.sel.strengthValue > 0)
                     {
                         float scale = armyStrengthRange.GetValuePercentPosClamped(armies.sel.strengthValue);
                         scale = StrengthPercToScale.GetFromPercent(scale);

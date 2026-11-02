@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.Players
             //faction.player = this;
             faction.SetStartOwner(this);
             faction.OnNewPlayerModels();
-            DssRef.world.BordersUpdated = true;
+            DssRef.world.CrossMapTextureNeedsUpdate = true;
         }
 
         virtual public void SetColor(Color selected, bool netShare)
@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.Players
             Graphics.GpuResourceSync.Release(previousFlag);
             pfaction.GetFaction()?.OnNewPlayerModels();
             
-            DssRef.world.BordersUpdated = true;
+            DssRef.world.CrossMapTextureNeedsUpdate = true;
         }
 
         public AbsPlayer(Faction faction, bool newGame)

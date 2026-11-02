@@ -139,8 +139,8 @@ namespace VikingEngine.DSSWars.Data
             new LeaderBoardMainTab { first = LeaderBoardType.nation50_strength, icon = SpriteName.WarsStrengthIcon, casualSubTab = true, difficultyTabs = new FlatArray_Eight<DifficultySubTab>(
                     new DifficultySubTab(LeaderBoardType.nation50_strength, 50),new DifficultySubTab(LeaderBoardType.nation100_strength, 100), new DifficultySubTab(LeaderBoardType.nation150_strength, 150), new DifficultySubTab(LeaderBoardType.nation200_strength, 200)) },
 
-            new LeaderBoardMainTab { first = LeaderBoardType.survive400_time, icon = SpriteName.WarsRelationTotalWar,casualSubTab = true, difficultyTabs = new FlatArray_Eight<DifficultySubTab>(
-                new DifficultySubTab(LeaderBoardType.survive400_time, SurviveLeaderBoard.Difficulty400),new DifficultySubTab(LeaderBoardType.survive600_time, SurviveLeaderBoard.Difficulty600)) },
+            new LeaderBoardMainTab { first = LeaderBoardType.surviveTier1_time, icon = SpriteName.WarsRelationTotalWar,casualSubTab = true, difficultyTabs = new FlatArray_Eight<DifficultySubTab>(
+                new DifficultySubTab(LeaderBoardType.surviveTier1_time, SurviveLeaderBoard.DifficultyTier1),new DifficultySubTab(LeaderBoardType.surviveTier2_time, SurviveLeaderBoard.DifficultyTier2)) },
 
             new LeaderBoardMainTab { first = LeaderBoardType.multiplayer_playercount, icon = SpriteName.WarsHudIconMultiplayer, casualSubTab = false, },
         };
@@ -357,14 +357,14 @@ namespace VikingEngine.DSSWars.Data
                     title = DssRef.lang.Leaderboards_NationStrength;
                     break;
 
-                case LeaderBoardType.survive400_time:
-                case LeaderBoardType.survive400_time_casual:
-                    title = string.Format(DssRef.lang.Leaderboards_Survival, SurviveLeaderBoard.Difficulty400);
+                case LeaderBoardType.surviveTier1_time:
+                case LeaderBoardType.surviveTier1_time_casual:
+                    title = string.Format(DssRef.lang.Leaderboards_Survival, SurviveLeaderBoard.DifficultyTier1);
                     break;
 
-                case LeaderBoardType.survive600_time:
-                case LeaderBoardType.survive600_time_casual:
-                    title = string.Format(DssRef.lang.Leaderboards_Survival, SurviveLeaderBoard.Difficulty600);
+                case LeaderBoardType.surviveTier2_time:
+                case LeaderBoardType.surviveTier2_time_casual:
+                    title = string.Format(DssRef.lang.Leaderboards_Survival, SurviveLeaderBoard.DifficultyTier2);
                     break;
 
                 case LeaderBoardType.multiplayer_playercount:
@@ -445,10 +445,10 @@ namespace VikingEngine.DSSWars.Data
                         leaderBoard = new NationStrengthLeaderBoard(type);
                         break;
 
-                    case LeaderBoardType.survive400_time:
-                    case LeaderBoardType.survive600_time:
-                    case LeaderBoardType.survive400_time_casual:
-                    case LeaderBoardType.survive600_time_casual:
+                    case LeaderBoardType.surviveTier1_time:
+                    case LeaderBoardType.surviveTier2_time:
+                    case LeaderBoardType.surviveTier1_time_casual:
+                    case LeaderBoardType.surviveTier2_time_casual:
                         leaderBoard = new SurviveLeaderBoard(type);
                         break;
 
@@ -513,10 +513,10 @@ namespace VikingEngine.DSSWars.Data
                         sort = ELeaderboardSortMethod.k_ELeaderboardSortMethodDescending;
                         break;
 
-                    case LeaderBoardType.survive400_time:
-                    case LeaderBoardType.survive600_time:
-                    case LeaderBoardType.survive400_time_casual:
-                    case LeaderBoardType.survive600_time_casual:
+                    case LeaderBoardType.surviveTier1_time:
+                    case LeaderBoardType.surviveTier2_time:
+                    case LeaderBoardType.surviveTier1_time_casual:
+                    case LeaderBoardType.surviveTier2_time_casual:
                         display = ELeaderboardDisplayType.k_ELeaderboardDisplayTypeTimeSeconds;
                         sort = ELeaderboardSortMethod.k_ELeaderboardSortMethodDescending;
                         break;
@@ -815,8 +815,8 @@ namespace VikingEngine.DSSWars.Data
 
     class SurviveLeaderBoard : AbsLeaderBoard
     {
-        public const int Difficulty400 = 400;
-        public const int Difficulty600 = 600;
+        public const int DifficultyTier1 = 250;
+        public const int DifficultyTier2 = 350;
         public SurviveLeaderBoard(LeaderBoardType type)
         {
             this.type = type;
@@ -825,7 +825,7 @@ namespace VikingEngine.DSSWars.Data
         public SurviveLeaderBoard(TimeSpan time)
         {
             var difficulty = DssRef.difficulty.TotalDifficulty();
-            var type = difficulty >= Difficulty600 ? LeaderBoardType.survive600_time : LeaderBoardType.survive400_time;
+            var type = difficulty >= DifficultyTier2 ? LeaderBoardType.surviveTier2_time : LeaderBoardType.surviveTier1_time;
 
             if (DssRef.state?.playstate()?.casualControls ?? false)
             {
@@ -968,10 +968,10 @@ namespace VikingEngine.DSSWars.Data
         nation200_strength,
         nation200_strength_casual,
 
-        survive400_time,
-        survive400_time_casual,
-        survive600_time,        
-        survive600_time_casual,
+        surviveTier1_time,
+        surviveTier1_time_casual,
+        surviveTier2_time,        
+        surviveTier2_time_casual,
 
         multiplayer_playercount,
         NUM_NONE

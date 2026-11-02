@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         static readonly Vector2 CamCullingRadius = new Vector2(DssVar.SoldierGroup_Spacing * 1.4f);
         public Vector2 cullingTopLeft, cullingBottomRight;
-        public bool InFogView = false;
+        public bool inFogView = false;
         public float food = 0;
         public float conservedFood = 0;
         public SoldierUpkeep totalUpkeep = new SoldierUpkeep();
@@ -90,10 +90,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int fogViewRadius()
         {
+            const float TimePerExpandLevel = 20;
+            const int MaxExpandLevel = 6;
+
             double expandedView = 1;
             if (army_isIdle)
             {
-                expandedView += 0.25f * Bound.Max(lastActiveTime.secPassed() / 20, 4);
+                expandedView += 0.25f * Bound.Max(lastActiveTime.secPassed() / TimePerExpandLevel, MaxExpandLevel);
             }
             return MathExt.MultiplyInt(4 + groups.Count * 0.75, expandedView);
         }
@@ -1089,7 +1092,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 cullingTopLeft = minpos - CamCullingRadius;
                 cullingBottomRight = maxpos + CamCullingRadius;
-                InFogView = fogViewResult;
+                inFogView = fogViewResult;
             }
 
         }
@@ -1131,9 +1134,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public void asynchCullingUpdate(float time, bool bStateA)
         {
-            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, InFogView, ref cullingTopLeft, ref cullingBottomRight);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, inFogView, ref cullingTopLeft, ref cullingBottomRight);
 
-            if (DssRef.state.LocalHost().unitsPixelTexture != null)
+            if (inFogView && DssRef.state.LocalHost().unitsPixelTexture != null)
             {
                 foreach (var p in DssRef.state.localPlayers)
                 {

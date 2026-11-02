@@ -41,26 +41,29 @@ namespace VikingEngine.DSSWars
                     }
                 }
 
+                //bool hasCrossMap = false;
                 foreach (var p in DssRef.state.localPlayers)
                 {
                     var armiesC = p.pfaction.GetFaction().armies.counter();
                     while (armiesC.Next())
                     {
-                        async_fog_addViewPoint(WP.MaptileToSumTile(armiesC.sel.maptilePos), armiesC.sel.fogViewRadius(), FogOfWarView_Full, 0.75f, 0.9f);
+                        async_fog_addViewPoint(WP.ToSumTilePos(armiesC.sel.position), armiesC.sel.fogViewRadius(), FogOfWarView_Full, 0.75f, 0.9f);
                     }
-                }
 
+                    // = p.mapLayer() != Map.MapLayer.MapDetailLayerType.Layer1_Near;
+                }
                 fogTexture.refreshWorld();
                 fogTexture.Update_async();
+                DssRef.world.CrossMapTextureNeedsUpdate = true;
             }
         }
 
-        public void async_fog_addCityView(City city)
+        public void async_fog_addCityView(City city, bool fullReveal)
         {
             if (DssRef.storage.ruleset_instance.module_fogOfWar)
             {
                 city.fogExplored = true;
-                async_fog_addViewPoint(WP.MaptileToSumTile(city.maptilePos), city.HallSetup().claimRadius_sum * 5, FogOfWarView_LockedFull, 0.6f, 0.8f);
+                async_fog_addViewPoint(WP.MaptileToSumTile(city.maptilePos), city.HallSetup().claimRadius_sum * 5, FogOfWarView_LockedFull, 0.6f, fullReveal? 0.8f : 0f);
             }
         }
 
@@ -69,6 +72,7 @@ namespace VikingEngine.DSSWars
             if (DssRef.storage.ruleset_instance.module_fogOfWar)
             {
                 city.fogExplored = true;
+                city.pfaction.GetFaction().fogExplored = true;
                 async_fog_addViewPoint(WP.MaptileToSumTile(city.maptilePos), 3, FogOfWarView_TerrainOnly, 1f, 0f);
             }
         }

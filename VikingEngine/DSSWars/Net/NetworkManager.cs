@@ -486,7 +486,7 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssWorldTiles:
                     DssRef.world.readNet_Tile(packet.r);//l 32 * 4 * 4
                     mapLayerMid.bRefreshDataRecieved = true;
-                    DssRef.world.BordersUpdated = true;
+                    DssRef.world.CrossMapTextureNeedsUpdate = true;
                     break;
 
                 case PacketType.DssWorldSubTiles:
@@ -1251,7 +1251,7 @@ namespace VikingEngine.DSSWars
                     if (aiPlayer != null)
                     {
                         aiPlayer.AssignFaction(player.pfaction.GetFaction());
-                        DssRef.world.BordersUpdated = true;
+                        DssRef.world.CrossMapTextureNeedsUpdate = true;
                     }
                 }
 

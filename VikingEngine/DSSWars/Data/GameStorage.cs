@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Data
             demoSetup();
 
 #else
-           ruleset.defaultGameSettings();
+           //ruleset //ruleset.defaultGameSettings();
 #endif
         }
 

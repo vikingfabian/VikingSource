@@ -88,9 +88,9 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
         public void runAsyncTask()
         {
-            if (state_Processing_Sych_Complete == 2 && DssRef.world.BordersUpdated /*|| StartupSettings.AlwaysRefreshMap*/)
+            if (state_Processing_Sych_Complete == 2 && DssRef.world.CrossMapTextureNeedsUpdate /*|| StartupSettings.AlwaysRefreshMap*/)
             {
-                DssRef.world.BordersUpdated = false;
+                DssRef.world.CrossMapTextureNeedsUpdate = false;
                 state_Processing_Sych_Complete = 0;
 
                 borders?.quedEvent();
@@ -99,7 +99,10 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                     //factionsMap.asyncTask();
                     foreach (var p in DssRef.state.localPlayers)
                     {
-                        p.factionPixelTexture.refreshWorld();
+                        if (p.mapLayer() != MapDetailLayerType.Layer1_Near)
+                        {
+                            p.factionPixelTexture.refreshWorld();
+                        }
                         p.minimapPixelTexture.refreshWorld();
                     }
                 }

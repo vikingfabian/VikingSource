@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         public float GroundY_aboveWater()
         {
-           return Bound.Min(heightValue* MapHeight2.HeightY, MapHeight2.WaterSurfaceY);
+           return Bound.Min(groundY, MapHeight2.WaterSurfaceY);
         }
 
         

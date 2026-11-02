@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.Data
 
         public MapScale mapSize = new MapScale(MapSizeCategory.Medium);
 
-        public bool module_fogOfWar = false;
+        public bool module_fogOfWar = true;
         public bool module_foodAndWater = false;
         public bool module_deptAndDeserters = false;
         public bool module_physicalGold = false;
@@ -137,12 +137,12 @@ namespace VikingEngine.DSSWars.Data
 
             refreshSettings();
         }
-        public void defaultGameSettings()
-        {
-            mapSize = new MapScale(MapSizeCategory.Medium);
-            module_physicalGold = true;
-            factionStartSize = FactionStartSize.Full;
-        }
+        //public void defaultGameSettings()
+        //{
+        //    mapSize = new MapScale(MapSizeCategory.Medium);
+        //    module_physicalGold = true;
+        //    factionStartSize = FactionStartSize.Full;
+        //}
         public void demoSetup()
         {
             mapSize = new MapScale(MapSizeCategory.Medium);

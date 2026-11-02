@@ -28,7 +28,9 @@ namespace VikingEngine.DSSWars.Players
         int netSharePinIndex = 0;
         public AbsHumanPlayer(Faction faction, bool newGame)
             : base(faction, newGame)
-        { }
+        {
+            faction.fogExplored = true;
+        }
 
         public AbsHumanPlayer()
             : base()

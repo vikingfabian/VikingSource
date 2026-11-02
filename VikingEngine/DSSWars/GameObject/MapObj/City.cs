@@ -354,6 +354,7 @@ namespace VikingEngine.DSSWars.GameObject
             });
 
             generateCultureAndEconomy(world, world.storyPlacementScale, cityCultureCollection);
+            
         }
 
         public void generateCultureAndEconomy(WorldData world, float storyPlacementScale, CityCultureCollection cityCultureCollection)
@@ -1532,6 +1533,8 @@ namespace VikingEngine.DSSWars.GameObject
                 name.name = Data.NameGenerator.CityName(maptilePos);
             }
             setTimeOnAllWorkers();
+
+            fogExplored |= DssRef.storage.ruleset_instance.module_fogOfWar == false;
         }
 
         
@@ -4225,7 +4228,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (DssRef.world != null)
             {
-                DssRef.world.BordersUpdated = true;
+                DssRef.world.CrossMapTextureNeedsUpdate = true;
 
                 if (!convert)
                 {

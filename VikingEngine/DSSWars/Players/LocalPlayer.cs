@@ -845,23 +845,20 @@ namespace VikingEngine.DSSWars.Players
         {
             base.onNewRelation(isActuator, otherPFaction, rel, previousRelation, fromAllianceTrade, localAction);
        
-            //Faction otherFaction = otherPFaction.GetFaction();
-
             if (otherPFaction.TryGetFaction(out var otherFaction))
             {
-                if (otherFaction.factiontype != FactionType.SouthHara)
-                //(rel.Relation <= RelationType.RelationTypeN3_Mobilization &&
-                //otherFaction.factiontype != FactionType.SouthHara)
-                //||
-                //(otherFaction.player != null && otherFaction.player.IsHumanPlayer()))
+                otherFaction.fogExplored = true;
+                if (otherFaction.factiontype != FactionType.SouthHara)               
                 {
 
                     switch (rel.Relation)
                     {
                         case RelationType.RelationType3_Ally:
+                            factionFogReveal(otherFaction, true);
                             message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationAlly.Play());
                             break;
                         case RelationType.RelationType2_Good:
+                            factionFogReveal(otherFaction, false);
                             message(DssRef.lang.Diplomacy_RelationType, SoundLib.eventRelationGood.Play());
                             break;
                         case RelationType.RelationType1_Peace:
@@ -903,23 +900,6 @@ namespace VikingEngine.DSSWars.Players
 
                     }
 
-                    //if (rel.Relation >= RelationType.RelationType0_Neutral)
-                    //{
-                    //    message(DssRef.lang.Diplomacy_RelationType);
-                    //}
-                    //else if (rel.Relation <= RelationType.RelationTypeN3_Mobilization)
-                    //{
-                    //    if (previousRelation == RelationType.RelationTypeN2_Truce)
-                    //    {
-                    //        message(DssRef.lang.Diplomacy_TruceEndTitle);
-                    //    }
-                    //    else
-                    //    {
-                    //        message(DssRef.lang.Diplomacy_WarDeclarationTitle);
-                    //        Ref.music.OnGameEvent();
-                    //    }
-                    //}
-
                     void message(string title, SoundContainerBase sound)
                     {
                         if (Ref.steam.isInitialized)
@@ -933,7 +913,7 @@ namespace VikingEngine.DSSWars.Players
                                         ETimelineEventClipPriority.k_ETimelineEventClipPriority_Standard // Clip suggestion priority
                                     );
                         }
-                        //SoundContainerBase sound = 
+
                         RichBoxContent content = new RichBoxContent();
                         MessageGroup_Ingame.Title(content, title);
                         DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content, true);
@@ -942,7 +922,11 @@ namespace VikingEngine.DSSWars.Players
 
                 }
             }
+
+            
         }
+
+        
 
         virtual public void userUpdate(bool cityUpdate)
         {
@@ -1903,6 +1887,8 @@ namespace VikingEngine.DSSWars.Players
             hud.messages.onGameStart();
             oneSecUpdate();
 
+            var faction = pfaction.GetFaction();
+
             if (newGame)
             {
                 commandPoints.value = commandPoints.max * 0.5;
@@ -1912,43 +1898,43 @@ namespace VikingEngine.DSSWars.Players
                 if (DssRef.difficulty.resourcesStartHelp)
                 {
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                    while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
+                    while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                     {
                         citySel.checkPlayerFuelAccess_OnGamestart_async();
                     }
                 }
             }
 
-            pfaction.GetFaction().refreshMainCity();
-            if (pfaction.GetFaction().mainCity != null)
+            faction.refreshMainCity();
+            if (faction.mainCity != null)
             {
                 if (newGame)
                 {
-                    pfaction.GetFaction().mainCity.Tag = new MapObjectTag(CityTagBack.Carton, MapObjectTag.Tag_Faction);
+                    faction.mainCity.Tag = new MapObjectTag(CityTagBack.Carton, MapObjectTag.Tag_Faction);
 
                     if (profile.casualControls)
                     {
-                        pfaction.GetFaction().mainCity.FinishCasualBuild(PlayerControls.Casual.CasualBuildType.StartUpBarracks);
+                        faction.mainCity.FinishCasualBuild(PlayerControls.Casual.CasualBuildType.StartUpBarracks);
                     }
 
                     if (DssRef.storage.ruleset.factionStartSize == FactionStartSize.Settler)
                     {   
                         for (int i = 0; i < CityResourceIndex.COUNT; i++)
                         {
-                            ref GroupedResource resources = ref pfaction.GetFaction().mainCity.GetRefGroupedResource(i);
+                            ref GroupedResource resources = ref faction.mainCity.GetRefGroupedResource(i);
                             resources.hardSetLimit(100);
                         }
                     }
                 }
 
-                gameControls.map.setCameraPos(pfaction.GetFaction().mainCity.maptilePos);
+                gameControls.map.setCameraPos(faction.mainCity.maptilePos);
             }
             else
             {
                 gameControls.map.setCameraPos(DssRef.world.Size / 2);
             }
 
-            nextDominationSize = pfaction.GetFaction().cities.Count + DssConst.DominationSizeIncrease.GetRandom();
+            nextDominationSize = faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();
 
             if (DssRef.state.host)
             {
@@ -1957,13 +1943,16 @@ namespace VikingEngine.DSSWars.Players
 
             if (newGame)
             {
-                var cities = pfaction.GetFaction().cities;
+                factionFogReveal(faction, true);
+            }
+        }
 
-                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
-                {
-                    DssRef.world.async_fog_addCityView(citySel);
-                }
+        void factionFogReveal(Faction faction, bool fullReveal)
+        {
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+            {
+                DssRef.world.async_fog_addCityView(citySel, fullReveal);
             }
         }
 

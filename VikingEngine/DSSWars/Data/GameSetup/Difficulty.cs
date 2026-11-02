@@ -13,22 +13,25 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxTokenParser;
 
 namespace VikingEngine.DSSWars.Data
 {
     class Difficulty
     {
-        public const int ModulePerc_FogOfWar = 50;
-        public const int ModulePerc_FoodUpkeep = 100;
-        public const int ModulePerc_LossOfUnits = 50;
-        public const int ModulePerc_LocalGold = 50;
-        public const int ModulePerc_NoPause = 50;
+        public const int ModulePerc_FogOfWar = 25;
+        public const int ModulePerc_FoodUpkeep = 50;
+        public const int ModulePerc_LossOfUnits = 25;
+        public const int ModulePerc_LocalGold = 25;
+        public const int ModulePerc_NoPause = 25;
+
+        public const int TinyMapSize_DifficultyAdd = -25;
 
         public const int DefaultOption = 2;
 
-        int difficulty = DefaultOption;
+        int baseDifficultyOption = DefaultOption;
 
-        static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200, 300 };
+        static readonly int[] options = new int[] { 12, 25, 50, 75, 100, 125, 150, 175, 200 };
         public static readonly int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150, 300 };
         
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
@@ -78,7 +81,7 @@ namespace VikingEngine.DSSWars.Data
             set(difficulty);
         }
 
-        public int PercDifficulty => options[difficulty];
+        public int PercDifficulty => options[baseDifficultyOption];
 
         public static void OptionsGui(GuiLayout layout, Action<int> difficultyOptionsLink)
         {
@@ -130,7 +133,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 Difficulty difficultyLvl = new Difficulty(i);
                 content.newLine();
-                mapSzOptions.AddOption(options[i].ToString() + "%", DssRef.difficulty.difficulty == i, DefaultOption == i,
+                mapSzOptions.AddOption(options[i].ToString() + "%", DssRef.difficulty.baseDifficultyOption == i, DefaultOption == i,
                     new RbAction1Arg<int>(callback, i), new RbTooltip(difficultyToolTip, i));
                 //content.Add(new ArtOption(DssRef.difficulty.difficulty == i, new List<AbsRichBoxMember> { new RbText(options[i].ToString() + "%") }, null));
             }
@@ -189,23 +192,16 @@ namespace VikingEngine.DSSWars.Data
 
         public void set(int difficulty)
         {
-            this.difficulty = difficulty;
+            this.baseDifficultyOption = difficulty;
             refreshSettings();
         }
 
         public int TotalDifficulty()
         {
             double result = PercDifficulty;
-        //    public const int ModulePerc_FogOfWar = 50;
-        //public const int ModulePerc_FoodUpkeep = 100;
-        //public const int ModulePerc_LossOfUnits = 50;
-        //public const int ModulePerc_LocalGold = 50;
-        //public const int ModulePerc_NoPause = 50;
-            //if (!setting_allowPauseCommand)
-            //{
-            //    result += 50;
+        
+            result += gameModeDifficulty(result);
 
-            //}
             if (DssRef.storage.ruleset.module_fogOfWar)
             {
                 result += ModulePerc_FogOfWar;
@@ -226,32 +222,47 @@ namespace VikingEngine.DSSWars.Data
             {
                 result += ModulePerc_NoPause;
             }
-
-            switch (setting_gameMode)
-            {
-                case GameModeMainType.QuickBoss:
-                    //result += 25;
-                    result += GameRuleset.QuickBossOptions_Time_Difficulty[DssRef.storage.ruleset.QuickBossTimeOption].Value2;
-                    break;
-                case GameModeMainType.FullStory:
-                    result += 50;
-                    break;
-                case GameModeMainType.Peaceful:
-                    result *= 0.5;
-                    break;
-            }
+            //switch (setting_gameMode)
+            //{
+            //    case GameModeMainType.QuickBoss:
+            //        result += GameRuleset.QuickBossOptions_Time_Difficulty[DssRef.storage.ruleset.QuickBossTimeOption].Value2;
+            //        break;
+            //    case GameModeMainType.FullStory:
+            //        result += 50;
+            //        break;
+            //    case GameModeMainType.Peaceful:
+            //        result -= 50;
+            //        break;
+            //}
 
             var wsize = DssRef.storage.ruleset.mapSize.GetSizeCategory();
             if (Ref.gamestate is PlayState && DssRef.world != null)
             {
                 wsize = MapScale.CustomMapSizeToSize(DssRef.world.Size, out _);
             }
+
             if (wsize <= MapSizeCategory.Tiny)
             {
-                result -= 50;
+                result += TinyMapSize_DifficultyAdd;
             }
 
             return Convert.ToInt32(result);
+        }
+
+        public int gameModeDifficulty(double baseDiff)
+        {
+            switch (setting_gameMode)
+            {
+                case GameModeMainType.QuickBoss:
+                    return GameRuleset.QuickBossOptions_Time_Difficulty[DssRef.storage.ruleset.QuickBossTimeOption].Value2;
+                    
+                case GameModeMainType.FullStory:
+                    return 25;
+
+                case GameModeMainType.Peaceful:
+                    return -MathExt.MultiplyInt(baseDiff, 0.5);
+            }
+            return 0;
         }
 
         public bool AllyCountCost()
@@ -273,7 +284,7 @@ namespace VikingEngine.DSSWars.Data
         {
             //FoodEnergySett = Convert.ToInt32(DssConst.FoodEnergy * setting_foodMulti);
 
-            switch (difficulty)
+            switch (baseDifficultyOption)
             {
                 case 0:
                     aiAggressivity = AiAggressivity.Low;
@@ -401,7 +412,7 @@ namespace VikingEngine.DSSWars.Data
                     break;
             }
 
-            int mediumOffset = difficulty - 3;
+            int mediumOffset = baseDifficultyOption - 3;
 
             switch (setting_gameMode)
             {
@@ -468,7 +479,7 @@ namespace VikingEngine.DSSWars.Data
             //w.Write(setting_techMulti_QuickMatch);
             w.Write(setting_QuickMatch_PlayerCount);
             w.Write(setting_QuickMatch_TwoTeams);
-            w.Write(difficulty);
+            w.Write(baseDifficultyOption);
 
             Debug.WriteCheck(w);
         }
@@ -513,8 +524,8 @@ namespace VikingEngine.DSSWars.Data
                     setting_QuickMatch_TwoTeams = r.ReadBoolean();
                 }
             }
-            difficulty = r.ReadInt32();
-            Bound.SetToArray(ref difficulty, options.Length);
+            baseDifficultyOption = r.ReadInt32();
+            Bound.SetToArray(ref baseDifficultyOption, options.Length);
 
             if (storageversion >= 32)
             {

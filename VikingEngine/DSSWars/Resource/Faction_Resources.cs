@@ -601,24 +601,12 @@ namespace VikingEngine.DSSWars
 
                 if (oneSecondUpdate > 0)
                 {
-                    //if (armiesC.sel.debugTagged)
-                    //{
-                    //    lib.DoNothing();
-                    //}
-                    if (this.myIndex == 72)
-                    {
-                        lib.DoNothing();
-                    }
-                    float copperUpkeep = armyUpkeep.copper * oneSecondUpdate; // DssRef.difficulty.setting_foodMulti;
+                    
+                    float copperUpkeep = armyUpkeep.copper * oneSecondUpdate;
                     money.PayUpkeep(copperUpkeep, true);
-                    //if (! && hasDeserters)
-                    //{
-                    //    missingUpkeep = true;
-                    //    //Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
-                    //}
+                   
 
-
-                    if (!casual)
+                    if (DssRef.storage.ruleset_instance.module_foodAndWater && !casual)
                     {
                         armiesC.sel.food -= armyUpkeep.food * oneSecondUpdate;
                         if (armiesC.sel.food < 0 && armiesC.sel.conservedFood > 0)
@@ -634,7 +622,6 @@ namespace VikingEngine.DSSWars
                             if (hasDeserters)
                             {
                                 missingUpkeep = true;
-                                //Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
                             }
                             else
                             {
@@ -646,7 +633,8 @@ namespace VikingEngine.DSSWars
                     if (missingUpkeep)
                     {
                         armiesC.sel.missingUpkeepSeconds++;
-                        if (armiesC.sel.missingUpkeepSeconds > 20)
+                        if (DssRef.storage.ruleset_instance.module_deptAndDeserters &&
+                            armiesC.sel.missingUpkeepSeconds > 20)
                         {
                             Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
                         }

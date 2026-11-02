@@ -433,7 +433,7 @@ namespace VikingEngine.DSSWars.Interface
                    }, new RbAction1Arg<FactionMapFilter>((FactionMapFilter filter)=>
                        { 
                             player.factionPixelTexture.filter = filter;
-                            DssRef.world.BordersUpdated = true;
+                            DssRef.world.CrossMapTextureNeedsUpdate = true;
                        }
                    , filter, RbSoundType.Option), new RbTooltip_Text(string.Format(DssRef.lang.Language_CatergoryDashUndercategory, DssRef.lang.MapFilter, filterName))));
             }

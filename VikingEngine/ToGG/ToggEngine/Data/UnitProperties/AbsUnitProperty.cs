@@ -168,7 +168,7 @@ namespace VikingEngine.ToGG.Data.Property
 
         protected string HitChanceBonus(float bonus)
         {
-            return TextLib.PercentAddText(bonus) + " hit chance on attacks. ";
+            return TextLib.PercentAddTextF(bonus) + " hit chance on attacks. ";
         }
         protected string HitWheelsBonus(int bonus)
         {

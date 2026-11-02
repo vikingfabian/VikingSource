@@ -32,7 +32,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
             waterSurface.texture = WaterTex()[0];
             int repeatCount = layer == DrawGame.NearLayer ? 2 : 1;
             waterSurface.repeatingTextureSource(WaterTex()[1], DssRef.world.chunkGrid.Size * repeatCount);
-           
+            //waterSurface.Y = MapHeight2.WaterSurfaceY;
             waterSurface.Scale = vol.Scale;
             const float SurfaceTrans = 0.8f;
             
@@ -41,8 +41,8 @@ namespace VikingEngine.DSSWars.Map.MapLayer
             {
                 fogPlane = (Mesh)waterSurface.CloneMe();
                 fogPlane.Y += 0.01f;
+                fogPlane.Color = Color.White;
 
-                //fogPlane.texture = DssRef.world.fogTexture.texture;
                 fogPlane.setFullTextureSource(DssRef.world.fogTexture.texture);
                 fogPlane.AddToRender(layer);
             }

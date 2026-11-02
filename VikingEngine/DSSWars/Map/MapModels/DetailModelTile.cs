@@ -135,7 +135,8 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         Biom biom = DssRef.map.bioms.bioms[(int)comTile.sumTile.biom1];
                         var col = biom.colors_height[comTile.sumTile.biomColorHeight];
 
-                        if (comTile.sumTile.fogExploreLevel == WorldData.FogOfWarView_None)
+                        if (DssRef.storage.ruleset_instance.module_fogOfWar && 
+                            comTile.sumTile.fogExploreLevel == WorldData.FogOfWarView_None)
                         {
                             continue;
                         }
@@ -174,6 +175,11 @@ namespace VikingEngine.DSSWars.Map.MapModels
                                 }
 
                                 Color surfaceColor = TileColor.TerrainColor(comTile, leanY);//comTile.mapTile.color;
+                                if (DssRef.storage.ruleset_instance.module_fogOfWar && 
+                                    comTile.sumTile.fogExploreLevel == WorldData.FogOfWarView_TerrainOnly)
+                                {
+                                    surfaceColor = ColorExt.ChangeBrighness(surfaceColor, -70);
+                                }
 
                                 switch (comTile.mapTile.mainTerrain)
                                 {

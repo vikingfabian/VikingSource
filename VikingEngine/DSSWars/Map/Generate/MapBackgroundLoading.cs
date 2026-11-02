@@ -243,27 +243,29 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 if (loadingState <= LoadingState.StorageDone)
                 {
-                    //    if (dataGenerate != null)
-                    //    {
-                    //        loadingState = LoadingState.Post1Started;
-                    //    }
-                    //}
-                    //else if (loadingState == LoadingState.Post1Started)
-                    //{
-                    if (dataGenerate != null)
+                    loadingState = LoadingState.Post1Started;
+                    Task.Factory.StartNew(async () =>
                     {
+                        try
+                        {
+                            if (dataGenerate != null)
+                            {
+                                
+                                postGenerate = new Map2PostGenerate(dataGenerate.mapBuilder.world);
+                                postGenerate.placeTerrain();
+                                postGenerate.citiesAndFactionsSetup(dataGenerate.generateSettings);
 
-                        loadingState = LoadingState.Post1Started;
-                        postGenerate = new Map2PostGenerate(dataGenerate.mapBuilder.world);
-                        postGenerate.placeTerrain();
-                        postGenerate.citiesAndFactionsSetup(dataGenerate.generateSettings);
-                        
-                        //postGenerate.generateCityBuildings();
-                        
-                    }
+                                loadingState++;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            BlueScreen.ThreadException = ex;
 
+                        }
+                    });
                 }
-                else if (loadingState == LoadingState.Post1Started)
+                else if (loadingState == LoadingState.PostPart1Done)
                 {
                     //if (postGenerate.citiesComplete)
                     {

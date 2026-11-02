@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
                 player.factionPixelTexture.overview = current.DrawMidLayer;
                 if (!current.DrawNearLayer)
                 {
-                    DssRef.world.BordersUpdated = true;
+                    DssRef.world.CrossMapTextureNeedsUpdate = true;
                 }
             }
 

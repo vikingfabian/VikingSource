@@ -234,13 +234,17 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (status.work == WorkType.Idle)
                     {
+                        if (!DssRef.storage.ruleset_instance.module_foodAndWater)
+                        {
+                            status.energy = DssConst.Worker_MaxEnergy;
+                        }
+
                         if (exitCount > 0 &&
                             (status.GetXpScore() < DssConst.WorkXpToLevel_Squared ||
                             markedForExit.Contains(i) || 
                             exitCount >= 4)
                             )
-                        {
-                            
+                        {                            
                             exitCount--;
                             mayExitCount++;
                             status.createWorkOrder(WorkType.Exit, -1, 0, WorkExperienceType.NUM_NONE,  WorkPriorityType.NUM_NONE, -1, citySquareSubtilePos/*WP.ToSubTilePos_Centered(tilePos)*/, this);

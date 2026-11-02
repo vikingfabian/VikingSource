@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars
         public SpottedArray<City> cities = new SpottedArray<City>(256); 
         public SpottedArray<Faction> factions;
 
-        public bool BordersUpdated = true;
+        public bool CrossMapTextureNeedsUpdate = true;
        
         public PcgRandom rnd;
        
@@ -779,7 +779,7 @@ namespace VikingEngine.DSSWars
                 Debug.ReadCheck(r);
             }
 
-            DssRef.world.BordersUpdated = true;
+            DssRef.world.CrossMapTextureNeedsUpdate = true;
         }
 
         public void writeMapFile(System.IO.BinaryWriter w)

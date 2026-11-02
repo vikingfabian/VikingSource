@@ -20,6 +20,11 @@ The world map is rebuilt from the ground up to allow for more details, higher pe
 * Worlds are now twice the size.
 * All terrain is textured
 
+Some downsides of the new map
+* Longer load times
+* Increased storage sizes for saves
+* Flickering from layer swaps are worse
+
 Ground properties
 * Tiles have a ground type, these limit what you can build and soldier movement
 * Some tiles can be terraformed into others
@@ -49,6 +54,7 @@ x Share information with diplomatic relations
 Onboarding and Game modules
 x Three new challenge modules added
 x A couple of high friction mechanics, like starvation and deserters, have been split off to optional modules
+* Difficulty numbers have been decreased to counter the % creep
 
 X Discover resource pools
 

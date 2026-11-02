@@ -1716,19 +1716,23 @@ namespace VikingEngine.DSSWars
                 {
                     for (MapSizeCategory sz = 0; sz < MapSizeCategory.Epic; ++sz)
                     {
-                       var dropOpt =  mapSzOptions.AddOption(new MapScale( sz).SizeString(), DssRef.storage.ruleset.mapSize.sizeCategory == sz, defaultOptions.ruleset.mapSize.sizeCategory == sz,
-                            new RbAction1Arg<MapSizeCategory>(setMapSize, sz), null);
+                        var dropOpt = mapSzOptions.AddOption(new MapScale(sz).SizeString(), DssRef.storage.ruleset.mapSize.sizeCategory == sz, defaultOptions.ruleset.mapSize.sizeCategory == sz,
+                             new RbAction1Arg<MapSizeCategory>(setMapSize, sz), null);
                         switch (sz)
                         {
                             case 0:
                                 dropOpt.iconAfter = SpriteName.MenuIconPerformanceCold;
                                 break;
-                            case MapSizeCategory.Epic -1:
+                            case MapSizeCategory.Epic - 1:
                                 dropOpt.iconAfter = SpriteName.MenuIconPerformanceHot;
                                 break;
                         }
                     }
                     mapSzOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, underMenu);
+                    if (DssRef.storage.ruleset.mapSize.sizeCategory == MapSizeCategory.Tiny)
+                    {
+                        difficultyLabel(Difficulty.TinyMapSize_DifficultyAdd);
+                    }
                 }
             }
 
@@ -1747,6 +1751,8 @@ namespace VikingEngine.DSSWars
                         new RbAction1Arg<GameModeMainType>(gameModeClick, mode), new RbTooltip_Text(desc));
                 }
                 modeOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Settings_GameMode, underMenu);
+
+                difficultyLabel(DssRef.difficulty.gameModeDifficulty(DssRef.difficulty.PercDifficulty));
             }
 
             switch (DssRef.difficulty.setting_gameMode)
@@ -1778,19 +1784,7 @@ namespace VikingEngine.DSSWars
 
                     break;
             }
-            //if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
-            //{
-            //    content.newLine();
-            //    content.Add(new RbImage(SpriteName.birdPlayerCount));
-            //    content.space();
-            //    content.Add(new RbText(DssRef.lang.Lobby_PlayerCount, HudLib.TitleColor_Label));
-            //    content.space();
-            //    content.Add(new RbDragButton(new DragButtonSettings(2, 8, 1), quickPlayerCountProperty));
-
-            //    content.newLine();
-            //    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_TwoTeams) }, bQuickTwoTeamProperty));
-            //}
-
+            
             DropDownBuilder factionSizeOptions = new DropDownBuilder("faction sz");
             {
                 for (FactionStartSize sz = 0; sz < FactionStartSize.NUM; sz++)
@@ -1842,99 +1836,7 @@ namespace VikingEngine.DSSWars
             
             ModuleButton(SpriteName.cmdIconTimeOut, DssRef.todoLang.Module_NoPause, SpriteName.cmdIconTimeOut,
                noPauseProperty, Difficulty.ModulePerc_NoPause);
-            /*
-             * 
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-
-                new RbImage(HudLib.RbSettings.checkOff),
-                new RbSpace(),
-                 new RbImage(SpriteName.birdCannonBallSmoke1),
-                 new RbSpace(0.5f),
-                new RbText(DssRef.todoLang.Module_FogOfWar, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
-                new RbSpace(0.5f),
-                new RbImage(SpriteName.birdCannonBallSmoke2),
-                new RbNewLine(),
-
-                new RbSpace(5),
-                new RbImage(SpriteName.DoomSkull),
-                new RbSpace(0.5f),
-                 new RbText(string.Format(DssRef.todoLang.Language_AddXDifficultyPercentage, Difficulty.ModulePerc_FogOfWar), HudLib.NotAvailableColor_Dark_Grayed),
-            }, null));
-
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-
-                new RbImage(HudLib.RbSettings.checkOff),
-                new RbSpace(),
-                 new RbImage(SpriteName.WarsResource_Water),
-                 new RbSpace(0.5f),
-                new RbText(DssRef.todoLang.Module_FoodUpkeep, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
-                new RbSpace(0.5f),
-                new RbImage(SpriteName.WarsResource_FoodEmpty),
-                new RbNewLine(),
-
-                new RbSpace(5),
-                new RbImage(SpriteName.DoomSkull),
-                new RbSpace(0.5f),
-                 new RbText(string.Format(DssRef.todoLang.Language_AddXDifficultyPercentage, Difficulty.ModulePerc_FoodUpkeep), HudLib.NotAvailableColor_Dark_Grayed),
-            }, null));
-
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-
-                new RbImage(HudLib.RbSettings.checkOff),
-                new RbSpace(),
-                 new RbImage(SpriteName.rtsUpkeep),
-                 new RbSpace(0.5f),
-                new RbText(DssRef.todoLang.Module_LossOfUnits, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
-                new RbSpace(0.5f),
-                new RbImage(SpriteName.unitEmoteAngry),
-                new RbNewLine(),
-
-                new RbSpace(5),
-                new RbImage(SpriteName.DoomSkull),
-                new RbSpace(0.5f),
-                 new RbText(string.Format(DssRef.todoLang.Language_AddXDifficultyPercentage, Difficulty.ModulePerc_LossOfUnits), HudLib.NotAvailableColor_Dark_Grayed),
-            }, null));
-
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-
-                new RbImage(HudLib.RbSettings.checkOff),
-                new RbSpace(),
-                 new RbImage(SpriteName.WarsBuild_Bank),
-                 new RbSpace(0.5f),
-                new RbText(DssRef.todoLang.Module_LocalGold, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
-                new RbSpace(0.5f),
-                new RbImage(SpriteName.WarsBuild_GoldDeliver),
-                new RbNewLine(),
-
-                new RbSpace(5),
-                new RbImage(SpriteName.DoomSkull),
-                new RbSpace(0.5f),
-                 new RbText("+50%", HudLib.NotAvailableColor_Dark_Grayed),
-            }, null));
-
-
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-
-                new RbImage(HudLib.RbSettings.checkOff),
-                new RbSpace(),
-                 new RbImage(SpriteName.cmdIconTimeOut),
-                 new RbSpace(0.5f),
-                new RbText(DssRef.todoLang.Module_NoPause, HudLib.TitleColor_TypeName_Dark, LoadedFont.Bold),
-                new RbSpace(0.5f),
-                new RbImage(SpriteName.cmdIconTimeOut),
-                new RbNewLine(),
-
-                new RbSpace(5),
-                new RbImage(SpriteName.DoomSkull),
-                new RbSpace(0.5f),
-                 new RbText(string.Format(DssRef.todoLang.Language_AddXDifficultyPercentage, Difficulty.ModulePerc_NoPause), HudLib.NotAvailableColor_Dark_Grayed),
-            }, null));
-            */
+            
             void ModuleButton(SpriteName icon1, string title, SpriteName icon2, BoolGetSet_Tag property, int difficulty)
             {
                 content.newLine();
@@ -2106,6 +2008,14 @@ namespace VikingEngine.DSSWars
                     DssRef.storage.Save(null);
                 }
                 return DssRef.difficulty.setting_QuickMatch_TwoTeams;
+            }
+
+            void difficultyLabel(int add)
+            {
+                if (add != 0)
+                {
+                    content.Add(new RbText(TextLib.PercentAddTextInt(add), HudLib.NotAvailableColor_Dark));
+                }
             }
         }
                
@@ -2559,7 +2469,7 @@ namespace VikingEngine.DSSWars
         {
 
             DssRef.difficulty = new Difficulty();
-            DssRef.storage.ruleset.defaultGameSettings();
+            DssRef.storage.ruleset = new GameRuleset();//.defaultGameSettings();
             DssRef.storage.Save(null);
             //mainMenu();
             //newGameSettings();
