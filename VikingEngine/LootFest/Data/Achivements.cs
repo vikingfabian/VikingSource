@@ -10,7 +10,7 @@ namespace VikingEngine.LootFest.Data
         public static void UnlockAchievement(AchievementIndex achievement, Players.Player player)
         {
 #if PCGAME
-            if (PlatformSettings.PC_platform && Ref.steam.isInitialized)
+            if (PlatformSettings.SteamBuild && Ref.steam.isInitialized)
             {
                 Ref.steam.Achievements.SetAchievement((int)achievement);
             }

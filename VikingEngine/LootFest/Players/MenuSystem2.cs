@@ -953,7 +953,7 @@ namespace VikingEngine.LootFest
                 
                 new GuiSectionSeparator(layout);
                 
-                if (PlatformSettings.PC_platform)
+                if (PlatformSettings.SteamBuild)
                 {
                     // other
                     //new GuiCheckbox("Auto join co-op levels", null, autoJoinLevelProperty, layout);

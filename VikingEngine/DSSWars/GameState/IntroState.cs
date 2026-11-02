@@ -1,5 +1,5 @@
 ﻿
-#define ANDROID
+//#define ANDROID
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -111,14 +111,15 @@ namespace VikingEngine.DSSWars
             part++;
 
             VikingEngine.HUD.Gui.LoadContent();
-#if !ANDROID
-            part++;
-            DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelModelFolder);
-            part++;
-            DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelProjectFolder);
-            part++;
-            UserGeneratedContent.UGClib.GameContentInit();
-#endif
+            if (PlatformSettings.SteamBuild)
+            {
+                part++;
+                DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelModelFolder);
+                part++;
+                DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelProjectFolder);
+                part++;
+                UserGeneratedContent.UGClib.GameContentInit();
+            }
 
             part++;
 //#if BLACK
@@ -201,11 +202,12 @@ namespace VikingEngine.DSSWars
 
             DssRef.storage = new Data.GameStorage();
 
-#if !ANDROID
-            DssRef.storage.Load();
-            part++;
-            DssRef.storage.meta.CreateImportFolders();
-#endif
+            if (PlatformSettings.SteamBuild)
+            {
+                DssRef.storage.Load();
+                part++;
+                DssRef.storage.meta.CreateImportFolders();
+            }
             part++;
             new Presentation.Translation().setupLanguage(true);
             part++;

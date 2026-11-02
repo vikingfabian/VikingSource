@@ -141,7 +141,7 @@ namespace VikingEngine.Engine
 #if PCGAME
             monitorResolution = new IntVector2(Monitor.CurrentDisplayMode.Width, Monitor.CurrentDisplayMode.Height);
             
-            if (OperatingSystem.IsAndroid() || OperatingSystem.IsIOS())
+            if (PlatformSettings.MobileBuild)
             {
                 if (monitorResolution.X <= 0 || monitorResolution.Y <= 0)
                 {
@@ -209,8 +209,7 @@ namespace VikingEngine.Engine
                 applyFullScreen(fullScreen, true);
             }
 
-            if ((!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
-                && PcDisplayMode != WindowDisplayMode.HardwareFullscreen)//!PcTargetFullScreen)
+            if (PlatformSettings.SteamBuild && PcDisplayMode != WindowDisplayMode.HardwareFullscreen)//!PcTargetFullScreen)
             {
                 if (oversizeWidthPerc != 0)
                 {
@@ -323,7 +322,7 @@ namespace VikingEngine.Engine
 
         static void applyFullScreen(bool fullScreen, bool borderLess)
         {
-            if (OperatingSystem.IsAndroid() || OperatingSystem.IsIOS())
+            if (PlatformSettings.MobileBuild)
             {
                 Engine.Draw.graphicsDeviceManager.IsFullScreen = true;
 

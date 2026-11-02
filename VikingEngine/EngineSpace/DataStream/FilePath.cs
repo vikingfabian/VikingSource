@@ -157,7 +157,7 @@ namespace VikingEngine.DataStream
 
                 return androidPath;
             }
-            if (PlatformSettings.ReleaseBuild && PlatformSettings.PC_platform)
+            if (PlatformSettings.ReleaseBuild && PlatformSettings.SteamBuild)
             {               
                 return Config.PcStoragePath;
             }

@@ -503,7 +503,7 @@ namespace VikingEngine.Voxels
             }
 
 
-            if (PlatformSettings.PC_platform)
+            if (PlatformSettings.SteamBuild)
             {
                 //mouse input
                 if (!InMenu)

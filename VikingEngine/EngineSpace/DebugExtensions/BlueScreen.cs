@@ -57,7 +57,7 @@ namespace VikingEngine.DebugExtensions
                
                 GuiLayout layout = createMenu("Game Crashed!");
                 {
-                    if (PlatformSettings.PC_platform)
+                    if (PlatformSettings.SteamBuild)
                     {
                         new GuiLabel("A file with the crash details is created, see " + LogSavePath(), layout);
                         new GuiLabel("F12-Print screen. (share it on Steam and we will see it)", layout);
@@ -107,7 +107,7 @@ namespace VikingEngine.DebugExtensions
         {
             Ref.sentry?.sendReport(errorMessageDetailed);
 
-            if (PlatformSettings.PC_platform)
+            if (PlatformSettings.SteamBuild)
             {
                 try
                 {

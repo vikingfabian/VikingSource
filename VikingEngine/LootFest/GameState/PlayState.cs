@@ -48,7 +48,7 @@ namespace VikingEngine.LootFest
            
             new Data.Progress();
 
-            if (PlatformSettings.PC_platform)
+            if (PlatformSettings.SteamBuild)
             {
                 Input.Mouse.CenterLockAndHideAll();//Input.Mouse.Visible = false;
             }

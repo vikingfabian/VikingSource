@@ -279,7 +279,7 @@ namespace VikingEngine
             var sett = new GameSettings();
             new Network.NetworkSettings();
 
-            if (PlatformSettings.PC_platform)
+            if (PlatformSettings.SteamBuild)
             {
                 targetFrameRate = sett.FrameRate;
             }

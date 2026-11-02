@@ -161,7 +161,7 @@ namespace VikingEngine.LootFest.Map
         public void RefreshChunkLoadRadius()
         {
             int openRadius = StandardOpenRadius;
-            if (PlatformSettings.PC_platform)
+            if (PlatformSettings.SteamBuild)
             {
                 openRadius = Ref.gamesett.ChunkLoadRadius;
             }

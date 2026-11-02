@@ -90,7 +90,7 @@ namespace VikingEngine.LootFest.Display
             selectedGrindex.Y = Bound.SetRollover(selectedGrindex.Y + move.Y, 0, 1);
 
             //MOUSE
-            if (PlatformSettings.PC_platform && Input.Mouse.MoveDistance != Vector2.Zero)
+            if (PlatformSettings.SteamBuild && Input.Mouse.MoveDistance != Vector2.Zero)
             {
                 for (int i = 0; i < fileButtons.Length; ++i)
                 {

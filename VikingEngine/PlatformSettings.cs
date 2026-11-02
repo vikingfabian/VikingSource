@@ -111,7 +111,7 @@ namespace VikingEngine
         /// </summary>
         public static readonly ReleasePlatform TargetPlatform =
 #if PCGAME
-                    ReleasePlatform.PC;
+                  OperatingSystem.IsAndroid() || OperatingSystem.IsIOS()? ReleasePlatform.Mobile : ReleasePlatform.Steam;
 #elif XBOX
                     ReleasePlatform.Xbox;
 #endif
@@ -119,13 +119,15 @@ namespace VikingEngine
         public static readonly bool LinuxBuild = OperatingSystem.IsLinux();//Does not work with publish
         public static readonly bool AndroidBuild = OperatingSystem.IsAndroid();
         public static readonly bool IosBuild = OperatingSystem.IsIOS();
+
+        public static readonly bool MobileBuild = OperatingSystem.IsAndroid() || OperatingSystem.IsIOS();
 //#if LINUX
 //    true;
 //#else
 //    false;
 //#endif
 
-        public static readonly bool PC_platform = TargetPlatform == ReleasePlatform.PC;
+        public static readonly bool SteamBuild = TargetPlatform == ReleasePlatform.Steam;
 
         public static bool STEAM_DEMO =
 #if DEMO
@@ -241,7 +243,8 @@ namespace VikingEngine
 
     public enum ReleasePlatform
     {
-        PC,
+        Steam,
         Xbox,
+        Mobile,
     }
 }
