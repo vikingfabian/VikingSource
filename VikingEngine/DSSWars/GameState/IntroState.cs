@@ -199,7 +199,6 @@ namespace VikingEngine.DSSWars
 
         override protected void asyncStorageLoading(ref int part)
         {  
-
             DssRef.storage = new Data.GameStorage();
 
             if (PlatformSettings.SteamBuild)

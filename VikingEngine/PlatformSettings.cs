@@ -158,8 +158,8 @@ namespace VikingEngine
 
         public static readonly bool ReleaseBuild = DebugLevel > BuildDebugLevel.DebugDemo;
 
-        public static readonly bool SteamAPI =//= false;
-            (!OperatingSystem.IsAndroid() && !OperatingSystem.IsIOS())
+        public static readonly bool SteamAPI =
+           SteamBuild
             && (DebugLevel >= BuildDebugLevel.Release ? LockedToTrue : Debug_SteamAPI);
 
 
@@ -208,12 +208,12 @@ namespace VikingEngine
 
         #endregion
 
-        public static string xboxSaveFileName()
-        {
-            string result = PlatformSettings.RunProgram.ToString() + " save";
+        //public static string xboxSaveFileName()
+        //{
+        //    string result = RunProgram.ToString() + " save";
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public static string SteamVersion
         {

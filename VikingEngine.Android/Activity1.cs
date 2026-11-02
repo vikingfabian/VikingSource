@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
@@ -25,6 +26,11 @@ namespace Android
         {
             try
             {
+                //AppDomain.CurrentDomain.UnhandledException += (sender, ex) =>
+                //{
+                //    SaveCrashReport(ex.ExceptionObject?.ToString());
+                //};
+
                 base.OnCreate(bundle);
 
                 new VikingEngine.SteamWrapping.SteamManager();
@@ -37,7 +43,26 @@ namespace Android
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+
+                SaveCrashReport(ex.Message + System.Environment.NewLine + ex.StackTrace);
+
                 throw;
+            }
+        }
+
+        private void SaveCrashReport(string logText)
+        {
+            try
+            {
+                // Writes to: /storage/emulated/0/Android/data/<Your.Package.Name>/files/crash_log.txt
+                string folder = GetExternalFilesDir(null)?.AbsolutePath ?? FilesDir?.AbsolutePath;
+                string filePath = Path.Combine(folder, "last_crash.txt");
+
+                File.WriteAllText(filePath, $"--- CRASH LOG {DateTime.Now} ---\n\n" + logText);
+            }
+            catch
+            {
+                // Fallback if writing fails
             }
         }
     }
