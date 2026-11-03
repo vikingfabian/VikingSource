@@ -1,6 +1,6 @@
 
 Change log:
-* Compressed the size of resources
+
 * 
 
 x adjust "all facts"
@@ -24,6 +24,7 @@ Some downsides of the new map
 * Longer load times
 * Increased storage sizes for saves
 * Flickering from layer swaps are worse
+* The refresh rate of minimap textures are slower
 
 Ground properties
 * Tiles have a ground type, these limit what you can build and soldier movement
@@ -52,8 +53,8 @@ Fog of war
 x Share information with diplomatic relations
 
 Onboarding and Game modules
-x Three new challenge modules added
-x A couple of high friction mechanics, like starvation and deserters, have been split off to optional modules
+* Optional challenge modules have been added
+* A couple of high friction mechanics, like starvation and deserters, have been split off to optional modules
 * Difficulty numbers have been decreased to counter the % creep
 
 X Discover resource pools
@@ -84,14 +85,15 @@ Performance
 * Reduced menu render calls (Uygar "Agent" Yilmaz)
 * Flags are changed to linears arrays
 * Flag textures are only created once and share one big texture
+* Compressed the memory size of resources
 
 Vulkan
 * DSS now runs on Vulkan, which is more performant and modern than OpenGL (Uygar "Agent" Yilmaz)
-* Map loading is now done on multiple CPU cores and runs smoother
+* Map terrain loading is now done on multiple CPU cores and runs smoother
 
 
 Black Bolt Industries
-Made an evil factory puzzle game in a one week game jam. Available as extra content.
+* Made an evil factory puzzle game in a one week game jam. Available as extra content.
 
 
 ##ICONS TODO
