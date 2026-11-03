@@ -508,7 +508,7 @@ namespace VikingEngine.DSSWars.Interface
                     }
                 }
 
-                target.toTooltip(new ObjectHudArgs(content, player, false));
+                target.toTooltip(new ObjectHudArgs(null, content, player, false));
 
                 if (attackTarget)
                 {

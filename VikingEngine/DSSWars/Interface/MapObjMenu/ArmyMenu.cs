@@ -193,7 +193,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
         void infoTab(RichBoxContent content)
         {
-            army.basicInfoHud(new ObjectHudArgs( content, player, true));
+            army.basicInfoHud(new ObjectHudArgs(null, content, player, true));
 
             content.newLine();
             ColumnWidth(content, army);

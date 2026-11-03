@@ -253,7 +253,16 @@ namespace VikingEngine.DSSWars.Interface
                 createMenu(true, player);
 
                 var content = new RichBoxContent();
-                obj.toHud(new ObjectHudArgs(content, player, selected), out var secondMenuContent);
+                RichBoxContent secondMenuContent = null;
+                if (menu.menuStack.Count > 0)
+                {
+                    DssRef.storage.cityProfileStorage.ToHud(obj.GetCity(), menu, content);
+                }
+                else
+                {
+                    obj.toHud(new ObjectHudArgs(menu, content, player, selected), out secondMenuContent);
+                    
+                }
                 menu.Refresh(content, player.gameControls.controllerPointer);
 
                 if (secondMenuContent != null)

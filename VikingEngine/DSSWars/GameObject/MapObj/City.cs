@@ -38,6 +38,7 @@ using VikingEngine.EngineSpace.DataStream;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
 using VikingEngine.Network;
@@ -2527,12 +2528,12 @@ namespace VikingEngine.DSSWars.GameObject
                    if (pfaction == args.player.pfaction ||
                     DssRef.state.GodPowers())
                 {
-                        CityDetailsHud(true, args.player, args.content);
-                        new MapObjMenu(args.player, this, args.content, out secondMenuContent);
+                        CityDetailsHud(true, args.player, args.menu, args.content);
+                        new MapObjMenu(args.player, this, args.menu, args.content, out secondMenuContent);
                     }
                     else
                     {
-                        CityDetailsHud(false, args.player, args.content);
+                        CityDetailsHud(false, args.player, args.menu, args.content);
                     }
                 }
             //}
@@ -2608,7 +2609,7 @@ namespace VikingEngine.DSSWars.GameObject
             return workingAndFreeServiceMen;
         }
 
-        public void CityDetailsHud(bool minimal, LocalPlayer player, RichBoxContent content)
+        public void CityDetailsHud(bool minimal, LocalPlayer player, RichMenu menu, RichBoxContent content)
         {
             Faction faction = pfaction.GetFaction();
             bool interactive = player.pfaction == pfaction;
@@ -2738,11 +2739,28 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (automateCity || player.tutorial == null || player.tutorial.AdvisorMode())
                     {
+                        /*
                         content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.AutomationGearIcon),
                                new RbSpace(0.5f),
                             new RbText(DssRef.lang.Automation_AutomateCity)
                             }, AutomateCityProperty));
+                        */
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                            new RbImage(SpriteName.AutomationGearIcon),
+                               new RbSpace(0.5f),
+                            new RbText("City profile")
+                            }, new RbAction2Arg<string, StackOption>(menu.OpenMenu, Core.DSSWars.Data.CityProfileStorage.ProfilesMenu, StackOption.Stack),
+
+                                //new RbAction(() =>
+                                //{
+                                //    automateCity = !automateCity;
+                                //    if (automateCity)
+                                //    {
+                                //        nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
+                                //    }
+                                //}),
+                            new RbTooltip_Text("Premade city settings")));
                     }
 
                     if (automateCity)

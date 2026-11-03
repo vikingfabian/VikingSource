@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Xml.Schema;
+using VikingEngine.Core.DSSWars.Data;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Players.Profile;
@@ -46,6 +47,8 @@ namespace VikingEngine.DSSWars.Data
         public MetaProgression metaProgression = new MetaProgression();
         public GameRuleset ruleset = new GameRuleset();
         public GameRuleset ruleset_instance = new GameRuleset();
+
+        public CityProfileStorage cityProfileStorage = new CityProfileStorage();
 
         public List<int> mutedSongs = new List<int>();
 
