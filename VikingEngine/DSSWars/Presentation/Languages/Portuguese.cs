@@ -1154,7 +1154,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string ArmyOption_Divide => "Dividir exército";
 
         /// <summary>Menu option to control an army. Remove soldiers.</summary>
-        public override string ArmyOption_RemoveX => "Remover {0}";
+        public override string Edit_RemoveX => "Remover {0}";
 
         /// <summary>Menu option to control an army. Remove soldiers.</summary>
         public override string ArmyOption_DisbandAll => "Dissolver tudo";

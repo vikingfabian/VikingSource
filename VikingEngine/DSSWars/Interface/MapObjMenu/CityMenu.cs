@@ -854,48 +854,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         {
             if (player.tutorial == null || player.tutorial.DisplayResourseSubTabs())
             {
-                /*
-                for (ResourceManagementType managementType = 0; managementType < ResourceManagementType.Auto; managementType++)
-                {
-                    IconName.Tab(managementType, out SpriteName managementIcon, out string managementName);
-
-                    content.newLine();
-                    content.Add(new ArtButton(RbButtonStyle.HoverArea,
-                        new List<AbsRichBoxMember> { new RbImage(managementIcon) },
-                        null, new RbTooltip_Text(managementName)));
-
-                    for (ResourceGroupType group = 0; group < ResourceGroupType.NUM; group++)
-                    {
-                        if (group == ResourceGroupType.Mint)
-                        {
-                            bool includeMint = managementType == ResourceManagementType.WorkPrio && city.buildingStructure.CoinMinter_count > 0;
-                            if (!includeMint)
-                            {
-                                continue;
-                            }
-                        }
-
-                        IconName.Tab(group, out SpriteName groupIcon, out string groupName);
-                        var tab = new ResourcesSubTab(managementType, group);
-                        content.Add(new ArtButton(player.resourcesSubTab.EqualTab(tab)? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
-                            new List<AbsRichBoxMember> { new RbImage(groupIcon) },
-                            new RbAction1Arg<ResourcesSubTab>((resourcesSubTab) =>
-                            {
-                                if (player.resourcesSubTab.managementType != resourcesSubTab.managementType)
-                                {   
-                                    SoundLib.SubTab(resourcesSubTab.managementType);
-                                }
-                                player.resourcesSubTab = resourcesSubTab;
-
-                            }, tab, RbSoundType.Option),
-                            new RbTooltip(resourceTabToolTip, tab)));
-                        
-                    }
-
-                    HudLib.InfoButton(content, new RbTooltip(resourceTabsInfo, managementType));
-
-                }
-                */
+               
                 for (ResourceManagementType managementType = 0; managementType < ResourceManagementType.Auto; managementType++)
                 {
                     IconName.Tab(managementType, out SpriteName managementIcon, out string managementName);

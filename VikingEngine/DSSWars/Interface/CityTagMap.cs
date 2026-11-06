@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 if (hudSettings.viewTagsOnMap)
                 {
-                    mapObj.tagSprites(out SpriteName back, out SpriteName art);
+                    mapObj.Tag.tagSprites(out SpriteName back, out SpriteName art);
 
                     if (bg == null)
                     {

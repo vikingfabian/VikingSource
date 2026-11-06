@@ -118,6 +118,7 @@ namespace VikingEngine.DSSWars.Data
             flagStorage.Load();
             characterStorage.Load();
             profileStorage.Load();
+            cityProfileStorage.Load();
         }
 
        

@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             //ItemResourceType.Stone_G, ItemResourceType.Wood_Group, ItemResourceType.SkinLinen_Group, ItemResourceType.IronOre_G };
 
         int tutorialLength = -1;
-        List2<TutorialMission> missions;
+        List2_old<TutorialMission> missions;
 
         const int CollectWoodStoneAmount = 30;
         const int CollectLinenAmount = 15;
@@ -321,7 +321,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             if (player.profile.casualControls)
             {
-                missions = new List2<TutorialMission>
+                missions = new List2_old<TutorialMission>
                 {
                     TutorialMission.CasualBuildBarracks,
                     TutorialMission.CasualRecruitSoldier,
@@ -333,7 +333,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
             else
             {
-                missions = new List2<TutorialMission>
+                missions = new List2_old<TutorialMission>
                 {
                     TutorialMission.CollectResources,
                     TutorialMission.OpenManual,

@@ -12,7 +12,7 @@ namespace VikingEngine.PJ.PjEngine
         public List<JoustAnimal> availableJoustAnimals = null;
         
         public List<Hat> availableHats = null;
-        public List2<int> availableAvatars = null;
+        public List2_old<int> availableAvatars = null;
 
         public ModeAvatarSetup()
         {

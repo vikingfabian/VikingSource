@@ -35,7 +35,7 @@ namespace VikingEngine.PJ.Match3
         public float fallSpeedMultiplier;
         public int speedLevel = 0;
        
-        public Match3PlayState(List2<GamerData> joinedGamers, Texture2D bgTexture)
+        public Match3PlayState(List2_old<GamerData> joinedGamers, Texture2D bgTexture)
             : base(true)
         {
             m3Ref.gamestate = this;

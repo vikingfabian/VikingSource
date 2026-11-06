@@ -14,7 +14,7 @@ namespace VikingEngine.PJ.Joust
         bool loadComplete = false;
         bool skipInput = false;
 
-        public JoustTutorialScreen(List2<GamerData> joinedGamers)
+        public JoustTutorialScreen(List2_old<GamerData> joinedGamers)
             : base(false)
         {
             //Microsoft.Xna.Framework.Media.MediaPlayer.Stop();

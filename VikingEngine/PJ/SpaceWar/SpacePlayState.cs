@@ -11,7 +11,7 @@ namespace VikingEngine.PJ.SpaceWar
         public WorldMap map;
         List<Gamer> gamers;
 
-        public SpacePlayState(List2<GamerData> joinedGamers)
+        public SpacePlayState(List2_old<GamerData> joinedGamers)
             : base(true)
         {
             this.joinedLocalGamers = joinedGamers;

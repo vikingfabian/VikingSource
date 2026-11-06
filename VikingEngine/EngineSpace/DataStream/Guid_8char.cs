@@ -6,16 +6,40 @@ namespace VikingEngine
 {
     struct Guid_8char : IEquatable<Guid_8char>
     {
-        private readonly string _value;
+        public static readonly Guid_8char Empty = new Guid_8char(new string('0', 8));
+
+        string _value;
 
         // 62 characters: Uppercase + Lowercase + Numbers
-        private const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        private const int IdLength = 8;
+        const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        const int IdLength = 8;
+
+        int _hash;
 
         // Private constructor forces usage of NewId() or parsing
-        private Guid_8char(string value)
+        Guid_8char(string value)
         {
             _value = value;
+            _hash = _value.GetHashCode(StringComparison.Ordinal);
+        }
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write(_value.ToCharArray());
+        }
+        public static Guid_8char Read(System.IO.BinaryReader r)
+        {
+            return new Guid_8char(new string(r.ReadChars(IdLength)));
+        }
+
+        public void writeHash(System.IO.BinaryWriter w)
+        {
+            w.Write(_hash);
+        }
+
+        public static int ReadHash(System.IO.BinaryReader r)
+        {
+            return r.ReadInt32();
         }
 
         /// <summary>
@@ -38,9 +62,9 @@ namespace VikingEngine
         public override string ToString() => _value ?? new string('0', IdLength);
 
         // Standard Struct Equality Boilerplate
-        public bool Equals(Guid_8char other) => string.Equals(_value, other._value, StringComparison.Ordinal);
+        public bool Equals(Guid_8char other) => other._hash == _hash && string.Equals(_value, other._value, StringComparison.Ordinal);
         public override bool Equals(object? obj) => obj is Guid_8char other && Equals(other);
-        public override int GetHashCode() => _value?.GetHashCode(StringComparison.Ordinal) ?? 0;
+        public override int GetHashCode() => _hash;
 
         public static bool operator ==(Guid_8char left, Guid_8char right) => left.Equals(right);
         public static bool operator !=(Guid_8char left, Guid_8char right) => !left.Equals(right);

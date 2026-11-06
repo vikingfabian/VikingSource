@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.Delivery
                             {
                                 buttonContent.Add(faction.FlagTextureToHud());
                             }
-                            citySel.tagToHud(buttonContent);
+                            citySel.Tag.tagToHud(buttonContent);
                             if (buttonContent.Count > 0)
                             {
                                 buttonContent.hspace();

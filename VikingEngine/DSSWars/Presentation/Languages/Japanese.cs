@@ -1481,7 +1481,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 軍隊を制御するためのメニューオプション。兵士を除去する。
         /// </summary>
-        public override string ArmyOption_RemoveX => "{0} を除去";
+        public override string Edit_RemoveX => "{0} を除去";
 
         /// <summary>
         /// 軍隊を制御するためのメニューオプション。兵士を除去する。

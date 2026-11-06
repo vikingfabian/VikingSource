@@ -19,7 +19,7 @@ namespace VikingEngine.PJ
         public VectorRect activeScreenArea;
         public VectorRect activeScreenSafeArea;
 
-        public List2<GamerData> joinedLocalGamers;
+        public List2_old<GamerData> joinedLocalGamers;
         public int matchCount;
         public float timeSinceInput = 0;
 

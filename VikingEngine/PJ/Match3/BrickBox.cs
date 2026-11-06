@@ -16,7 +16,7 @@ namespace VikingEngine.PJ.Match3
 
         public Gamer gamer;
         RemoveBlocksEffect removeEffect = null;
-        public List2<Brick> activeBricks = new List2<Brick>(64);
+        public List2_old<Brick> activeBricks = new List2_old<Brick>(64);
         public Grid2D<Brick> grid;        
         bool brickLandings = false;
         public int comboCount = 0;

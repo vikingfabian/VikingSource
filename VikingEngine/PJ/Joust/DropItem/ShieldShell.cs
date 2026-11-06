@@ -14,7 +14,7 @@ namespace VikingEngine.PJ.Joust.DropItem
         float collRadius;
         float goalRadius;
         float radius;
-        List2<ShieldShell> members;
+        List2_old<ShieldShell> members;
         Rotation1D angle = Rotation1D.Random();
         Time lifeTime = LifeTime;
         bool eggs = false;
@@ -33,7 +33,7 @@ namespace VikingEngine.PJ.Joust.DropItem
             collRadius = goalRadius * 0.9f;
             radius = Gamer.ImageScale * 0.2f;
 
-            members = new List2<ShieldShell>(4);
+            members = new List2_old<ShieldShell>(4);
             members.Add(new ShieldShell(eggs, parent));
 
             int activeCount;

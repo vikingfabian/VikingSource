@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
         //public static readonly float SelectUnitZoomIn = FactionZoom.Min - 0.4f;
         public static MapLayerManager[] CameraIndexToView;        
 
-        List2<MapLayer> layers;
+        List2_old<MapLayer> layers;
         public MapLayer current;
         public MapLayer prevLayer;
 
@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Map.MapLayer
 
         public void refreshLayers()
         {
-            layers = new List2<MapLayer>((int)MapDetailLayerType.NUM);
+            layers = new List2_old<MapLayer>((int)MapDetailLayerType.NUM);
             {
                 float zoomBuffer = FullZoomRange.Difference * 0.0025f;
 

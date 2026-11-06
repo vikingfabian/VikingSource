@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using VikingEngine.Core.DSSWars.Data.GameSetup;
+using VikingEngine.Core.DSSWars.Interface.MapObjMenu;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.Core.DSSWars.Map.MapProcess;
 using VikingEngine.Core.EngineSpace.Engine.Extensions.Struct;
@@ -916,10 +917,9 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (subversion >= 85)
-            {
+           
                 experenceOrDistance = (XP.ExperienceOrDistancePrio)r.ReadByte();
-            }
+            
 
             readSoldierGroups(r, subversion, pointers);
      
@@ -947,18 +947,9 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (subversion < 133)
-            {
-                autoBuild_Work = r.ReadBoolean();
-                autoBuild_Farm = r.ReadBoolean();
-                autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
-            }
-            else
-            {
-                readAutomation(r);
-            }
+           readAutomation(r);
 
-            Tag.read(r, subversion);
+            Tag.read(r);
             
             res_food_safeguard = r.ReadBoolean();
 
@@ -967,14 +958,14 @@ namespace VikingEngine.DSSWars.GameObject
 
             money.read(r);
 
-            if (subversion < 133)
-            {
-                automateCity = r.ReadBoolean();
-                automationFocus = (AutomationFocus)r.ReadByte();
+            //if (subversion < 133)
+            //{
+            //    automateCity = r.ReadBoolean();
+            //    automationFocus = (AutomationFocus)r.ReadByte();
 
-                warAutoQuality = (WarAutoQuality)r.ReadByte();
-                warAutoWeaponType = (WarAutoWeaponType)r.ReadByte();
-            }
+            //    warAutoQuality = (WarAutoQuality)r.ReadByte();
+            //    warAutoWeaponType = (WarAutoWeaponType)r.ReadByte();
+            //}
             name.read(r, subversion);
 
             
@@ -2431,7 +2422,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override void TypeIcon(RichBoxContent content)
         {
             content.Add(new RbImage( SpriteName.WarsCityHall));
-            tagToHud(content);
+            Tag.tagToHud(content);
         }
 
         public void CityPresentationHud(ObjectHudArgs args, bool tooltip)
@@ -2454,7 +2445,7 @@ namespace VikingEngine.DSSWars.GameObject
                 nameToHud(args.content, !tooltip);
 
                 args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
-                if (!tagToHud(args.content))
+                if (!Tag.tagToHud(args.content))
                 {
                     args.content.Add(faction.FlagTextureToHud());
                 }
@@ -2750,7 +2741,7 @@ namespace VikingEngine.DSSWars.GameObject
                             new RbImage(SpriteName.AutomationGearIcon),
                                new RbSpace(0.5f),
                             new RbText("City profile")
-                            }, new RbAction2Arg<string, StackOption>(menu.OpenMenu, Core.DSSWars.Data.CityProfileStorage.ProfilesMenu, StackOption.Stack),
+                            }, new RbAction2Arg<string, StackOption>(menu.OpenMenu, CityProfileMenu.ProfilesMenu, StackOption.Stack),
 
                                 //new RbAction(() =>
                                 //{

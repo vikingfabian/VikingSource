@@ -12,7 +12,7 @@ namespace VikingEngine.ToGG.HeroQuest.Display
         Graphics.Text2 lastMessage;
         Graphics.Text2 messageQue = null;
 
-        List2<string> messages = new List2<string>(MaxCount);
+        List2_old<string> messages = new List2_old<string>(MaxCount);
 
         public HistoryDisplay()
             : base(new HUD.ButtonGuiSettings(

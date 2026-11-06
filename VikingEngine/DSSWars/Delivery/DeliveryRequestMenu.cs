@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
@@ -24,26 +25,46 @@ namespace VikingEngine.DSSWars.Delivery
             this.faction = faction;
         }
 
+        public void cityProfileHud(ItemResourceType resourceType, int resourceIndex)
+        {
+            request(resourceType, resourceIndex);
+        }
         public void toHud(LocalPlayer player, ResourceGroupType tab)
         {
             var resources = ResourceLib.ResourceGroupList(tab);
 
             foreach (var item in resources)
             {
-                request(player, item);
+                request(item);
             }
         }
 
-        void request(LocalPlayer player, ItemResourceType item)
+        void request(ItemResourceType item, int? profileResourceIndex = null)
         {
-            //GroupedResource res;
-            IconName.Item(item, out SpriteName itemIcon, out string itemName);
 
-            content.newLine();
+            IconName.Item(item, out SpriteName itemIcon, out string itemName);
+            if (profileResourceIndex == null)
+            {
+                content.newLine();
+            }           
 
             GroupedResource groupedResource;
             BoolGetSet_Tag useLimitProperty;
-            if (city != null)
+            if (profileResourceIndex.HasValue)
+            {
+                var resProfile = DssRef.storage.cityProfileStorage.profiles.Sel().resourceProfiles.Array[profileResourceIndex.Value];
+                groupedResource = resProfile.resource;
+                useLimitProperty = (object tag, bool set, bool value) =>
+                {
+                    if (set)
+                    {
+                        resProfile.resource.requestDelivery = !resProfile.resource.requestDelivery;
+                        DssRef.storage.cityProfileStorage.profiles.SelRef().resourceProfiles.Array[profileResourceIndex.Value] = resProfile;
+                    }
+                    return resProfile.resource.requestDelivery;
+                };
+            }
+            else if (city != null)
             {
                 groupedResource = city.GetGroupedResource(item);
 
@@ -79,9 +100,9 @@ namespace VikingEngine.DSSWars.Delivery
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
                 new RbImage(itemIcon),
                 new RbSpace(0.5f),
-                new RbText(".Request delivery") },
+                new RbText(DssRef.todoLang.Resource_RequestDelivery) },
                 useLimitProperty, new RbTooltip((RichBoxContent content, object tag) => {
-                    content.text(".Will affect auto delivery from other cities", HudLib.InfoYellow_Light);
+                    content.text(DssRef.todoLang.Resource_RequestDelivery_Description, HudLib.InfoYellow_Light);
                     content.Add(new RbSeperationLine());
                     content.newParagraph();
                     ResourceLib.FullResourceInfo(faction, city, item, content);

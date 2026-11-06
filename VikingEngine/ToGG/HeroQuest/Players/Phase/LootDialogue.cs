@@ -10,7 +10,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players.Phase
     class LootDialogue :AbsPlayerPhase
     {
         List<AbsItem> itemLootStack;
-        List2<LootDialogueCell> cells;
+        List2_old<LootDialogueCell> cells;
         Display.Button closeButton;
 
         public LootDialogue(LocalPlayer localPlayer, List<AbsItem> itemLootStack)
@@ -22,7 +22,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players.Phase
         public override void onBegin()
         {
             base.onBegin();
-            cells = new List2<LootDialogueCell>(itemLootStack.Count);
+            cells = new List2_old<LootDialogueCell>(itemLootStack.Count);
 
             Vector2 cellSize = Engine.Screen.IconSizeV2 * 5f;
             float spacing = Engine.Screen.BorderWidth;

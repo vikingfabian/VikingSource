@@ -9,7 +9,7 @@ namespace VikingEngine.PJ.Joust.DropItem
     {
         static readonly Time LifeTime = new Time(8f, TimeUnit.Seconds);
 
-        List2<Graphics.Image> bubbles = new List2<Graphics.Image>();
+        List2_old<Graphics.Image> bubbles = new List2_old<Graphics.Image>();
         Graphics.Image bubbleBg;
         public Physics.CircleBound bound;
         Time lifeTime = LifeTime;

@@ -8,7 +8,7 @@ namespace VikingEngine.PJ.Moba
 {
     class MobaPlayState : AbsPJGameState
     {
-        public MobaPlayState(List2<GamerData> joinedGamers)
+        public MobaPlayState(List2_old<GamerData> joinedGamers)
             : base(true)
         {
             MobaLib.Init();

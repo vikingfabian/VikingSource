@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars
         public static readonly string SoundDir = DssLib.ContentDir + "Sound" + DataStream.FilePath.Dir;
 
         public static SoundContainerBase click, ui_expand, option_select, option_deselect, hover_disabled, clicktab, back,
-            editor_click_down, editor_click_up, editor_drag,
+            add_item, editor_click_down, editor_click_up, editor_drag,
             speed_down, speed_up,
             scroll_back, scroll_forward,
             buy, wrong, soft_buzz_error, start_build_contruct, start_destroy_contruct,
@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars
            painvoice, fleshgore, sillyFanfare,
             netMessage, netJoined, 
             eventRepeatSound, eventRelationGainVassal,
-            forYourInformation, goodNews, warningMessage, storyDramaticEvent,
+            forYourInformation, goodNews, warningMessage, storyDramaticEvent, processComplete,
             saving, loading, joining,
 
             tab_blackmarket, tab_build, tab_conscript, tab_defence,
@@ -78,7 +78,8 @@ namespace VikingEngine.DSSWars
             //hovertab = new SoundContainerSingle(SoundDir + "tab_hover", 0.7f);
             back = new SoundContainerSingle(SoundDir + "back", 0.05f);
 
-            editor_click_down=new SoundContainerSingle(SoundDir + "editor_click_down", 0.7f);
+            add_item = new SoundContainerSingle(SoundDir + "add_item", 0.7f);
+            editor_click_down =new SoundContainerSingle(SoundDir + "editor_click_down", 0.7f);
             editor_click_up = new SoundContainerSingle(SoundDir + "editor_click_up2", 1.2f);
             editor_drag = new SoundContainerSingle(SoundDir + "editor_drag", 0.4f);
 
@@ -285,6 +286,7 @@ namespace VikingEngine.DSSWars
             forYourInformation = new SoundContainerSingle(StingerDir + "For Your Information", 0.4f);
             goodNews = new SoundContainerSingle(StingerDir + "Good News", 0.4f);
             storyDramaticEvent = new SoundContainerSingle(StingerDir + "System_ Story event v2  with choir", 0.4f);
+            processComplete = new SoundContainerSingle(StingerDir + "process complete message", 0.4f);
             warningMessage = new SoundContainerSingle(StingerDir + "Warning-Alert Message", 0.4f);
             saving = new SoundContainerSingle(StingerDir + "Saving game", 0.4f);
             loading = new SoundContainerSingle(StingerDir + "Loading Game", 0.4f);

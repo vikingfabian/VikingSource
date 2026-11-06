@@ -38,11 +38,11 @@ namespace VikingEngine.Input
             Buttons.LeftThumbstickRight,
         };
 
-        public static List2<XController> controllers;
+        public static List2_old<XController> controllers;
 
         public static void Init()
         {
-            controllers = new List2<XController>(GamePad.MaximumGamePadCount);
+            controllers = new List2_old<XController>(GamePad.MaximumGamePadCount);
 
             Update();                
         }

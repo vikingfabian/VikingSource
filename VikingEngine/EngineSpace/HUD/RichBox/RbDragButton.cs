@@ -51,7 +51,7 @@ namespace VikingEngine.HUD.RichBox
         /// <param name="options">Positive values, low to high</param>
         public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, IntGetSetTag intValue, bool useSymbols, object tag = null)
         {
-            var dragButton = new RbDragButton(settings, intValue);
+            var dragButton = new RbDragButton(settings, intValue, null, tag);
             int value = intValue(tag, false, 0);
 
             for (int i = options.Count - 1; i >= 0; --i)

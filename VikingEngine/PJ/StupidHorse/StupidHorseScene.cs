@@ -11,7 +11,7 @@ namespace VikingEngine.PJ.StupidHorse
         public StupidWorld world;
         List <Rider> riders;
 
-        public StupidHorseScene(List2<GamerData> joinedGamers, int matchCount)
+        public StupidHorseScene(List2_old<GamerData> joinedGamers, int matchCount)
             : base(true)
         {
             this.joinedLocalGamers = joinedGamers;

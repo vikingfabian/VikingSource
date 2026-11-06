@@ -9,7 +9,7 @@ namespace VikingEngine.ToGG.HeroQuest.Net
     class NetLobby : Network.NetLobby
     {
         Timer.Basic checkTimeout = new Timer.Basic(3000);
-        List2<LobbyButton> lobbies = new List2<LobbyButton>();
+        List2_old<LobbyButton> lobbies = new List2_old<LobbyButton>();
 
         public NetLobby()
             : base()

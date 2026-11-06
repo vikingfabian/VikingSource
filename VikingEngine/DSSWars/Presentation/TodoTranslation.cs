@@ -63,6 +63,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string Module_LocalGold => "Physical gold";
         public string Module_NoPause => "No pause and command";
         public string Language_AddXDifficultyPercentage => "+{0}%";
+        public string Language_IncludeX => "Include - {0}";
+        public string Language_EditX => "Edit {0}";
 
         public string GroundRequired => "Ground requirement";
         public string GroundRequired_Plant => "Soil";
@@ -79,5 +81,11 @@ namespace VikingEngine.DSSWars.Presentation
         public string WaterDepth => "Ground water depth";
         public string WaterDepth_Description => "Water collecting time is increased by {0} per depth level";
 
+        public string Resource_RequestDelivery => "Request delivery";
+        public string Resource_RequestDelivery_Description => "Will affect auto delivery from other cities";
+
+
+        public string Work_WorkerCount => "Max worker count";
+        public string Work_WorkerCount_Description => "Limit how many workers who will do the same task.";
     }
 }

@@ -256,7 +256,7 @@ namespace VikingEngine.DSSWars.Resource
                         RichBoxContent buttonContent = new RichBoxContent();
 
                         buttonContent.Add(new RbImage(SpriteName.WarsCityHall));
-                        city.tagToHud(buttonContent);
+                        city.Tag.tagToHud(buttonContent);
                         buttonContent.hspace();
                         buttonContent.Add(new RbText(city.myIndex.ToString(), HudLib.SecondaryTextColor));
                         buttonContent.space();

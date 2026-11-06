@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
             nameToHud(args.content, !tooltip);
 
             args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
-            if (!tagToHud(args.content))
+            if (!Tag.tagToHud(args.content))
             {
                 var faction = pfaction.GetFaction();
                 if (faction != null)
@@ -272,18 +272,15 @@ namespace VikingEngine.DSSWars.GameObject
             
             WP.ReadPosXZPercentU16(r, out position, out maptilePos);
 
-            if (subVersion >= 115)
-            {
+            
                 var hbytes = new TwoHalfByte();
                 hbytes.read(r);
                 pingMessage = (PingMessage)hbytes.Value1;
                 netInteractLevel = (NetInteractLevel)hbytes.Value2;
-            }
-            if (subVersion >= 116)
-            {
+            
                 modelVariant = r.ReadByte();
-                Tag.read(r, subVersion);
-            }
+                Tag.read(r);
+           
         }
 
         public void createOverViewModel()

@@ -15,7 +15,7 @@ namespace VikingEngine.PJ.CarBall
     class CarBallPlayState : AbsPJGameState
     {
         public Field field;
-        public List2<Gamer> gamers;
+        public List2_old<Gamer> gamers;
         Ball ball;
         
         bool forwardCarUpdate = true;
@@ -24,7 +24,7 @@ namespace VikingEngine.PJ.CarBall
         BallRespawn ballRespawn;
         Display.CountDownNumber countDownNumber;
 
-        public CarBallPlayState(List2<GamerData> joinedGamers, Texture2D fieldTexture)
+        public CarBallPlayState(List2_old<GamerData> joinedGamers, Texture2D fieldTexture)
             : base(true)
         {
             cballRef.state = this;
@@ -33,7 +33,7 @@ namespace VikingEngine.PJ.CarBall
 
             this.joinedLocalGamers = joinedGamers;
             GamerData.SetLeftRightTeams(joinedGamers);
-            gamers = new List2<Gamer>(joinedGamers.Count);
+            gamers = new List2_old<Gamer>(joinedGamers.Count);
             
             for (int i = 0; i < joinedGamers.Count; ++i)
             {

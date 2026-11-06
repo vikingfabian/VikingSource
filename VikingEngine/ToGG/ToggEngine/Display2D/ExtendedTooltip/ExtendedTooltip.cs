@@ -9,7 +9,7 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
     class ExtendedTooltip
     {
         bool visible = false;
-        List2<AbsExtToolTip> toolTips = new List2<AbsExtToolTip>(16);
+        List2_old<AbsExtToolTip> toolTips = new List2_old<AbsExtToolTip>(16);
         List<ToolTipColumn> columns = new List<ToolTipColumn>(2);
         VectorRect screenArea;
         Timer.Basic hooverTime = new Timer.Basic(1000, false);

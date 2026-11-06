@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
@@ -57,7 +58,7 @@ namespace VikingEngine.DSSWars.Data
             }
         }
 
-        public void read(System.IO.BinaryReader r, int subversion)
+        public void read(System.IO.BinaryReader r)/*, int subversion)*/
         {
             backType = (CityTagBack)r.ReadByte();
             if (backType != CityTagBack.NONE)
@@ -73,6 +74,32 @@ namespace VikingEngine.DSSWars.Data
         public SpriteName TagArt()
         {
             return TagLib.artTagDictionary[artId];
+        }
+
+        public void tagSprites(out SpriteName back, out SpriteName art)
+        {
+            back = TagBack();//Data.TagLib.BackSprite(tagBack);
+            art = TagArt();//Data.TagLib.ArtSprite(tagArt);
+        }
+        public bool tagToHud(RichBoxContent content)
+        {
+            tagSprites(out SpriteName back, out SpriteName art);
+            if (back != TagLib.NoBackSprite)
+            {
+                if (art == SpriteName.NO_IMAGE)
+                {
+                    content.Add(new RbImage(back));
+                }
+                else
+                {
+                    content.Add(new RbOverlapImage(
+                        new RbImage(back),
+                        art, Vector2.Zero, 0.8f));
+                }
+                return true;
+            }
+
+            return false;
         }
     }
 
