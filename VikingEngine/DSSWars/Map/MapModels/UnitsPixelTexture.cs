@@ -85,9 +85,11 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 if (previousPos != groupsCounter.sel.maptilePos)
                 {
                     previousPos = groupsCounter.sel.maptilePos;
-                    IntVector2 topleft = new IntVector2(
-                        groupsCounter.sel.position.X - 0.5f,
-                        groupsCounter.sel.position.Z - 0.5f);
+                    IntVector2 topleft =
+                       WP.MaptileToSumTile(groupsCounter.sel.maptilePos);
+                    //new IntVector2(
+                    //    groupsCounter.sel.position.X - 0.5f,
+                    //    groupsCounter.sel.position.Z - 0.5f));
 
                     if (texture.InBound_TwoPixels(topleft))
                     {

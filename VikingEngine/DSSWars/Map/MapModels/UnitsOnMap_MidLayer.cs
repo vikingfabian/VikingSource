@@ -153,6 +153,9 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
     class UnitsOnMap_FarLayer : AbsUnitsOnMap
     {
+        const float AddY = 0.16f;
+        const float OutlineAddY = AddY - 0.05f;
+
         static readonly IntervalF StrengthPercToScale = new IntervalF(1f, 2f);
         IntervalF armyStrengthRange;
         public UnitsOnMap_FarLayer()
@@ -183,9 +186,9 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     {
                         float scale = armyStrengthRange.GetValuePercentPosClamped(armies.sel.strengthValue);
                         scale = StrengthPercToScale.GetFromPercent(scale);
-                        topPoly.quadXZPlacement(VectorExt.AddY( armies.sel.position, 0.1f), new Vector2(scale), 0);
+                        topPoly.quadXZPlacement(VectorExt.AddY( armies.sel.position, AddY), new Vector2(scale), 0);
                         polygons.Add(topPoly);
-                        outlinePoly.quadXZPlacement(VectorExt.AddY(armies.sel.position, 0.05f), new Vector2(scale * 1.2f), 0);
+                        outlinePoly.quadXZPlacement(VectorExt.AddY(armies.sel.position,OutlineAddY), new Vector2(scale * 1.2f), 0);
                         polygons.Add(outlinePoly);
                     }
                 }

@@ -66,6 +66,13 @@ namespace VikingEngine.DSSWars
                 {
                     DssRef.world.tileGrid.GetRef(loop.Position).fogExploreLevel = FogOfWarView_LockedFull;
                 }
+
+                var factionsC = factions.counter();
+                while (factionsC.Next())
+                {
+                    factionsC.sel.fogExplored = true;
+                }
+
                 DssRef.world.CrossMapTextureNeedsUpdate = true;
             }
         }

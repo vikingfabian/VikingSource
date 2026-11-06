@@ -27,6 +27,8 @@ namespace VikingEngine.DSSWars.Map.MapModels
         static readonly Color MiniMapCol_SmallCity = new Color(194, 4, 72);
         static readonly Color MiniMapCol_CampsiteCity = new Color(148, 0, 17);
         static readonly Color MiniMapCol_UnclaimedCity = Color.Blue;
+
+        static readonly Color MiniMapCol_UnclaimedLand = ColorExt.GrayScale(0.4f);
         public static void cityColor(City city, out Color center, out Color outline, out Color factionCol)
         {
             switch (city.cityType)
@@ -101,7 +103,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
             }
             //return FactionAndTerrainColor(tile, leanY);
             
-                float brightness = 1f - ((int)tile.mapTile.heightValue - MapHeight2.WaterPlaneHeight) * 0.05f;
+                
 
                 PFaction cityFaction = PFaction.Empty;
             if (tile.sumTile.pcity.HasValue())
@@ -119,12 +121,14 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
                 if (cityFaction.IsEmpty())
                 {
-                    return ColorExt.VeryDarkGray;
+                    return ColorExt.GrayScale(0.4f);
                 }
 
-                if (cityFaction == playerFaction.pfaction)
+            float brightness = 0.7f - ((int)tile.mapTile.heightValue - MapHeight2.WaterPlaneHeight) * 0.005f;
+
+            if (cityFaction == playerFaction.pfaction)
                 {
-                    brightness *= 0.5f;
+                    brightness *= 1.8f;
                 }
                 else
                 {
@@ -139,7 +143,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         green = 0.2f;
                     }
 
-                    brightness *= 0.2f;
+                    brightness *= 0.5f;
                 }
 
             //int distance = city.maptilePos.SideLength(pos);
@@ -254,7 +258,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
             if (tile.sumTile.pcity.IsEmpty())
             {
-                return ColorExt.VeryDarkGray;
+                return MiniMapCol_UnclaimedLand;
             }
 
             var pfaction = tile.sumTile.pcity.City().pfaction;
@@ -277,24 +281,6 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
                 brightness *= 0.2f;
             }
-
-            //int distance = city.tilePos.SideLength(pos);
-
-            //if (distance == 1)
-            //{
-            //    brightness *= 1.5f;
-            //}
-            //else if (hasBorder(out bool sameFaction))
-            //{
-            //    if (sameFaction)
-            //    {
-            //        brightness *= 1.25f;
-            //    }
-            //    else
-            //    {
-            //        brightness *= 0.6f;
-            //    }
-            //}
 
             return new Color(brightness + red, brightness + green, brightness);
         }
