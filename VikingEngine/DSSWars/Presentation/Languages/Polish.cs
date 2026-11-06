@@ -1507,7 +1507,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Opcja menu do sterowania armią. Usuwanie żołnierzy.
         /// </summary>
-        public override string ArmyOption_RemoveX => "Usuń {0}";
+        public override string Edit_RemoveX => "Usuń {0}";
 
         /// <summary>
         /// Opcja menu do sterowania armią. Usuwanie żołnierzy.

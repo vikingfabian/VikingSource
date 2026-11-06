@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Interface.MapObjMenu;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.MapLayer;
@@ -24,7 +25,7 @@ namespace VikingEngine.DSSWars.Interface
         public DiplomacyDisplay diplomacy;
         public RichMenu menu, secondMenu;
         public AbsArmy otherArmy;
-
+        bool inMenuStack = false;
         public RichMenu Menu => menu;
         public bool IsFactionMenu { get { return false; } }
         public PlayerHud_Object(LocalPlayer player)
@@ -231,7 +232,6 @@ namespace VikingEngine.DSSWars.Interface
         {
             bUseSecondMenu = false;
 
-
             if (menu != null && menu.BlockRefresh())
             {
                 return;
@@ -244,6 +244,7 @@ namespace VikingEngine.DSSWars.Interface
                 return;
             }
 
+            bool _inMenuStack = false;
             if (obj == null)
             {
                 historyDisplay(player);
@@ -253,7 +254,17 @@ namespace VikingEngine.DSSWars.Interface
                 createMenu(true, player);
 
                 var content = new RichBoxContent();
-                obj.toHud(new ObjectHudArgs(content, player, selected), out var secondMenuContent);
+                RichBoxContent secondMenuContent = null;
+                if (menu.menuStack.Count > 0)
+                {
+                    new CityProfileMenu().ToHud(obj.GetCity(), menu, content);
+                    _inMenuStack = true;
+                }
+                else
+                {
+                    obj.toHud(new ObjectHudArgs(menu, content, player, selected), out secondMenuContent);
+                    
+                }
                 menu.Refresh(content, player.gameControls.controllerPointer);
 
                 if (secondMenuContent != null)
@@ -283,7 +294,12 @@ namespace VikingEngine.DSSWars.Interface
                 selectHistory.Add(obj);                
             }
 
-            
+            if (!_inMenuStack && inMenuStack)
+            {
+                //closed stack
+                DssRef.storage.cityProfileStorage.Save();
+            }
+            inMenuStack = _inMenuStack;
         }
 
         /// <returns>need refresh</returns>

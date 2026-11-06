@@ -480,9 +480,12 @@ namespace VikingEngine.DSSWars
             AutoSaveTimeStamp.setNow();
             events.onGameStarted();
 
-            if ((newGame && LocalHost().IntutorialMode()) == false)
+            if (PlatformSettings.DebugLevel > BuildDebugLevel.Dev)
             {
-                menuSystem.pauseMenu();
+                if ((newGame && LocalHost().IntutorialMode()) == false)
+                {
+                    menuSystem.pauseMenu();
+                }
             }
         }
 

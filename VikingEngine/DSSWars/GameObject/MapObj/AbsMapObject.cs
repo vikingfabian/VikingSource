@@ -219,31 +219,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.Add(new RbText(myIndex.ToString(), dark ? HudLib.TitleColor_TypeName_Dark : HudLib.TitleColor_TypeName));
 
         }
-        virtual public void tagSprites(out SpriteName back, out SpriteName art)
-        {
-            back = Tag.TagBack();//Data.TagLib.BackSprite(tagBack);
-            art = Tag.TagArt();//Data.TagLib.ArtSprite(tagArt);
-        }
-        public bool tagToHud(RichBoxContent content)
-        {
-            tagSprites(out SpriteName back, out SpriteName art);
-            if (back != TagLib.NoBackSprite)
-            {
-                if (art == SpriteName.NO_IMAGE)
-                {
-                    content.Add(new RbImage(back));
-                }
-                else
-                {
-                    content.Add(new RbOverlapImage(
-                        new RbImage(back),
-                        art, Vector2.Zero, 0.8f));
-                }
-                return true;
-            }
-
-            return false;
-        }
+       
 
         public bool LocalMember
         {

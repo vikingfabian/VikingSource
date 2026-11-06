@@ -193,7 +193,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
         void infoTab(RichBoxContent content)
         {
-            army.basicInfoHud(new ObjectHudArgs( content, player, true));
+            army.basicInfoHud(new ObjectHudArgs(null, content, player, true));
 
             content.newLine();
             ColumnWidth(content, army);
@@ -307,7 +307,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                 content.space();
 
                 var buttonContent = new RichBoxContent();
-                otherArmy.tagToHud(buttonContent);
+                otherArmy.Tag.tagToHud(buttonContent);
                 if (buttonContent.Count > 0)
                 {
                     buttonContent.space();
@@ -419,13 +419,13 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                 content.Add(new RbImage(AllUnits.UnitFilterIcon(kv.Key)));
                 content.Add(new RbText(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, LangLib.UnitFilterName(kv.Key))));//kv.Key.ToString() + " groups: " + kv.Value);
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.ArmyOption_RemoveX, 1)) },//"Remove 1",
+                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Edit_RemoveX, 1)) },//"Remove 1",
                     new RbAction2Arg<UnitNameType, int>(army.disbandSoldiersAction, kv.Key, 1, RbSoundType.Default),
                     null, true));
 
                 content.space();
 
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.ArmyOption_RemoveX, 5)) },//"Remove 5",
+                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Edit_RemoveX, 5)) },//"Remove 5",
                     new RbAction2Arg<UnitNameType, int>(army.disbandSoldiersAction, kv.Key, 5, RbSoundType.Default),
                     null,
                     kv.Value >= 5));

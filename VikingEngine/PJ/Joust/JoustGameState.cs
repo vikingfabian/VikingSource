@@ -32,7 +32,7 @@ namespace VikingEngine.PJ.Joust
         public List<PlatformService.AchievementSettings> endLevelAchievements = new List<PlatformService.AchievementSettings>();
 
 
-        public JoustGameState(List2<GamerData> joinedGamers, int matchCount)
+        public JoustGameState(List2_old<GamerData> joinedGamers, int matchCount)
             : base(true)
         {
 

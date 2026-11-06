@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Players.Profile
         public FlagStorage()
         {
             const int StartCount = 8;
-            flagDesigns = new List2<FlagAndColor>(StartCount);
+            flagDesigns = new List2_old<FlagAndColor>(StartCount);
 
             for (int i = 0; i < StartCount; ++i)
             {

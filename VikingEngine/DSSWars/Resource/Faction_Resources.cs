@@ -340,47 +340,22 @@ namespace VikingEngine.DSSWars
             workTemplate.toHud(p, content, p.resourcesSubTab.resourceGroup, this, null);
         }
 
-        //public void tradeTab(RichBoxContent content)
-        //{
-        //    tradeTemplate.toHud(player.GetLocalPlayer(), content, this, null);
-        //}
-
-        //public void changeResourcePrice(float change, ItemResourceType resourceType, City city)
-        //{
-        //    if (city != null)
-        //    {
-        //        city.tradeTemplate.changeResourcePrice(change, resourceType);
-        //    }
-        //    else
-        //    { 
-        //        tradeTemplate.changeResourcePrice(change, resourceType);
-        //        //var cityCounter = cities.counter();
-        //        //while (cityCounter.Next())
-        //        //{
-        //        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-        //        while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
-        //        {
-        //            citySel.tradeTemplate.onFactionValueChange(tradeTemplate);
-        //        }
-        //    }
-        //}
-        public void setWorkPrio(int set, WorkPriorityType priorityType, City city)
+        public void setWorkPrio(int set, WorkPriorityType priorityType, City city, int? profilePropertyIndex)
         {
-            if (city != null)
+            if (profilePropertyIndex.HasValue)
+            {
+                ref var work = ref DssRef.storage.cityProfileStorage.profiles.SelRef().workProfiles.Array[profilePropertyIndex.Value].workPriority;
+                work.value = (byte)set;
+                work.followFaction = false;
+            }
+            else if (city != null)
             {
                 city.workTemplate.setWorkPrio(priorityType, (byte)set);
             }
             else
-            {
-                //if (priorityType == WorkPriorityType.buildOrders)
-                //{
-                //    player.GetLocalPlayer().gameControls.build.buildPriority.value = set;
-                //}
-                //else
-                //{
-                    workTemplate.setWorkPrio(priorityType, (byte)set);
-                    refreshCityWork();
-                //}
+            {                
+                workTemplate.setWorkPrio(priorityType, (byte)set);
+                refreshCityWork();                
             }
         }
 

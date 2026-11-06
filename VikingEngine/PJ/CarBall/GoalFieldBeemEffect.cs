@@ -8,7 +8,7 @@ namespace VikingEngine.PJ.CarBall
 {
     class GoalFieldBeemEffect : AbsUpdateable
     {
-        List2<Graphics.Image> images = new List2<Graphics.Image>(64);
+        List2_old<Graphics.Image> images = new List2_old<Graphics.Image>(64);
         VectorRect beamArea;
         int dir;
         float startOpaciy = 0.8f;

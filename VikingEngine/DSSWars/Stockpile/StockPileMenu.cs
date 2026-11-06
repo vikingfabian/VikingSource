@@ -27,11 +27,21 @@ namespace VikingEngine.DSSWars.Resource
         RichBoxContent content;
         City city; 
         Faction faction;
+
+        //bool isCityProfile = false;
+
         public StockPileMenu(RichBoxContent content, City city, Faction faction)
         { 
             this.content = content;
             this.city = city;
             this.faction = faction;
+        }
+
+        public void cityProfileHud(ItemResourceType resourceType, int resourceIndex)
+        {
+            //isCityProfile = true;
+
+            stockpile(null, resourceType, resourceIndex);
         }
 
         public void toHud(LocalPlayer player, ResourceGroupType tab)
@@ -326,16 +336,34 @@ namespace VikingEngine.DSSWars.Resource
 
         }
 
-        void stockpile(LocalPlayer player, ItemResourceType item)
+        void stockpile(LocalPlayer player, ItemResourceType item, int? profileResourceIndex = null)
         {
             //GroupedResource res;
             IconName.Item(item, out SpriteName itemIcon, out string itemName);
 
-            content.newLine();
-
+            if (profileResourceIndex==null)
+            {
+                content.newLine();
+            }
             GroupedResource groupedResource;
             BoolGetSet_Tag useLimitProperty;
-            if (city != null)
+
+            if (profileResourceIndex.HasValue)
+            {
+                var resProfile = DssRef.storage.cityProfileStorage.profiles.SelRef().resourceProfiles.Array[profileResourceIndex.Value];
+                groupedResource = resProfile.resource;
+                useLimitProperty = (object tag, bool set, bool value) =>
+                {
+                    if (set)
+                    {
+                        resProfile.resource.useStockLimit = !resProfile.resource.useStockLimit;
+                        DssRef.storage.cityProfileStorage.profiles.SelRef().resourceProfiles.Array[profileResourceIndex.Value] = resProfile;
+                    }
+                    return resProfile.resource.useStockLimit;
+                };
+                
+            }
+            else if (city != null)
             {
                 groupedResource = city.GetGroupedResource(item);
 
@@ -384,7 +412,7 @@ namespace VikingEngine.DSSWars.Resource
 
             if (groupedResource.useStockLimit)
             {
-                stockPileEdit(content, item, groupedResource);
+                stockPileEdit(content, item, groupedResource, profileResourceIndex);
             }
             else
             {
@@ -424,11 +452,26 @@ namespace VikingEngine.DSSWars.Resource
             public GroupedResource res;
         }
 
-        void stockPileEdit(RichBoxContent content, ItemResourceType item, GroupedResource res)
+        void stockPileEdit(RichBoxContent content, ItemResourceType item, GroupedResource res, int? profileResourceIndex)
         {
             IntGetSetTag property;
             int max;
-            if (city != null)
+
+            if (profileResourceIndex.HasValue)
+            {
+                var resProfile = DssRef.storage.cityProfileStorage.profiles.SelRef().resourceProfiles.Array[profileResourceIndex.Value];
+                max = DssConst.StockPileMaxBound;
+                property = (object tag, bool set, int value) =>
+                {
+                    if (set)
+                    {
+                        resProfile.resource.stockPileLimit = (ushort)value;
+                        DssRef.storage.cityProfileStorage.profiles.SelRef().resourceProfiles.Array[profileResourceIndex.Value] = resProfile;
+                    }
+                    return resProfile.resource.stockPileLimit;
+                };
+            }
+            else if (city != null)
             {
                 max = city.GetGroupedResource(item).capacity;
                 property = (object tag, bool set, int value) =>

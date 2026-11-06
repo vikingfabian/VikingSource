@@ -430,111 +430,115 @@ namespace VikingEngine.DSSWars.Build
                 return true;
             }
         }
-
-
         public void autoPlaceBuilding(City city, int count)
         {
+            AutoPlaceBuilding(city, placeBuildingType, city.workTemplate.Get(WorkPriorityType.buildOrders).value, count);
+        }
 
-            BuildAndExpandType buildType = placeBuildingType;
-
+        public static void AutoPlaceBuilding(City city, BuildAndExpandType buildType, byte priority, int count)
+        {
             Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    List<IntVector2> positions = new List<IntVector2>(count);
-                    CityStructure structure = new CityStructure();
-                    structure.update( DssRef.world, city, 1);
-
-                    findBuildPositons_AutoBuilder(positions);
-                    if (count > 0)
+                    if (city.pfaction.TryGetLocalPlayer(out var player))
                     {
-                        findBuildPositons_Loop(positions);
-                    }
+                        List<IntVector2> positions = new List<IntVector2>(count);
+                        CityStructure structure = new CityStructure();
+                        structure.update(DssRef.world, city, 1);
 
-                    foreach (IntVector2 position in positions)
-                    {
-                        player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, city, position, placeBuildingType, false), ActionOnConflict.Cancel, ToolAddType.NUM_NONE, false);
-                    }
-
-                    void findBuildPositons_AutoBuilder(List<IntVector2> result)
-                    {
-                        if (city.buildingStructure.getCount(buildType) > 0)
+                        findBuildPositons_AutoBuilder(positions);
+                        if (count > 0)
                         {
-                            var prevPos = structure.buildingPosition.getPos(buildType);
-                            if (prevPos.X > 0)
-                            {
-                                findAdjacentFreeSpot(prevPos);
-                            }
+                            findBuildPositons_Loop(positions);
                         }
 
-                        void findAdjacentFreeSpot(IntVector2 center)
+                        foreach (IntVector2 position in positions)
                         {
-                            ForXYEdgeLoopRandomPicker Auto_EdgeRandomizer = new ForXYEdgeLoopRandomPicker();
-                            for (int r = 0; r <= 2; r++)
-                            {
-                                if (r == 0)
-                                {
-                                    Auto_EdgeRandomizer.addDir4(center);
-                                    Auto_EdgeRandomizer.add(center);
-                                }
-                                else
-                                { 
-                                    Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
-                                }
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(priority, true, city, position, buildType, false), ActionOnConflict.Cancel, ToolAddType.NUM_NONE, false);
+                        }
 
-                                while (Auto_EdgeRandomizer.Next())
+                        void findBuildPositons_AutoBuilder(List<IntVector2> result)
+                        {
+                            if (city.buildingStructure.getCount(buildType) > 0)
+                            {
+                                var prevPos = structure.buildingPosition.getPos(buildType);
+                                if (prevPos.X > 0)
                                 {
-                                    if (city.MayAutoBuildHere(Auto_EdgeRandomizer.Position) &&
-                                        !player.orders.orderConflictingSubTile(Auto_EdgeRandomizer.Position, false))
+                                    findAdjacentFreeSpot(prevPos);
+                                }
+                            }
+
+                            void findAdjacentFreeSpot(IntVector2 center)
+                            {
+                                ForXYEdgeLoopRandomPicker Auto_EdgeRandomizer = new ForXYEdgeLoopRandomPicker();
+                                for (int r = 0; r <= 2; r++)
+                                {
+                                    if (r == 0)
                                     {
-                                        result.Add(Auto_EdgeRandomizer.Position);
-                                        //player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade), ActionOnConflict.Cancel);
-                                        if (--count <= 0)
-                                        { return; }
+                                        Auto_EdgeRandomizer.addDir4(center);
+                                        Auto_EdgeRandomizer.add(center);
                                     }
-                                }
-                            }
-                        }
-                    }
-
-
-                    void findBuildPositons_Loop(List<IntVector2> result)
-                    {
-                        IntVector2 topleft;
-                        ForXYLoop subTileLoop;
-
-                        int cityradius = city.citySumTileArea.size.SideLength() / 2;
-                        for (int radius = 1; radius <= cityradius; ++radius)
-                        {
-                            int distanceValue = -radius;
-                            ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.maptilePos, radius));
-
-                            while (cirkleLoop.Next())
-                            {
-                                if (DssRef.world.maptileBounds.IntersectTilePoint(cirkleLoop.Position))
-                                {
-                                    var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                                    if (tile.pcity.cityIndex == city.myIndex /*&& tile.MayBuild()*/)
+                                    else
                                     {
-                                        topleft = /*WP.ToSubTilePos_TopLeft(*/cirkleLoop.Position/*)*/;
-                                        subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
+                                        Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
+                                    }
 
-                                        while (subTileLoop.Next())
+                                    while (Auto_EdgeRandomizer.Next())
+                                    {
+                                        if (city.MayAutoBuildHere(Auto_EdgeRandomizer.Position) &&
+                                            !player.orders.orderConflictingSubTile(Auto_EdgeRandomizer.Position, false))
                                         {
-                                            var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
-
-                                            if (subTile.MayBuild(placeBuildingType, out bool upgrade)
-                                                &&
-                                                !player.orders.orderConflictingSubTile(subTileLoop.Position, false))
-                                            {
-                                                result.Add(subTileLoop.Position);
-                                                //player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade), ActionOnConflict.Cancel);
-                                                if (--count <= 0)
-                                                { return; }
-                                            }
+                                            result.Add(Auto_EdgeRandomizer.Position);
+                                            //player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade), ActionOnConflict.Cancel);
+                                            if (--count <= 0)
+                                            { return; }
                                         }
                                     }
                                 }
+                            }
+                        }
+
+
+                        void findBuildPositons_Loop(List<IntVector2> result)
+                        {
+                            IntVector2 topleft;
+                            ForXYLoop subTileLoop;
+
+                            int cityradius = city.citySumTileArea.size.SideLength() / 2;
+                            for (int radius = 1; radius <= cityradius; ++radius)
+                            {
+                                int distanceValue = -radius;
+                                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(WP.MaptileToSumTile(city.maptilePos), radius));
+
+                                while (cirkleLoop.Next())
+                                {
+
+                                    if (DssRef.world.tileGrid.TryGet(cirkleLoop.Position, out var sumTile))
+                                    {
+                                        if (sumTile.pcity.cityIndex == city.myIndex)
+                                        {
+                                            topleft = WP.SumTileToMaptile( cirkleLoop.Position);
+                                            subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
+
+                                            while (subTileLoop.Next())
+                                            {
+                                                var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+
+                                                if (subTile.MayBuild(buildType, true, out bool upgrade)
+                                                    &&
+                                                    !player.orders.orderConflictingSubTile(subTileLoop.Position, false))
+                                                {
+                                                    result.Add(subTileLoop.Position);
+                                                    //player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade), ActionOnConflict.Cancel);
+                                                    if (--count <= 0)
+                                                    { return; }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    }
+                                
                             }
                         }
                     }
@@ -656,7 +660,7 @@ namespace VikingEngine.DSSWars.Build
 
                     content.newParagraph();
 
-                    city.workTemplate.Get(WorkPriorityType.autoBuild).toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.pfaction.GetFaction(), city, ItemResourceType.NONE);
+                    city.workTemplate.Get(WorkPriorityType.autoBuild).toHud(WorkPriorityType.autoBuild, player, content, city, player.pfaction.GetFaction());//, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE,, ItemResourceType.NONE, null);
                     
                 }
             }
@@ -748,8 +752,9 @@ namespace VikingEngine.DSSWars.Build
                     content.newLine();
                     HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
                     content.newLine();
-                    city.workTemplate.Get(WorkPriorityType.buildOrders).toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders,
-                        player.pfaction.GetFaction(), city, ItemResourceType.NONE);
+                    city.workTemplate.Get(WorkPriorityType.buildOrders).toHud(WorkPriorityType.buildOrders, player, content, city, player.pfaction.GetFaction());
+                        // DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders,
+                        // ItemResourceType.NONE);
                     content.newLine();
                     content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                         new RbImage(SpriteName.WarsConstructBuildingIcon),

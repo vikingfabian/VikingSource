@@ -13,7 +13,7 @@ namespace VikingEngine.ToGG.HeroQuest
         float buttonW;
         float width;
         Graphics.RectangleLines highlightBorder;
-        List2<OptionButton<T>> buttons = new List2<OptionButton<T>>();
+        List2_old<OptionButton<T>> buttons = new List2_old<OptionButton<T>>();
         OptionButton<T> hoverOption = null;
         int selectedOption = 0;
 

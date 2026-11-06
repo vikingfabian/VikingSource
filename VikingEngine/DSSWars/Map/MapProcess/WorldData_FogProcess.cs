@@ -56,6 +56,18 @@ namespace VikingEngine.DSSWars
                 fogTexture.Update_async();
                 DssRef.world.CrossMapTextureNeedsUpdate = true;
             }
+            else if (lastFogCountDown.IsEmpty())
+            {
+                //Revieal full map
+                lastFogCountDown = GameTimeStamp.Now();
+
+                ForXYLoop loop = DssRef.world.tileGrid.LoopInstance();
+                while (loop.Next())
+                {
+                    DssRef.world.tileGrid.GetRef(loop.Position).fogExploreLevel = FogOfWarView_LockedFull;
+                }
+                DssRef.world.CrossMapTextureNeedsUpdate = true;
+            }
         }
 
         public void async_fog_addCityView(City city, bool fullReveal)

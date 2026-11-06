@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DataStream;
 using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.UserGeneratedContent;
 using VikingEngine.Graphics;
 using VikingEngine.Voxels;
 
@@ -17,16 +18,14 @@ namespace VikingEngine.DSSWars.Map.Map2
     class IconMapStorage : IStreamIOCallback
     {        
 
-        public const string MapSavesRoot = "Icon maps";
-        public const string MapSavesLocal = "User";
-        public const string MapSavesWorkshop = "Workshop";
+        public const string MapSavesRoot = "Icon maps";        
         const string FileEnd = ".icm";
 
         public FilePath SavePath(string saveFileName, out FilePath path, out FilePath iconPath)
         {
             saveFileName = FilePath.SanitizeFileName(saveFileName);
-            path = new FilePath(MapSavesRoot + FilePath.Dir + MapSavesLocal + FilePath.Dir + saveFileName, saveFileName, FileEnd, true, false);
-            iconPath = new FilePath(MapSavesRoot + FilePath.Dir + MapSavesLocal + FilePath.Dir + saveFileName, "icon", ".png", true, false);
+            path = new FilePath(MapSavesRoot + FilePath.Dir + UGClib.WorkshopSavesLocalFolder + FilePath.Dir + saveFileName, saveFileName, FileEnd, true, false);
+            iconPath = new FilePath(MapSavesRoot + FilePath.Dir + UGClib.WorkshopSavesLocalFolder + FilePath.Dir + saveFileName, "icon", ".png", true, false);
             return path;
         }
 

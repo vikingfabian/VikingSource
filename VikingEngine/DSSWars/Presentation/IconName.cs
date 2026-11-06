@@ -30,6 +30,7 @@ namespace VikingEngine.DSSWars
         //{ 
 
         //}
+      
         public static void GroundRequirement(BuildingGroundRequirement requirement, out SpriteName icon, out string name)
         {
             switch (requirement)

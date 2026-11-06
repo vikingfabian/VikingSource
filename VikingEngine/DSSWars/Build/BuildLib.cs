@@ -22,7 +22,7 @@ using VikingEngine.ToGG.ToggEngine.Map;
 
 namespace VikingEngine.DSSWars.Build
 {
-    enum BuildAndExpandType
+    enum BuildAndExpandType : byte
     {
         ExpansionHall_Lvl1,
         ExpansionHall_Lvl2,
@@ -286,27 +286,34 @@ namespace VikingEngine.DSSWars.Build
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
         public static void AvailableBuildTypes(List<BuildAndExpandType> list, City city, bool autoBuild)
         {
-            bool godPowers = (DssRef.state.GodPowers() || (StartupSettings.UnlockAllProgress && city.pfaction.TryGetLocalPlayer(out _))) && !autoBuild;
+            bool godPowers = city == null || (DssRef.state.GodPowers() || (StartupSettings.UnlockAllProgress && city.pfaction.TryGetLocalPlayer(out _))) && !autoBuild;
 
             bool devUnlockAll = StartupSettings.UnlockAllProgress;
+            BuildingStructure buildingStructure = new BuildingStructure();
+            XP.Unlocks unlocks = new XP.Unlocks();
+            if (city != null)
+            {
+                unlocks = city.technology.GetUnlocks(false);
+                buildingStructure = city.buildingStructure;
+            }
+            if (godPowers)
+            {
+                unlocks.unlockAll();
+            }
 
-            var unlocks = city.technology.GetUnlocks(false);
+            bool logistics1 = godPowers || city.buildingStructure.buildingLevel_logistics >= 1 ||
+                 city.buildingStructure.tingshouse;
 
-            bool logistics1 = city.buildingStructure.buildingLevel_logistics >= 1 ||
-                 city.buildingStructure.tingshouse ||
-                godPowers;
+            bool logistics2 = godPowers || city.buildingStructure.buildingLevel_logistics >= 2 ||
+                 city.buildingStructure.tingshouse;
 
-            bool logistics2 = city.buildingStructure.buildingLevel_logistics >= 2 ||
-                 city.buildingStructure.tingshouse ||
-                godPowers;
+            bool economics = godPowers || city.buildingStructure.economics ||
+                 city.buildingStructure.tingshouse;
 
-            bool economics = city.buildingStructure.economics ||
-                 city.buildingStructure.tingshouse || godPowers;
+            bool manor = godPowers || city.buildingStructure.manorLord ||
+                 city.buildingStructure.tingshouse;
 
-            bool manor = city.buildingStructure.manorLord ||
-                 city.buildingStructure.tingshouse || godPowers;
-
-            bool campSite = city.cityType == CityType.Campsite;
+            bool campSite = city != null && city.cityType == CityType.Campsite;
 
             if (!campSite && !logistics1)
             {
@@ -317,7 +324,7 @@ namespace VikingEngine.DSSWars.Build
             {
                 list.Add(BuildAndExpandType.Economics);
             }
-            if (!campSite && !city.buildingStructure.tingshouse)
+            if (godPowers ||  (!campSite && !city.buildingStructure.tingshouse))
             {
                 list.Add(BuildAndExpandType.TingsHouse);
             }
@@ -328,7 +335,7 @@ namespace VikingEngine.DSSWars.Build
                 {
                     list.Add(BuildAndExpandType.ManorLord);
                 }
-                if (!city.buildingStructure.greatHall)
+                if (godPowers || !city.buildingStructure.greatHall)
                 {
                     list.Add(BuildAndExpandType.GreatHall);
                 }
@@ -419,62 +426,62 @@ namespace VikingEngine.DSSWars.Build
             {
                 list.Add(BuildAndExpandType.TrapperHut);
 
-                addAnimalPen(BuildAndExpandType.FowlPen, CityResourceIndex.Fowl, city.buildingStructure.FowlPen_count);
-                addAnimalPen(BuildAndExpandType.HenPen, CityResourceIndex.Hen, city.buildingStructure.HenPen_count);
+                addAnimalPen(BuildAndExpandType.FowlPen, CityResourceIndex.Fowl, buildingStructure.FowlPen_count);
+                addAnimalPen(BuildAndExpandType.HenPen, CityResourceIndex.Hen, buildingStructure.HenPen_count);
 
-                addAnimalPen(BuildAndExpandType.BoarPen, CityResourceIndex.Boar, city.buildingStructure.BoarPen_count);
-                addAnimalPen(BuildAndExpandType.PigPen, CityResourceIndex.Pig, city.buildingStructure.PigPen_count);
+                addAnimalPen(BuildAndExpandType.BoarPen, CityResourceIndex.Boar, buildingStructure.BoarPen_count);
+                addAnimalPen(BuildAndExpandType.PigPen, CityResourceIndex.Pig, buildingStructure.PigPen_count);
 
                 // --- Wild Pigs / Hogs ---
                 if (biomRequirement(CityBiome.Mountain))
                 {
-                    addAnimalPen(BuildAndExpandType.WildPigPen, CityResourceIndex.WildPig, city.buildingStructure.WildPigPen_count);
-                    addAnimalPen(BuildAndExpandType.WildHogPen, CityResourceIndex.WildHog, city.buildingStructure.WildHogPen_count);
-                    addAnimalPen(BuildAndExpandType.WarHogPen, CityResourceIndex.WarHog, city.buildingStructure.WarHogPen_count);
-                    addAnimalPen(BuildAndExpandType.StagHogPen, CityResourceIndex.StagHog, city.buildingStructure.StagHogPen_count);
+                    addAnimalPen(BuildAndExpandType.WildPigPen, CityResourceIndex.WildPig, buildingStructure.WildPigPen_count);
+                    addAnimalPen(BuildAndExpandType.WildHogPen, CityResourceIndex.WildHog, buildingStructure.WildHogPen_count);
+                    addAnimalPen(BuildAndExpandType.WarHogPen, CityResourceIndex.WarHog, buildingStructure.WarHogPen_count);
+                    addAnimalPen(BuildAndExpandType.StagHogPen, CityResourceIndex.StagHog, buildingStructure.StagHogPen_count);
                 }
 
                 // --- Oxen ---
-                addAnimalPen(BuildAndExpandType.OxenPen, CityResourceIndex.Oxen, city.buildingStructure.OxenPen_count);
-                addAnimalPen(BuildAndExpandType.KineOxenPen, CityResourceIndex.KineOxen, city.buildingStructure.KineOxenPen_count);
+                addAnimalPen(BuildAndExpandType.OxenPen, CityResourceIndex.Oxen, buildingStructure.OxenPen_count);
+                addAnimalPen(BuildAndExpandType.KineOxenPen, CityResourceIndex.KineOxen, buildingStructure.KineOxenPen_count);
 
                 // --- Dogs ---
-                addAnimalPen(BuildAndExpandType.DogCage, CityResourceIndex.Dog, city.buildingStructure.DogCage_count);
-                addAnimalPen(BuildAndExpandType.HoundCage, CityResourceIndex.Hound, city.buildingStructure.HoundCage_count);
+                addAnimalPen(BuildAndExpandType.DogCage, CityResourceIndex.Dog, buildingStructure.DogCage_count);
+                addAnimalPen(BuildAndExpandType.HoundCage, CityResourceIndex.Hound, buildingStructure.HoundCage_count);
 
                 // --- Horses ---
-                addAnimalPen(BuildAndExpandType.PonyPen, CityResourceIndex.Pony, city.buildingStructure.PonyPen_count);
-                addAnimalPen(BuildAndExpandType.HorsePen, CityResourceIndex.Horse, city.buildingStructure.HorsePen_count);
-                addAnimalPen(BuildAndExpandType.WarHorsePen, CityResourceIndex.WarHorse, city.buildingStructure.WarHorsePen_count);
-                addAnimalPen(BuildAndExpandType.DraftHorsePen, CityResourceIndex.DraftHorse, city.buildingStructure.DraftHorsePen_count);
+                addAnimalPen(BuildAndExpandType.PonyPen, CityResourceIndex.Pony, buildingStructure.PonyPen_count);
+                addAnimalPen(BuildAndExpandType.HorsePen, CityResourceIndex.Horse, buildingStructure.HorsePen_count);
+                addAnimalPen(BuildAndExpandType.WarHorsePen, CityResourceIndex.WarHorse, buildingStructure.WarHorsePen_count);
+                addAnimalPen(BuildAndExpandType.DraftHorsePen, CityResourceIndex.DraftHorse, buildingStructure.DraftHorsePen_count);
                                
 
                 // --- Wolves ---
                 if (biomRequirement(CityBiome.Desolate))
                 {
-                    addAnimalPen(BuildAndExpandType.WolfCage, CityResourceIndex.Wolf, city.buildingStructure.WolfCage_count);
-                    addAnimalPen(BuildAndExpandType.WargCage, CityResourceIndex.Warg, city.buildingStructure.WargCage_count);
-                    addAnimalPen(BuildAndExpandType.AlphaWargCage, CityResourceIndex.AlphaWarg, city.buildingStructure.AlphaWargCage_count);
+                    addAnimalPen(BuildAndExpandType.WolfCage, CityResourceIndex.Wolf, buildingStructure.WolfCage_count);
+                    addAnimalPen(BuildAndExpandType.WargCage, CityResourceIndex.Warg, buildingStructure.WargCage_count);
+                    addAnimalPen(BuildAndExpandType.AlphaWargCage, CityResourceIndex.AlphaWarg, buildingStructure.AlphaWargCage_count);
                 }
 
                 // --- Cats ---
                 if (biomRequirement(CityBiome.Forest))
                 {
-                    addAnimalPen(BuildAndExpandType.WildCatCage, CityResourceIndex.WildCat, city.buildingStructure.WildCatCage_count);
-                    addAnimalPen(BuildAndExpandType.LionCage, CityResourceIndex.Lion, city.buildingStructure.LionCage_count);
-                    addAnimalPen(BuildAndExpandType.WarLionCage, CityResourceIndex.WarLion, city.buildingStructure.WarLionCage_count);
+                    addAnimalPen(BuildAndExpandType.WildCatCage, CityResourceIndex.WildCat, buildingStructure.WildCatCage_count);
+                    addAnimalPen(BuildAndExpandType.LionCage, CityResourceIndex.Lion, buildingStructure.LionCage_count);
+                    addAnimalPen(BuildAndExpandType.WarLionCage, CityResourceIndex.WarLion, buildingStructure.WarLionCage_count);
                 }
                 // --- Elephants ---
                 if (biomRequirement(CityBiome.Desert))
                 {
-                    addAnimalPen(BuildAndExpandType.ElephantCage, CityResourceIndex.Elephant, city.buildingStructure.ElephantCage_count);
-                    addAnimalPen(BuildAndExpandType.WarElephantCage, CityResourceIndex.WarElephant, city.buildingStructure.WarElephantCage_count);
-                    addAnimalPen(BuildAndExpandType.OliphantCage, CityResourceIndex.Oliphant, city.buildingStructure.OliphantCage_count);
+                    addAnimalPen(BuildAndExpandType.ElephantCage, CityResourceIndex.Elephant, buildingStructure.ElephantCage_count);
+                    addAnimalPen(BuildAndExpandType.WarElephantCage, CityResourceIndex.WarElephant, buildingStructure.WarElephantCage_count);
+                    addAnimalPen(BuildAndExpandType.OliphantCage, CityResourceIndex.Oliphant, buildingStructure.OliphantCage_count);
                 }
             }
 
 
-            if (city.buildingStructure.WoodCutter_count > 0 ||
+            if (buildingStructure.WoodCutter_count > 0 ||
                 godPowers)
             {
                 list.Add(BuildAndExpandType.TreeSeedlingSoft);
@@ -597,14 +604,14 @@ namespace VikingEngine.DSSWars.Build
             {
                 list.Add(BuildAndExpandType.Noblehouse);
 
-                if (city.buildingStructure.Noblehouse_count > 0 ||
+                if (buildingStructure.Noblehouse_count > 0 ||
                     godPowers)
                 {
                     list.Add(BuildAndExpandType.Embassy);
                 }
 
                 list.Add(BuildAndExpandType.Bank);
-                if (city.buildingStructure.Bank_count > 0 ||
+                if (buildingStructure.Bank_count > 0 ||
                     godPowers)
                 {
                     list.Add(BuildAndExpandType.CoinMinter);
@@ -642,7 +649,7 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.Statue_ThePlayer);
             }
 
-            if (city.GetGroupedResource(ItemResourceType.Palisade).amount > 0)
+            if (godPowers || city.GetGroupedResource(ItemResourceType.Palisade).amount > 0)
             {
                 list.Add(BuildAndExpandType.Palisade);
             }
@@ -708,7 +715,11 @@ namespace VikingEngine.DSSWars.Build
 
             void addAnimalPen(BuildAndExpandType build, int cityResourceType, int buildingCount) 
             {
-                if (
+                if (godPowers)
+                { 
+                    list.Add(build);
+                }
+                else if (
                     (logistics1 && (buildingCount > 0 || city.GetGroupedResource(cityResourceType).amount > 0)) || 
                     StartupSettings.UnlockAllProgress)
                 {
@@ -718,7 +729,7 @@ namespace VikingEngine.DSSWars.Build
 
             bool biomRequirement(CityBiome biom)
             {
-                return biom == CityBiome.Default_Fields || city.cityBiome == biom || StartupSettings.UnlockAllProgress;
+                return godPowers || biom == CityBiome.Default_Fields || city.cityBiome == biom || StartupSettings.UnlockAllProgress;
             }
         }
 

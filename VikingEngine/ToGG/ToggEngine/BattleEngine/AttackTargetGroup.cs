@@ -8,7 +8,7 @@ using VikingEngine.ToGG.ToggEngine.GO;
 
 namespace VikingEngine.ToGG
 {    
-    class AttackTargetGroup : List2<AttackTarget>
+    class AttackTargetGroup : List2_old<AttackTarget>
     {
         public AttackSettings attackSettings;
 

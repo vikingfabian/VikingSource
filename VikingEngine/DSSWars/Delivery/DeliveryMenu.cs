@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.Delivery
                             {
                                 buttonContent.Add(faction.FlagTextureToHud());
                             }
-                            citySel.tagToHud(buttonContent);
+                            citySel.Tag.tagToHud(buttonContent);
                             if (buttonContent.Count > 0)
                             {
                                 buttonContent.hspace();
@@ -282,7 +282,7 @@ namespace VikingEngine.DSSWars.Delivery
                                         content.newLine();
                                         content.Add(faction.FlagTextureToHud());
                                         content.hspace();
-                                        toCity.ownerToHud(new ObjectHudArgs(content, player, false), false);
+                                        toCity.ownerToHud(new ObjectHudArgs(null, content, player, false), false);
                                     }
                                     TimeLength time = DeliveryProfile.DeliveryTime(city, toCity, currentStatus.level, out float distance);
                                     content.text(string.Format(DssRef.lang.Delivery_DistanceX, TextLib.OneDecimal(distance)));

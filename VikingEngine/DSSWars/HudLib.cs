@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color ColFilterSelected = ColorExt.GrayScale(0.8f);//ColorExt.AlmostWhite;
         public static readonly Color ColFilterUnSelected = ColorExt.GrayScale(0.5f);
 
-
+        public static readonly Color ColEditText = Color.LightYellow;
         public const ImageLayers PopMenuLayer = ImageLayers.Lay5_Back;
 
         public const ImageLayers HeadDisplayContentLayer = ImageLayers.Lay6;

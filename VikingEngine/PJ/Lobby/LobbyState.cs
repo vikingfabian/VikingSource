@@ -80,7 +80,7 @@ namespace VikingEngine.PJ
             
 
             Input.Mouse.ViewAll();//Input.Mouse.Visible = true;
-            this.joinedLocalGamers = new List2<GamerData>();
+            this.joinedLocalGamers = new List2_old<GamerData>();
             refreshControllersInUse();
 
             Ref.draw.ClrColor = PjLib.ClearColor;

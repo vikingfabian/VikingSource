@@ -43,7 +43,7 @@ namespace VikingEngine.PJ.MiniGolf
         Time nextFlyCoins;
         //Timer.Basic testFlyCoins = new Timer.Basic(10, false);
 
-        public MinigolfState(List2<GamerData> joinedGamers, int matchCount)
+        public MinigolfState(List2_old<GamerData> joinedGamers, int matchCount)
             : base(true)
         {
             this.joinedLocalGamers = joinedGamers;

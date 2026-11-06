@@ -16,7 +16,7 @@ namespace VikingEngine.PJ.SpaceWar
         const int MaxTotalSegments = MaxTailSegments + 1;
 
         SafeCollectAsynchList<AbsGameObject> gameobjects = new SafeCollectAsynchList<AbsGameObject>(16);
-        List2<AbsBodySegment> allSegments = new List2<AbsBodySegment>(MaxTotalSegments);
+        List2_old<AbsBodySegment> allSegments = new List2_old<AbsBodySegment>(MaxTotalSegments);
         List<GameObjects.NoseBomb> noseBombs = new List<GameObjects.NoseBomb>(MaxNoseBombs);
         Head head;
         //int playerIx;

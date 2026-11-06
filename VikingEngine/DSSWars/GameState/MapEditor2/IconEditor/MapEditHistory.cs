@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.IconEditor
     class MapEditHistory
     {
         const int RestoreLength = 32;
-        List2<AbsRestorePoint> history = new List2<AbsRestorePoint>(RestoreLength);
+        List2_old<AbsRestorePoint> history = new List2_old<AbsRestorePoint>(RestoreLength);
 
         public void AddStorePoint(MapEditor2_Scene scene)
         {

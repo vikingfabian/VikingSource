@@ -1351,7 +1351,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menüoption zur Steuerung einer Armee. Soldaten entfernen.
         /// </summary>
-        public override string ArmyOption_RemoveX => "{0} entfernen";
+        public override string Edit_RemoveX => "{0} entfernen";
 
         /// <summary>
         /// Menüoption zur Steuerung einer Armee. Alle Soldaten auflösen.

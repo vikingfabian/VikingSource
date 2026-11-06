@@ -251,14 +251,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.pfaction = faction.pfaction;
 
-            if (subVersion < 105)
-            {
-                id = r.ReadUInt16();
-            }
-            else
-            {
-                id = r.ReadInt32();
-            }
+            id = r.ReadInt32();
+            
             name.read(r, subVersion);
             if (!name.custom)
             {
@@ -278,7 +272,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             readResources(r);
 
-            Tag.read(r, subVersion);
+            Tag.read(r);
             
 
             armyColumnWidth = r.ReadByte();
@@ -304,7 +298,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             content.Add(new RbImage(SpriteName.WarsArmy));
             content.hspace();
-            tagToHud(content);
+            Tag.tagToHud(content);
             content.hspace();
         }
 
@@ -320,7 +314,7 @@ namespace VikingEngine.DSSWars.GameObject
             nameToHud(args.content, !tooltip);
 
             args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
-            tagToHud(args.content);
+            Tag.tagToHud(args.content);
             //if (!)
             //{
                 var faction = pfaction.GetFaction();

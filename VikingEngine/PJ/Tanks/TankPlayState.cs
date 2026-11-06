@@ -7,9 +7,9 @@ namespace VikingEngine.PJ.Tanks
 {
     class TankPlayState : AbsPJGameState
     {
-        public List2<Gamer> gamers;
+        public List2_old<Gamer> gamers;
 
-        public TankPlayState(List2<GamerData> joinedGamers)
+        public TankPlayState(List2_old<GamerData> joinedGamers)
             : base(true)
         {
             tankRef.state = this;
@@ -17,7 +17,7 @@ namespace VikingEngine.PJ.Tanks
             new GoColl();
             new Level();
 
-            gamers = new List2<Gamer>(joinedGamers.Count);
+            gamers = new List2_old<Gamer>(joinedGamers.Count);
 
             for (int i = 0; i < joinedGamers.Count; ++i)
             {

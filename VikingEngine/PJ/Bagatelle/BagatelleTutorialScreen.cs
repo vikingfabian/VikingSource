@@ -13,7 +13,7 @@ namespace VikingEngine.PJ.Bagatelle
         Texture2D bgTexture;
         Graphics.Image cannon, ball, bumpCount, buttonPress;
 
-        public BagatelleTutorialScreen(List2<GamerData> joinedGamers)
+        public BagatelleTutorialScreen(List2_old<GamerData> joinedGamers)
             :base(false)
         {
             if (PjRef.host)

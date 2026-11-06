@@ -30,7 +30,10 @@ namespace VikingEngine.DSSWars.Work
             this.city = city;
             this.faction = faction;
         }
-
+        public void cityProfileHud(WorkPriorityType type, int resourceIndex)
+        {
+            workCountEdit(type, resourceIndex);
+        }
         public void toHud(LocalPlayer player, ResourceGroupType tab)
         {
             var resources = ResourceLib.ResourceGroupList(tab);
@@ -101,8 +104,8 @@ namespace VikingEngine.DSSWars.Work
                 new RbImage(SpriteName.WarsIcon_WorkQueueTotal) },
                             useLimitProperty, new RbTooltip((RichBoxContent content, object tag) =>
                             {
-                                content.h1(".Max worker count", HudLib.TitleColor_Head);
-                                content.text("Limit how many workers who will do the same task.");
+                                content.h1(DssRef.todoLang.Work_WorkerCount, HudLib.TitleColor_Head);
+                                content.text(DssRef.todoLang.Work_WorkerCount_Description);
 
                                 content.newParagraph();
                                 content.Add(new RbSeperationLine());
@@ -111,7 +114,7 @@ namespace VikingEngine.DSSWars.Work
 
                         if (workPriority.useWorkerCountLimit)
                         {
-                            workCountEdit(content, workPriorityType, workPriority);
+                            workCountEdit(workPriorityType);
                         }
                         else
                         {
@@ -123,11 +126,25 @@ namespace VikingEngine.DSSWars.Work
             }
         }
 
-        void workCountEdit(RichBoxContent content, WorkPriorityType type, WorkPriority prio)
+        void workCountEdit(WorkPriorityType type, int? profilePropertyIndex = null)
         {
             IntGetSetTag property;
-            
-            if (city != null)
+
+            if (profilePropertyIndex.HasValue)
+            {
+                var res = DssRef.storage.cityProfileStorage.profiles.Sel().workProfiles.Array[profilePropertyIndex.Value].workPriority;
+                
+                property = (object tag, bool set, int value) =>
+                {
+                    if (set)
+                    {
+                        res.workerCountLimit = (ushort)value;
+                        DssRef.storage.cityProfileStorage.profiles.SelRef().workProfiles.Array[profilePropertyIndex.Value].workPriority = res;
+                    }
+                    return res.workerCountLimit;
+                };
+            }
+            else if (city != null)
             {
                 
                 property = (object tag, bool set, int value) =>

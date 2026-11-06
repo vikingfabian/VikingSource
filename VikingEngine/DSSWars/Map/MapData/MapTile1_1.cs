@@ -276,7 +276,7 @@ namespace VikingEngine.DSSWars.Map.MapData
 
             return false;
         }
-        public bool MayBuild(BuildAndExpandType build, out bool upgrade)
+        public bool MayBuild(BuildAndExpandType build, bool autoPlace, out bool upgrade)
         {
             upgrade = false;
             switch (mainTerrain)
@@ -300,7 +300,11 @@ namespace VikingEngine.DSSWars.Map.MapData
                             upgrade = true;
                             return build == BuildAndExpandType.RecruitmentLevel3;
                     }
+                case TerrainMainType.Road:
+                    return !autoPlace;
 
+                case TerrainMainType.AnimalPen:
+                case TerrainMainType.Wall:
                 case TerrainMainType.Mine:
                 case TerrainMainType.DefaultSea:
                     return false;

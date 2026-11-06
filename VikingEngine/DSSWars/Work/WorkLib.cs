@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DataLib;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.MapData;
@@ -17,9 +18,164 @@ namespace VikingEngine.DSSWars.Work
     {
         public static byte[] WorkToXPTable;
 
+        public static WorkPriorityType[][] ViewOrder_Group_Work;
+
         public static void Init()
         {
-            
+            ViewOrder_Group_Work = new WorkPriorityType[(int)ResourceGroupType.NUM][];
+
+            ViewOrder_Group_Work[(int)ResourceGroupType.Resources] = new WorkPriorityType[]
+            {
+        WorkPriorityType.move,
+        WorkPriorityType.wood,
+        WorkPriorityType.stone,
+        WorkPriorityType.collectClay,
+        WorkPriorityType.miningBrick,
+        WorkPriorityType.craftBrick,
+        WorkPriorityType.farmFood,
+        WorkPriorityType.farmRawFood,
+        WorkPriorityType.miningSalt,
+        WorkPriorityType.farmfuel,
+        WorkPriorityType.farmlinen,
+        WorkPriorityType.craftFood,
+        WorkPriorityType.craftConservedFood,
+        WorkPriorityType.craftFuel,
+        WorkPriorityType.craftBeer,
+        WorkPriorityType.craftCoolingFluid,
+        WorkPriorityType.craftContainer,
+        WorkPriorityType.craftPalisade,
+        WorkPriorityType.craftToolkit,
+        WorkPriorityType.craftWagon2Wheel,
+        WorkPriorityType.craftWagon4Wheel,
+        WorkPriorityType.craftWagonClosed,
+        WorkPriorityType.craftWagonIron,
+        WorkPriorityType.craftWagonSteel,
+        WorkPriorityType.craftBlackPowder,
+        WorkPriorityType.craftGunPowder,
+        WorkPriorityType.craftBullet,
+        WorkPriorityType.autoBuild,
+        WorkPriorityType.buildOrders
+            };
+
+            ViewOrder_Group_Work[(int)ResourceGroupType.Metals] = new WorkPriorityType[]
+            {
+        WorkPriorityType.bogiron,
+        WorkPriorityType.miningIron,
+        WorkPriorityType.miningTin,
+        WorkPriorityType.miningCopper,
+        WorkPriorityType.miningLead,
+        WorkPriorityType.miningSilver,
+        WorkPriorityType.miningGold,
+        WorkPriorityType.miningMithril,
+        WorkPriorityType.miningSulfur,
+        WorkPriorityType.miningCoal,
+        WorkPriorityType.smeltIron,
+        WorkPriorityType.smeltTin,
+        WorkPriorityType.smeltCopper,
+        WorkPriorityType.smeltLead,
+        WorkPriorityType.smeltSilver,
+        WorkPriorityType.smeltGold,
+        WorkPriorityType.craftBronze,
+        WorkPriorityType.craftCastIron,
+        WorkPriorityType.craftBloomeryIron,
+        WorkPriorityType.craftSteel,
+        WorkPriorityType.craftMithril
+            };
+
+            ViewOrder_Group_Work[(int)ResourceGroupType.Weapons] = new WorkPriorityType[]
+            {
+        WorkPriorityType.craftSharpStick,
+        WorkPriorityType.craftBronzeSword,
+        WorkPriorityType.craftShortSword,
+        WorkPriorityType.craftSword,
+        WorkPriorityType.craftLongSword,
+        WorkPriorityType.craftHandSpear,
+        WorkPriorityType.craftWarhammer,
+        WorkPriorityType.craftTwoHandSword,
+        WorkPriorityType.craftMithrilSword,
+        WorkPriorityType.craftBucklerShield,
+        WorkPriorityType.craftRoundShield,
+        WorkPriorityType.craftHeaterShield,
+        WorkPriorityType.craftTowerShield
+            };
+
+            ViewOrder_Group_Work[(int)ResourceGroupType.Projectile] = new WorkPriorityType[]
+            {
+        WorkPriorityType.craftSlingshot,
+        WorkPriorityType.craftThrowingspear,
+        WorkPriorityType.craftBow,
+        WorkPriorityType.craftLongbow,
+        WorkPriorityType.craftCrossbow,
+        WorkPriorityType.craftMithrilbow,
+        WorkPriorityType.craftHandCannon,
+        WorkPriorityType.craftHandCulverin,
+        WorkPriorityType.craftRifle,
+        WorkPriorityType.craftBlunderbuss,
+        WorkPriorityType.craftBallista,
+        WorkPriorityType.craftManuBallista,
+        WorkPriorityType.craftCatapult,
+        WorkPriorityType.craftSiegeCannonBronze,
+        WorkPriorityType.craftManCannonBronze,
+        WorkPriorityType.craftSiegeCannonIron,
+        WorkPriorityType.craftManCannonIron
+            };
+
+            ViewOrder_Group_Work[(int)ResourceGroupType.Armor] = new WorkPriorityType[]
+            {
+        WorkPriorityType.craftPaddedArmor,
+        WorkPriorityType.craftHeavyPaddedArmor,
+        WorkPriorityType.craftBronzeArmor,
+        WorkPriorityType.craftMailArmor,
+        WorkPriorityType.craftHeavyMailArmor,
+        WorkPriorityType.craftPlateArmor,
+        WorkPriorityType.craftFullPlateArmor,
+        WorkPriorityType.craftMithrilArmor,
+        WorkPriorityType.craftMountPaddedArmor,
+        WorkPriorityType.craftMountHeavyPaddedArmor,
+        WorkPriorityType.craftMountBronzeArmor,
+        WorkPriorityType.craftMountMailArmor,
+        WorkPriorityType.craftMountHeavyMailArmor,
+        WorkPriorityType.craftMountPlateArmor,
+        WorkPriorityType.craftMountFullPlateArmor,
+        WorkPriorityType.craftMountMithrilArmor
+            };
+
+            ViewOrder_Group_Work[(int)ResourceGroupType.Animals] = new WorkPriorityType[]
+            {
+        WorkPriorityType.SlaughterFowl,
+        WorkPriorityType.SlaughterHen,
+        WorkPriorityType.SlaughterBoar,
+        WorkPriorityType.SlaughterPig,
+        WorkPriorityType.SlaughterOxen,
+        WorkPriorityType.SlaughterKineOxen,
+        WorkPriorityType.SlaughterPony,
+        WorkPriorityType.SlaughterHorse,
+        WorkPriorityType.SlaughterWarHorse,
+        WorkPriorityType.SlaughterDraftHorse,
+        WorkPriorityType.SlaughterWildPig,
+        WorkPriorityType.SlaughterWildHog,
+        WorkPriorityType.SlaughterWarHog,
+        WorkPriorityType.SlaughterStagHog,
+        WorkPriorityType.SlaughterWolf,
+        WorkPriorityType.SlaughterWarg,
+        WorkPriorityType.SlaughterAlphaWarg,
+        WorkPriorityType.SlaughterWildCat,
+        WorkPriorityType.SlaughterLion,
+        WorkPriorityType.SlaughterWarLion,
+        WorkPriorityType.SlaughterElephant,
+        WorkPriorityType.SlaughterWarElephant,
+        WorkPriorityType.SlaughterOliphant
+            };
+
+            ViewOrder_Group_Work[(int)ResourceGroupType.Mint] = new WorkPriorityType[]
+            {
+        WorkPriorityType.coinmaker_copper,
+        WorkPriorityType.coinmaker_bronze,
+        WorkPriorityType.coinmaker_silver,
+        WorkPriorityType.coinmaker_mithril
+            };
+
+
             WorkToXPTable = new byte[(int)WorkExperienceType.NUM_NONE];
             //WorkToXPTable[(int)WorkExperienceType.NUM_NONE] = byte.MaxValue;
             WorkToXPTable[(int)WorkExperienceType.Farm] = DssConst.DefaultWorkXpGain;

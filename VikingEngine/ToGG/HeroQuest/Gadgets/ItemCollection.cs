@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.ToGG.HeroQuest.Gadgets
 {
-    class ItemCollection : List2<AbsItem>
+    class ItemCollection : List2_old<AbsItem>
     {
         public ItemCollection()
             : base(4)

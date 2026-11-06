@@ -14,7 +14,7 @@ namespace VikingEngine.ToGG.ToggEngine.Map
 
         public TagGroup tags = new TagGroup();
         public TagGroup mapEntrace = new TagGroup();
-        public List2<IntVector2> heroStartPositions = new List2<IntVector2>(8);
+        public List2_old<IntVector2> heroStartPositions = new List2_old<IntVector2>(8);
 
         public Dictionary<int, ActionReciever> actionRecievers = new Dictionary<int, ActionReciever>();
         public List<Campfire> campfires = new List<Campfire>(4);

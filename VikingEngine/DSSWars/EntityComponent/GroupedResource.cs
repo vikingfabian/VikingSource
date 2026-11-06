@@ -167,11 +167,13 @@ namespace VikingEngine.DSSWars.EntityComponent
         {
             w.Write(amount);
             w.Write((ushort)stockPileLimit);
+            w.Write(requestDelivery);
         }
         public void readNet(System.IO.BinaryReader r)
         {
             amount = r.ReadInt32();
             stockPileLimit = r.ReadUInt16();
+            requestDelivery = r.ReadBoolean();
         }
 
         public void writeCity(BoolRegister boolRegister)//System.IO.BinaryWriter w)
@@ -181,6 +183,7 @@ namespace VikingEngine.DSSWars.EntityComponent
                 boolRegister.writer.Write(amount);
             }
             writeStockPile(boolRegister);
+            boolRegister.SetNext(requestDelivery);
         }
         public void readCity(BoolRegister boolRegister, System.IO.BinaryReader r, int subversion)
         {
@@ -189,15 +192,18 @@ namespace VikingEngine.DSSWars.EntityComponent
                 amount = r.ReadInt32();
             }
             readStockPile(boolRegister, r, subversion);
+            requestDelivery = boolRegister.GetNext();
         }
 
         public void writeFaction(BoolRegister boolRegister)
         {
             writeStockPile(boolRegister);
+            boolRegister.SetNext(requestDelivery);
         }
         public void readFaction(BoolRegister boolRegister, System.IO.BinaryReader r, int subversion)
         {
             readStockPile(boolRegister, r, subversion);
+            requestDelivery = boolRegister.GetNext();
         }
 
         public void writeStockPile(System.IO.BinaryWriter w)

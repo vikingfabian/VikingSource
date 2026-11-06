@@ -17,7 +17,7 @@ x adjust "all facts"
 
 World map 2.0
 The world map is rebuilt from the ground up to allow for more details, higher performance and is easier to modify in runtime.
-* Worlds are now twice the size.
+* Worlds are now twice the size. 
 * All terrain is textured
 
 Some downsides of the new map
@@ -52,6 +52,11 @@ Fog of war
 * Idle armies will scout the sourronding area
 x Share information with diplomatic relations
 
+City profiles (prototype)
+* Premade setups for cities, will replace the automatic city button
+* Also planned to replace the faction wide settings
+* Currently affects resource management and buildings
+
 Onboarding and Game modules
 * Optional challenge modules have been added
 * A couple of high friction mechanics, like starvation and deserters, have been split off to optional modules
@@ -63,7 +68,7 @@ Resources
 x Item conversion menu
 * 2 new resources: fine wood and meat
 
-New work management tools
+New work management tools (prototype)
 * Worker count limit, made to better control the flow of work (! Prototype: ui will be improved if it works
 * Delivery request. Affects any auto delivery (auto city or auto item) (! Prototype: ui will be improved if it works
 
@@ -98,6 +103,7 @@ Black Bolt Industries
 
 ##ICONS TODO
 * ground type
+* city profile
 
 #MOUNTED TODO
 * 

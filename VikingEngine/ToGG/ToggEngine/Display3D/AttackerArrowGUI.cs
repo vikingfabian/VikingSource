@@ -11,7 +11,7 @@ namespace VikingEngine.ToGG
     class AttackerArrowGUI
     {
         public Graphics.Mesh attackerArrow;
-        public List2<Graphics.Mesh> dottedLine = new List2<Graphics.Mesh>();
+        public List2_old<Graphics.Mesh> dottedLine = new List2_old<Graphics.Mesh>();
         public IntVector2 storedTarget;
 
         public AttackerArrowGUI()

@@ -25,7 +25,7 @@ namespace VikingEngine.ToGG.HeroQuest.Display
 
         VectorRect mainArea, groundArea, equipArea, beltArea;
         public Backpack backpack;
-        List2<SendToPlayerButton> sendToPlayers;
+        List2_old<SendToPlayerButton> sendToPlayers;
 
         Graphics.Image groundicon;
         Graphics.Text2 groundtitle;
@@ -221,7 +221,7 @@ namespace VikingEngine.ToGG.HeroQuest.Display
                 var hero = player.HeroUnit;
                 var adjacent = hero.collectAdjacentHeroes(hero.squarePos, true);
 
-                sendToPlayers = new List2<SendToPlayerButton>(4);
+                sendToPlayers = new List2_old<SendToPlayerButton>(4);
                 var remotes = new SpottedArrayTypeCounter<AbsHQPlayer>(hqRef.players.allPlayers, typeof(RemotePlayer));
                
 

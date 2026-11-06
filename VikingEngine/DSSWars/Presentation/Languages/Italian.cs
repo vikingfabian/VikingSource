@@ -1479,7 +1479,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menu option to control an army. Remove soldiers.
         /// </summary>
-        public override string ArmyOption_RemoveX => "Rimuovi {0}";
+        public override string Edit_RemoveX => "Rimuovi {0}";
 
         /// <summary>
         /// Menu option to control an army. Remove soldiers.

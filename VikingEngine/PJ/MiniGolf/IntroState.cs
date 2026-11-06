@@ -9,7 +9,7 @@ namespace VikingEngine.PJ.MiniGolf
 {
     class IntroState : AbsPJGameState
     {   
-        public IntroState(List2<GamerData> joinedGamers)
+        public IntroState(List2_old<GamerData> joinedGamers)
             :base(false)
         {
             Input.Mouse.Hide();//Input.Mouse.Visible = false;

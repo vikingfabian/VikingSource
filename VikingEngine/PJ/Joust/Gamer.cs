@@ -68,7 +68,7 @@ namespace VikingEngine.PJ.Joust
         Time immortalityTime = 0;
         Time waitForJumpInputTimeOut;
         public OnGroundTimer onGroundTimer = null;
-        public List2<AbsWeapon> weapons = new List2<AbsWeapon>();
+        public List2_old<AbsWeapon> weapons = new List2_old<AbsWeapon>();
         public int maxHealth = JoustLib.PlayerStartHealth;
 
         public GamerData gamerData;

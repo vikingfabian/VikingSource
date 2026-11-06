@@ -30,7 +30,7 @@ namespace VikingEngine.PJ.Bagatelle
         Texture2D bgTexture;
         Display.CountDownNumber countDownNumber;
 
-        public BagatellePlayState(List2<GamerData> joinedGamers, Texture2D bgTexture, int matchCount)
+        public BagatellePlayState(List2_old<GamerData> joinedGamers, Texture2D bgTexture, int matchCount)
             : base(true)  
         {
             this.bgTexture = bgTexture;
@@ -128,7 +128,7 @@ namespace VikingEngine.PJ.Bagatelle
 
                 if (joinedLocalGamers == null)
                 {
-                    joinedLocalGamers = new List2<GamerData>
+                    joinedLocalGamers = new List2_old<GamerData>
                 {
                     new GamerData(new Input.KeyboardButtonMap(Microsoft.Xna.Framework.Input.Keys.Space), JoustAnimal.Pig1),
                 };

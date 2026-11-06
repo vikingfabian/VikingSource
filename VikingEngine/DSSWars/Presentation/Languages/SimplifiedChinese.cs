@@ -1480,7 +1480,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 控制军队的菜单选项。移除士兵。
         /// </summary>
-        public override string ArmyOption_RemoveX => "移除 {0}";
+        public override string Edit_RemoveX => "移除 {0}";
 
         /// <summary>
         /// 控制军队的菜单选项。移除士兵。

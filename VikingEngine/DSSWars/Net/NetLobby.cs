@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.Net
     {
         Timer.Basic checkTimeout = new Timer.Basic(3000);
         //List2<LobbyButton> lobbies = new List2<LobbyButton>();
-        List2<TrackedLobby> lobbiesSorted = new List2<TrackedLobby>();
+        List2_old<TrackedLobby> lobbiesSorted = new List2_old<TrackedLobby>();
         public NetLobby()
             : base()
         {

@@ -236,7 +236,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (city.pfaction.GetPlayer() == player || DssRef.state.GodPowers())
                 {
-                    if (subTile.MayBuild(player.gameControls.build.placeBuildingType, out upgrade))
+                    if (subTile.MayBuild(player.gameControls.build.placeBuildingType, false, out upgrade))
                     {
                         if (player.gameControls.map.selection.obj == city)
                         {
