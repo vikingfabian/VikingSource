@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Map.MapProcess;
@@ -169,14 +170,14 @@ namespace VikingEngine.DSSWars.GameObject
                 var buildData = BuildLib.BuildOptions[(int)build];
                 IntVector2 buildPos = IntVector2.NegativeOne;
 
-                if (CityStructure.Find(this, buildData.terrainType.mainTerrain, buildData.terrainType.subTerrain, out IntVector2 sameBuilding))
+                if (CityStructureProcess.Find(this, buildData.terrainType.mainTerrain, buildData.terrainType.subTerrain, out IntVector2 sameBuilding))
                 {
                     findAdjacentFreeSpot(Casual_EdgeRandomizer, sameBuilding, ref buildPos);
                 }
 
                 if (buildPos.X < 0)
                 {
-                    if (!CityStructure.FindEmpty(this, out buildPos))
+                    if (!CityStructureProcess.FindEmpty(this, out buildPos))
                     {
                         return;
                     }

@@ -533,7 +533,7 @@ namespace VikingEngine.Engine
                 drawInContainersEvent();
 
                 graphicsDeviceManager.GraphicsDevice.SetRenderTarget(MainRenderTarget);
-                Engine.Draw.TextureEffects?[(int)Graphics.TextureEffectType.Flat]?.flushBuffer();
+                //Engine.Draw.TextureEffects?[(int)Graphics.TextureEffectType.Flat]?.flushBuffer();
                 drawEvent();
 
                 var frameRenderTimeInMs = (float)Stopwatch.GetElapsedTime(startTimestamp).TotalMilliseconds;

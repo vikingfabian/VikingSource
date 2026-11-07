@@ -510,6 +510,17 @@ namespace VikingEngine.DSSWars.Build
                             },
                             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
                         );
+        public static readonly CraftBlueprint AnimalTrainer = new CraftBlueprint(
+                                    CraftResultType.Building,
+                                    (int)Build.BuildAndExpandType.AnimalTrainer,
+                                    1,
+                                    new UseResource[]
+                                    {
+                                       new UseResource(ItemResourceType.ServiceMen, 1),
+                                        new UseResource(ItemResourceType.Wood_G, 40),
+                                    },
+                                    XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
+                                );
 
         //public static readonly CraftBlueprint KnightsBarracks = new CraftBlueprint(
         //          CraftResultType.Building,

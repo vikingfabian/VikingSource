@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.Players
                         else
                         {
                             List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-                            BuildLib.AvailableBuildTypes(available, city, false);
+                            AvailableBuildTypes.Available(available, city, false);
                             if (!available.Contains(player.gameControls.build.placeBuildingType))
                             {
                                 return MayBuildResult.Yes_ChangeCity;

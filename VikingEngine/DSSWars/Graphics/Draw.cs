@@ -260,6 +260,7 @@ namespace VikingEngine.DSSWars
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
                     DssRef.state.mapLayerMid.Draw(cameraIndex, localPlayer);
+                    Engine.Draw.TextureEffects?[(int)Graphics.TextureEffectType.Flat]?.flushBuffer();
                     Draw3d(MidLayer, cameraIndex);
                     //Draw3d(FarLayer, cameraIndex);
                     localPlayer.DrawMidLayer_Mesh(cameraIndex);
@@ -272,6 +273,7 @@ namespace VikingEngine.DSSWars
                     DrawGenerated(FarLayer, cameraIndex);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
                     DssRef.state.mapLayerFar.Draw(cameraIndex, localPlayer);
+                    Engine.Draw.TextureEffects?[(int)Graphics.TextureEffectType.Flat]?.flushBuffer();
                     Draw3d(FarLayer, cameraIndex);
                     //Draw3d(FarLayer, cameraIndex);
                     break;                    

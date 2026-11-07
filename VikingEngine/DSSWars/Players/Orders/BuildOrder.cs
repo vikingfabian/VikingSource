@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.Players.Orders
             
 
 
-            icon = new Mesh(LoadedMesh.plane, Vector3.Zero, model.scale * 9.6f, TextureEffectType.Flat, Build.BuildLib.BuildOptions[(int)buildingType].sprite, Color.White, false);
+            icon = new Mesh(LoadedMesh.plane, Vector3.Zero, model.scale * 9.6f, TextureEffectType.Flat, Build.BuildLib.BuildOptions[(int)buildingType].icon, Color.White, false);
 #if DEBUG
             icon.DebugName = "BuildOrder icon";
 #endif

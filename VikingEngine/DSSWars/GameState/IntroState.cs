@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Core.BlackBolts.Scene;
+using VikingEngine.Core.DSSWars.Work;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
@@ -136,7 +137,9 @@ namespace VikingEngine.DSSWars
             FlagDesign.Init();
             dataProcessPart++;
             Block.Init();
-//#if !BLACK
+
+            
+            //#if !BLACK
             dataProcessPart++;
             FlagAndColor.Init();
             dataProcessPart++;
@@ -144,8 +147,7 @@ namespace VikingEngine.DSSWars
             ItemPropertyColl.Init();
             dataProcessPart++;
             WorkLib.Init();
-            dataProcessPart++;
-            BuildLib.Init();
+            
             dataProcessPart++;
 //#endif
             GroundPropertiesLib.Init(); 
@@ -209,6 +211,12 @@ namespace VikingEngine.DSSWars
             part++;
             CasualBuild.Init();
             part++;
+        }
+
+        public static void OnLanguageSelect()
+        {
+            WorkPropertyColl.Init();
+            InitBuildOptions.Init();
         }
 
         protected override bool tasksComplete()

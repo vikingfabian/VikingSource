@@ -23,7 +23,8 @@ namespace VikingEngine.DSSWars.Build
         public CraftBlueprint altBlueprint = null;
         
         public MapTile1_1 terrainType;
-        public SpriteName sprite;
+        public SpriteName icon;
+        public string name, description;
         public bool uniqueBuilding = false;
         public bool canAutoBuild;
         public BuildCategoryTab buildCategory;
@@ -40,16 +41,22 @@ namespace VikingEngine.DSSWars.Build
         public SpecialBuildRequirement specialBuildRequirement = SpecialBuildRequirement.None;
         public BuildingGroundRequirement groundRequirement;
 
-        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, BuildingGroundRequirement groundRequirement, SpriteName sprite, CraftBlueprint blueprint, 
+        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, BuildingGroundRequirement groundRequirement, 
+            SpriteName sprite, 
+            string name, string description,
+            CraftBlueprint blueprint, 
             bool canAutoBuild, BuildCategoryTab buildCategory,
             BuildFilterTag filterTag1,
             BuildFilterTag filterTag2,
             BuildFilterTag filterTag3,
             MapPaintToolCategory paintToolCategory, float buildTimeSec)
         {
+            this.name = name;
+            this.description = description;
+
             this.groundRequirement = groundRequirement;
             this.canAutoBuild = canAutoBuild;
-            this.sprite = sprite;
+            this.icon = sprite;
             this.buildType = buildType;
             this.blueprint = blueprint;
             terrainType = new MapTile1_1(mainType, subType) { terrainAmount = 1 };
@@ -58,9 +65,12 @@ namespace VikingEngine.DSSWars.Build
             this.filterTag1 = filterTag1;
             this.filterTag2 = filterTag2;
             this.filterTag3 = filterTag3;
-            BuildLib.BuildOptions[(int)buildType] = this;
+            
             this.paintToolCategory = paintToolCategory;
             this.buildTimeSec = buildTimeSec;
+
+            BuildLib.BuildOptions[(int)buildType] = this;
+            BuildLib.TerrainToBuildType.Add(BuildLib.TerrainHash(mainType, subType), buildType);
         }
 
 
@@ -76,32 +86,32 @@ namespace VikingEngine.DSSWars.Build
         public string Label()
         {
             IconName.Building(buildType, out _, out string name);//LangLib.TerrainName(mainType, subType);
-            return name;
+            return name != null? name : $"Missing name for {buildType}";
         }
-        public string Description()
-        {
-            switch (terrainType.mainTerrain)
-            {
-                case TerrainMainType.Building:
-                    return LangLib.BuildingDescription((TerrainBuildingType)terrainType.subTerrain);
-                case TerrainMainType.Foil:
-                    return DssRef.lang.BuildingType_Farm_Description;
-                case TerrainMainType.Decor:
-                case TerrainMainType.Road:
-                    return DssRef.lang.BuildingType_Decor_Description;
-                case TerrainMainType.Wall:
-                    switch ((TerrainWallType)terrainType.subTerrain)
-                    {
-                        case TerrainWallType.StoneHouse:
-                            return DssRef.lang.Defence_WallDescription_Movement;
-                        default:
-                            return DssRef.lang.Defence_WallDescription_Movement + " " + DssRef.lang.Defence_WallDescription_GuardPost;
-                    }
+        //public string Description()
+        //{
+        //    switch (terrainType.mainTerrain)
+        //    {
+        //        case TerrainMainType.Building:
+        //            return LangLib.BuildingDescription((TerrainBuildingType)terrainType.subTerrain);
+        //        case TerrainMainType.Foil:
+        //            return DssRef.lang.BuildingType_Farm_Description;
+        //        case TerrainMainType.Decor:
+        //        case TerrainMainType.Road:
+        //            return DssRef.lang.BuildingType_Decor_Description;
+        //        case TerrainMainType.Wall:
+        //            switch ((TerrainWallType)terrainType.subTerrain)
+        //            {
+        //                case TerrainWallType.StoneHouse:
+        //                    return DssRef.lang.Defence_WallDescription_Movement;
+        //                default:
+        //                    return DssRef.lang.Defence_WallDescription_Movement + " " + DssRef.lang.Defence_WallDescription_GuardPost;
+        //            }
                     
-            }
+        //    }
 
-            return TextLib.Error;
-        }
+        //    return TextLib.Error;
+        //}
 
         public void destroy_async(City city, IntVector2 subPos)
         {

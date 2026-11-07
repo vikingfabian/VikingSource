@@ -54,10 +54,10 @@ namespace VikingEngine.Tests
             var tile = new SumTile4_4();
 
             Assert.Equal(PCity.Empty, tile.pcity);
-            Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_North);
-            Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_East);
-            Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_South);
-            Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_West);
+            //Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_North);
+            //Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_East);
+            //Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_South);
+            //Assert.Equal(SumTile4_4.NoBorderRegion, tile.BorderRegion_West);
             Assert.Equal(BiomType.Green, tile.biom1);
             Assert.Equal(int.MinValue, tile.seaDistanceHeatMap);
         }

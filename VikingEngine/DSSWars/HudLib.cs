@@ -720,7 +720,7 @@ namespace VikingEngine.DSSWars
         }
         public static void Description(RichBoxContent content, string description)
         {
-            content.text("\"" + description + "\"").overrideColor = InfoYellow_Light;
+            content.text(description, InfoYellow_Light);
         }
 
         public static void Label(RichBoxContent content, SpriteName icon, string text)

@@ -7,6 +7,7 @@ using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.Interface;
@@ -75,7 +76,7 @@ namespace VikingEngine.DSSWars.GameState
             
             remotePlayers = new SpottedArray<Players.RemotePlayer>();
             remotePlayersCounter = new SpottedArrayCounter<RemotePlayer>(remotePlayers);
-
+            InitBuildOptions.InitRuleSet();
             DssRef.state = this;
             
         }

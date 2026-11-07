@@ -1081,6 +1081,9 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 case TerrainBuildingType.CannonBarracks:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_barracks, 6, wp, Map.MapData.MapTile1_1.ModelScale * 1f));
                     break;
+                case TerrainBuildingType.AnimalTrainer:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_barracks, 6, wp, Map.MapData.MapTile1_1.ModelScale * 0.4f));
+                    break;
 
                 case TerrainBuildingType.CityHall_Unclaimed:
                     {

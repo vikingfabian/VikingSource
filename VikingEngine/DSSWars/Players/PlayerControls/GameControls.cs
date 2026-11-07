@@ -665,7 +665,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         if (build != BuildAndExpandType.NUM_NONE)
                         {
                             List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-                            BuildLib.AvailableBuildTypes(available, map.hover.subTile.city, false);
+                            AvailableBuildTypes.Available(available, map.hover.subTile.city, false);
                             if (!available.Contains(build))
                             {
                                 build = BuildAndExpandType.NUM_NONE;

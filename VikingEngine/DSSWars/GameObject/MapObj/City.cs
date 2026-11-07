@@ -13,6 +13,7 @@ using VikingEngine.Core.DSSWars.Data.GameSetup;
 using VikingEngine.Core.DSSWars.Interface.MapObjMenu;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.Core.DSSWars.Map.MapProcess;
+using VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure;
 using VikingEngine.Core.EngineSpace.Engine.Extensions.Struct;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Build;
@@ -133,6 +134,22 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
+        public bool CanBuildSoldierQuarters(out int count, out int maxCount)
+        {
+            count = buildingStructure.SoldiersQuarter_Small_count + buildingStructure.SoldiersQuarter_Large_count;
+            var maxSoldierQuarters = HallSetup().maxSoldierQuarters;
+            maxCount = maxSoldierQuarters.Value;
+            if (maxSoldierQuarters.HasLimit)
+            {
+                bool canBuild = count < maxSoldierQuarters.Value;
+                return canBuild;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         public int MaxBuildPrio()
         { 
             return LevelToMaxBuildPrio(buildingStructure.buildingLevel_logistics);
@@ -186,7 +203,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 try
                 {
-                    if (CityStructure.Find(this, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, out IntVector2 position))
+                    if (CityStructureProcess.Find(this, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, out IntVector2 position))
                     {
                         CraftBuildingLib.CraftLogisticsLevel2.payResources(this);
 

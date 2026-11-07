@@ -51,6 +51,7 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 WarmachineBarracks_pos;
         public IntVector2 GunBarracks_pos;
         public IntVector2 CannonBarracks_pos;
+        public IntVector2 AnimalTrainer_pos;
         //public IntVector2 KnightsBarracks_pos;
         public IntVector2 Smelter_pos;
         public IntVector2 Foundry_pos;
@@ -198,6 +199,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_pos;
                 case BuildAndExpandType.WarmachineBarracks: return WarmachineBarracks_pos;
                 case BuildAndExpandType.GunBarracks: return GunBarracks_pos;
+                case BuildAndExpandType.AnimalTrainer: return AnimalTrainer_pos;
                 case BuildAndExpandType.CannonBarracks: return CannonBarracks_pos;
                 //case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_pos;
                 case BuildAndExpandType.Smelter: return Smelter_pos;

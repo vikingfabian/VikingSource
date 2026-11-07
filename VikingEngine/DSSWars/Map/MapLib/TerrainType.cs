@@ -168,6 +168,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
         WarmachineBarracks,
         GunBarracks,
         CannonBarracks,
+        AnimalTrainer,
         //KnightsBarracks,
 
         Carpenter,

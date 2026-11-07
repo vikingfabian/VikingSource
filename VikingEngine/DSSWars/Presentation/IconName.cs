@@ -1264,8 +1264,9 @@ namespace VikingEngine.DSSWars
         public static void Building(BuildAndExpandType buildingType, out SpriteName icon, out string name)
         {
             var build = BuildLib.BuildOptions[(int)buildingType];
-            icon = build.sprite;
-            Terrain(build.terrainType.mainTerrain, build.terrainType.subTerrain, out _, out name);
+            icon = build.icon;
+            name = build.name;
+            //Terrain(build.terrainType.mainTerrain, build.terrainType.subTerrain, out _, out name);
         }
 
         public static void Terrain(TerrainMainType mainType, int subType, out SpriteName icon, out string name)
@@ -1273,530 +1274,546 @@ namespace VikingEngine.DSSWars
             icon = SpriteName.NO_IMAGE;
             name = null;
 
+            if (Build.BuildLib.TerrainToBuildType.TryGetValue(Build.BuildLib.TerrainHash(mainType, subType), out var buildingType))
+            {
+                var build = BuildLib.BuildOptions[(int)buildingType];
+                icon = build.icon;
+                name = build.name;
+                return;
+            }
+
             switch (mainType)
             {
-                case TerrainMainType.Building:
-                    switch ((TerrainBuildingType)subType)
-                    {
-                        case TerrainBuildingType.ExpansionHall_Lvl1:
-                        case TerrainBuildingType.ExpansionHall_Lvl2:
-                        case TerrainBuildingType.ExpansionHall_Lvl3:
-                            icon = SpriteName.MissingImage;
-                            name = DssRef.todoLang.BuildingType_ExpansionHall;
-                            break;
+                //case TerrainMainType.Building:
+                //    switch ((TerrainBuildingType)subType)
+                //    {
+                //        case TerrainBuildingType.ExpansionHall_Lvl1:
+                //        case TerrainBuildingType.ExpansionHall_Lvl2:
+                //        case TerrainBuildingType.ExpansionHall_Lvl3:
+                //            icon = SpriteName.MissingImage;
+                //            name = DssRef.todoLang.BuildingType_ExpansionHall;
+                //            break;
 
-                        case TerrainBuildingType.SoldiersQuarter_Small:
-                            icon = SpriteName.MissingImage;
-                            name = DssRef.todoLang.BuildingType_SoldiersQuarter;
-                            break;
-                        case TerrainBuildingType.SoldiersQuarter_Large:
-                            icon = SpriteName.MissingImage;
-                            name = DssRef.todoLang.BuildingType_SoldiersQuarter;
-                            break;
+                //        case TerrainBuildingType.SoldiersQuarter_Small:
+                //            icon = SpriteName.MissingImage;
+                //            name = DssRef.todoLang.BuildingType_SoldiersQuarter;
+                //            break;
+                //        case TerrainBuildingType.SoldiersQuarter_Large:
+                //            icon = SpriteName.MissingImage;
+                //            name = DssRef.todoLang.BuildingType_SoldiersQuarter;
+                //            break;
 
-                        case TerrainBuildingType.Logistics:
-                            icon = SpriteName.WarsBuild_Logistics;
-                            name = DssRef.lang.BuildingType_Logistics;
-                            break;
-                        case TerrainBuildingType.Economics:
-                            icon = SpriteName.MissingImage;
-                            name = DssRef.todoLang.BuildingType_Economics;
-                            break;
-                        case TerrainBuildingType.TingsHouse:
-                            icon = SpriteName.MissingImage;
-                            name = DssRef.todoLang.BuildingType_TingsHouse;
-                            break;
-                        case TerrainBuildingType.ManorLord:
-                            icon = SpriteName.WarsBuild_ManorLord;
-                            name = DssRef.lang.BuildingType_ManorLord;
-                            break;
-                        case TerrainBuildingType.GreatHall:
-                            icon = SpriteName.WarsBuild_GreatHall;
-                            name = DssRef.lang.BuildingType_GreatHall;
-                            break;
-                        case TerrainBuildingType.SoldierBarracks:
-                            icon = SpriteName.WarsBuild_SoldierBarracks;
-                            name = DssRef.lang.BuildingType_SoldierBarracks;
-                            break;
-                        case TerrainBuildingType.Bank:
-                            icon = SpriteName.WarsBuild_Bank;
-                            name = DssRef.lang.BuildingType_Bank;
-                            break;
-                        case TerrainBuildingType.CoinMinter:
-                            icon = SpriteName.WarsBuild_Coinminter;
-                            name = DssRef.lang.BuildingType_CoinMaker;
-                            break;
-                        case TerrainBuildingType.Brewery:
-                            icon = SpriteName.WarsBuild_Brewery;
-                            name = DssRef.lang.BuildingType_Brewery;
-                            break;
-                        case TerrainBuildingType.Carpenter:
-                            icon = SpriteName.WarsBuild_Carpenter;
-                            name = DssRef.lang.BuildingType_Carpenter;
-                            break;
-                        case TerrainBuildingType.Work_CoalPit:
-                            icon = SpriteName.WarsBuild_CoalPit;
-                            name = DssRef.lang.BuildingType_CoalPit;
-                            break;
-                        case TerrainBuildingType.Work_Cook:
-                            icon = SpriteName.WarsBuild_Cook;
-                            name = DssRef.lang.BuildingType_Cook;
-                            break;
+                //        case TerrainBuildingType.Logistics:
+                //            icon = SpriteName.WarsBuild_Logistics;
+                //            name = DssRef.lang.BuildingType_Logistics;
+                //            break;
+                //        case TerrainBuildingType.Economics:
+                //            icon = SpriteName.MissingImage;
+                //            name = DssRef.todoLang.BuildingType_Economics;
+                //            break;
+                //        case TerrainBuildingType.TingsHouse:
+                //            icon = SpriteName.MissingImage;
+                //            name = DssRef.todoLang.BuildingType_TingsHouse;
+                //            break;
+                //        case TerrainBuildingType.ManorLord:
+                //            icon = SpriteName.WarsBuild_ManorLord;
+                //            name = DssRef.lang.BuildingType_ManorLord;
+                //            break;
+                //        case TerrainBuildingType.GreatHall:
+                //            icon = SpriteName.WarsBuild_GreatHall;
+                //            name = DssRef.lang.BuildingType_GreatHall;
+                //            break;
+                //        case TerrainBuildingType.SoldierBarracks:
+                //            icon = SpriteName.WarsBuild_SoldierBarracks;
+                //            name = DssRef.lang.BuildingType_SoldierBarracks;
+                //            break;
+                //        case TerrainBuildingType.Bank:
+                //            icon = SpriteName.WarsBuild_Bank;
+                //            name = DssRef.lang.BuildingType_Bank;
+                //            break;
+                //        case TerrainBuildingType.CoinMinter:
+                //            icon = SpriteName.WarsBuild_Coinminter;
+                //            name = DssRef.lang.BuildingType_CoinMaker;
+                //            break;
+                //        case TerrainBuildingType.Brewery:
+                //            icon = SpriteName.WarsBuild_Brewery;
+                //            name = DssRef.lang.BuildingType_Brewery;
+                //            break;
+                //        case TerrainBuildingType.Carpenter:
+                //            icon = SpriteName.WarsBuild_Carpenter;
+                //            name = DssRef.lang.BuildingType_Carpenter;
+                //            break;
+                //        case TerrainBuildingType.Work_CoalPit:
+                //            icon = SpriteName.WarsBuild_CoalPit;
+                //            name = DssRef.lang.BuildingType_CoalPit;
+                //            break;
+                //        case TerrainBuildingType.Work_Cook:
+                //            icon = SpriteName.WarsBuild_Cook;
+                //            name = DssRef.lang.BuildingType_Cook;
+                //            break;
                         
-                        case TerrainBuildingType.Nobelhouse:
-                            icon = SpriteName.WarsBuild_Nobelhouse;
-                            name = DssRef.lang.Building_NobleHouse;
-                            break;
-                        case TerrainBuildingType.ImmigrationTent:
-                            icon = SpriteName.WarsBuild_Tent;
-                            name = DssRef.lang.BuildingType_ImmigrationTent;
-                            break;
+                //        case TerrainBuildingType.Nobelhouse:
+                //            icon = SpriteName.WarsBuild_Nobelhouse;
+                //            name = DssRef.lang.Building_NobleHouse;
+                //            break;
+                //        case TerrainBuildingType.ImmigrationTent:
+                //            icon = SpriteName.WarsBuild_Tent;
+                //            name = DssRef.lang.BuildingType_ImmigrationTent;
+                //            break;
                       
 
-                        case TerrainBuildingType.Postal:
-                            icon = SpriteName.WarsBuild_Postal;
-                            name = DssRef.lang.BuildingType_Postal;
-                            break;
-                        case TerrainBuildingType.PostalLevel2:
-                            icon = SpriteName.WarsBuild_PostalLevel2;
-                            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Postal);
-                            break;
-                        case TerrainBuildingType.PostalLevel3:
-                            icon = SpriteName.WarsBuild_PostalLevel3;
-                            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Postal);
-                            break;
+                //        case TerrainBuildingType.Postal:
+                //            icon = SpriteName.WarsBuild_Postal;
+                //            name = DssRef.lang.BuildingType_Postal;
+                //            break;
+                //        case TerrainBuildingType.PostalLevel2:
+                //            icon = SpriteName.WarsBuild_PostalLevel2;
+                //            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Postal);
+                //            break;
+                //        case TerrainBuildingType.PostalLevel3:
+                //            icon = SpriteName.WarsBuild_PostalLevel3;
+                //            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Postal);
+                //            break;
 
-                        case TerrainBuildingType.GoldDeliveryLevel1:
-                            icon = SpriteName.WarsBuild_GoldDeliver;
-                            name = DssRef.lang.BuildingType_GoldDelivery;
-                            break;
-                        case TerrainBuildingType.GoldDeliveryLevel2:
-                            icon = SpriteName.WarsBuild_GoldDeliverLevel2;
-                            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_GoldDelivery);
-                            break;
-                        case TerrainBuildingType.GoldDeliveryLevel3:
-                            icon = SpriteName.WarsBuild_GoldDeliverLevel3;
-                            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_GoldDelivery);
-                            break;
+                //        case TerrainBuildingType.GoldDeliveryLevel1:
+                //            icon = SpriteName.WarsBuild_GoldDeliver;
+                //            name = DssRef.lang.BuildingType_GoldDelivery;
+                //            break;
+                //        case TerrainBuildingType.GoldDeliveryLevel2:
+                //            icon = SpriteName.WarsBuild_GoldDeliverLevel2;
+                //            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_GoldDelivery);
+                //            break;
+                //        case TerrainBuildingType.GoldDeliveryLevel3:
+                //            icon = SpriteName.WarsBuild_GoldDeliverLevel3;
+                //            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_GoldDelivery);
+                //            break;
 
-                        case TerrainBuildingType.Recruitment:
-                            icon = SpriteName.WarsBuild_Recruitment;
-                            name = DssRef.lang.BuildingType_Recruitment;
-                            break;
-                        case TerrainBuildingType.RecruitmentLevel2:
-                            icon = SpriteName.WarsBuild_RecruitmentLevel2;
-                            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Recruitment);
-                            break;
-                        case TerrainBuildingType.RecruitmentLevel3:
-                            icon = SpriteName.WarsBuild_RecruitmentLevel3;
-                            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Recruitment);
-                            break;
+                //        case TerrainBuildingType.Recruitment:
+                //            icon = SpriteName.WarsBuild_Recruitment;
+                //            name = DssRef.lang.BuildingType_Recruitment;
+                //            break;
+                //        case TerrainBuildingType.RecruitmentLevel2:
+                //            icon = SpriteName.WarsBuild_RecruitmentLevel2;
+                //            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Recruitment);
+                //            break;
+                //        case TerrainBuildingType.RecruitmentLevel3:
+                //            icon = SpriteName.WarsBuild_RecruitmentLevel3;
+                //            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Recruitment);
+                //            break;
 
-                        case TerrainBuildingType.Work_Smith:
-                            icon = SpriteName.WarsBuild_Smith;
-                            name = DssRef.lang.BuildingType_Smith;
-                            break;
-                        case TerrainBuildingType.Storehouse:
-                            icon = SpriteName.WarsBuild_Storehouse;
-                            name = DssRef.lang.BuildingType_Storehouse;
-                            break;
-                        case TerrainBuildingType.Tavern:
-                            icon = SpriteName.WarsBuild_Tavern;
-                            name = DssRef.lang.BuildingType_Tavern;
-                            break;
-                        case TerrainBuildingType.Work_Bench:
-                            icon = SpriteName.WarsBuild_WorkBench;
-                            name = DssRef.lang.BuildingType_WorkBench;
-                            break;
+                //        case TerrainBuildingType.Work_Smith:
+                //            icon = SpriteName.WarsBuild_Smith;
+                //            name = DssRef.lang.BuildingType_Smith;
+                //            break;
+                //        case TerrainBuildingType.Storehouse:
+                //            icon = SpriteName.WarsBuild_Storehouse;
+                //            name = DssRef.lang.BuildingType_Storehouse;
+                //            break;
+                //        case TerrainBuildingType.Tavern:
+                //            icon = SpriteName.WarsBuild_Tavern;
+                //            name = DssRef.lang.BuildingType_Tavern;
+                //            break;
+                //        case TerrainBuildingType.Work_Bench:
+                //            icon = SpriteName.WarsBuild_WorkBench;
+                //            name = DssRef.lang.BuildingType_WorkBench;
+                //            break;
 
-                        case TerrainBuildingType.WorkerTent:
-                            icon = SpriteName.WarsBuild_TentHut;
-                            name = DssRef.lang.BuildingType_WorkerHut;
-                            break;
-                        case TerrainBuildingType.WorkerHut:
-                            icon = SpriteName.WarsBuild_WorkerHuts;
-                            name = DssRef.lang.BuildingType_WorkerHut;
-                            break;
-                        case TerrainBuildingType.WorkerHutLarge:
-                            icon = SpriteName.WarsBuild_WorkerHutLarge;
-                            name = DssRef.lang.BuildingType_WorkerHut;
-                            break;
+                //        case TerrainBuildingType.WorkerTent:
+                //            icon = SpriteName.WarsBuild_TentHut;
+                //            name = DssRef.lang.BuildingType_WorkerHut;
+                //            break;
+                //        case TerrainBuildingType.WorkerHut:
+                //            icon = SpriteName.WarsBuild_WorkerHuts;
+                //            name = DssRef.lang.BuildingType_WorkerHut;
+                //            break;
+                //        case TerrainBuildingType.WorkerHutLarge:
+                //            icon = SpriteName.WarsBuild_WorkerHutLarge;
+                //            name = DssRef.lang.BuildingType_WorkerHut;
+                //            break;
 
-                        case TerrainBuildingType.Smelter:
-                            icon = SpriteName.WarsBuild_Smelter;
-                            name = DssRef.lang.BuildingType_SmeltingFurnace;
-                            break;
-                        case TerrainBuildingType.WoodCutter:
-                            icon = SpriteName.WarsBuild_WoodCutter;
-                            name = DssRef.lang.BuildingType_WoodCutter;
-                            break;
-                        case TerrainBuildingType.StoneCutter:
-                            icon = SpriteName.WarsBuild_StoneCutter;
-                            name = DssRef.lang.BuildingType_StoneCutter;
-                            break;
-                        case TerrainBuildingType.Embassy:
-                            icon = SpriteName.WarsBuild_Embassy;
-                            name = DssRef.lang.BuildingType_Embassy;
-                            break;
-                        case TerrainBuildingType.WaterResovoir:
-                            icon = SpriteName.WarsBuild_WaterReservoir;
-                            name = DssRef.lang.BuildingType_WaterResovoir;
-                            break;
+                //        case TerrainBuildingType.Smelter:
+                //            icon = SpriteName.WarsBuild_Smelter;
+                //            name = DssRef.lang.BuildingType_SmeltingFurnace;
+                //            break;
+                //        case TerrainBuildingType.WoodCutter:
+                //            icon = SpriteName.WarsBuild_WoodCutter;
+                //            name = DssRef.lang.BuildingType_WoodCutter;
+                //            break;
+                //        case TerrainBuildingType.StoneCutter:
+                //            icon = SpriteName.WarsBuild_StoneCutter;
+                //            name = DssRef.lang.BuildingType_StoneCutter;
+                //            break;
+                //        case TerrainBuildingType.Embassy:
+                //            icon = SpriteName.WarsBuild_Embassy;
+                //            name = DssRef.lang.BuildingType_Embassy;
+                //            break;
+                //        case TerrainBuildingType.WaterResovoir:
+                //            icon = SpriteName.WarsBuild_WaterReservoir;
+                //            name = DssRef.lang.BuildingType_WaterResovoir;
+                //            break;
+                //        case TerrainBuildingType.WaterWell:
+                //            icon = SpriteName.MissingImage;
+                //            name = DssRef.todoLang.BuildingType_WaterWell;
+                //            break;
+                //        case TerrainBuildingType.GuardHouse_Small:
+                //            icon = SpriteName.WarsBuild_GuardOffice;
+                //            name = DssRef.lang.BuildingType_GuardOffice;
+                //            break;
+                //        case TerrainBuildingType.GuardHouse_Large:
+                //            icon = SpriteName.WarsBuild_GuardOfficeLarge;
+                //            name = DssRef.lang.BuildingType_GuardOffice;
+                //            break;
 
-                        case TerrainBuildingType.GuardHouse_Small:
-                            icon = SpriteName.WarsBuild_GuardOffice;
-                            name = DssRef.lang.BuildingType_GuardOffice;
-                            break;
-                        case TerrainBuildingType.GuardHouse_Large:
-                            icon = SpriteName.WarsBuild_GuardOfficeLarge;
-                            name = DssRef.lang.BuildingType_GuardOffice;
-                            break;
+                //        case TerrainBuildingType.ArcherBarracks:
+                //            icon = SpriteName.WarsBuild_ArcherBarracks;
+                //            name = DssRef.lang.BuildingType_ArcherBarracks;
+                //            break;
+                //        case TerrainBuildingType.WarmachineBarracks:
+                //            icon = SpriteName.WarsBuild_WarmachineBarracks;
+                //            name = DssRef.lang.BuildingType_WarmachineBarracks;
+                //            break;
+                //        case TerrainBuildingType.GunBarracks:
+                //            icon = SpriteName.WarsBuild_GunBarracks;
+                //            name = DssRef.lang.BuildingType_GunBarracks;
+                //            break;
+                //        case TerrainBuildingType.CannonBarracks:
+                //            icon = SpriteName.WarsBuild_CannonBarracks;
+                //            name = DssRef.lang.BuildingType_CannonBarracks;
+                //            break;
 
-                        case TerrainBuildingType.ArcherBarracks:
-                            icon = SpriteName.WarsBuild_ArcherBarracks;
-                            name = DssRef.lang.BuildingType_ArcherBarracks;
-                            break;
-                        case TerrainBuildingType.WarmachineBarracks:
-                            icon = SpriteName.WarsBuild_WarmachineBarracks;
-                            name = DssRef.lang.BuildingType_WarmachineBarracks;
-                            break;
-                        case TerrainBuildingType.GunBarracks:
-                            icon = SpriteName.WarsBuild_GunBarracks;
-                            name = DssRef.lang.BuildingType_GunBarracks;
-                            break;
-                        case TerrainBuildingType.CannonBarracks:
-                            icon = SpriteName.WarsBuild_CannonBarracks;
-                            name = DssRef.lang.BuildingType_CannonBarracks;
-                            break;
-                        //case TerrainBuildingType.KnightsBarracks:
-                        //    name = DssRef.lang.BuildingType_KnightsBarracks;
-                        //    break;
+                //        case TerrainBuildingType.AnimalTrainer:
+                //            icon = SpriteName.MissingImage;
+                //            name = DssRef.todoLang.BuildingType_AnimalTrainer;
+                //            break;
+                //        //case TerrainBuildingType.KnightsBarracks:
+                //        //    name = DssRef.lang.BuildingType_KnightsBarracks;
+                //        //    break;
 
-                        case TerrainBuildingType.Foundry:
-                            icon = SpriteName.WarsBuild_Foundry;
-                            name = DssRef.lang.BuildingType_Foundry;
-                            break;
-                        case TerrainBuildingType.Armory:
-                            icon = SpriteName.WarsBuild_Armory;
-                            name = DssRef.lang.BuildingType_Armory;
-                            break;
-                        case TerrainBuildingType.Chemist:
-                            icon = SpriteName.WarsBuild_Chemist;
-                            name = DssRef.lang.BuildingType_Chemist;
-                            break;
-                        case TerrainBuildingType.Gunmaker:
-                            icon = SpriteName.WarsBuild_Gunmaker;
-                            name = DssRef.lang.BuildingType_Gunmaker;
-                            break;
-                        case TerrainBuildingType.School:
-                            icon = SpriteName.WarsBuild_School;
-                            name = DssRef.lang.BuildingType_School;
-                            break;
-                        case TerrainBuildingType.ResearchCenter:
-                            icon = SpriteName.WarsBuild_ResearchCenter;
-                            name = DssRef.lang.BuildingType_ReseachCenter;
-                            break;
-                        case TerrainBuildingType.BookPress:
-                            icon = SpriteName.WarsBuild_Bookpress;
-                            name = DssRef.lang.BuildingType_Bookpress;
-                            break;
+                //        case TerrainBuildingType.Foundry:
+                //            icon = SpriteName.WarsBuild_Foundry;
+                //            name = DssRef.lang.BuildingType_Foundry;
+                //            break;
+                //        case TerrainBuildingType.Armory:
+                //            icon = SpriteName.WarsBuild_Armory;
+                //            name = DssRef.lang.BuildingType_Armory;
+                //            break;
+                //        case TerrainBuildingType.Chemist:
+                //            icon = SpriteName.WarsBuild_Chemist;
+                //            name = DssRef.lang.BuildingType_Chemist;
+                //            break;
+                //        case TerrainBuildingType.Gunmaker:
+                //            icon = SpriteName.WarsBuild_Gunmaker;
+                //            name = DssRef.lang.BuildingType_Gunmaker;
+                //            break;
+                //        case TerrainBuildingType.School:
+                //            icon = SpriteName.WarsBuild_School;
+                //            name = DssRef.lang.BuildingType_School;
+                //            break;
+                //        case TerrainBuildingType.ResearchCenter:
+                //            icon = SpriteName.WarsBuild_ResearchCenter;
+                //            name = DssRef.lang.BuildingType_ReseachCenter;
+                //            break;
+                //        case TerrainBuildingType.BookPress:
+                //            icon = SpriteName.WarsBuild_Bookpress;
+                //            name = DssRef.lang.BuildingType_Bookpress;
+                //            break;
 
-                        case TerrainBuildingType.ServiceMenHouse_Small:
-                            icon = SpriteName.WarsBuild_SmallServiceHouse;
-                            name = DssRef.lang.BuildingType_ServiceHouse;
-                            break;
-                        case TerrainBuildingType.ServiceMenHouse_Large:
-                            icon = SpriteName.WarsBuild_BigServiceHouse;
-                            name = DssRef.lang.BuildingType_ServiceHouse;
-                            break;
+                //        case TerrainBuildingType.ServiceMenHouse_Small:
+                //            icon = SpriteName.WarsBuild_SmallServiceHouse;
+                //            name = DssRef.lang.BuildingType_ServiceHouse;
+                //            break;
+                //        case TerrainBuildingType.ServiceMenHouse_Large:
+                //            icon = SpriteName.WarsBuild_BigServiceHouse;
+                //            name = DssRef.lang.BuildingType_ServiceHouse;
+                //            break;
 
-                        // --- Everything below this line was already set up with icons in your provided block ---
-                        case TerrainBuildingType.Pottery:
-                            icon = SpriteName.WarsBuild_Pottery;
-                            name = DssRef.lang.BuildingType_Pottery;
-                            break;
-                        case TerrainBuildingType.DryingPan:
-                            icon = SpriteName.WarsBuild_DryingPan;
-                            name = DssRef.lang.BuildingType_DryingPan;
-                            break;
-                        case TerrainBuildingType.Butcher:
-                            icon = SpriteName.WarsBuild_Butcher;
-                            name = DssRef.lang.BuildingType_Butcher;
-                            break;
-                        case TerrainBuildingType.Smoker:
-                            icon = SpriteName.WarsBuild_Smoker;
-                            name = DssRef.lang.BuildingType_Smoker;
-                            break;
-                        case TerrainBuildingType.Dryer:
-                            icon = SpriteName.WarsBuild_Dryer;
-                            name = DssRef.lang.BuildingType_Dryer;
-                            break;
+                //        // --- Everything below this line was already set up with icons in your provided block ---
+                //        case TerrainBuildingType.Pottery:
+                //            icon = SpriteName.WarsBuild_Pottery;
+                //            name = DssRef.lang.BuildingType_Pottery;
+                //            break;
+                //        case TerrainBuildingType.DryingPan:
+                //            icon = SpriteName.WarsBuild_DryingPan;
+                //            name = DssRef.lang.BuildingType_DryingPan;
+                //            break;
+                //        case TerrainBuildingType.Butcher:
+                //            icon = SpriteName.WarsBuild_Butcher;
+                //            name = DssRef.lang.BuildingType_Butcher;
+                //            break;
+                //        case TerrainBuildingType.Smoker:
+                //            icon = SpriteName.WarsBuild_Smoker;
+                //            name = DssRef.lang.BuildingType_Smoker;
+                //            break;
+                //        case TerrainBuildingType.Dryer:
+                //            icon = SpriteName.WarsBuild_Dryer;
+                //            name = DssRef.lang.BuildingType_Dryer;
+                //            break;
 
-                        case TerrainBuildingType.MaterialStorage:
-                            icon = SpriteName.WarsBuild_MaterialStorage;
-                            name = DssRef.lang.BuildingType_MaterialStorage;
-                            break;
-                        case TerrainBuildingType.FoodStorage:
-                            icon = SpriteName.WarsBuild_FoodStorage;
-                            name = DssRef.lang.BuildingType_FoodStorage;
-                            break;
-                        case TerrainBuildingType.WeaponStorage:
-                            icon = SpriteName.WarsBuild_WeaponStorage;
-                            name = DssRef.lang.BuildingType_WeaponStorage;
-                            break;
-                        case TerrainBuildingType.ArmorStorage:
-                            icon = SpriteName.WarsBuild_ArmorStorage;
-                            name = DssRef.lang.BuildingType_ArmorStorage;
-                            break;
-                        case TerrainBuildingType.AnimalStorage:
-                            icon = SpriteName.WarsBuild_AnimalStorage;
-                            name = DssRef.lang.BuildingType_AnimalStorage;
-                            break;
+                //        case TerrainBuildingType.MaterialStorage:
+                //            icon = SpriteName.WarsBuild_MaterialStorage;
+                //            name = DssRef.lang.BuildingType_MaterialStorage;
+                //            break;
+                //        case TerrainBuildingType.FoodStorage:
+                //            icon = SpriteName.WarsBuild_FoodStorage;
+                //            name = DssRef.lang.BuildingType_FoodStorage;
+                //            break;
+                //        case TerrainBuildingType.WeaponStorage:
+                //            icon = SpriteName.WarsBuild_WeaponStorage;
+                //            name = DssRef.lang.BuildingType_WeaponStorage;
+                //            break;
+                //        case TerrainBuildingType.ArmorStorage:
+                //            icon = SpriteName.WarsBuild_ArmorStorage;
+                //            name = DssRef.lang.BuildingType_ArmorStorage;
+                //            break;
+                //        case TerrainBuildingType.AnimalStorage:
+                //            icon = SpriteName.WarsBuild_AnimalStorage;
+                //            name = DssRef.lang.BuildingType_AnimalStorage;
+                //            break;
 
-                        case TerrainBuildingType.Cesspit:
-                            icon = SpriteName.WarsBuild_Cesspit;
-                            name = DssRef.lang.BuildingType_Cesspit;
-                            break;
+                //        case TerrainBuildingType.Cesspit:
+                //            icon = SpriteName.WarsBuild_Cesspit;
+                //            name = DssRef.lang.BuildingType_Cesspit;
+                //            break;
 
-                        case TerrainBuildingType.ShieldMaker:
-                            icon = SpriteName.WarsBuild_Shieldmaker;
-                            name = DssRef.lang.BuildingType_Shieldmaker;
-                            break;
+                //        case TerrainBuildingType.ShieldMaker:
+                //            icon = SpriteName.WarsBuild_Shieldmaker;
+                //            name = DssRef.lang.BuildingType_Shieldmaker;
+                //            break;
 
-                        case TerrainBuildingType.TrappersHut:
-                            icon = SpriteName.WarsBuild_Trapper;
-                            name = DssRef.lang.BuildingType_TrapperHut;
-                            break;
-
-                       
-
-                        default:
-                            name = DssRef.lang.BuildingType_DefaultName;
-                            break;
-                    }
-                    break;
-
-                case TerrainMainType.Foil:
-                    switch ((TerrainSubFoilType)subType)
-                    {
-                        default:
-                            name = DssRef.lang.LandType_Flatland;
-                            break;
-
-                        case TerrainSubFoilType.TreeHard:
-                        case TerrainSubFoilType.TreeSoft:
-                        case TerrainSubFoilType.DryWood:
-                            icon = SpriteName.WarsBuild_TreeSoft;
-                            name = DssRef.lang.Resource_TypeName_Wood;
-                            break;
-
-                        case TerrainSubFoilType.TreeSoftSprout:
-                            name = DssRef.lang.Building_TreeSprout_Soft;
-                            break;
-                        case TerrainSubFoilType.TreeHardSprout:
-                            name = DssRef.lang.Building_TreeSprout_Hard;
-                            break;
-
-                        case TerrainSubFoilType.LargeStones:
-                        case TerrainSubFoilType.SmallStones:
-                            icon = SpriteName.WarsResource_Stone;
-                            name = DssRef.lang.Resource_TypeName_Stone;
-                            break;
+                //        case TerrainBuildingType.TrappersHut:
+                //            icon = SpriteName.WarsBuild_Trapper;
+                //            name = DssRef.lang.BuildingType_TrapperHut;
+                //            break;
 
                        
 
+                //        default:
+                //            name = DssRef.lang.BuildingType_DefaultName;
+                //            break;
+                //    }
+                //    break;
+
+                //case TerrainMainType.Foil:
+                //    switch ((TerrainSubFoilType)subType)
+                //    {
+                //        default:
+                //            name = DssRef.lang.LandType_Flatland;
+                //            break;
+
+                //        case TerrainSubFoilType.TreeHard:
+                //        case TerrainSubFoilType.TreeSoft:
+                //        case TerrainSubFoilType.DryWood:
+                //            icon = SpriteName.WarsBuild_TreeSoft;
+                //            name = DssRef.lang.Resource_TypeName_Wood;
+                //            break;
+
+                //        case TerrainSubFoilType.TreeSoftSprout:
+                //            name = DssRef.lang.Building_TreeSprout_Soft;
+                //            break;
+                //        case TerrainSubFoilType.TreeHardSprout:
+                //            name = DssRef.lang.Building_TreeSprout_Hard;
+                //            break;
+
+                //        case TerrainSubFoilType.LargeStones:
+                //        case TerrainSubFoilType.SmallStones:
+                //            icon = SpriteName.WarsResource_Stone;
+                //            name = DssRef.lang.Resource_TypeName_Stone;
+                //            break;
+
                        
-                    }
-                    break;
-                case TerrainMainType.Farm:
-                    switch ((TerrainSubFarmType)subType)
-                    {
 
-                        case TerrainSubFarmType.LinenFarm:
-                            name = string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen);
-                            break;
-                        case TerrainSubFarmType.LinenFarmUpgraded:
-                            name = string.Format(DssRef.lang.BuildingType_IsUpgraded,
-                                string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen));
-                            break;
+                       
+                //    }
+                //    break;
+                //case TerrainMainType.Farm:
+                //    switch ((TerrainSubFarmType)subType)
+                //    {
 
-                        case TerrainSubFarmType.TreeApple:
-                            icon = SpriteName.WarsBuild_TreeApple;
-                            name = DssRef.lang.BuildingType_Orchard;
-                            break;
-                        case TerrainSubFarmType.TreeBanana:
-                            icon = SpriteName.WarsBuild_TreeBanana;
-                            name = DssRef.lang.BuildingType_Orchard;
-                            break;
+                //        case TerrainSubFarmType.LinenFarm:
+                //            name = string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen);
+                //            break;
+                //        case TerrainSubFarmType.LinenFarmUpgraded:
+                //            name = string.Format(DssRef.lang.BuildingType_IsUpgraded,
+                //                string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen));
+                //            break;
 
-                        case TerrainSubFarmType.WheatFarm:
-                            name = string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
-                            break;
-                        case TerrainSubFarmType.WheatFarmUpgraded:
-                            name = string.Format(DssRef.lang.BuildingType_IsUpgraded,
-                                string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat));
-                            break;
+                //        case TerrainSubFarmType.TreeApple:
+                //            icon = SpriteName.WarsBuild_TreeApple;
+                //            name = DssRef.lang.BuildingType_Orchard;
+                //            break;
+                //        case TerrainSubFarmType.TreeBanana:
+                //            icon = SpriteName.WarsBuild_TreeBanana;
+                //            name = DssRef.lang.BuildingType_Orchard;
+                //            break;
 
-                        case TerrainSubFarmType.RapeSeedFarm:
-                            name = string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed);
-                            break;
-                        case TerrainSubFarmType.RapeSeedFarmUpgraded:
-                            name = string.Format(DssRef.lang.BuildingType_IsUpgraded,
-                                string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed));
-                            break;
+                //        case TerrainSubFarmType.WheatFarm:
+                //            name = string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
+                //            break;
+                //        case TerrainSubFarmType.WheatFarmUpgraded:
+                //            name = string.Format(DssRef.lang.BuildingType_IsUpgraded,
+                //                string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat));
+                //            break;
 
-                        case TerrainSubFarmType.HempFarm:
-                            name = string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp);
-                            break;
-                        case TerrainSubFarmType.HempFarmUpgraded:
-                            name = string.Format(DssRef.lang.BuildingType_IsUpgraded,
-                                string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp));
-                            break;
-                    }
-                    break;
+                //        case TerrainSubFarmType.RapeSeedFarm:
+                //            name = string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed);
+                //            break;
+                //        case TerrainSubFarmType.RapeSeedFarmUpgraded:
+                //            name = string.Format(DssRef.lang.BuildingType_IsUpgraded,
+                //                string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed));
+                //            break;
 
-                case TerrainMainType.AnimalPen:
-                    switch ((TerrainSubAnimalPenType)subType)
-                    {
-                        case TerrainSubAnimalPenType.HenPen:
-                            icon = SpriteName.WarsBuild_HenPen;
-                            name = DssRef.lang.BuildingType_HenPen;
-                            break;
-                        case TerrainSubAnimalPenType.PigPen:
-                            icon = SpriteName.WarsBuild_PigPen;
-                            name = DssRef.lang.BuildingType_PigPen;
-                            break;
-                        case TerrainSubAnimalPenType.FowlHabitat:
-                            icon = SpriteName.WarsResource_Fowl;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Fowl));
-                            break;
-                        case TerrainSubAnimalPenType.BoarHabitat:
-                            icon = SpriteName.WarsResource_Boar;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Boar));
-                            break;
-                        case TerrainSubAnimalPenType.OxHabitat:
-                            icon = SpriteName.WarsResource_Oxen;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Oxen));
-                            break;
-                        case TerrainSubAnimalPenType.PonyHabitat:
-                            icon = SpriteName.WarsResource_Pony;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Pony));
-                            break;
-                        case TerrainSubAnimalPenType.CatHabitat:
-                            icon = SpriteName.WarsResource_WildCat;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_WildCat));
-                            break;
-                        case TerrainSubAnimalPenType.DogHabitat:
-                            icon = SpriteName.WarsResource_Dog;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Dog));
-                            break;
-                        case TerrainSubAnimalPenType.WolfHabitat:
-                            icon = SpriteName.WarsResource_Wolf;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Wolf));
-                            break;
-                        case TerrainSubAnimalPenType.ElephantHabitat:
-                            icon = SpriteName.WarsResource_Elephant;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Elephant));
-                            break;
+                //        case TerrainSubFarmType.HempFarm:
+                //            name = string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp);
+                //            break;
+                //        case TerrainSubFarmType.HempFarmUpgraded:
+                //            name = string.Format(DssRef.lang.BuildingType_IsUpgraded,
+                //                string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp));
+                //            break;
+                //    }
+                //    break;
 
-                        case TerrainSubAnimalPenType.FowlPen:
-                            icon = SpriteName.WarsBuild_FowlPen;
-                            name = DssRef.lang.BuildingType_FowlPen;
-                            break;
-                        case TerrainSubAnimalPenType.BoarPen:
-                            icon = SpriteName.WarsBuild_BoarPen;
-                            name = DssRef.lang.BuildingType_BoarPen;
-                            break;
+                //case TerrainMainType.AnimalPen:
+                //    switch ((TerrainSubAnimalPenType)subType)
+                //    {
+                //        case TerrainSubAnimalPenType.HenPen:
+                //            icon = SpriteName.WarsBuild_HenPen;
+                //            name = DssRef.lang.BuildingType_HenPen;
+                //            break;
+                //        case TerrainSubAnimalPenType.PigPen:
+                //            icon = SpriteName.WarsBuild_PigPen;
+                //            name = DssRef.lang.BuildingType_PigPen;
+                //            break;
+                //        case TerrainSubAnimalPenType.FowlHabitat:
+                //            icon = SpriteName.WarsResource_Fowl;
+                //            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Fowl));
+                //            break;
+                //        case TerrainSubAnimalPenType.BoarHabitat:
+                //            icon = SpriteName.WarsResource_Boar;
+                //            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Boar));
+                //            break;
+                //        case TerrainSubAnimalPenType.OxHabitat:
+                //            icon = SpriteName.WarsResource_Oxen;
+                //            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Oxen));
+                //            break;
+                //        case TerrainSubAnimalPenType.PonyHabitat:
+                //            icon = SpriteName.WarsResource_Pony;
+                //            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Pony));
+                //            break;
+                //        case TerrainSubAnimalPenType.CatHabitat:
+                //            icon = SpriteName.WarsResource_WildCat;
+                //            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_WildCat));
+                //            break;
+                //        case TerrainSubAnimalPenType.DogHabitat:
+                //            icon = SpriteName.WarsResource_Dog;
+                //            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Dog));
+                //            break;
+                //        case TerrainSubAnimalPenType.WolfHabitat:
+                //            icon = SpriteName.WarsResource_Wolf;
+                //            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Wolf));
+                //            break;
+                //        case TerrainSubAnimalPenType.ElephantHabitat:
+                //            icon = SpriteName.WarsResource_Elephant;
+                //            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Elephant));
+                //            break;
+
+                //        case TerrainSubAnimalPenType.FowlPen:
+                //            icon = SpriteName.WarsBuild_FowlPen;
+                //            name = DssRef.lang.BuildingType_FowlPen;
+                //            break;
+                //        case TerrainSubAnimalPenType.BoarPen:
+                //            icon = SpriteName.WarsBuild_BoarPen;
+                //            name = DssRef.lang.BuildingType_BoarPen;
+                //            break;
 
 
-                        case TerrainSubAnimalPenType.OxenPen:
-                            icon = SpriteName.WarsBuild_OxenPen;
-                            name = DssRef.lang.BuildingType_OxenPen;
-                            break;
-                        case TerrainSubAnimalPenType.KineOxenPen:
-                            icon = SpriteName.WarsBuild_KineOxenPen;
-                            name = DssRef.lang.BuildingType_KineOxenPen;
-                            break;
+                //        case TerrainSubAnimalPenType.OxenPen:
+                //            icon = SpriteName.WarsBuild_OxenPen;
+                //            name = DssRef.lang.BuildingType_OxenPen;
+                //            break;
+                //        case TerrainSubAnimalPenType.KineOxenPen:
+                //            icon = SpriteName.WarsBuild_KineOxenPen;
+                //            name = DssRef.lang.BuildingType_KineOxenPen;
+                //            break;
 
-                        case TerrainSubAnimalPenType.DogCage:
-                            icon = SpriteName.WarsBuild_DogCage;
-                            name = DssRef.lang.BuildingType_DogCage;
-                            break;
-                        case TerrainSubAnimalPenType.HoundCage:
-                            icon = SpriteName.WarsBuild_HoundCage;
-                            name = DssRef.lang.BuildingType_HoundCage;
-                            break;
+                //        case TerrainSubAnimalPenType.DogCage:
+                //            icon = SpriteName.WarsBuild_DogCage;
+                //            name = DssRef.lang.BuildingType_DogCage;
+                //            break;
+                //        case TerrainSubAnimalPenType.HoundCage:
+                //            icon = SpriteName.WarsBuild_HoundCage;
+                //            name = DssRef.lang.BuildingType_HoundCage;
+                //            break;
 
-                        case TerrainSubAnimalPenType.PonyPen:
-                            icon = SpriteName.WarsBuild_PonyPen;
-                            name = DssRef.lang.BuildingType_PonyPen;
-                            break;
-                        case TerrainSubAnimalPenType.HorsePen:
-                            icon = SpriteName.WarsBuild_HorsePen;
-                            name = DssRef.lang.BuildingType_HorsePen;
-                            break;
-                        case TerrainSubAnimalPenType.WarHorsePen:
-                            icon = SpriteName.WarsBuild_WarHorsePen;
-                            name = DssRef.lang.BuildingType_WarHorsePen;
-                            break;
-                        case TerrainSubAnimalPenType.DraftHorsePen:
-                            icon = SpriteName.WarsBuild_DraftHorsePen;
-                            name = DssRef.lang.BuildingType_DraftHorsePen;
-                            break;
-                        case TerrainSubAnimalPenType.WildPigPen:
-                            icon = SpriteName.WarsBuild_WildPigPen;
-                            name = DssRef.lang.BuildingType_WildPigPen;
-                            break;
-                        case TerrainSubAnimalPenType.WildHogPen:
-                            icon = SpriteName.WarsBuild_WildHogPen;
-                            name = DssRef.lang.BuildingType_WildHogPen;
-                            break;
-                        case TerrainSubAnimalPenType.WarHogPen:
-                            icon = SpriteName.WarsBuild_WarHogPen;
-                            name = DssRef.lang.BuildingType_WarHogPen;
-                            break;
-                        case TerrainSubAnimalPenType.StagHogPen:
-                            icon = SpriteName.WarsBuild_StagHogPen;
-                            name = DssRef.lang.BuildingType_StagHogPen;
-                            break;
-                        case TerrainSubAnimalPenType.WolfCage:
-                            icon = SpriteName.WarsBuild_WolfPen;
-                            name = DssRef.lang.BuildingType_WolfCage;
-                            break;
-                        case TerrainSubAnimalPenType.WargCage:
-                            icon = SpriteName.WarsBuild_AlphaWargPen;
-                            name = DssRef.lang.BuildingType_WargCage;
-                            break;
-                        case TerrainSubAnimalPenType.AlphaWargCage:
-                            icon = SpriteName.WarsBuild_AlphaWargPen;
-                            name = DssRef.lang.BuildingType_AlphaWargCage;
-                            break;
-                        case TerrainSubAnimalPenType.WildCatCage:
-                            icon = SpriteName.WarsBuild_WildCatPen;
-                            name = DssRef.lang.BuildingType_WildCatCage;
-                            break;
-                        case TerrainSubAnimalPenType.LionCage:
-                            icon = SpriteName.WarsBuild_LionPen;
-                            name = DssRef.lang.BuildingType_LionCage;
-                            break;
-                        case TerrainSubAnimalPenType.WarLionCage:
-                            icon = SpriteName.WarsBuild_WarLionPen;
-                            name = DssRef.lang.BuildingType_WarLionCage;
-                            break;
-                        case TerrainSubAnimalPenType.ElephantCage:
-                            icon = SpriteName.WarsBuild_ElephantPen;
-                            name = DssRef.lang.BuildingType_ElephantCage;
-                            break;
-                        case TerrainSubAnimalPenType.WarElephantCage:
-                            icon = SpriteName.WarsBuild_WarElephantPen;
-                            name = DssRef.lang.BuildingType_WarElephantCage;
-                            break;
-                        case TerrainSubAnimalPenType.OliphantCage:
-                            icon = SpriteName.WarsBuild_OliphantPen;
-                            name = DssRef.lang.BuildingType_OliphantCage;
-                            break;
-                    }
-                    break;
+                //        case TerrainSubAnimalPenType.PonyPen:
+                //            icon = SpriteName.WarsBuild_PonyPen;
+                //            name = DssRef.lang.BuildingType_PonyPen;
+                //            break;
+                //        case TerrainSubAnimalPenType.HorsePen:
+                //            icon = SpriteName.WarsBuild_HorsePen;
+                //            name = DssRef.lang.BuildingType_HorsePen;
+                //            break;
+                //        case TerrainSubAnimalPenType.WarHorsePen:
+                //            icon = SpriteName.WarsBuild_WarHorsePen;
+                //            name = DssRef.lang.BuildingType_WarHorsePen;
+                //            break;
+                //        case TerrainSubAnimalPenType.DraftHorsePen:
+                //            icon = SpriteName.WarsBuild_DraftHorsePen;
+                //            name = DssRef.lang.BuildingType_DraftHorsePen;
+                //            break;
+                //        case TerrainSubAnimalPenType.WildPigPen:
+                //            icon = SpriteName.WarsBuild_WildPigPen;
+                //            name = DssRef.lang.BuildingType_WildPigPen;
+                //            break;
+                //        case TerrainSubAnimalPenType.WildHogPen:
+                //            icon = SpriteName.WarsBuild_WildHogPen;
+                //            name = DssRef.lang.BuildingType_WildHogPen;
+                //            break;
+                //        case TerrainSubAnimalPenType.WarHogPen:
+                //            icon = SpriteName.WarsBuild_WarHogPen;
+                //            name = DssRef.lang.BuildingType_WarHogPen;
+                //            break;
+                //        case TerrainSubAnimalPenType.StagHogPen:
+                //            icon = SpriteName.WarsBuild_StagHogPen;
+                //            name = DssRef.lang.BuildingType_StagHogPen;
+                //            break;
+                //        case TerrainSubAnimalPenType.WolfCage:
+                //            icon = SpriteName.WarsBuild_WolfPen;
+                //            name = DssRef.lang.BuildingType_WolfCage;
+                //            break;
+                //        case TerrainSubAnimalPenType.WargCage:
+                //            icon = SpriteName.WarsBuild_AlphaWargPen;
+                //            name = DssRef.lang.BuildingType_WargCage;
+                //            break;
+                //        case TerrainSubAnimalPenType.AlphaWargCage:
+                //            icon = SpriteName.WarsBuild_AlphaWargPen;
+                //            name = DssRef.lang.BuildingType_AlphaWargCage;
+                //            break;
+                //        case TerrainSubAnimalPenType.WildCatCage:
+                //            icon = SpriteName.WarsBuild_WildCatPen;
+                //            name = DssRef.lang.BuildingType_WildCatCage;
+                //            break;
+                //        case TerrainSubAnimalPenType.LionCage:
+                //            icon = SpriteName.WarsBuild_LionPen;
+                //            name = DssRef.lang.BuildingType_LionCage;
+                //            break;
+                //        case TerrainSubAnimalPenType.WarLionCage:
+                //            icon = SpriteName.WarsBuild_WarLionPen;
+                //            name = DssRef.lang.BuildingType_WarLionCage;
+                //            break;
+                //        case TerrainSubAnimalPenType.ElephantCage:
+                //            icon = SpriteName.WarsBuild_ElephantPen;
+                //            name = DssRef.lang.BuildingType_ElephantCage;
+                //            break;
+                //        case TerrainSubAnimalPenType.WarElephantCage:
+                //            icon = SpriteName.WarsBuild_WarElephantPen;
+                //            name = DssRef.lang.BuildingType_WarElephantCage;
+                //            break;
+                //        case TerrainSubAnimalPenType.OliphantCage:
+                //            icon = SpriteName.WarsBuild_OliphantPen;
+                //            name = DssRef.lang.BuildingType_OliphantCage;
+                //            break;
+                //    }
+                //    break;
 
 
                 case TerrainMainType.Mine:
@@ -1849,133 +1866,133 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
-                case TerrainMainType.Road:
-                    switch ((TerrainRoadType)subType)
-                    {
-                        case TerrainRoadType.DirtRoad:
-                            name = DssRef.lang.BuildingType_DirtRoad;
-                            break;
-                        case TerrainRoadType.GravelRoad:
-                            name = DssRef.todoLang.BuildingType_GravelRoad;
-                            break;
-                        case TerrainRoadType.CobblestoneRoad:
-                            name = DssRef.todoLang.BuildingType_CobblestoneRoad;
-                            break;
-                        case TerrainRoadType.PavedRoad:
-                            name = DssRef.todoLang.BuildingType_PavedRoad;
-                            break;
+                //case TerrainMainType.Road:
+                //    switch ((TerrainRoadType)subType)
+                //    {
+                //        case TerrainRoadType.DirtRoad:
+                //            name = DssRef.lang.BuildingType_DirtRoad;
+                //            break;
+                //        case TerrainRoadType.GravelRoad:
+                //            name = DssRef.todoLang.BuildingType_GravelRoad;
+                //            break;
+                //        case TerrainRoadType.CobblestoneRoad:
+                //            name = DssRef.todoLang.BuildingType_CobblestoneRoad;
+                //            break;
+                //        case TerrainRoadType.PavedRoad:
+                //            name = DssRef.todoLang.BuildingType_PavedRoad;
+                //            break;
 
-                        case TerrainRoadType.PavementStreet:
-                            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Pavement);
-                            break;
-                        case TerrainRoadType.PavementFlower:
-                            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Pavement);
-                            break;
-                        case TerrainRoadType.PavementRectFlower:
-                            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Pavement);
-                            break;
-                        case TerrainRoadType.PavementLamp:
-                            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Pavement);
-                            break;
-                        case TerrainRoadType.PavemenFountain:
-                            name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Pavement);
-                            break;
-                        //case TerrainDecorType.CobbleStones:
-                        //    name = DssRef.lang.DecorType_CobbleStones;
-                        //    break;
-                        case TerrainRoadType.Square:
-                            name = DssRef.lang.DecorType_Square;
-                            break;
-                    }
-                    break;
+                //        case TerrainRoadType.PavementStreet:
+                //            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Pavement);
+                //            break;
+                //        case TerrainRoadType.PavementFlower:
+                //            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Pavement);
+                //            break;
+                //        case TerrainRoadType.PavementRectFlower:
+                //            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Pavement);
+                //            break;
+                //        case TerrainRoadType.PavementLamp:
+                //            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Pavement);
+                //            break;
+                //        case TerrainRoadType.PavemenFountain:
+                //            name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Pavement);
+                //            break;
+                //        //case TerrainDecorType.CobbleStones:
+                //        //    name = DssRef.lang.DecorType_CobbleStones;
+                //        //    break;
+                //        case TerrainRoadType.Square:
+                //            name = DssRef.lang.DecorType_Square;
+                //            break;
+                //    }
+                //    break;
 
-                case TerrainMainType.Decor:
-                    switch ((TerrainDecorType)subType)
-                    {
+                //case TerrainMainType.Decor:
+                //    switch ((TerrainDecorType)subType)
+                //    {
                         
 
-                        case TerrainDecorType.Statue_ThePlayer:
-                            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Statue);
-                            break;
+                //        case TerrainDecorType.Statue_ThePlayer:
+                //            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Statue);
+                //            break;
 
-                        case TerrainDecorType.GardenFourBushes:
-                            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Garden);
-                            break;
-                        case TerrainDecorType.GardenLongTree:
-                            name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Garden);
-                            break;
-                        case TerrainDecorType.GardenWalledBush:
-                            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Garden);
-                            break;
-                        case TerrainDecorType.GardenGrass:
-                            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Garden);
-                            break;
-                        case TerrainDecorType.GardenBird:
-                            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Garden);
-                            break;
+                //        case TerrainDecorType.GardenFourBushes:
+                //            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Garden);
+                //            break;
+                //        case TerrainDecorType.GardenLongTree:
+                //            name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Garden);
+                //            break;
+                //        case TerrainDecorType.GardenWalledBush:
+                //            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Garden);
+                //            break;
+                //        case TerrainDecorType.GardenGrass:
+                //            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Garden);
+                //            break;
+                //        case TerrainDecorType.GardenBird:
+                //            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Garden);
+                //            break;
 
-                        case TerrainDecorType.GardenMemoryStone:
-                            name = string.Format(DssRef.lang.VariantType_F, DssRef.lang.DecorType_Garden);
-                            break;
+                //        case TerrainDecorType.GardenMemoryStone:
+                //            name = string.Format(DssRef.lang.VariantType_F, DssRef.lang.DecorType_Garden);
+                //            break;
 
-                        case TerrainDecorType.Statue_Leader:
-                            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Statue);
-                            break;
-                        case TerrainDecorType.Statue_Lion:
-                            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Statue);
-                            break;
-                        case TerrainDecorType.Statue_Horse:
-                            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Statue);
-                            break;
-                        case TerrainDecorType.Statue_Pillar:
-                            name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Statue);
-                            break;
+                //        case TerrainDecorType.Statue_Leader:
+                //            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Statue);
+                //            break;
+                //        case TerrainDecorType.Statue_Lion:
+                //            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Statue);
+                //            break;
+                //        case TerrainDecorType.Statue_Horse:
+                //            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Statue);
+                //            break;
+                //        case TerrainDecorType.Statue_Pillar:
+                //            name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Statue);
+                //            break;
 
-                        case TerrainDecorType.DiplomaticStatue_ThumbsUpWest:
-                            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_DiplomaticStatue);
-                            break;
-                        case TerrainDecorType.DiplomaticStatue_ThumbsUpEast:
-                            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_DiplomaticStatue);
-                            break;
-                        case TerrainDecorType.DiplomaticStatue_InsultWest:
-                            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_DiplomaticStatue);
-                            break;
-                        case TerrainDecorType.DiplomaticStatue_InsultEast:
-                            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_DiplomaticStatue);
-                            break;
-                        case TerrainDecorType.DiplomaticStatue_GoldenPoop:
-                            name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_DiplomaticStatue);
-                            break;
+                //        case TerrainDecorType.DiplomaticStatue_ThumbsUpWest:
+                //            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_DiplomaticStatue);
+                //            break;
+                //        case TerrainDecorType.DiplomaticStatue_ThumbsUpEast:
+                //            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_DiplomaticStatue);
+                //            break;
+                //        case TerrainDecorType.DiplomaticStatue_InsultWest:
+                //            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_DiplomaticStatue);
+                //            break;
+                //        case TerrainDecorType.DiplomaticStatue_InsultEast:
+                //            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_DiplomaticStatue);
+                //            break;
+                //        case TerrainDecorType.DiplomaticStatue_GoldenPoop:
+                //            name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_DiplomaticStatue);
+                //            break;
 
-                        case TerrainDecorType.FlagPole_LongBanner:
-                            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Banner);
-                            break;
-                        case TerrainDecorType.FlagPole_Banner:
-                            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Banner);
-                            break;
-                        case TerrainDecorType.FlagPole_SlimBanner:
-                            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Banner);
-                            break;
+                //        case TerrainDecorType.FlagPole_LongBanner:
+                //            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Banner);
+                //            break;
+                //        case TerrainDecorType.FlagPole_Banner:
+                //            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Banner);
+                //            break;
+                //        case TerrainDecorType.FlagPole_SlimBanner:
+                //            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Banner);
+                //            break;
 
-                        case TerrainDecorType.FlagPole_Flag:
-                            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Flag);
-                            break;
-                        case TerrainDecorType.FlagPole_FlagRound:
-                            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Flag);
-                            break;
-                        case TerrainDecorType.FlagPole_FlagLarge:
-                            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Flag);
-                            break;
-                        case TerrainDecorType.FlagPole_Streamer:
-                            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Flag);
-                            break;
-                        case TerrainDecorType.FlagPole_Triangle:
-                            name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Flag);
-                            break;
+                //        case TerrainDecorType.FlagPole_Flag:
+                //            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Flag);
+                //            break;
+                //        case TerrainDecorType.FlagPole_FlagRound:
+                //            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Flag);
+                //            break;
+                //        case TerrainDecorType.FlagPole_FlagLarge:
+                //            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Flag);
+                //            break;
+                //        case TerrainDecorType.FlagPole_Streamer:
+                //            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Flag);
+                //            break;
+                //        case TerrainDecorType.FlagPole_Triangle:
+                //            name = string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Flag);
+                //            break;
 
                         
-                    }
-                    break;
+                //    }
+                //    break;
 
                 case TerrainMainType.Destroyed:
                 case TerrainMainType.DefaultLand:
@@ -1990,51 +2007,51 @@ namespace VikingEngine.DSSWars
                     name = DssRef.lang.Resource;
                     break;
 
-                case TerrainMainType.Wall:
-                    switch ((TerrainWallType)subType)
-                    {
-                        case TerrainWallType.Palisade:
-                            name = DssRef.lang.BuildingType_Palisade;
-                            break;
-                        case TerrainWallType.DirtWall:
-                            name = DssRef.lang.BuildingType_DirtWall;
-                            break;
-                        case TerrainWallType.DirtTower:
-                            name = DssRef.lang.BuildingType_DirtTower;
-                            break;
-                        case TerrainWallType.WoodWall:
-                            name = DssRef.lang.BuildingType_WoodWall;
-                            break;
-                        case TerrainWallType.WoodTower:
-                            name = DssRef.lang.BuildingType_WoodTower;
-                            break;
-                        case TerrainWallType.StoneWall:
-                            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.BuildingType_StoneWall);
-                            break;
-                        case TerrainWallType.StoneTower:
-                            name = DssRef.lang.BuildingType_StoneTower;
-                            break;
-                        case TerrainWallType.StoneWallGreen:
-                            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.BuildingType_StoneWall);
-                            break;
-                        case TerrainWallType.StoneWallBlueRoof:
-                            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.BuildingType_StoneWall);
-                            break;
-                        case TerrainWallType.StoneWallWoodHouse:
-                            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.BuildingType_StoneWall);
-                            break;
-                        case TerrainWallType.StoneGate:
-                            name = DssRef.lang.BuildingType_StoneGate;
-                            break;
-                        case TerrainWallType.StoneHouse:
-                            name = DssRef.lang.BuildingType_StoneHouse;
-                            break;
+                //case TerrainMainType.Wall:
+                //    switch ((TerrainWallType)subType)
+                //    {
+                //        case TerrainWallType.Palisade:
+                //            name = DssRef.lang.BuildingType_Palisade;
+                //            break;
+                //        case TerrainWallType.DirtWall:
+                //            name = DssRef.lang.BuildingType_DirtWall;
+                //            break;
+                //        case TerrainWallType.DirtTower:
+                //            name = DssRef.lang.BuildingType_DirtTower;
+                //            break;
+                //        case TerrainWallType.WoodWall:
+                //            name = DssRef.lang.BuildingType_WoodWall;
+                //            break;
+                //        case TerrainWallType.WoodTower:
+                //            name = DssRef.lang.BuildingType_WoodTower;
+                //            break;
+                //        case TerrainWallType.StoneWall:
+                //            name = string.Format(DssRef.lang.VariantType_A, DssRef.lang.BuildingType_StoneWall);
+                //            break;
+                //        case TerrainWallType.StoneTower:
+                //            name = DssRef.lang.BuildingType_StoneTower;
+                //            break;
+                //        case TerrainWallType.StoneWallGreen:
+                //            name = string.Format(DssRef.lang.VariantType_B, DssRef.lang.BuildingType_StoneWall);
+                //            break;
+                //        case TerrainWallType.StoneWallBlueRoof:
+                //            name = string.Format(DssRef.lang.VariantType_C, DssRef.lang.BuildingType_StoneWall);
+                //            break;
+                //        case TerrainWallType.StoneWallWoodHouse:
+                //            name = string.Format(DssRef.lang.VariantType_D, DssRef.lang.BuildingType_StoneWall);
+                //            break;
+                //        case TerrainWallType.StoneGate:
+                //            name = DssRef.lang.BuildingType_StoneGate;
+                //            break;
+                //        case TerrainWallType.StoneHouse:
+                //            name = DssRef.lang.BuildingType_StoneHouse;
+                //            break;
 
-                        default:
-                            name = DssRef.lang.BuildingType_Wall;
-                            break;
-                    }
-                    break;
+                //        default:
+                //            name = DssRef.lang.BuildingType_Wall;
+                //            break;
+                //    }
+                //    break;
             }
 
             if (name == null)

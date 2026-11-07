@@ -383,7 +383,7 @@ const string EditProfileBuildingsMenu = "edit_profile_buildings";
                         CityProfile profile = profiles.profiles.Sel();
 
                         List<BuildAndExpandType> buildingsList = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-                        BuildLib.AvailableBuildTypes(buildingsList, null, false);
+                        AvailableBuildTypes.Available(buildingsList, null, false);
 
                         HashSet<BuildAndExpandType> existing = new HashSet<BuildAndExpandType>();
                         if (profile.buildProfiles.HasValue())

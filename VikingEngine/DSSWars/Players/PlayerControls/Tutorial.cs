@@ -9,6 +9,7 @@ using System.Reflection.Metadata;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Conscript;
@@ -18,7 +19,6 @@ using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface.HudPinUi;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
-using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
@@ -405,7 +405,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 citySel.resourceAmountSet(EntityComponent.CityResourceIndex.sharpstick, CollectWeaponArmorAmount - 6);
                 citySel.resourceAmountSet(EntityComponent.CityResourceIndex.paddedArmor, CollectWeaponArmorAmount - 6);
 
-                CityStructure.WorkInstance.setupTutorialMap(citySel);
+                CityStructureProcess.WorkInstance.setupTutorialMap(citySel);
 
                 if (cityarea.X == 0)
                 {
@@ -1061,7 +1061,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 var option = Build.BuildLib.BuildOptions[(int)build];
                 IconName.BuildCategory(option.buildCategory, out SpriteName tabIcon, out string category);
-                content.iconiconicontext(HudLib.CheckImage(complete), tabIcon, option.sprite, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, option.Label()));
+                content.iconiconicontext(HudLib.CheckImage(complete), tabIcon, option.icon, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, option.Label()));
             }
             //content.newParagraph();
             //content.icontext(player.gameControls.input.mouseSelect.Icon, DssRef.lang.Tutorial_SelectInput);            

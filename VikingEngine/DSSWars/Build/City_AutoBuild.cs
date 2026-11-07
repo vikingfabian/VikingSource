@@ -7,13 +7,12 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.EntityComponent;
-using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Resource;
@@ -111,9 +110,9 @@ namespace VikingEngine.DSSWars.GameObject
                     safeGuardBuild = BuildAndExpandType.ArcherBarracks;
                 }
             }
-            else if (CityStructure.WorkInstance.fuelSpots < 2)
+            else if (CityStructureProcess.WorkInstance.fuelSpots < 2)
             {
-                ++CityStructure.WorkInstance.fuelSpots;
+                ++CityStructureProcess.WorkInstance.fuelSpots;
                 safeGuardBuild = BuildAndExpandType.RapeSeedFarm;
                 safeGuardBuildCount = 2;
             }
@@ -235,14 +234,14 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (this.buildingStructure.getCount(buildType) > 0)
                 {
-                    var prevPos = CityStructure.WorkInstance.buildingPosition.getPos(buildType);
+                    var prevPos = CityStructureProcess.WorkInstance.buildingPosition.getPos(buildType);
                     if (prevPos.X > 0)
                     {
                         foundPos = findAdjacentFreeSpot(Auto_EdgeRandomizer, prevPos, ref pos);
                     }
                 }
 
-                if (!foundPos && CityStructure.WorkInstance.NextEmptyLand(this, Ref.peRnd.Int(32), out pos))
+                if (!foundPos && CityStructureProcess.WorkInstance.NextEmptyLand(this, Ref.peRnd.Int(32), out pos))
                 {
                     foundPos = true;
                 }
@@ -406,7 +405,7 @@ namespace VikingEngine.DSSWars.GameObject
             AutoBuild_available.Clear();
             AutoBuild_RandomBuild.clear();
 
-            BuildLib.AvailableBuildTypes(AutoBuild_available, this, true);
+            AvailableBuildTypes.Available(AutoBuild_available, this, true);
 
             int pickCount = lib.SmallestValue(AutoBuild_available.Count, 4);
 
@@ -545,6 +544,7 @@ namespace VikingEngine.DSSWars.GameObject
                     case BuildAndExpandType.WarmachineBarracks:
                     case BuildAndExpandType.GunBarracks:
                     case BuildAndExpandType.CannonBarracks:
+                    case BuildAndExpandType.AnimalTrainer:
                         maxCount = 2;
                         chance = automationFocus == AutomationFocus.Military ? 100 : 5;
                         break;

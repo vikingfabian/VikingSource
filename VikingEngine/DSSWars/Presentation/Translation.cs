@@ -214,7 +214,7 @@ namespace VikingEngine.DSSWars.Presentation
                     break;
             }
 
-            WorkPropertyColl.Init();
+            IntroState.OnLanguageSelect();
         }
     }
 

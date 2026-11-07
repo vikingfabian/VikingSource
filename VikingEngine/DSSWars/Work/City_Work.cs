@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
@@ -64,7 +65,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (pfaction.IsEmpty() /*|| cityType == CityType.UnClaimed*/)
             {
-                CityStructure.WorkInstance.update(DssRef.world, this, 0);
+                CityStructureProcess.WorkInstance.update(DssRef.world, this, 0);
                 return; 
             }
 
@@ -78,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 bool hostUpdate = DssRef.state.host || faction.player.IsLocalPlayer();
 
-                CityStructure.WorkInstance.newCity = true;
+                CityStructureProcess.WorkInstance.newCity = true;
                
                 async_blackMarketUpdate();
                 Array.Clear(CurrentWorkerCount);
@@ -209,7 +210,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (idleCount > 0 && IsNetHosted && previousWorkQueUpdate.secPassed(10))
                 {
-                    CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
+                    CityStructureProcess.WorkInstance.updateIfNew(this, workerStatuses.Count);
                     buildWorkQue2();
                     //Last position = highest priority
                     if (Ref.peRnd.ChanceF(0.05f))
@@ -251,8 +252,8 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         else if (status.carry.amount > 0)
                         {
-                            CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
-                            status.createWorkOrder(WorkType.DropOff, -1, 0, WorkExperienceType.Transport, WorkPriorityType.NUM_NONE, -1, CityStructure.WorkInstance.storePosition(status.subTileEnd), this);
+                            CityStructureProcess.WorkInstance.updateIfNew(this, workerStatuses.Count);
+                            status.createWorkOrder(WorkType.DropOff, -1, 0, WorkExperienceType.Transport, WorkPriorityType.NUM_NONE, -1, CityStructureProcess.WorkInstance.storePosition(status.subTileEnd), this);
                         }
                         else if (status.energy < 0 && workTeamsTotalCount <= 1)
                         {
@@ -260,8 +261,8 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         else if (status.energy < 0 && (resourceAmount(CityResourceIndex.food) > 0 || faction.hasGold(1, this)))
                         {
-                            CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
-                            status.createWorkOrder(WorkType.Eat, -1, 0, WorkExperienceType.NUM_NONE, WorkPriorityType.NUM_NONE, -1, CityStructure.WorkInstance.eatPosition(status.subTileEnd), this);
+                            CityStructureProcess.WorkInstance.updateIfNew(this, workerStatuses.Count);
+                            status.createWorkOrder(WorkType.Eat, -1, 0, WorkExperienceType.NUM_NONE, WorkPriorityType.NUM_NONE, -1, CityStructureProcess.WorkInstance.eatPosition(status.subTileEnd), this);
                         }
                         else if (status.energy <= DssConst.Worker_Starvation)
                         {
@@ -443,7 +444,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         if (workTemplate.Get(WorkPriorityType.move).HasPrio())
                         {
-                            foreach (var pos in CityStructure.WorkInstance.ResourceOnGround)
+                            foreach (var pos in CityStructureProcess.WorkInstance.ResourceOnGround)
                             {
                                 var subTile = DssRef.world.subTileGrid.Get(pos);
 
@@ -465,14 +466,14 @@ namespace VikingEngine.DSSWars.GameObject
                     //WOOD
                     if (workTemplate.Get(WorkPriorityType.wood).HasPrio() && needMore(CityResourceIndex.wood))
                     {
-                        foreach (var pos in CityStructure.WorkInstance.Trees)
+                        foreach (var pos in CityStructureProcess.WorkInstance.Trees)
                         {
                             if (work_isFreeTile(pos))
                             {
                                 int distanceValue = -center.SideLength(pos);
 
                                 byte bonus = 0;
-                                if (CityStructure.WorkInstance.inBonusRadius(pos, CityStructure.WorkInstance.WoodCutter, DssConst.WoodCutter_BonusRadius))
+                                if (CityStructureProcess.WorkInstance.inBonusRadius(pos, CityStructureProcess.WorkInstance.WoodCutter, DssConst.WoodCutter_BonusRadius))
                                 {
                                     bonus = DssConst.WoodCutter_WoodBonus;
                                 }
@@ -485,13 +486,13 @@ namespace VikingEngine.DSSWars.GameObject
                     if (workTemplate.Get(WorkPriorityType.stone).HasPrio() &&
                         needMore(CityResourceIndex.stone)/*res_stone.needMore()*/)
                     {
-                        foreach (var pos in CityStructure.WorkInstance.Stones)
+                        foreach (var pos in CityStructureProcess.WorkInstance.Stones)
                         {
                             if (work_isFreeTile(pos))
                             {
                                 int distanceValue = -center.SideLength(pos);
                                 byte bonus = 0;
-                                if (CityStructure.WorkInstance.inBonusRadius(pos, CityStructure.WorkInstance.StoneCutter, DssConst.StoneCutter_BonusRadius))
+                                if (CityStructureProcess.WorkInstance.inBonusRadius(pos, CityStructureProcess.WorkInstance.StoneCutter, DssConst.StoneCutter_BonusRadius))
                                 {
                                     bonus = DssConst.StoneCutter_StoneBonus;
                                 }
@@ -504,7 +505,7 @@ namespace VikingEngine.DSSWars.GameObject
                     int waterprio = workTemplate.Get(WorkPriorityType.collectWater).value;
                     if (bNeedMoreWater && waterprio > WorkTemplate.NoPrio)
                     {
-                        foreach (var waterPool in CityStructure.WorkInstance.WaterCollect)
+                        foreach (var waterPool in CityStructureProcess.WorkInstance.WaterCollect)
                         {
                             if (work_isFreeTile(waterPool))
                             {
@@ -515,7 +516,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
 
                     //FARMS
-                    foreach (var tilework in CityStructure.WorkInstance.Farms)
+                    foreach (var tilework in CityStructureProcess.WorkInstance.Farms)
                     {
                         bool bNeedMore = false;
                         //bool safeGuard = false;
@@ -607,7 +608,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (workTemplate.Get(WorkPriorityType.bogiron).HasPrio() &&
                         needMore(CityResourceIndex.ironore))
                     {
-                        foreach (var pos in CityStructure.WorkInstance.BogIron)
+                        foreach (var pos in CityStructureProcess.WorkInstance.BogIron)
                         {
                             if (work_isFreeTile(pos))
                             {
@@ -619,7 +620,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (workTemplate.Get(WorkPriorityType.collectClay).HasPrio() &&
                         needMore(CityResourceIndex.Clay))
                     {
-                        foreach (var pos in CityStructure.WorkInstance.ClayPit)
+                        foreach (var pos in CityStructureProcess.WorkInstance.ClayPit)
                         {
                             if (work_isFreeTile(pos))
                             {
@@ -631,7 +632,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     //if (fuelSafeGuard)
                     //{
-                    foreach (var pos in CityStructure.WorkInstance.Mines)
+                    foreach (var pos in CityStructureProcess.WorkInstance.Mines)
                     {
                         bool bNeedMore = true;
                         //bool safeGuard = false;
@@ -711,7 +712,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //ANIMALS
                     if (workTemplate.Get(WorkPriorityType.move).HasPrio())
                     {
-                        foreach (var pos in CityStructure.WorkInstance.AnimalPens)
+                        foreach (var pos in CityStructureProcess.WorkInstance.AnimalPens)
                         {
                             bool bNeedMore = true;
 
@@ -828,7 +829,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         //CRAFT
                         byte prio;
-                        foreach (var pos in CityStructure.WorkInstance.CraftStation)
+                        foreach (var pos in CityStructureProcess.WorkInstance.CraftStation)
                         {
                             int distanceValue = -center.SideLength(pos);
                             var subTile = DssRef.world.subTileGrid.Get(pos);
@@ -951,7 +952,7 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
                     //COINS
-                    if (CityStructure.WorkInstance.CoinMinting.Count > 0)//foreach (var pos in CityStructure.WorkInstance.CoinMinting)
+                    if (CityStructureProcess.WorkInstance.CoinMinting.Count > 0)//foreach (var pos in CityStructure.WorkInstance.CoinMinting)
                     {
                         ItemResourceType topItem = ItemResourceType.NONE;
                         int topPrio = 0;
@@ -975,7 +976,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (topPrio > 0)
                         {
-                            foreach (var pos in CityStructure.WorkInstance.CoinMinting)
+                            foreach (var pos in CityStructureProcess.WorkInstance.CoinMinting)
                             {
                                 int distanceValue = -center.SideLength(pos);
                                 workQue.Add(new WorkQueMember(WorkType.Craft, (int)topItem, 0, topPrioType, pos, topPrio, 0, distanceValue));
@@ -1251,7 +1252,7 @@ namespace VikingEngine.DSSWars.GameObject
             const int FuelFarmCount = 10;
             int fuelType = (int)TerrainSubFarmType.RapeSeedFarm;
 
-            CityStructure structure = new CityStructure();
+            CityStructureProcess structure = new CityStructureProcess();
             structure.update(DssRef.world, this, 32, FuelFarmCount);
             if (structure.fuelSpots <= 8)
             {

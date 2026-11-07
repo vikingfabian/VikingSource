@@ -379,7 +379,7 @@ namespace VikingEngine.DSSWars.XP
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbImage(opt.sprite));
+                content.Add(new RbImage(opt.icon));
                 content.space();
                 content.Add(new RbText(opt.Label()));
             }

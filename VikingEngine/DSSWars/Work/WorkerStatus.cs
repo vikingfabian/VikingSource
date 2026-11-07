@@ -1577,7 +1577,7 @@ namespace VikingEngine.DSSWars.Work
                     {
                         if (orderIsActive(city))
                         {
-                            BuildLib.Demolish(city, subTileEnd, false);
+                            Build.BuildTool.Demolish(city, subTileEnd, false);
 
                             gainXp = WorkExperienceType.HouseBuilding;
                         }

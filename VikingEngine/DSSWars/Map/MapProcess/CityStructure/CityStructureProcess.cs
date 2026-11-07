@@ -4,20 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Core.DSSWars.Map.MapData;
+using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.LootFest.Map;
 using VikingEngine.ToGG.ToggEngine.Map;
 
-namespace VikingEngine.DSSWars.Map.MapProcess
+namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
 {
-    class CityStructure
+    class CityStructureProcess
     {
-        public static readonly CityStructure WorkInstance = new CityStructure();
-        public static readonly CityStructure AutomationInstance = new CityStructure();
+        public static readonly CityStructureProcess WorkInstance = new CityStructureProcess();
+        public static readonly CityStructureProcess AutomationInstance = new CityStructureProcess();
         ForXYEdgeLoopRandomPicker edgeRandomizer = new ForXYEdgeLoopRandomPicker();
 
         public List<IntVector2> FoodSpots_workupdate = new List<IntVector2>(4);
@@ -72,7 +74,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                         if (sumTile.pcity.cityIndex == city.myIndex && mapTile.IsLand())
                         {
                             topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
-                            subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
+                            subTileLoop = new ForXYLoop(topleft, topleft + MapTile1_1.ModelScale_Inv_MaxIndex);
 
                             while (subTileLoop.Next())
                             {
@@ -137,7 +139,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                         if (sumTile.pcity.cityIndex == city.myIndex && mapTile.IsLand())
                         {
                             topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
-                            subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
+                            subTileLoop = new ForXYLoop(topleft, topleft + MapTile1_1.ModelScale_Inv_MaxIndex);
 
                             while (subTileLoop.Next())
                             {
@@ -175,7 +177,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                         if (tile.pcity.cityIndex == city.myIndex /*&& tile.MayBuild()*/)
                         {
                             topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
-                            subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
+                            subTileLoop = new ForXYLoop(topleft, topleft + MapTile1_1.ModelScale_Inv_MaxIndex);
 
                             while (subTileLoop.Next())
                             {
@@ -217,7 +219,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                             if (sumTile.pcity.cityIndex == city.myIndex && mapTile.IsLand())
                             {
                                 IntVector2 topleft = edgeRandomizer.Position;
-                                ForXYLoop subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
+                                ForXYLoop subTileLoop = new ForXYLoop(topleft, topleft + MapTile1_1.ModelScale_Inv_MaxIndex);
 
                                 while (subTileLoop.Next())
                                 {
@@ -309,7 +311,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                     mapTile.IsLand())
                 {
                     
-                    subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.SumTile4_4.TileWidth -1);
+                    subTileLoop = new ForXYLoop(topleft, topleft + SumTile4_4.TileWidth -1);
 
                     while (subTileLoop.Next())
                     {
@@ -607,7 +609,11 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                                         break;
                                     case TerrainBuildingType.CannonBarracks:
                                         ++buildingStructure.CannonBarracks_count;
-                                        BuildingPosition.Set(ref buildingPosition.CannonBarracks_pos, ref subTileLoop.Position); 
+                                        BuildingPosition.Set(ref buildingPosition.CannonBarracks_pos, ref subTileLoop.Position);
+                                        break;
+                                    case TerrainBuildingType.AnimalTrainer:
+                                        ++buildingStructure.AnimalTrainer_count;
+                                        BuildingPosition.Set(ref buildingPosition.AnimalTrainer_pos, ref subTileLoop.Position);
                                         break;
 
                                     case TerrainBuildingType.Tavern:

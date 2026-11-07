@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine;
+using VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Defence;
@@ -91,7 +92,7 @@ namespace VikingEngine.DSSWars.Build
         {
             this.city = city;
             List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-            BuildLib.AvailableBuildTypes(available, city, false);
+            AvailableBuildTypes.Available(available, city, false);
             availableBuildingType = available.Contains(placeBuildingType);
             
         }
@@ -168,7 +169,7 @@ namespace VikingEngine.DSSWars.Build
                             {
                                 if (DssRef.difficulty.GodPowers())
                                 {
-                                    BuildLib.Demolish(city, subTilePos, true);
+                                    BuildTool.Demolish(city, subTilePos, true);
                                     new GodBuild(subTilePos);
                                 }
                                 else
@@ -444,7 +445,7 @@ namespace VikingEngine.DSSWars.Build
                     if (city.pfaction.TryGetLocalPlayer(out var player))
                     {
                         List<IntVector2> positions = new List<IntVector2>(count);
-                        CityStructure structure = new CityStructure();
+                        CityStructureProcess structure = new CityStructureProcess();
                         structure.update(DssRef.world, city, 1);
 
                         findBuildPositons_AutoBuilder(positions);
@@ -557,7 +558,7 @@ namespace VikingEngine.DSSWars.Build
             List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
 
             if (player.tutorial == null || player.tutorial.AdvisorMode())
-            { BuildLib.AvailableBuildTypes(available, city, false); }
+            { AvailableBuildTypes.Available(available, city, false); }
             else
             { available = player.tutorial.AvailableBuildTypes(); }
 
@@ -645,7 +646,7 @@ namespace VikingEngine.DSSWars.Build
                             var build = BuildLib.BuildOptions[(int)opt];
 
                             var optButton = new ArtOption(opt == city.autoExpandFarmType, new List<AbsRichBoxMember> {
-                        new RbImage(build.sprite),
+                        new RbImage(build.icon),
                         new RbSpace(),
                         new RbText(build.Label())
                         }, new RbAction(() =>
@@ -809,7 +810,7 @@ namespace VikingEngine.DSSWars.Build
                                 content.newLine();
                                 HudLib.BulletPoint(content);
                                 content.Add(new RbText(DssRef.lang.XP_UnlockBuilding, HudLib.SecondaryTextColor));
-                                content.Add(new RbImage(opt.sprite));
+                                content.Add(new RbImage(opt.icon));
                                 content.space();
                                 content.Add(new RbText(opt.Label()));
                             }
@@ -924,7 +925,7 @@ namespace VikingEngine.DSSWars.Build
 
                 var buildCount = city.buildingStructure.getCount(opt);
 
-                var buttonIcon = new RbImage(build.sprite);
+                var buttonIcon = new RbImage(build.icon);
                 var buttonContent = new List<AbsRichBoxMember> { buttonIcon };
                 if (buildCount > 0)
                 {
@@ -937,9 +938,14 @@ namespace VikingEngine.DSSWars.Build
 
 
                 bool availableBuild = true;
-                if (opt == BuildAndExpandType.Logistics)
+                switch (build.specialBuildRequirement)//opt == BuildAndExpandType.Logistics)
                 {
-                    availableBuild = city.CanBuildLogistics(1);
+                    case SpecialBuildRequirement.FoodStorage:
+                        availableBuild = city.CanBuildLogistics(1);
+                        break;
+                    case SpecialBuildRequirement.MaxSoldierQuarters:
+                        availableBuild = city.CanBuildSoldierQuarters(out _, out _);
+                        break;
                 }
 
                 button.enabled = availableBuild;
@@ -985,7 +991,7 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType type = (BuildAndExpandType)tag;
 
             BuildOption build = BuildLib.BuildOptions[(int)type];
-            content.h2(TextLib.LargeFirstLetter(build.Label())).overrideColor = HudLib.TitleColor_TypeName;
+            content.h2(TextLib.LargeFirstLetter(build.Label()), HudLib.TitleColor_Head);
 
             //content.newLine();
             build.blueprint.toMenu(content, city, false, true, true);
@@ -995,10 +1001,7 @@ namespace VikingEngine.DSSWars.Build
                 build.altBlueprint.toMenu(content, city, false, false);
             }
             content.Add(new RbSeperationLine(HudLib.TitleColor_Head, 0.2f));
-            //content.newLine();
-            //content.Add(new RbText(DssRef.lang.BuildHud_BuildTime + ":", HudLib.TitleColor_Label));
-            //content.space();
-            //content.Add(new RbText(string.Format(DssRef.lang.Hud_Time_XSeconds, build.buildTimeSec)));
+           
             HudLib.LabelAndText(content, SpriteName.WarsConstructBuildingIcon, DssRef.lang.BuildHud_BuildTime, string.Format(DssRef.lang.Hud_Time_XSeconds, build.buildTimeSec));
 
             IconName.GroundRequirement(build.groundRequirement, out var groundReqIcon, out var groundReqText);
@@ -1006,9 +1009,55 @@ namespace VikingEngine.DSSWars.Build
 
 
             content.Add(new RbSeperationLine());
-            HudLib.Description(content, build.Description());
+            if (build.description != null)
+            {
+                content.text(build.description, HudLib.InfoYellow_Light);
+            }
 
             content.newLine();
+
+            if (build.specialBuildRequirement != SpecialBuildRequirement.None)
+            {
+                
+
+                switch (build.specialBuildRequirement)
+                {
+                    case SpecialBuildRequirement.FoodStorage:
+                        {
+                            HudLib.BulletPoint(content);
+                            content.Add(new RbImage(SpriteName.WarsResource_Food));
+                            content.space();
+                            bool canBuild = city.CanBuildLogistics(1);
+                            content.Add(new RbImage(canBuild ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+                            content.hspace();
+                            var reqText = new RbText(string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, DssConst.Logistics1FoodStorage));
+                            reqText.overrideColor = canBuild ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                            content.Add(reqText);
+                        }
+                        break;
+                    case SpecialBuildRequirement.MaxSoldierQuarters:
+                        var maxSoldierQuarters = city.HallSetup().maxSoldierQuarters;
+                        if (maxSoldierQuarters.HasLimit)
+                        {
+                            bool canBuild = city.CanBuildSoldierQuarters(out int count, out int max);//count < maxSoldierQuarters.Value;
+
+                            HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RbText(DssRef.todoLang.BuildingType_SoldiersQuarter));
+                            content.newLine();
+                            content.Add(new RbText(string.Format(DssRef.lang.Resource_MaxAmount, maxSoldierQuarters)));
+                            content.newLine();
+
+                           
+                            content.Add(new RbImage(canBuild ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+                            content.hspace();
+                            content.Add(new RbText(string.Format(DssRef.lang.Resource_CurrentAmount, count), canBuild ? HudLib.AvailableColor : HudLib.NotAvailableColor));
+                        }
+                        break;
+                }
+            }
+
             switch (type)
             {
                 case BuildAndExpandType.Cesspit:
@@ -1102,17 +1151,7 @@ namespace VikingEngine.DSSWars.Build
 
                 case BuildAndExpandType.Logistics:
 
-                    HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbImage(SpriteName.WarsResource_Food));
-                    content.space();
-                    bool canBuild = city.CanBuildLogistics(1);
-                    content.Add(new RbImage(canBuild ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
-                    content.hspace();
-                    var reqText = new RbText(string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, DssConst.Logistics1FoodStorage));
-                    reqText.overrideColor = canBuild ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                    content.Add(reqText);
+                    
 
                     content.newParagraph();
                     HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Gain);
@@ -1134,7 +1173,7 @@ namespace VikingEngine.DSSWars.Build
                         content.newLine();
                         HudLib.BulletPoint(content);
                         content.Add(new RbText(DssRef.lang.XP_UnlockBuilding, HudLib.SecondaryTextColor));
-                        content.Add(new RbImage(opt.sprite));
+                        content.Add(new RbImage(opt.icon));
                         content.space();
                         content.Add(new RbText(opt.Label()));
                     }
@@ -1150,16 +1189,35 @@ namespace VikingEngine.DSSWars.Build
                         content.newLine();
                         HudLib.BulletPoint(content);
                         content.Add(new RbText(DssRef.lang.XP_UnlockBuilding, HudLib.SecondaryTextColor));
-                        content.Add(new RbImage(opt.sprite));
+                        content.Add(new RbImage(opt.icon));
                         content.space();
                         content.Add(new RbText(opt.Label()));
                     }
 
                     break;
 
+                case BuildAndExpandType.TingsHouse:
+                    ReadOnlySpan<BuildAndExpandType> replace = stackalloc BuildAndExpandType[]
+                        {
+                            BuildAndExpandType.Logistics,
+                            BuildAndExpandType.Economics,
+                            BuildAndExpandType.ManorLord,
+                            BuildAndExpandType.GreatHall,
+                        };
+
+                    HudLib.Label(content, ".Will replace");
+                    foreach (var m in replace)
+                    {
+                        var building = BuildLib.Get(m);
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbImage(building.icon));
+                        content.hspace();
+                        content.Add(new RbText(building.name));                        
+                    }
+                    break;
+
                 case BuildAndExpandType.Noblehouse:
-
-
                     HudLib.BulletPoint(content);
                     //content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
                     content.Add(new RbText(string.Format(DssRef.lang.NobleHouse_HousingCount, DssConst.NobleHouseMenCount)));
@@ -1448,7 +1506,7 @@ namespace VikingEngine.DSSWars.Build
                         content.newLine();
                         HudLib.BulletPoint(content);
                         content.Add(new RbText(DssRef.lang.XP_UnlockBuilding));
-                        content.Add(new RbImage(opt.sprite));
+                        content.Add(new RbImage(opt.icon));
                         content.space();
                         content.Add(new RbText(opt.Label()));
                     }

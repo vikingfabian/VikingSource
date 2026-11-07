@@ -44,6 +44,9 @@ namespace VikingEngine.DSSWars.Presentation
         public string BuildingType_GravelRoad => "Gravel road";
         public string BuildingType_CobblestoneRoad => "Cobbled road";
         public string BuildingType_PavedRoad => "Paved road";
+        public string BuildingType_WaterWell => "Water well";
+        public string BuildingType_AnimalTrainer => "Water well";
+        public string BuildingType_AnimalTrainer_Description => "Will allow soldiers to conscript with animals";
 
         public string BuildingType_ExpansionHall => "Lords seat";
         public string ExpandTerritory_Description => "Will expand you city territory";

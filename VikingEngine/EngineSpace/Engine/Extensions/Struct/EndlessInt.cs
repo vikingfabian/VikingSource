@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace VikingEngine.Core.EngineSpace.Engine.Extensions.Struct
+namespace VikingEngine
 {
     struct EndlessInt
     {
@@ -20,6 +20,7 @@ namespace VikingEngine.Core.EngineSpace.Engine.Extensions.Struct
         }
 
         public bool IsUnlimited => Value == NoLimitValue;
+        public bool HasLimit => Value > IsNullValue && Value < NoLimitValue;
 
         public bool IsNull => Value == IsNullValue;
 
@@ -91,6 +92,11 @@ namespace VikingEngine.Core.EngineSpace.Engine.Extensions.Struct
             {
                 return Value.ToString();
             }
+        }
+
+        public override string ToString()
+        {
+            return Value.ToString();
         }
     }
 }
