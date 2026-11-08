@@ -500,7 +500,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             var tabs = build.availableBuildOptions(city, true);
                             var index = arraylib.IndexFromValue(tabs, build.placeBuildingType);
                             index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
-                            build.buildingTypeClick(tabs[index]);
+                            build.buildingTypeClick(tabs[index], build.placeTerraformType);
                         }
                         break;
                     case ControllerTabFocus.Pause_GamePlay:

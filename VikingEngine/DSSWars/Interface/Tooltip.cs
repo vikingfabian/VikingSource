@@ -225,30 +225,45 @@ namespace VikingEngine.DSSWars.Interface
                         var bp = player.gameControls.build.placeBuildingOption().blueprint;
                         bp.toMenu(content, subTile.city);
 
-                        var mayBuild = player.gameControls.map.hover.subTile.mayBuild(player, out bool upgrade);
+                        var mayBuild = player.gameControls.map.hover.subTile.mayBuild(player, out GroundType? mustTerraform, out bool upgrade);
                          mayBuild = player.gameControls.build.adjustMayBuild(mayBuild);
                         switch (mayBuild)
                         {
                             case Players.MayBuildResult.Yes_ChangeCity:
-                                content.text(DssRef.lang.BuildHud_OutsideCity).overrideColor = HudLib.InfoYellow_Light;
+                                content.icontext(HudLib.AvailableIcon, DssRef.lang.BuildHud_OutsideCity, HudLib.InfoYellow_Light);
                                 break;
 
                             case Players.MayBuildResult.No_OutsideRegion:
                                 avaialableAction = false;
-                                content.text(DssRef.lang.BuildHud_OutsideFaction).overrideColor = HudLib.NotAvailableColor;
+                                content.icontext(HudLib.NotAvailableIcon, DssRef.lang.BuildHud_OutsideFaction, HudLib.NotAvailableColor);
                                 break;
 
                             case Players.MayBuildResult.No_Occupied:
                                 avaialableAction = false;
-                                content.text(DssRef.lang.BuildHud_OccupiedTile).overrideColor = HudLib.NotAvailableColor;
+                                content.icontext(HudLib.NotAvailableIcon, DssRef.lang.BuildHud_OccupiedTile, HudLib.NotAvailableColor);
+                                break;
+
+                            case Players.MayBuildResult.No_BadGround:
+                                avaialableAction = false;
+                                content.icontext(HudLib.NotAvailableIcon, ".Bad ground", HudLib.NotAvailableColor);
                                 break;
                         }
 
-                        //if (subTile.city.buildingStructure.buildingLevel_logistics < 2)
-                        //{
-                        //    content.text(string.Format(DssRef.lang.BuildHud_Queue, player.orders.buildQueue(subTile.city), subTile.city.MaxBuildQueue())).overrideColor = subTile.city.availableBuildQueue(player) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                        //}
                         buildOpt.blueprint.requirementToHud(content, subTile.city, out _);
+
+                        if (avaialableAction && mustTerraform.HasValue)
+                        {
+                            content.Add(new RbSeperationLine());
+                            content.newParagraph();
+                            content.icontext(SpriteName.MissingImage, ".Terraform ground type", HudLib.InfoYellow_Light);
+                            var groundFromProp = GroundPropertiesLib.Get(subTile.subTile.groundType);
+                            var groundToProp = GroundPropertiesLib.Get(mustTerraform.Value);
+                            HudLib.LabelAndText(content, SpriteName.WarsConstructBuildingIcon, DssRef.lang.BuildHud_BuildTime, string.Format(DssRef.lang.Hud_Time_XSeconds, TextLib.PlusMinus(groundFromProp.TerraformFromTimeSec)));
+                            if (groundToProp.TerraformToCost != null)
+                            {
+                                groundToProp.TerraformToCost.toMenu(content, subTile.city, false, true, true, false);
+                            }
+                        }
 
                         content.Add(new RbSeperationLine());
                         content.newParagraph();

@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.Data
         {
             difficultyTab = -1;
             casualTab = 0;
-            for (int i = 0; i < difficultyTabs.count; ++i)
+            for (int i = 0; i < difficultyTabs.Count; ++i)
             {
                 if (difficultyTabs[i].type == type)
                 {
@@ -231,10 +231,10 @@ namespace VikingEngine.DSSWars.Data
             content.text(leaderBoard.ToString(), Color.Gray);
 #endif
 
-            if (currentTab.difficultyTabs.count > 0)
+            if (currentTab.difficultyTabs.Count > 0)
             {
-                List<ArtTabMember> difficultyTabMembers = new List<ArtTabMember>(currentTab.difficultyTabs.count);
-                for (int i = 0; i < currentTab.difficultyTabs.count; ++i)
+                List<ArtTabMember> difficultyTabMembers = new List<ArtTabMember>(currentTab.difficultyTabs.Count);
+                for (int i = 0; i < currentTab.difficultyTabs.Count; ++i)
                 {
                     DifficultySubTab tab = currentTab.difficultyTabs[i];
                     ArtTabMember tabMember = new ArtTabMember(new List<AbsRichBoxMember> { new RbText(tab.difficulty.ToString() + "%") });
@@ -270,7 +270,7 @@ namespace VikingEngine.DSSWars.Data
             var currentTab = mainTabs[mainTabIndex];
 
             LeaderBoardType leaderBoard;
-            if (currentTab.difficultyTabs.count > 0)
+            if (currentTab.difficultyTabs.Count > 0)
             {
                 if (!currentTab.difficultyTabs.InBounds(difficultyTabIndex))
                 {

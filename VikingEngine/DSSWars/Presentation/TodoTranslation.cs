@@ -69,6 +69,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Language_IncludeX => "Include - {0}";
         public string Language_EditX => "Edit {0}";
 
+     
         public string GroundRequired => "Ground requirement";
         public string GroundRequired_Plant => "Soil";
         public string GroundRequired_Light => "Light";

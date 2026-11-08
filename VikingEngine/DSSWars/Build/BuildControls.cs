@@ -53,6 +53,7 @@ namespace VikingEngine.DSSWars.Build
         
         public SelectTileResult buildMode = SelectTileResult.None;
         public BuildAndExpandType placeBuildingType = BuildAndExpandType.OrchardApple;
+        public GroundType placeTerraformType = GroundType.Default;
         bool availableBuildingType = true;
         public MapPaintToolShape toolShape = MapPaintToolShape.Area;
 
@@ -111,15 +112,11 @@ namespace VikingEngine.DSSWars.Build
         {
             switch (buildMode)
             {
+                case SelectTileResult.Terraform:
                 case SelectTileResult.Build:
                     {
                         usesBuildQue = 1;
-                        var mayBuild = adjustMayBuild(SelectedSubTile.MayBuild(subTilePos, player, out bool upgrade, out city));
-
-                        //if (!availableBuildingType)
-                        //{
-                        //    mayBuild = MayBuildResult.No_OutsideRegion;
-                        //}
+                        var mayBuild = adjustMayBuild(SelectedSubTile.MayBuild(subTilePos, player, out GroundType? mustTerraform, out bool upgrade, out city));
 
                         if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
                         {
@@ -128,11 +125,17 @@ namespace VikingEngine.DSSWars.Build
                             {
                                 if (DssRef.state.GodPowers())
                                 {
+                                   
+
                                     var build = BuildLib.BuildOptions[(int)placeBuildingType];
                                     MapTile1_1 subTile = DssRef.world.subTileGrid.Get(subTilePos);
+                                    if (mustTerraform.HasValue)
+                                    {
+                                        subTile.groundType = mustTerraform.Value;
+                                    }
                                     if (build.execute_async(city, subTilePos, ref subTile, upgrade, false))
                                     {
-                                        EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, subTile, true, true, false);
+                                        EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, subTile, true,mustTerraform.HasValue, true, false);
                                         edit.Submit();
                                     }
 
@@ -491,7 +494,7 @@ namespace VikingEngine.DSSWars.Build
                                             !player.orders.orderConflictingSubTile(Auto_EdgeRandomizer.Position, false))
                                         {
                                             result.Add(Auto_EdgeRandomizer.Position);
-                                            //player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade), ActionOnConflict.Cancel);
+
                                             if (--count <= 0)
                                             { return; }
                                         }
@@ -526,19 +529,19 @@ namespace VikingEngine.DSSWars.Build
                                             {
                                                 var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
 
-                                                if (subTile.MayBuild(buildType, true, out bool upgrade)
+                                                if (subTile.MayBuild(buildType, true, out GroundType? mustTerraform, out bool upgrade) == MayBuildResult.Yes
                                                     &&
                                                     !player.orders.orderConflictingSubTile(subTileLoop.Position, false))
                                                 {
                                                     result.Add(subTileLoop.Position);
-                                                    //player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade), ActionOnConflict.Cancel);
+
                                                     if (--count <= 0)
                                                     { return; }
                                                 }
                                             }
                                         }
                                     }
-                                    }
+                                }
                                 
                             }
                         }
@@ -676,9 +679,18 @@ namespace VikingEngine.DSSWars.Build
                     }
                 }
 
-                upgradeButtons(player, content, city, buildOpt);
-
-                buildOptionsToHud(content, viewTabs);
+                if (player.buildCategoryTab == BuildCategoryTab.Upgrade)
+                {
+                    upgradeButtons(player, content, city, buildOpt);
+                }
+                if (player.buildCategoryTab == BuildCategoryTab.Terraform)
+                {
+                    terraformOptionsToHud(content);
+                }
+                else
+                {
+                    buildOptionsToHud(content, viewTabs);
+                }
 
                 if (player.tutorial == null || !player.tutorial.DisplayCompressedBuildTab())
                 {
@@ -771,9 +783,7 @@ namespace VikingEngine.DSSWars.Build
 
         private void upgradeButtons(LocalPlayer player, RichBoxContent content, City city, BuildOption buildOpt)
         {
-            if (player.buildCategoryTab == BuildCategoryTab.Upgrade)
-            {
-
+            
                 if (city.buildingStructure.buildingLevel_logistics == 1)
                 {
 
@@ -835,7 +845,7 @@ namespace VikingEngine.DSSWars.Build
                         }, new RbAction(city.upgradeCityHall), new RbTooltip(city.upgradeCityHallTooltip),
                             city.CanUpgradeCityHall()));
                 }
-            }
+            
 
            
         }
@@ -867,6 +877,8 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Decor,
                 BuildCategoryTab.Upgrade,
                 BuildCategoryTab.Filter,
+                BuildCategoryTab.Terraform,
+
             };
 
             if (DssRef.state.GodPowers())
@@ -891,6 +903,35 @@ namespace VikingEngine.DSSWars.Build
             }
         }
 
+        const float BuildButtonScale = 2.1f;
+
+        void terraformOptionsToHud(RichBoxContent content)
+        {
+            content.Add(new RichBoxScale(BuildButtonScale));
+            content.newLine();
+
+            for (int i = 0; i < GroundPropertiesLib.TerraformOptions.Count; ++i)//each (var m in GroundPropertiesLib.TerraformOptions)
+            {
+                GroundType groundType = GroundPropertiesLib.TerraformOptions[i];
+                var groundProp = GroundPropertiesLib.Get(groundType);
+
+                IconName.GroundType(groundType, out var icon, out var name);
+
+                var buttonIcon = new RbImage(icon);
+                var buttonContent = new List<AbsRichBoxMember> { buttonIcon };                
+                var button = new ArtToggle(buildMode == SelectTileResult.Terraform && placeBuildingType == BuildAndExpandType.TERRAFORM && placeTerraformType == groundType, 
+                    buttonContent,
+               new RbAction2Arg<BuildAndExpandType, GroundType>(buildingTypeClick,  BuildAndExpandType.TERRAFORM, groundType, RbSoundType.Option),
+                new RbTooltip(groundTooltip, groundType));
+
+                content.Add(button);
+            }
+
+            content.Add(new RichBoxScale(1));
+
+            content.newParagraph();
+            exitBuildButton(content);
+        }
 
         void buildOptionsToHud(RichBoxContent content, bool viewTabs)
         {
@@ -916,7 +957,7 @@ namespace VikingEngine.DSSWars.Build
                         null, true, player.buildFilterTag == tag ? HudLib.ColFilterSelected : HudLib.ColFilterUnSelected));
                 }
             }
-            content.Add(new RichBoxScale(2.1f));
+            content.Add(new RichBoxScale(BuildButtonScale));
             content.newLine();
 
             foreach (var opt in available)
@@ -933,7 +974,7 @@ namespace VikingEngine.DSSWars.Build
                 }
 
                 var button = new ArtToggle(buildMode == SelectTileResult.Build && placeBuildingType == opt, buttonContent,
-                new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt, RbSoundType.Option),
+                new RbAction2Arg<BuildAndExpandType, GroundType>(buildingTypeClick, opt, placeTerraformType, RbSoundType.Option),
                 new RbTooltip(buildingTooltip, opt));
 
 
@@ -966,7 +1007,11 @@ namespace VikingEngine.DSSWars.Build
                 }, new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Demolish, RbSoundType.Option)));
 
             content.space();
+            exitBuildButton(content);
+        }
 
+        private void exitBuildButton(RichBoxContent content)
+        {
             if (buildMode != SelectTileResult.None)
             {
                 var button = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
@@ -979,11 +1024,13 @@ namespace VikingEngine.DSSWars.Build
                 content.Add(button);
                 content.space();
 
-                //if (buildMode == SelectTileResult.Build)
-                //{
-                //    buildOpt = BuildLib.BuildOptions[(int)placeBuildingType];
-                //}
             }
+        }
+        void groundTooltip(RichBoxContent content, object tag)
+        {
+            GroundType groundType = (GroundType)tag;
+            IconName.GroundType(groundType, out var icon, out var name);
+            content.icontext(icon, name);
         }
 
         void buildingTooltip(RichBoxContent content, object tag)
@@ -1820,25 +1867,23 @@ namespace VikingEngine.DSSWars.Build
             }
         }
 
-        public void buildingTypeClick(BuildAndExpandType type)
+        public void buildingTypeClick(BuildAndExpandType type, GroundType groundType)
         {
             if (player.gameControls.input.inputSource.ControllerMode)
             {
                 blockBuildUpdate = true;
             }
 
-            //buildMode = SelectTileResult.Build;
-            //placeBuildingType = type;
-            //availableBuildingType = true;
+            if (type == BuildAndExpandType.TERRAFORM)
+            {
+                placeTerraformType = groundType;
+            }
             SetBuildMode(type);
             player.gameControls.setMenuFocus(false, true);
-
-            
-            //player.gameControls.mapControls.setObjectMenuFocus(false);
         }
         public void SetBuildMode(BuildAndExpandType type) 
         {
-            buildMode = SelectTileResult.Build;
+            buildMode = type == BuildAndExpandType.TERRAFORM? SelectTileResult.Terraform : SelectTileResult.Build;
             placeBuildingType = type;
             availableBuildingType = true;
         }

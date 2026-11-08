@@ -215,12 +215,15 @@ namespace VikingEngine.DSSWars.Build
 
         NUM_NONE,
         ALL,
+        TERRAFORM,
         DEMOLISH,
 
         LogisticsLevel1,
         LogisticsLevel2,
 
         GovernentBuildings,
+
+        
 
     }
 

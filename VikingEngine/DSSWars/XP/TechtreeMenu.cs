@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.XP
                         content.Add(new RbImage(SpriteName.WarsTechChildArrow, 1f));
                     }
 
-                    for (int nodeIx = 0; nodeIx < bransh.nodes.count; nodeIx++)
+                    for (int nodeIx = 0; nodeIx < bransh.nodes.Count; nodeIx++)
                     {
                         if (nodeIx > 0)
                         {

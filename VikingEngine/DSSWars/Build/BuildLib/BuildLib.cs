@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars.Build
                 if (CanAutoBuildHere(ref subTile))
                 {
                     subTile.SetType(mainType, terrainSubType, amount);
-                    EditSubTile edit = new EditSubTile(pfaction, true,subTilePos, subTile, true, true, false);
+                    EditSubTile edit = new EditSubTile(pfaction, true, subTilePos, subTile, true, true, false);
                     edit.Submit();
                     return true;
                 }

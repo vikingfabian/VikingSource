@@ -15,13 +15,14 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         public IntVector2 position;
         public MapTile1_1 value;
         public bool editTerrain;
+        public bool editGround;
         public bool editAmount;
         public bool editCollection;
         public bool hostedTile;
         public bool isPlayer;
         public bool netShare;
 
-        public EditSubTile(PFaction pfaction, bool netShare, IntVector2 position, MapTile1_1 value, bool editTerrain, bool editAmount, bool editCollection)
+        public EditSubTile(PFaction pfaction, bool netShare, IntVector2 position, MapTile1_1 value, bool editTerrain, bool editGround, bool editAmount, bool editCollection)
         {
             hostedTile = pfaction.TryGetFaction(out var faction) && faction.IsNetHosted();
             isPlayer = faction.player != null && faction.player.IsLocalPlayer();
@@ -29,17 +30,19 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             this.position = position;
             this.value = value;
             this.editTerrain = editTerrain;
+            this.editGround = editGround;
             this.editAmount = editAmount;
             this.editCollection = editCollection;
         }
 
-        public EditSubTile(bool hosted, bool isPlayer, IntVector2 position, MapTile1_1 value, bool editTerrain, bool editAmount, bool editCollection)
+        public EditSubTile(bool hosted, bool isPlayer, IntVector2 position, MapTile1_1 value, bool editTerrain, bool editGround, bool editAmount, bool editCollection)
         {
             hostedTile = hosted;
             this.isPlayer = isPlayer;
             this.position = position;
             this.value = value;
             this.editTerrain = editTerrain;
+            this.editGround = editGround;
             this.editAmount = editAmount;
             this.editCollection = editCollection;
         }
@@ -47,11 +50,15 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         void write(System.IO.BinaryWriter w)
         { 
             position.writeUshort(w);
-            new EightBit(editTerrain, editAmount, editCollection).write(w);
+            new EightBit(editTerrain, editGround, editAmount, editCollection).write(w);
             if (editTerrain)
             {
                 w.Write((byte)value.mainTerrain);
                 w.Write(Debug.Byte_OrCrash(value.subTerrain));
+            }
+            if (editGround)
+            {
+                w.Write((byte)value.groundType);
             }
             if (editAmount)
             {
@@ -65,11 +72,15 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
             position.readShort(r);
             EightBit eightBit = new EightBit(r);
-            eightBit.Get(out editTerrain, out editAmount, out editCollection);
+            eightBit.Get(out editTerrain, out editGround, out editAmount, out editCollection);
             if (editTerrain)
             {
                 value.mainTerrain = (TerrainMainType)r.ReadByte();
                 value.subTerrain = r.ReadByte();
+            }
+            if (editGround)
+            {
+               value.groundType = (GroundType)r.ReadByte();
             }
             if (editAmount)
             {
@@ -112,6 +123,11 @@ namespace VikingEngine.DSSWars.Map.MapProcess
                 {
                     DssRef.world.chunkGrid.GetRef(WP.MaptileToChunk(position)).subtileVisualEdits++;
                 }
+            }
+
+            if (editGround)
+            {
+                subTile.groundType = value.groundType;
             }
 
             if (editAmount)

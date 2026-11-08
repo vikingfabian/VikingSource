@@ -26,10 +26,9 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         protected void createModel(int frame, int playerIx)
         {
-            //Debug.CrashIfThreaded();
+            
             model = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.buildarea, Map.MapData.MapTile1_1.ModelScale * 1.4f);
             model.Frame = frame;
-            //refreshYpos();
             model.setVisibleCamera(playerIx);
         }
 
@@ -50,7 +49,6 @@ namespace VikingEngine.DSSWars.Players.Orders
 
         public override void DeleteMe()
         {
-            //DssRef.models.recycle(ref model, true);
             model.preRemoveFromDrawBatch();
             base.DeleteMe();
         }
@@ -59,7 +57,6 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             if (model != null)
             {
-                //IntVector2 tilepos = WP.MaptileToSumTile(subTile);
                 model.Visible = DssRef.state.culling.InRender_Asynch(playerIx, bStateA, ref subTile);
             }
         }
@@ -84,15 +81,10 @@ namespace VikingEngine.DSSWars.Players.Orders
             this.upgrade = upgrade;
         }
 
-
-
         public override void onAdd(int playerIx)
         {
-
             createModel(0, playerIx);
             
-
-
             icon = new Mesh(LoadedMesh.plane, Vector3.Zero, model.scale * 9.6f, TextureEffectType.Flat, Build.BuildLib.BuildOptions[(int)buildingType].icon, Color.White, false);
 #if DEBUG
             icon.DebugName = "BuildOrder icon";
@@ -113,8 +105,7 @@ namespace VikingEngine.DSSWars.Players.Orders
         }
 
         public override RichBoxContent ToHud()
-        {
-           
+        {           
             RichBoxContent content = new RichBoxContent();
             content.h2(SpriteName.WarsConstructBuildingIcon, upgrade ? DssRef.lang.Upgrade_Order : DssRef.lang.Build_Order, HudLib.TitleColor_Head);
             BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, pcity.GetCity(), upgrade);
@@ -133,9 +124,8 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             base.writeGameState(w);
 
-            //w.Write((ushort)pcity.myIndex);
+            
             pcity.writeCity(w);
-            //subTile.write(w);
             WP.writeSubTilePos(w, subTile);
             w.Write((byte)buildingType);
         }
@@ -143,17 +133,10 @@ namespace VikingEngine.DSSWars.Players.Orders
         {
             base.readGameState(playerIx, r, subversion, pointers);
 
-            //int cityIndex = r.ReadUInt16();
             pcity.readCity(r);
-            //pcity = DssRef.world.cities[cityIndex];
-            if (subversion >= 132)
-            {
-                subTile = WP.readSubTilePos(r);
-            }
-            else
-            {
-                subTile.read(r);
-            }
+            
+            subTile = WP.readSubTilePos(r);
+            
             buildingType = (BuildAndExpandType)r.ReadByte();
 
             if (pcity.TryGetCity(out _))

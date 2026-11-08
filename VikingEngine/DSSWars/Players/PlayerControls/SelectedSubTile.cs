@@ -199,17 +199,18 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public MayBuildResult mayBuild(LocalPlayer player, out bool upgrade)
+        public MayBuildResult mayBuild(LocalPlayer player, out GroundType? mustTerraform, out bool upgrade)
         {
             if (DssRef.state.GodPowers())
             {
                 upgrade = false;
+                mustTerraform = null;
                 return MayBuildResult.Yes;
             }
-            return MayBuild(subTilePos, player, out upgrade, out _);
+            return MayBuild(subTilePos, player, out mustTerraform, out upgrade, out _);
         }
 
-        public static MayBuildResult MayBuild(IntVector2 subTilePos, LocalPlayer player, out bool upgrade, out City city)
+        public static MayBuildResult MayBuild(IntVector2 subTilePos, LocalPlayer player, out GroundType? mustTerraform, out bool upgrade, out City city)
         {
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
             { 
@@ -219,24 +220,27 @@ namespace VikingEngine.DSSWars.Players
                     {
                         city = tile.pcity.City();
 
-                        return MayBuild(city, subTile, player, out upgrade);
+                        return MayBuild(city, subTile, player, out mustTerraform, out upgrade);
                     }
                 }
             }
 
             city = null;
             upgrade = false;
+            mustTerraform = null;
             return MayBuildResult.ERR;
         }
 
-        public static MayBuildResult MayBuild(City city, MapTile1_1 subTile, LocalPlayer player, out bool upgrade)
+        public static MayBuildResult MayBuild(City city, MapTile1_1 subTile, LocalPlayer player, out GroundType? mustTerraform, out bool upgrade)
         {
+            mustTerraform = null;
             upgrade = false;
             if (city != null)
             {
                 if (city.pfaction.GetPlayer() == player || DssRef.state.GodPowers())
                 {
-                    if (subTile.MayBuild(player.gameControls.build.placeBuildingType, false, out upgrade))
+                    MayBuildResult tileMayBuild = subTile.MayBuild(player.gameControls.build.placeBuildingType, false, out mustTerraform, out upgrade);
+                    if (tileMayBuild == MayBuildResult.Yes)
                     {
                         if (player.gameControls.map.selection.obj == city)
                         {
@@ -258,7 +262,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     { 
-                        return MayBuildResult.No_Occupied;
+                        return tileMayBuild;
                     }
                 }
             }
@@ -373,8 +377,9 @@ namespace VikingEngine.DSSWars.Players
         Wall,
         CessPit,
         //Resources,
-        
+
         Build,
+        Terraform,
         ClearTerrain,
         Demolish,
 
@@ -391,6 +396,8 @@ namespace VikingEngine.DSSWars.Players
         Yes_ChangeCity,
         No_OutsideRegion,
         No_Occupied,
+
+        No_BadGround,
 
     }
 }

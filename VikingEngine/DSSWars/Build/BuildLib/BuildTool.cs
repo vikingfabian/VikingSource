@@ -63,6 +63,12 @@ namespace VikingEngine.DSSWars.Build
             }
         }
     }
+    enum MayBuild_GroundEditType
+    { 
+        CantBuild,
+        TerraformAndBuild,
+        DirectBuild,
+    }
 
     enum MapPaintToolShape
     {
@@ -90,6 +96,7 @@ namespace VikingEngine.DSSWars.Build
         Decor,
         Upgrade,
         Automation,
+        Terraform,
         Filter,
         GodPower,
         NUM

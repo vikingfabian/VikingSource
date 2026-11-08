@@ -276,7 +276,75 @@ namespace VikingEngine.DSSWars.Map.MapData
 
             return false;
         }
-        public bool MayBuild(BuildAndExpandType build, bool autoPlace, out bool upgrade)
+
+        public MayBuildResult MayBuild(BuildAndExpandType build, bool autoPlace, out GroundType? mustTerraform, out bool upgrade)
+        {
+            if (MayBuild_GroundCheck(build, out mustTerraform))
+            {
+                return MayBuild_TerrainCheck(build, autoPlace, out upgrade)? MayBuildResult.Yes : MayBuildResult.No_Occupied;
+            }
+            upgrade = false;
+            return MayBuildResult.No_BadGround;
+        }
+
+        public bool MayBuild_GroundCheck(BuildAndExpandType build, out GroundType? mustTerraform)
+        {
+            if (groundType == GroundType.Frost)
+            {
+                lib.DoNothing();
+            }
+            var req = BuildLib.Get(build).groundRequirement;
+            var prop = GroundPropertiesLib.Get(groundType);
+            mustTerraform = null;
+
+            switch (req)
+            {
+                case BuildingGroundRequirement.Plant:
+                    if (prop.canPlant)
+                    {
+                        return true;
+                    }
+                    else if (prop.canTerraform)
+                    {
+                        mustTerraform = GroundType.MadeField;
+                        return true;
+                    }
+                    return false;
+
+                case BuildingGroundRequirement.BuildLight:
+                    if (prop.canBuildLight)
+                    {
+                        return true;
+                    }
+                    else if (prop.canTerraform)
+                    {
+                        mustTerraform = GroundType.MadeSolid;
+                        return true;
+                    }
+                    return false;
+
+                case BuildingGroundRequirement.BuildMedium:
+                    if (prop.canBuild)
+                    {
+                        return true;
+                    }
+                    else if (prop.canTerraform)
+                    {
+                        mustTerraform = GroundType.MadeSolid;
+                        return true;
+                    }
+                    return false;
+
+                case BuildingGroundRequirement.BuildHeavy:
+                    return prop.canBuildHeavy;
+
+                default:
+                case BuildingGroundRequirement.None:
+                    return true;
+            }
+        }
+
+        public bool MayBuild_TerrainCheck(BuildAndExpandType build, bool autoPlace, out bool upgrade)
         {
             upgrade = false;
             switch (mainTerrain)
@@ -327,9 +395,6 @@ namespace VikingEngine.DSSWars.Map.MapData
                         case TerrainSubFarmType.HempFarm:
                             upgrade = true;
                             return build == BuildAndExpandType.HempFarmUpgraded;
-
-                       
-                        
                     }
                     break;
             }

@@ -30,7 +30,66 @@ namespace VikingEngine.DSSWars
         //{ 
 
         //}
-      
+        public static void GroundType(GroundType groundType, out SpriteName icon, out string name)
+        {
+            switch (groundType)
+            {
+                default:
+                case Map.MapLib.GroundType.Default:
+                    icon = SpriteName.DssMapTextureGeneral1;
+                    name = DssRef.lang.Hud_Default;
+                    break;
+                case Map.MapLib.GroundType.Fertile:
+                    icon = SpriteName.DssMapTextureFertile;
+                    name = ".Fertile";
+                    break;
+                case Map.MapLib.GroundType.Frost:
+                    icon = SpriteName.DssMapTextureFrozen;
+                    name = ".Frost";
+                    break;
+                case Map.MapLib.GroundType.Hardpan:
+                    icon = SpriteName.DssMapTextureHardPan;
+                    name = ".Hardpan";
+                    break;
+                case Map.MapLib.GroundType.MadeField:
+                    icon = SpriteName.DssMapTextureFertile;
+                    name = ".Man made field";
+                    break;
+                case Map.MapLib.GroundType.MadeSolid:
+                    icon = SpriteName.DssMapTextureMadeSolid;
+                    name = ".Man made solid";
+                    break;
+                case Map.MapLib.GroundType.Marsh:
+                    icon = SpriteName.DssMapTextureSwamp;
+                    name = ".Marsh";
+                    break;
+                case Map.MapLib.GroundType.Mud:
+                    icon = SpriteName.DssMapTextureMud;
+                    name = ".Mud";
+                    break;
+                case Map.MapLib.GroundType.Rock:
+                    icon = SpriteName.DssMapTextureRock1;
+                    name = ".Rock";
+                    break;
+                case Map.MapLib.GroundType.Rootmat:
+                    icon = SpriteName.DssMapTextureRootmat1;
+                    name = ".Rootmat";
+                    break;
+                case Map.MapLib.GroundType.Rubble:
+                    icon = SpriteName.DssMapTextureRubble1;
+                    name = ".Rubble";
+                    break;
+                case Map.MapLib.GroundType.SaltDesert:
+                    icon = SpriteName.DssMapTextureFrozen;
+                    name = ".Salt desert";
+                    break;
+                case Map.MapLib.GroundType.Sand:
+                    icon = SpriteName.DssMapTextureSand;
+                    name = ".Sand";
+                    break;
+
+            }
+        }
         public static void GroundRequirement(BuildingGroundRequirement requirement, out SpriteName icon, out string name)
         {
             switch (requirement)
@@ -1045,6 +1104,10 @@ namespace VikingEngine.DSSWars
                 case BuildCategoryTab.Upgrade:
                     tabIcon = SpriteName.warsBuildCategoryUpgrades;
                     category = DssRef.lang.BuildCategory_Upgrade;
+                    break;
+                case BuildCategoryTab.Terraform:
+                    tabIcon = SpriteName.DssMapTextureGrass1;
+                    category = DssRef.todoLang.Ground_Terraform;
                     break;
                 case BuildCategoryTab.GodPower:
                     tabIcon = SpriteName.WarsGodPowerIcon;
