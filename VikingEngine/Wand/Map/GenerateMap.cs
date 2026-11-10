@@ -1,11 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
+using VikingEngine.Core.Wand.GO.ObjectPointer;
 using VikingEngine.ToGG.HeroQuest.HeroStrategy;
 
 namespace VikingEngine.Core.Wand.Map
 {
+    class BSPNode
+    {
+        public int Index;
+        public Rectangle2 space;
+        public BSPNode left, right;
+        public bool splitH;
+        public int splitPos;
+
+        public int doorsCount = 0;
+        public Tile doorTile = null;
+
+        public bool treasureRoom;
+    }
+
     class GenerateMap
     {
         static readonly IntervalF LevelSizeMinMax = new IntervalF(30, 40);
@@ -13,7 +30,7 @@ namespace VikingEngine.Core.Wand.Map
 
         const int ThickWallLayers = 3;
         MapData mapData;
-
+        
 
         public GenerateMap(MapData mapData)
         {
@@ -21,8 +38,9 @@ namespace VikingEngine.Core.Wand.Map
         }
 
         /// <param name="enterRoomSize">First room must be this size</param>
-        public void Generate(IntVector2? enterRoomSize)
+        public void Generate(/*IntVector2? enterRoomSize*/)
         {
+            var leaves = mapData.leaves;
             newLevelSetup();
 
             for (int y = 0; y < mapData.tileGrid.Size.Y; y++)
@@ -46,7 +64,7 @@ namespace VikingEngine.Core.Wand.Map
                 space = new Rectangle2(ThickWallLayers, ThickWallLayers, playableW, playableH)
             };
 
-            List<BSPNode> leaves = new List<BSPNode>();
+            
             SplitBSP(root, leaves);
 
             // Sort rooms positionally to grab reliable corners
@@ -80,11 +98,11 @@ namespace VikingEngine.Core.Wand.Map
                 int h = leaf.space.Height;
 
                 // Enforce forced size on the enter room if supplied
-                if (leaf == enterNode && enterRoomSize.HasValue)
-                {
-                    w = Math.Min(w, enterRoomSize.Value.X);
-                    h = Math.Min(h, enterRoomSize.Value.Y);
-                }
+                //if (leaf == enterNode && enterRoomSize.HasValue)
+                //{
+                //    w = Math.Min(w, enterRoomSize.Value.X);
+                //    h = Math.Min(h, enterRoomSize.Value.Y);
+                //}
 
                 for (int y = leaf.space.Y; y < leaf.space.Y + h; y++)
                 {
@@ -111,21 +129,27 @@ namespace VikingEngine.Core.Wand.Map
             ConnectBSP(root);
 
             // Rarely lock a dead-end room that isn't required for progression
+            int treasureRoomCount = Ref.rnd.Int(1, 4);
             var deadEnds = leaves.Where(l => l.doorsCount == 1 && l != enterNode && l != exitNode).ToList();
-            if (deadEnds.Count > 0 && Ref.rnd.Int(100) < 30) // 30% chance for a locked room
+            treasureRoomCount = Math.Min(deadEnds.Count, treasureRoomCount);
+
+            for (int i = 0; i < treasureRoomCount; ++i)
             {
-                var lockedLeaf = deadEnds[Ref.rnd.Int(deadEnds.Count)];
+                var lockedLeaf = arraylib.RandomListMemberPop(deadEnds);//deadEnds[Ref.rnd.Int(deadEnds.Count)];
                 if (lockedLeaf.doorTile != null)
                 {
+                    lockedLeaf.treasureRoom = true;
                     if (lockedLeaf.doorTile.northWall == ThinWall.Door) lockedLeaf.doorTile.northWall = ThinWall.LockedDoor;
                     if (lockedLeaf.doorTile.eastWall == ThinWall.Door) lockedLeaf.doorTile.eastWall = ThinWall.LockedDoor;
                 }
             }
 
             // 4. Populate with random thin walls, items, and creatures
-            foreach (var leaf in leaves)
+            for (int i = 0; i < leaves.Count; ++i)//each (var leaf in leaves)
             {
-                DecorateRoom(leaf.space, leaf == enterNode);
+                var leaf = leaves[i];
+                leaf.Index = i;
+                DecorateRoom(leaf, leaf == enterNode);
             }
         }
 
@@ -148,36 +172,7 @@ namespace VikingEngine.Core.Wand.Map
             }
         }
 
-        public void revealRoom(IntVector2 enterPos)
-        {
-            // Standard flood-fill algorithm to reveal contiguous floor tiles and walls
-            Queue<IntVector2> q = new Queue<IntVector2>();
-            q.Enqueue(enterPos);
-
-            while (q.Count > 0)
-            {
-                var curr = q.Dequeue();
-
-                if (curr.X < 0 || curr.Y < 0 || curr.X >= mapData.tileGrid.Size.X || curr.Y >= mapData.tileGrid.Size.Y)
-                    continue;
-
-                Tile t = mapData.tileGrid.Get(curr.X, curr.Y);
-
-                if (t.explored || t.tileType == TileType.UnbreakableWall)
-                    continue;
-
-                t.explored = true;
-
-                // Stop expanding the flood fill once we hit a thick wall (so it only reveals this room and its boundary)
-                if (t.tileType != TileType.ThickWall)
-                {
-                    q.Enqueue(new IntVector2(curr.X + 1, curr.Y));
-                    q.Enqueue(new IntVector2(curr.X - 1, curr.Y));
-                    q.Enqueue(new IntVector2(curr.X, curr.Y + 1));
-                    q.Enqueue(new IntVector2(curr.X, curr.Y - 1));
-                }
-            }
-        }
+       
 
         // --- BSP Procedural Generation Helpers ---
 
@@ -187,16 +182,7 @@ namespace VikingEngine.Core.Wand.Map
         //    public Rect(int x, int y, int w, int h) { X = x; Y = y; Width = w; Height = h; }
         //}
 
-        private class BSPNode
-        {
-            public Rectangle2 space;
-            public BSPNode left, right;
-            public bool splitH;
-            public int splitPos;
-
-            public int doorsCount = 0;
-            public Tile doorTile = null;
-        }
+        
 
         private void SplitBSP(BSPNode node, List<BSPNode> leaves)
         {
@@ -312,50 +298,97 @@ namespace VikingEngine.Core.Wand.Map
                 return pos.Y <= node.splitPos ? GetLeafAt(node.left, pos) : GetLeafAt(node.right, pos);
         }
 
-        private void DecorateRoom(Rectangle2 space, bool isEnterRoom)
+        private void DecorateRoom(BSPNode node, bool isEnterRoom)//Rectangle2 space, bool isEnterRoom)
         {
-            // 1. Place items and creatures anywhere in the room (including edge tiles)
-            int numItems = Ref.rnd.Int(1, 3);
-            int numCreatures = Ref.rnd.Int(1, 3);
+            // 0. List all enter/exit spaces (doorways) connected to this room
+            HashSet<IntVector2> roomDoors = new HashSet<IntVector2>();
 
-            for (int i = 0; i < numItems + numCreatures; i++)
+            // Check North and South perimeters
+            for (int x = node.space.X; x < node.space.X + node.space.Width; x++)
             {
-                // Full bounds used so they can spawn against the perimeter
-                int rx = Ref.rnd.Int(space.X, space.X + space.Width);
-                int ry = Ref.rnd.Int(space.Y, space.Y + space.Height);
+                // North (Y - 1)
+                if (mapData.tileGrid.Get(x, node.space.Y - 1).tileType == TileType.Floor)
+                    roomDoors.Add(new IntVector2(x, node.space.Y));
 
-                Tile t = mapData.tileGrid.Get(rx, ry);
-
-                if (i < numItems && !isEnterRoom)
-                {
-                    if (t.item.itemType == TileItemType.NONE)
-                        t.item = new ItemPointer { itemType = (TileItemType)Ref.rnd.Int(1, 5), index = i };
-                }
-                else if (!isEnterRoom)
-                {
-                    if (t.creature.creatureType == CreatureType.NONE)
-                        t.creature = new CreaturePointer { creatureType = (CreatureType)Ref.rnd.Int(1, 5), index = i };
-                }
+                // South (Y + Height)
+                if (mapData.tileGrid.Get(x, node.space.Y + node.space.Height).tileType == TileType.Floor)
+                    roomDoors.Add(new IntVector2(x, node.space.Y + node.space.Height - 1));
             }
 
+            // Check West and East perimeters
+            for (int y = node.space.Y; y < node.space.Y + node.space.Height; y++)
+            {
+                // West (X - 1)
+                if (mapData.tileGrid.Get(node.space.X - 1, y).tileType == TileType.Floor)
+                    roomDoors.Add(new IntVector2(node.space.X, y));
+
+                // East (X + Width)
+                if (mapData.tileGrid.Get(node.space.X + node.space.Width, y).tileType == TileType.Floor)
+                    roomDoors.Add(new IntVector2(node.space.X + node.space.Width - 1, y));
+            }
+
+            if (!isEnterRoom)
+            {
+                // 1. Place items and creatures anywhere in the room (including edge tiles)
+                int numItems = Ref.rnd.Int(1, 3);
+                int numCreatures = Ref.rnd.Int(2, 5);
+
+                int maxLoops = 1000;
+                while (numItems + numCreatures > 0 && maxLoops > 0)
+                {
+                    // Full bounds used so they can spawn against the perimeter
+                    //int rx = Ref.rnd.Int(node.space.X, node.space.X + node.space.Width);
+                    //int ry = Ref.rnd.Int(node.space.Y, node.space.Y + node.space.Height);
+                    var rPos = node.space.RandomTile();
+
+                    if (roomDoors.Contains(rPos) == false)
+                    {
+                        Tile t = mapData.tileGrid.Get(rPos);
+
+                        if (numItems > 0)
+                        {
+                            if (t.item.itemType == TileItemType.NONE)
+                                t.item = new ItemPointer { itemType = TileItemType.SpawnPos, index = node.Index };
+
+                            numItems--;
+                        }
+                        else
+                        {
+                            if (t.creature.creatureType == CreatureType.NONE)
+                                t.creature = new CreaturePointer { creatureType = CreatureType.SpawnPos, index = node.Index };
+
+                            numCreatures--;
+                        }
+                    }
+
+                    maxLoops--;
+                }
+
+                nodeLabyrinth(node);
+            }
+           
+        }
+
+        void nodeLabyrinth(BSPNode node)
+        {
             // 2. Generate labyrinth thin walls with linked probability
             // We only place walls strictly inside the room to prevent blocking external doors on the boundary.
             List<(IntVector2 pos, bool isNorth)> placedWalls = new List<(IntVector2, bool)>();
 
-            for (int y = space.Y; y < space.Y + space.Height; y++)
+            for (int y = node.space.Y; y < node.space.Y + node.space.Height; y++)
             {
-                for (int x = space.X; x < space.X + space.Width; x++)
+                for (int x = node.space.X; x < node.space.X + node.space.Width; x++)
                 {
                     Tile t = mapData.tileGrid.Get(x, y);
 
                     // Internal North Wall
-                    if (y > space.Y && t.northWall == ThinWall.None)
+                    if (y > node.space.Y && t.northWall == ThinWall.None)
                     {
-                        int chance = 25; // Base chance
-                        // Higher probability if linked to the previous wall on this axis
-                        if (x > space.X && mapData.tileGrid.Get(x - 1, y).northWall == ThinWall.Wall) chance = 70;
+                        double chance = 0.25; // Base chance
+                                              // Higher probability if linked to the previous wall on this axis
+                        if (x > node.space.X && mapData.tileGrid.Get(x - 1, y).northWall == ThinWall.Wall) chance = 0.70;
 
-                        if (Ref.rnd.Int(100) < chance)
+                        if (Ref.rnd.Chance(chance))
                         {
                             t.northWall = ThinWall.Wall;
                             placedWalls.Add((new IntVector2(x, y), true));
@@ -363,13 +396,13 @@ namespace VikingEngine.Core.Wand.Map
                     }
 
                     // Internal East Wall
-                    if (x < space.X + space.Width - 1 && t.eastWall == ThinWall.None)
+                    if (x < node.space.X + node.space.Width - 1 && t.eastWall == ThinWall.None)
                     {
-                        int chance = 25;
+                        double chance = 0.25;
                         // Higher probability if linked to the previous wall on this axis
-                        if (y > space.Y && mapData.tileGrid.Get(x, y - 1).eastWall == ThinWall.Wall) chance = 70;
+                        if (y > node.space.Y && mapData.tileGrid.Get(x, y - 1).eastWall == ThinWall.Wall) chance = 0.70;
 
-                        if (Ref.rnd.Int(100) < chance)
+                        if (Ref.rnd.Chance(chance))
                         {
                             t.eastWall = ThinWall.Wall;
                             placedWalls.Add((new IntVector2(x, y), false));
@@ -379,7 +412,7 @@ namespace VikingEngine.Core.Wand.Map
             }
 
             // 3. Cut away walls that block passage using Union-Find (Kruskal's algorithm)
-            int tileCount = space.Width * space.Height;
+            int tileCount = node.space.Width * node.space.Height;
             int[] parent = new int[tileCount];
             for (int i = 0; i < tileCount; i++) parent[i] = i;
 
@@ -396,22 +429,22 @@ namespace VikingEngine.Core.Wand.Map
                 if (rootI != rootJ) parent[rootI] = rootJ;
             }
 
-            int GetIndex(int x, int y) => (x - space.X) + (y - space.Y) * space.Width;
+            int GetIndex(int x, int y) => (x - node.space.X) + (y - node.space.Y) * node.space.Width;
 
             // First pass: link together all tiles that are NOT separated by a ThinWall.Wall
-            for (int y = space.Y; y < space.Y + space.Height; y++)
+            for (int y = node.space.Y; y < node.space.Y + node.space.Height; y++)
             {
-                for (int x = space.X; x < space.X + space.Width; x++)
+                for (int x = node.space.X; x < node.space.X + node.space.Width; x++)
                 {
                     int curr = GetIndex(x, y);
                     Tile t = mapData.tileGrid.Get(x, y);
 
                     // Connect North
-                    if (y > space.Y && t.northWall != ThinWall.Wall)
+                    if (y > node.space.Y && t.northWall != ThinWall.Wall)
                         Union(curr, GetIndex(x, y - 1));
 
                     // Connect East
-                    if (x < space.X + space.Width - 1 && t.eastWall != ThinWall.Wall)
+                    if (x < node.space.X + node.space.Width - 1 && t.eastWall != ThinWall.Wall)
                         Union(curr, GetIndex(x + 1, y));
                 }
             }

@@ -38,6 +38,7 @@ namespace VikingEngine.Core.Wand.Player
             camera.FarPlane = 800;
             camera.FieldOfView = 20;
             camera.positionChaseLengthPercentage = 0.16f;
+            camera.CurrentZoom = 30;
 
             Ref.draw.Camera = camera;
             Ref.draw.ClrColor = Color.Black;
@@ -107,7 +108,7 @@ namespace VikingEngine.Core.Wand.Player
         //    this.inCamCheck = inCamCheck;
         //}
 
-        public void update(Player player, bool overHud)
+        public void update_debugmode(Player player, bool overHud)
         {
             if (!overHud)
             {
@@ -134,6 +135,17 @@ namespace VikingEngine.Core.Wand.Player
                     setSelectionPos(player, toggLib.ToV2(mapPos));
                 }
 
+            }
+            camera.Time_Update(Ref.DeltaTimeMs);
+        }
+
+        public void update(Player player, bool overHud)
+        {
+            camera.GoalLookTarget = WP.TileToWp(WandRef.world.hero.currentPos.tilePos);
+            if (!overHud)
+            {
+                Vector3 mapPos = Ref.draw.Camera.ScreenPosTo3D(Input.Mouse.Position, out bool foundScreenPos);               
+                setSelectionPos(player, toggLib.ToV2(mapPos));
             }
             camera.Time_Update(Ref.DeltaTimeMs);
         }

@@ -14,23 +14,27 @@ namespace VikingEngine.Core.Wand.Scene
         public WandPlayScene()
             : base(true)
         {
-            
-            MapData mapData = new MapData();
-            new GenerateMap(mapData).Generate(null);
+            WandRef.PlayScene = this;
+
+            new Map.World().StartLevel();
 
             mapmodel = new MapModel();
             mapmodel.floorNeedsUpdate = true;
             player = new Player.Player();
-            Mesh centerCube = new Mesh(LoadedMesh.cube_repeating,WP.TileToWp( mapData.playerEnterPos), Vector3.One, TextureEffectType.Flat, SpriteName.NextFrame, Color.White);
+            //Mesh centerCube = new Mesh(LoadedMesh.cube_repeating,WP.TileToWp( mapData.playerEnterPos), Vector3.One, TextureEffectType.Flat, SpriteName.NextFrame, Color.White);
         }
 
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
             player.update();
+            WandRef.world.turnOrderManager.update();
             mapmodel.update();
 
-
+            if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape))
+            {
+                new WandPlayScene();
+            }
         }
     }
 }
