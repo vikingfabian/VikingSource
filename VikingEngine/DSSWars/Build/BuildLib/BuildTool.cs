@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Build
                     subTile.subTerrain = 0;
                 }
 
-                EditSubTile edit = new EditSubTile(city.pfaction, true, subTilePos, subTile, true, true, true);
+                EditSubTile edit = new EditSubTile(city.pfaction, true, subTilePos, subTile, true, false, true, true);
                 edit.Submit();
             }
         }

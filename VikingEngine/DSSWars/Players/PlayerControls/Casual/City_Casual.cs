@@ -188,7 +188,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (buildData.execute_async(this, buildPos, ref subTile, upgrade))
                 {
-                    EditSubTile edit = new EditSubTile(true, true, buildPos, subTile, true, true, false) { netShare = true };
+                    EditSubTile edit = new EditSubTile(true, true, buildPos, subTile, true, false, true, false) { netShare = true };
                     edit.ExecuteEdit();
                 }
             }

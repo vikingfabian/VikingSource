@@ -4460,7 +4460,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 MapTile1_1 subTile = new MapTile1_1();
                 subTile.SetType(TerrainMainType.Building, (int)hall, 1);
-                new EditSubTile(pfaction, true, maptilePos, subTile, true, false, false).Submit();
+                new EditSubTile(pfaction, true, maptilePos, subTile, true, false, false, false).Submit();
 
                 refreshCitySize();
             }

@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             maptilePos = subtilepos;
             var localPlayer = pfaction.TryGetPlayer(out var p) && p.IsLocalPlayer();
-            EditSubTile edit = new EditSubTile(true, localPlayer, subtilepos, new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false) { netShare = true };
+            EditSubTile edit = new EditSubTile(true, localPlayer, subtilepos, new MapTile1_1(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, false, true, false) { netShare = true };
            
             edit.SubmitOrExecute();
 
@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (!tile.IsWater())
                     {
                         citySquareSubtilePos = pos;
-                        new EditSubTile(true, localPlayer, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.CitySquare].terrainType, true, true, false) { netShare = true }.SubmitOrExecute();
+                        new EditSubTile(true, localPlayer, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.CitySquare].terrainType, true, false, true, false) { netShare = true }.SubmitOrExecute();
                         break;
                     }
                 }
@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (!tile.IsWater())
                     {
-                        new EditSubTile(true, localPlayer, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.WorkerTent].terrainType, true, true, false) { netShare = true }.SubmitOrExecute();
+                        new EditSubTile(true, localPlayer, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.WorkerTent].terrainType, true, false, true, false) { netShare = true }.SubmitOrExecute();
                         break;
                     }
                 }
@@ -130,13 +130,13 @@ namespace VikingEngine.DSSWars.GameObject
 
             {
                 EditSubTile hallTile = new EditSubTile(IsNetHosted, false, maptilePos,
-                    new MapTile1_1(TerrainMainType.Building, setup.centerHall), true, false, false);
+                    new MapTile1_1(TerrainMainType.Building, setup.centerHall), true, false, false, false);
                 hallTile.SubmitOrExecute();
             }
             {
                 citySquareSubtilePos = VectorExt.AddY(maptilePos, 1);
                 EditSubTile squareTile = new EditSubTile(IsNetHosted, false, citySquareSubtilePos,
-                    new MapTile1_1(TerrainMainType.Road, (int)TerrainRoadType.Square), true, false, false);
+                    new MapTile1_1(TerrainMainType.Road, (int)TerrainRoadType.Square), true, false, false, false);
                 squareTile.SubmitOrExecute();
             }
         }

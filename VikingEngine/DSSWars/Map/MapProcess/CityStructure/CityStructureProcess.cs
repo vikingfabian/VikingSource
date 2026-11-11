@@ -1227,7 +1227,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
 
                 foreach (var pos in AnimalPens)
                 {
-                    EditSubTile editValue = new EditSubTile(city.pfaction, false, pos, new MapTile1_1() { terrainAmount = 1 }, false, true, false);
+                    EditSubTile editValue = new EditSubTile(city.pfaction, false, pos, new MapTile1_1() { terrainAmount = 1 }, false, false, true, false);
                     editValue.Submit();
                 }
             }
