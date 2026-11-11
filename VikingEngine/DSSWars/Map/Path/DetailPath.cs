@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.Timer;
 
@@ -17,7 +19,7 @@ namespace VikingEngine.DSSWars.Map.Path
     {
         //Represents a thread-safe last in-first out (LIFO) collection.
         ConcurrentStack<DetailPathFinding> pfPool = new ConcurrentStack<DetailPathFinding>();
-        ConcurrentQueue<DetailWalkingPath> resultPool = new ConcurrentQueue<DetailWalkingPath>();
+        ConcurrentQueue<DetailWalkingPathResult> resultPool = new ConcurrentQueue<DetailWalkingPathResult>();
         int createdPfCount = 0;
 
         public int PfCount => pfPool.Count;
@@ -47,20 +49,20 @@ namespace VikingEngine.DSSWars.Map.Path
             }
         }
 
-        public DetailWalkingPath GetRes()
+        public DetailWalkingPathResult GetRes()
         {   
-            if (resultPool.TryDequeue(out DetailWalkingPath path))
+            if (resultPool.TryDequeue(out DetailWalkingPathResult path))
             {
                 path.recycle();
                 return path;
             }
             else
             {
-                return new DetailWalkingPath();
+                return new DetailWalkingPathResult();
             }
         }
 
-        public void Return(DetailWalkingPath pathresult)
+        public void Return(DetailWalkingPathResult pathresult)
         {
             if (pathresult != null)
             {
@@ -87,7 +89,7 @@ namespace VikingEngine.DSSWars.Map.Path
     class DetailPathFinding
     {
         public const int MaxNodeLength = 30000;
-        const int MaxTileRadius = 64 * WorldData.TileSubDivitions;
+        const int MaxTileRadius = 128 * Map.MapData.MapTile1_1.ModelScale_Inv;
 
         // Min-heap open list ordered by: (TotalCost, Heuristic)
         PriorityQueue<DetailPathNode, (float Value, float Heuristic)> open = new PriorityQueue<DetailPathNode, (float, float)>();
@@ -103,29 +105,33 @@ namespace VikingEngine.DSSWars.Map.Path
             nodeGrid = new Grid2D_L<DetailPathNode>(area.size);
         }
 
-        public void ApplyParentPath(LayerWalkingPath parentPath)
+        public void ApplyParentPath(IntVector2 center, LayerWalkingPathResult parentPath)
         {
             if (parentPath != null)
             {
-                const int ParentTileScale = 4;
+                area = Rectangle2.FromCenterTileAndRadius(center, MaxTileRadius);
+
+                const int ParentTileScale = MoveCostLayer.Layer2TileWidth;
 
                 foreach (var node in parentPath.nodes)
                 {
-                    IntVector2 pos = node.position * ParentTileScale;
+                    IntVector2 pos = node.position * ParentTileScale - area.pos;
                     IntVector2 end = pos + ParentTileScale;
+
+                    IntVector2 testPos = WP.ToMapTilePos(node.wp);
 
                     for (int y = pos.Y; y < end.Y; y++)
                     {
                         for (int x = pos.X; x < end.X; x++)
                         {
-                            nodeGrid.Set(pos, DetailPathNode.Thunnel);
+                            nodeGrid.TrySet(pos, DetailPathNode.Thunnel);
                         }
                     }
                 }
             }
         }
 
-        public DetailWalkingPath FindPath(IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip, bool endAsShip, bool isTravelNode)
+        public DetailWalkingPathResult FindPath(IntVector2 center, Rotation1D startDir, IntVector2 goal, bool startAsShip, bool endAsShip, bool isTravelNode)
         {
             // Short-circuit if already at target, out of bounds, or outside max local search radius.
             if (center == goal ||
@@ -145,7 +151,7 @@ namespace VikingEngine.DSSWars.Map.Path
             area = Rectangle2.FromCenterTileAndRadius(center, MaxTileRadius);
             Rectangle2 subtileLimit = DssRef.world.subTileGrid.Area;
             subtileLimit.AddRadius(-1);
-            area.SetTileBounds(subtileLimit);
+            area.SetBounds(subtileLimit);
             
             DetailPathNode startNode = new DetailPathNode(center, conv.ToDir8_INT(startDir), startAsShip, _currentRunId);
             {
@@ -208,14 +214,14 @@ namespace VikingEngine.DSSWars.Map.Path
                 }
             }
 
-            DetailWalkingPath path;
+            DetailWalkingPathResult path;
             if (DssRef.world == null)
             {
                 path = new ();
             }
             else
             {
-                path = DssRef.world.detailPathFindingPool.GetRes();
+                path = DssRef.world.GetDetailResultFromPool();//detailPathFindingPool.GetRes();
             }
 
             bool blocked = false;
@@ -280,16 +286,17 @@ namespace VikingEngine.DSSWars.Map.Path
         }
     }
 
-    class DetailWalkingPath
+    class DetailWalkingPathResult
     {
 #if VISUAL_NODES
         List<Graphics.Mesh> nodeImages;
 #endif
         const int IgnoreDirChangeTimes = 10;
-        static readonly float NodeMinDistance = 0.3f * WorldData.SubTileWidth;
+        static readonly float NodeMinDistance = 0.3f * Map.MapData.MapTile1_1.ModelScale;
 
         public int currentNodeIx;
         public IntVector2 goal;
+        public Vector3 goalWp;
         public List<DetailPathNodeResult> nodes = new List<DetailPathNodeResult>(64);
         public bool blockedPath;
         public void recycle()
@@ -322,12 +329,12 @@ namespace VikingEngine.DSSWars.Map.Path
             if (complete)
             {
                 ship = false;
-                return  WP.SubtileToWorldPosXZ(goal);
+                return  WP.MaptileToWorldPosXZ(goal);
             }
 
             ship = nodes[node_sp].ship;
             IntVector2 to = nodes[node_sp].position;
-            Vector3 toWp = WP.SubtileToWorldPosXZ(to);
+            Vector3 toWp = WP.MaptileToWorldPosXZ(to);
             Vector2 diff = new Vector2( toWp.X - myPos.X, toWp.Z - myPos.Z);
             if (diff.Length() <= NodeMinDistance)
             {
@@ -337,14 +344,15 @@ namespace VikingEngine.DSSWars.Map.Path
             return toWp;
         }
 
-        public DetailWalkingPath()
+        public DetailWalkingPathResult()
         {
             
         }
 
-        public void init(IntVector2 goal,/* List<DetailPathNodeResult> nodes,*/ bool blockedPath)
+        public void init(IntVector2 goal, bool blockedPath)
         {
             this.goal = goal;
+            this.goalWp = WP.MaptileToWorldPosXZ(goal);
             //this.nodes = nodes;
             this.blockedPath = blockedPath;
             currentNodeIx = nodes.Count - 1;
@@ -361,9 +369,9 @@ namespace VikingEngine.DSSWars.Map.Path
             foreach (var n in nodes)
             {
                 Vector3 pos = WP.SubtileToWorldPosXZgroundY_Centered(n.position);
-                pos.Y += WorldData.SubTileHalfWidth;
+                pos.Y += MapTile1_1.SubTileHalfWidth;
                 var mesh = new Graphics.Mesh(LoadedMesh.cube_repeating, pos,
-                   new Vector3(WorldData.SubTileHalfWidth), Graphics.TextureEffectType.Flat, SpriteName.KeyArrowRight, Color.Pink, false);
+                   new Vector3(MapTile1_1.SubTileHalfWidth), Graphics.TextureEffectType.Flat, SpriteName.KeyArrowRight, Color.Pink, false);
                 mesh.AddToRender(DrawGame.UnitDetailLayer);
                 nodeImages.Add(mesh);
             }
@@ -524,11 +532,14 @@ namespace VikingEngine.DSSWars.Map.Path
                 moveCost -= 1f;
             }
 
-            SubTile subtile = world.subTileGrid.Get(pos);
-            moveCost *= subtile.TerrainBlockMultipleValue();
+            MoveCost moveCostTile = world.moveLayer0.Get(pos);
+            //MapTile1_1 subtile = world.subTileGrid.Get(pos);
+            //moveCost *= //subtile.TerrainBlockMultipleValue();
 
-            Tile tile = world.tileGrid.Get(pos / WorldData.TileSubDivitions);
-            waterTile = tile.IsWater();
+            //SumTile4_4 tile = world.tileGrid.Get(pos / Map.MapData.MapTile1_1.ModelScale_Inv);
+            waterTile = moveCostTile.isWater;
+            ship = this.waterTile;
+            moveCost *= moveCostTile.GetMoveCost(ship);
 
             if (waterTile != parent.waterTile)
             {
@@ -541,9 +552,7 @@ namespace VikingEngine.DSSWars.Map.Path
                     moveCost += MoveCostStraight * 64;
                 }
             }
-            ship = this.waterTile;
-
-            moveCost *= tile.TroupWalkingDistance(ship);
+            //DssRef.world.TerrainSpeedMultiplier//tile.TroupWalkingDistance(ship);
 
             moveCost += parent.moveCost;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using VikingEngine.Core.DSSWars.Work;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Presentation;
@@ -214,11 +214,7 @@ namespace VikingEngine.DSSWars.Presentation
                     break;
             }
 
-            
-            //if (onChange && onContentLoad)
-            //{ 
-            //    Ref.
-            //}
+            IntroState.OnLanguageSelect();
         }
     }
 

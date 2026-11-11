@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -111,15 +111,18 @@ namespace VikingEngine.DataStream
                     else
                         result += Dir + LocalDirectoryPath;
                 }
-
+#if DEBUG 
                 if (result == "\\")
                     throw new Exception();
-
+#endif
                 return result;
             }
         }
 
-
+        public void CreateDirectory()
+        {
+            Directory.CreateDirectory(CompleteDirectory);
+        }
         /// <summary>
         /// Must be storage path
         /// </summary>
@@ -140,13 +143,27 @@ namespace VikingEngine.DataStream
         public static string StorageDirectory()
         {
 #if PCGAME
+            if (OperatingSystem.IsAndroid() || OperatingSystem.IsIOS())
+            {
+                if (!string.IsNullOrEmpty(Config.PcStoragePath))
+                {
+                    return Config.PcStoragePath;
+                }
+
+                var androidPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    StorageFolderName);
+                Directory.CreateDirectory(androidPath);
+
+                return androidPath;
+            }
             if (PlatformSettings.ReleaseBuild && PlatformSettings.PC_platform)
             {               
                 return Config.PcStoragePath;
             }
             else
             {
-                return System.IO.Directory.GetCurrentDirectory();
+                return Directory.GetCurrentDirectory();
             }
 #else
             return TextLib.EmptyString; 
@@ -186,15 +203,21 @@ namespace VikingEngine.DataStream
         }
         public static List<FilePath> ListFilesInStorageDir2(FilePath searchPattern)
         {
-            var files = System.IO.Directory.GetFiles(searchPattern.CompleteDirectory, "*", SearchOption.AllDirectories);
             List<FilePath> list = new List<FilePath>();
-            foreach (var f in files)
-            {
 
-                if (string.CompareOrdinal(searchPattern.FileEnd, 0, f, f.Length - searchPattern.FileEnd.Length, searchPattern.FileEnd.Length) == 0)
+            var directory = searchPattern.CompleteDirectory;
+            if (Directory.Exists(directory))
+            {
+                var files = System.IO.Directory.GetFiles(directory, "*", SearchOption.AllDirectories);
+                
+                foreach (var f in files)
                 {
-                    list.Add(FilePath.FromString(f));
-                }
+
+                    if (string.CompareOrdinal(searchPattern.FileEnd, 0, f, f.Length - searchPattern.FileEnd.Length, searchPattern.FileEnd.Length) == 0)
+                    {
+                        list.Add(FilePath.FromString(f));
+                    }
+                }                
             }
 
             return list;

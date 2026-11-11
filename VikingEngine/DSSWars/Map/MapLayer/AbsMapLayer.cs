@@ -1,0 +1,135 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.Graphics;
+
+namespace VikingEngine.DSSWars.Map.MapLayer
+{
+    abstract class AbsMapLayer : Point3D
+    {
+        Timer.Basic waterAnimTimer = new Timer.Basic(3000, true);
+        int waterFrame = 0;
+        //int waterEdgeFrame = 0;
+        double waterMoveCurve = 0;
+
+        protected Graphics.Mesh waterSurface, fogPlane;
+
+        public AbsMapLayer(int layer)
+        {
+            WaterModel(layer);
+        }
+
+        protected void WaterModel(int layer)
+        {            
+            var vol = WaterModelVolume();
+
+            waterSurface = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f),
+                TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.White,
+                false);           
+            waterSurface.texture = WaterTex()[0];
+            int repeatCount = layer == DrawGame.NearLayer ? 2 : 1;
+            waterSurface.repeatingTextureSource(WaterTex()[1], DssRef.world.chunkGrid.Size * repeatCount);
+            //waterSurface.Y = MapHeight2.WaterSurfaceY;
+            waterSurface.Scale = vol.Scale;
+            const float SurfaceTrans = 0.8f;
+            
+            waterSurface.AddToRender(layer);
+            if (DssRef.storage.ruleset_instance.module_fogOfWar)
+            {
+                fogPlane = (Mesh)waterSurface.CloneMe();
+                fogPlane.Y += 0.01f;
+                fogPlane.Color = Color.White;
+
+                fogPlane.setFullTextureSource(DssRef.world.fogTexture.texture);
+                fogPlane.AddToRender(layer);
+            }
+            waterSurface.Opacity = SurfaceTrans;
+
+        }
+
+        virtual protected Texture2D[] WaterTex()
+        {
+            return DssRef.models.seaTextures;
+        }
+
+        public static VectorVolume WaterModelVolume()
+        {
+            Vector3 surfacePos = new Vector3(DssRef.world.unitSize.X * 0.5f /*- 0.5f*/, MapHeight2.WaterSurfaceY, DssRef.world.unitSize.Y * 0.5f /*- 0.5f*/);
+            Vector3 waterScale = new Vector3(DssRef.world.unitSize.X, 1f, DssRef.world.unitSize.Y);
+
+            return new VectorVolume(surfacePos, waterScale);
+        }
+
+        protected void updateWaterTexture()
+        {
+            if (waterAnimTimer.Update(Ref.DeltaGameTimeMs))
+            {
+                if (++waterFrame >= WaterTex().Length)
+                {
+                    waterFrame = 0;
+                }
+
+                //if (++waterEdgeFrame >= DssRef.models.waterEdgeTextures.Length)
+                //{ 
+                //    waterEdgeFrame = 0;
+                //}
+
+                waterSurface.texture = WaterTex()[waterFrame];
+            }
+
+            waterMoveCurve += Ref.DeltaGameTimeSec * 0.5f;
+            waterSurface.TextureSource.SourceF.X += Ref.DeltaGameTimeSec * -0.05f;
+            waterSurface.TextureSource.SourceF.Y = (float)(Math.Sin(waterMoveCurve) * 0.1);
+        }
+
+        //public Texture2D waterEdgeTex()
+        //{
+        //    return DssRef.models.waterEdgeTextures[waterEdgeFrame];
+        //}
+
+        #region DRAW
+
+        public override DrawObjType DrawType
+        {
+            get { return DrawObjType.MeshGenerated; }
+        }
+        public override void copyAllDataFrom(Graphics.AbsDraw clone)
+        {
+            throw new NotImplementedException();
+        }
+        public override Graphics.AbsDraw CloneMe()
+        {
+            throw new NotImplementedException();
+        }
+        public override Color Color
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+        public override float Opacity
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+        public override void UpdateCulling()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+    }
+}

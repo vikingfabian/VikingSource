@@ -28,7 +28,7 @@ namespace VikingEngine.PJ.MiniGolf
 
         public override void Time_Update(float time_ms)
         {
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)
             {
                 Vector2 diff = goalPos - image.Position;
                 if (diff.Length() < 1f)

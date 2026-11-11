@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Media;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework.Media;
+using VikingEngine.Sound;
 
 namespace VikingEngine.PJ
 {
@@ -10,6 +11,9 @@ namespace VikingEngine.PJ
     {
         public static SoundLevel SoundLevel = PJ.SoundLevel.Medium;
         public static SoundLevel MusicLevel = PJ.SoundLevel.Medium;
+
+        public static SoundContainerBase whip, whip_perfect, whip_fail, success,
+            soft_buzz_error, scroll_back, scroll_forward, option_select, option_deselect;
 
         public static readonly float[] LevelVolume = new float[]
         {
@@ -27,27 +31,27 @@ namespace VikingEngine.PJ
             PlaySound(sound, Pan.Center);
         }
 
-        public static void NextMusicLevel()
-        {
-            if (MusicLevel == PJ.SoundLevel.Off)
-            {
-                MusicLevel = PJ.SoundLevel.Medium;
-                if (MediaPlayer.State == MediaState.Paused)
-                    MediaPlayer.Resume();
-            }
-            else
-            {
-                MusicLevel = PJ.SoundLevel.Off;
-                if (MediaPlayer.State == MediaState.Playing)
-                    MediaPlayer.Pause();
-            }
-            //Engine.Sound.PlayPauseMusic();
-            //MusicLevel++;
-            //if (MusicLevel >= PJ.SoundLevel.NUM)
-            //{
-            //    MusicLevel = 0;
-            //}
-        }
+        //public static void NextMusicLevel()
+        //{
+        //    if (MusicLevel == PJ.SoundLevel.Off)
+        //    {
+        //        MusicLevel = PJ.SoundLevel.Medium;
+        //        if (MediaPlayer.State == MediaState.Paused)
+        //            MediaPlayer.Resume();
+        //    }
+        //    else
+        //    {
+        //        MusicLevel = PJ.SoundLevel.Off;
+        //        if (MediaPlayer.State == MediaState.Playing)
+        //            MediaPlayer.Pause();
+        //    }
+        //    //Engine.Sound.PlayPauseMusic();
+        //    //MusicLevel++;
+        //    //if (MusicLevel >= PJ.SoundLevel.NUM)
+        //    //{
+        //    //    MusicLevel = 0;
+        //    //}
+        //}
 
         public static void PlaySound(LoadedSound sound, Pan pan)
         {
@@ -106,7 +110,18 @@ namespace VikingEngine.PJ
                     volume = 4f;
                     break;
             }
+#if DEBUG
+            try
+            {
+                Engine.Sound.PlaySound(sound + Ref.rnd.Int(variations), volume * LevelVolume[(int)SoundLevel], pan, Ref.rnd.Plus_MinusF(randomPitch) + pitchAdd);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("SoundManager.PlaySound: " + e.Message);
+            }
+#else
             Engine.Sound.PlaySound(sound + Ref.rnd.Int(variations), volume * LevelVolume[(int)SoundLevel], pan, Ref.rnd.Plus_MinusF(randomPitch) + pitchAdd);
+#endif
         }
     }
 

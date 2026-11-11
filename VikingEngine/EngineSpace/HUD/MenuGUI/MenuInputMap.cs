@@ -87,7 +87,9 @@ namespace VikingEngine.HUD
 
         public void steamSetup(int controllerIndex)
         {
+#if DSS
             scroll = new SteamAnalogMap(SteamActionSet.MenuControls, false, SteamAnalogAction.Scroll, controllerIndex);
+#endif
             OpenCloseController = new SteamButtonMap(SteamActionSet.MenuControls, SteamDigitalAction.close_menu, controllerIndex);
         }
 

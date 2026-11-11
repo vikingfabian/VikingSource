@@ -9,6 +9,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <CompressContent>false</CompressContent>
     <AssemblyName>VikingEngine</AssemblyName>
   </PropertyGroup>
   <PropertyGroup>
@@ -29,9 +30,9 @@
   </ItemGroup>
   <ItemGroup>
     <!---->
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.5.1" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
     <!---->
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.5.1" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
   <ItemGroup>
     <!--

@@ -1,0 +1,1191 @@
+"controller_mappings"
+{
+	"version"		"3"
+	"revision"		"20"
+	"title"		"PJ_xbox2"
+	"description"		"#Description"
+	"creator"		"76561198046251956"
+	"progenitor"		""
+	"url"		"autosave://C:\\Program Files (x86)\\Steam\\steamapps\\common\\Steam Controller Configs\\85986228\\config\\437900-beta_test\\45e-2e3-5200bb4.vdf"
+	"export_type"		"personal_local"
+	"controller_type"		"controller_xboxone"
+	"controller_caps"		"1590271"
+	"major_revision"		"0"
+	"minor_revision"		"0"
+	"Timestamp"		"1790782970"
+	"actions"
+	{
+		"DefaultSet"
+		{
+			"title"		"#Set_Default"
+			"legacy_set"		"0"
+			"Button"
+			{
+				"Action_01"		"#Action_01"
+				"Action_02"		"#Action_02"
+				"Action_03"		"#Action_03"
+				"Action_04"		"#Action_04"
+				"Action_05"		"#Action_05"
+				"Action_06"		"#Action_06"
+				"Action_07"		"#Action_07"
+				"Action_08"		"#Action_08"
+				"Action_NextMode"		"#Action_NextMode"
+				"Action_RemovePlayer"		"#Action_RemovePlayer"
+				"Action_Start"		"#Action_Start"
+				"Action_Back"		"#Action_Back"
+			}
+		}
+		"MenuControls"
+		{
+			"title"		"#Set_Menu"
+			"legacy_set"		"0"
+			"Button"
+			{
+				"close_menu"		"#Action_Start"
+			}
+		}
+	}
+	"action_layers"
+	{
+	}
+	"localization"
+	{
+		"english"
+		{
+			"Set_Default"		"Default"
+			"Set_Menu"		"Menu"
+			"Action_01"		"Button 1"
+			"Action_02"		"Button 2"
+			"Action_03"		"Button 3"
+			"Action_04"		"Button 4"
+			"Action_05"		"Button 5"
+			"Action_06"		"Button 6"
+			"Action_07"		"Button 7"
+			"Action_08"		"Button 8"
+			"Action_NextMode"		"Next mode"
+			"Action_RemovePlayer"		"Remove player"
+			"Action_Start"		"Play/Pause"
+			"Action_Back"		"Back"
+		}
+		"schinese"
+		{
+			"Set_Default"		"默认"
+			"Set_Menu"		"菜单"
+			"Action_01"		"按钮 1"
+			"Action_02"		"按钮 2"
+			"Action_03"		"按钮 3"
+			"Action_04"		"按钮 4"
+			"Action_05"		"按钮 5"
+			"Action_06"		"按钮 6"
+			"Action_07"		"按钮 7"
+			"Action_08"		"按钮 8"
+			"Action_NextMode"		"下一模式"
+			"Action_RemovePlayer"		"移除玩家"
+			"Action_Start"		"播放/暂停"
+			"Action_Back"		"返回"
+		}
+		"french"
+		{
+			"Set_Default"		"Par défaut"
+			"Set_Menu"		"Menu"
+			"Action_01"		"Bouton 1"
+			"Action_02"		"Bouton 2"
+			"Action_03"		"Bouton 3"
+			"Action_04"		"Bouton 4"
+			"Action_05"		"Bouton 5"
+			"Action_06"		"Bouton 6"
+			"Action_07"		"Bouton 7"
+			"Action_08"		"Bouton 8"
+			"Action_NextMode"		"Mode suivant"
+			"Action_RemovePlayer"		"Retirer le joueur"
+			"Action_Start"		"Jouer/Pause"
+			"Action_Back"		"Retour"
+		}
+		"german"
+		{
+			"Set_Default"		"Standard"
+			"Set_Menu"		"Menü"
+			"Action_01"		"Taste 1"
+			"Action_02"		"Taste 2"
+			"Action_03"		"Taste 3"
+			"Action_04"		"Taste 4"
+			"Action_05"		"Taste 5"
+			"Action_06"		"Taste 6"
+			"Action_07"		"Taste 7"
+			"Action_08"		"Taste 8"
+			"Action_NextMode"		"Nächster Modus"
+			"Action_RemovePlayer"		"Spieler entfernen"
+			"Action_Start"		"Spielen/Pause"
+			"Action_Back"		"Zurück"
+		}
+		"japanese"
+		{
+			"Set_Default"		"デフォルト"
+			"Set_Menu"		"メニュー"
+			"Action_01"		"ボタン 1"
+			"Action_02"		"ボタン 2"
+			"Action_03"		"ボタン 3"
+			"Action_04"		"ボタン 4"
+			"Action_05"		"ボタン 5"
+			"Action_06"		"ボタン 6"
+			"Action_07"		"ボタン 7"
+			"Action_08"		"ボタン 8"
+			"Action_NextMode"		"次のモード"
+			"Action_RemovePlayer"		"プレイヤーを削除"
+			"Action_Start"		"再生/一時停止"
+			"Action_Back"		"戻る"
+		}
+		"russian"
+		{
+			"Set_Default"		"По умолчанию"
+			"Set_Menu"		"Меню"
+			"Action_01"		"Кнопка 1"
+			"Action_02"		"Кнопка 2"
+			"Action_03"		"Кнопка 3"
+			"Action_04"		"Кнопка 4"
+			"Action_05"		"Кнопка 5"
+			"Action_06"		"Кнопка 6"
+			"Action_07"		"Кнопка 7"
+			"Action_08"		"Кнопка 8"
+			"Action_NextMode"		"Следующий режим"
+			"Action_RemovePlayer"		"Удалить игрока"
+			"Action_Start"		"Играть/Пауза"
+			"Action_Back"		"Назад"
+		}
+		"spanish"
+		{
+			"Set_Default"		"Predeterminado"
+			"Set_Menu"		"Menú"
+			"Action_01"		"Botón 1"
+			"Action_02"		"Botón 2"
+			"Action_03"		"Botón 3"
+			"Action_04"		"Botón 4"
+			"Action_05"		"Botón 5"
+			"Action_06"		"Botón 6"
+			"Action_07"		"Botón 7"
+			"Action_08"		"Botón 8"
+			"Action_NextMode"		"Siguiente modo"
+			"Action_RemovePlayer"		"Eliminar jugador"
+			"Action_Start"		"Jugar/Pausar"
+			"Action_Back"		"Atrás"
+		}
+		"brazilian"
+		{
+			"Set_Default"		"Padrão"
+			"Set_Menu"		"Menu"
+			"Action_01"		"Botão 1"
+			"Action_02"		"Botão 2"
+			"Action_03"		"Botão 3"
+			"Action_04"		"Botão 4"
+			"Action_05"		"Botão 5"
+			"Action_06"		"Botão 6"
+			"Action_07"		"Botão 7"
+			"Action_08"		"Botão 8"
+			"Action_NextMode"		"Próximo modo"
+			"Action_RemovePlayer"		"Remover jogador"
+			"Action_Start"		"Jogar/Pausar"
+			"Action_Back"		"Voltar"
+		}
+		"polish"
+		{
+			"Set_Default"		"Domyślne"
+			"Set_Menu"		"Menu"
+			"Action_01"		"Przycisk 1"
+			"Action_02"		"Przycisk 2"
+			"Action_03"		"Przycisk 3"
+			"Action_04"		"Przycisk 4"
+			"Action_05"		"Przycisk 5"
+			"Action_06"		"Przycisk 6"
+			"Action_07"		"Przycisk 7"
+			"Action_08"		"Przycisk 8"
+			"Action_NextMode"		"Następny tryb"
+			"Action_RemovePlayer"		"Usuń gracza"
+			"Action_Start"		"Graj/Pauza"
+			"Action_Back"		"Wstecz"
+		}
+	}
+	"group"
+	{
+		"id"		"0"
+		"mode"		"four_buttons"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"button_a"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button A, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_b"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button B, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_x"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button X, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_y"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button Y, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"1"
+		"mode"		"dpad"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button dpad_up, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button dpad_down, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button dpad_right, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button dpad_left, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"2"
+		"mode"		"joystick_move"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button JOYSTICK_RIGHT, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"3"
+		"mode"		"joystick_move"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button JOYSTICK_LEFT, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"4"
+		"mode"		"trigger"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button TRIGGER_LEFT, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+		"settings"
+		{
+			"output_trigger"		"1"
+		}
+	}
+	"group"
+	{
+		"id"		"5"
+		"mode"		"trigger"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button TRIGGER_RIGHT, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+		"settings"
+		{
+			"output_trigger"		"2"
+		}
+	}
+	"group"
+	{
+		"id"		"6"
+		"mode"		"joystick_move"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button JOYSTICK_RIGHT, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"8"
+		"mode"		"joystick_move"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button JOYSTICK_RIGHT, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"9"
+		"mode"		"dpad"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"dpad_north"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button DPAD_UP, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"dpad_south"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button DPAD_DOWN, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button DPAD_RIGHT, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button DPAD_LEFT, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"1"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+		"settings"
+		{
+			"requires_click"		"0"
+			"haptic_intensity_override"		"0"
+		}
+	}
+	"group"
+	{
+		"id"		"11"
+		"mode"		"four_buttons"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"button_a"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action DefaultSet Action_01, Button 1, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_b"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action DefaultSet Action_02, Button 2, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_x"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action DefaultSet Action_03, Button 3, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_y"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action DefaultSet Action_04, Button 4, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"12"
+		"mode"		"trigger"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action DefaultSet Action_08, Button 8, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"13"
+		"mode"		"trigger"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action DefaultSet Action_07, Button 7, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"15"
+		"mode"		"four_buttons"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"button_a"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_b"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls close_menu, Play/Pause, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_x"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"16"
+		"mode"		"trigger"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"17"
+		"mode"		"trigger"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"21"
+		"mode"		"2dscroll"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+		}
+	}
+	"group"
+	{
+		"id"		"22"
+		"mode"		"dpad"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"dpad_east"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action DefaultSet Action_NextMode, Next mode, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"dpad_west"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action DefaultSet Action_RemovePlayer, Remove player, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+		"settings"
+		{
+			"requires_click"		"0"
+			"haptic_intensity_override"		"0"
+		}
+	}
+	"group"
+	{
+		"id"		"25"
+		"mode"		"joystick_mouse"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"output_joystick"		"2"
+		}
+	}
+	"group"
+	{
+		"id"		"7"
+		"mode"		"switches"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"button_escape"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button start, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_menu"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button select, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"left_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button shoulder_left, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"right_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"xinput_button shoulder_right, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"10"
+		"mode"		"switches"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"button_escape"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action DefaultSet Action_Start, Play/Pause, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_menu"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action DefaultSet Action_Back, Back, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"left_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action DefaultSet Action_05, Button 5, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"right_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action DefaultSet Action_06, Button 6, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+	}
+	"group"
+	{
+		"id"		"14"
+		"mode"		"switches"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"button_escape"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls close_menu, Play/Pause, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_menu"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls close_menu, Play/Pause, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"right_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"mouse_button LEFT, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+	}
+	"preset"
+	{
+		"id"		"1"
+		"name"		"DefaultSet"
+		"group_source_bindings"
+		{
+			"10"		"switch active"
+			"11"		"button_diamond active"
+			"12"		"left_trigger active"
+			"13"		"right_trigger active"
+			"21"		"dpad inactive"
+			"22"		"dpad active"
+		}
+	}
+	"preset"
+	{
+		"id"		"2"
+		"name"		"MenuControls"
+		"group_source_bindings"
+		{
+			"14"		"switch active"
+			"15"		"button_diamond active"
+			"16"		"left_trigger active"
+			"17"		"right_trigger active"
+			"25"		"joystick active"
+		}
+	}
+	"settings"
+	{
+		"left_trackpad_mode"		"0"
+		"right_trackpad_mode"		"0"
+	}
+}

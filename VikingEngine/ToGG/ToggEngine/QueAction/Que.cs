@@ -9,7 +9,7 @@ namespace VikingEngine.ToGG.ToggEngine.QueAction
     {
         AbsGenericPlayer player;
         QueType type;
-        public List2<QueAction.AbsQueAction> queActions = new List2<QueAction.AbsQueAction>(4);
+        public List2_old<QueAction.AbsQueAction> queActions = new List2_old<QueAction.AbsQueAction>(4);
         Action update;
 
         public Que(AbsGenericPlayer player)

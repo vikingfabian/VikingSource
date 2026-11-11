@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Text;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.GameObject.DetailObj.Soldiers;
 using VikingEngine.LootFest;
@@ -72,20 +73,20 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static float GroupStrengh(int soldierCount, ref SoldierData data, bool land)
         {
-            //int damage;
-            //if (land)
-            //{ 
-            
-            //}
-            //else
-            //{
-            //    crewCount = MathExt.Div_Ceiling(this.health, data.basehealth);
-
-            //}
-
             var raw = GroupStrengh_Raw(soldierCount, DPS(land? data.attackDamage : data.attackDamageSea, data.attackTimePlusCoolDown), data.basehealth);
             
             return raw / AverageGroupStrength;
+        }
+
+        public static int GroupSupply(int soldierCount, ref SoldierData data)
+        {
+            int result = soldierCount * data.workForcePerUnit;
+
+            if (data.unitFilter.Contains(UnitFilterType.Animal))
+            {
+                result += soldierCount;
+            }
+            return result;
         }
 
         public void AddRawModelsToLoad(List<VoxelModelName> modelNames)

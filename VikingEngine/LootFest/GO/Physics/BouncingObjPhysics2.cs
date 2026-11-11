@@ -24,7 +24,7 @@ namespace VikingEngine.LootFest
             base.Update(time);
             if (!sleeping)
             {
-                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
                 { parent.Velocity.Y += Gravity; }
                 Vector3 pos = parent.Position;
                 Vector3 oldPos = pos;

@@ -134,7 +134,7 @@ namespace VikingEngine.Core.Wand.Map
             }
 
             newFloorModel = new Graphics.GeneratedObjColor(
-                new Graphics.PolygonsAndTrianglesColor(polygons),
+                new Graphics.PolygonsAndTrianglesColor(polygons, null),
                 LoadedTexture.SpriteSheet, false);
 
         }
@@ -171,7 +171,7 @@ namespace VikingEngine.Core.Wand.Map
             }
             */
             newdecalsModel = new Graphics.GeneratedObjColor(
-                new Graphics.PolygonsAndTrianglesColor(polygons),
+                new Graphics.PolygonsAndTrianglesColor(polygons, null),
                 LoadedTexture.SpriteSheet, false);
 
         }

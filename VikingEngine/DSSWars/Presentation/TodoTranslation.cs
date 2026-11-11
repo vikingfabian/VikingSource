@@ -32,6 +32,64 @@ namespace VikingEngine.DSSWars.Presentation
         public string Minigame_BlackBolt_Name => "Black Bolt Industries";
         public string Minigame_BlackBolt_Description => "Factory puzzle minigame. English only.";
 
+        public string Work_LandSurvey => "Land survey";
+        public string Work_LandSurvey_Description => "Explore points of interest to find natural resources";
 
+        public string Point_PrimitiveExloration => "Primitive exporation complete";
+        public string Point_FullExloration => "Exporation complete";
+
+
+        public string TerrainType_PointOfInterest => "Point of interest";
+        public string TerrainType_NaturalSpring => "Natural spring";
+        public string BuildingType_GravelRoad => "Gravel road";
+        public string BuildingType_CobblestoneRoad => "Cobbled road";
+        public string BuildingType_PavedRoad => "Paved road";
+        public string BuildingType_WaterWell => "Water well";
+        public string BuildingType_AnimalTrainer => "Water well";
+        public string BuildingType_AnimalTrainer_Description => "Will allow soldiers to conscript with animals";
+
+        public string BuildingType_ExpansionHall => "Lords seat";
+        public string ExpandTerritory_Description => "Will expand you city territory";
+        public string BuildingType_SoldiersQuarter => "Soldiers quarter";
+        public string BuildingType_Economics => "Economics";
+        public string BuildingType_TingsHouse => "Tings house";
+
+        public string Resource_TypeName_FineWood => "Fine wood";
+
+        public string ArmySupplyCount => "Army supply count";
+        public string ArmySupplyCount_ExpandByX => "Will expand army supply count by {0}";
+
+        public string Modules_Label => "Modules";
+        public string Module_FogOfWar => "Fog of war";
+        public string Module_FoodUpkeep => "Thirst and Stravation";
+        public string Module_LossOfUnits => "Debt and Deserters";
+        public string Module_LocalGold => "Physical gold";
+        public string Module_NoPause => "No pause and command";
+        public string Language_AddXDifficultyPercentage => "+{0}%";
+        public string Language_IncludeX => "Include - {0}";
+        public string Language_EditX => "Edit {0}";
+
+     
+        public string GroundRequired => "Ground requirement";
+        public string GroundRequired_Plant => "Soil";
+        public string GroundRequired_Light => "Light";
+        public string GroundRequired_Medium => "Solid";
+        public string GroundRequired_Heavy => "Rock";
+
+        public string Ground_Fertile => "Fertile ground";
+        public string Ground_SaltDesert => "Salt desert";
+        public string Ground_Terraform => "Ground terraform";
+        public string Ground_NoTerraformToX => "Ground can't be terraformed to {0}";
+
+        public string WaterDepth_Refill => "Ground water refill";
+        public string WaterDepth => "Ground water depth";
+        public string WaterDepth_Description => "Water collecting time is increased by {0} per depth level";
+
+        public string Resource_RequestDelivery => "Request delivery";
+        public string Resource_RequestDelivery_Description => "Will affect auto delivery from other cities";
+
+
+        public string Work_WorkerCount => "Max worker count";
+        public string Work_WorkerCount_Description => "Limit how many workers who will do the same task.";
     }
 }

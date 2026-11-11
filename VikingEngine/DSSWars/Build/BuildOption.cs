@@ -7,11 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars.Build
 {
@@ -21,8 +22,9 @@ namespace VikingEngine.DSSWars.Build
         public CraftBlueprint blueprint;
         public CraftBlueprint altBlueprint = null;
         
-        public SubTile terrainType;
-        public SpriteName sprite;
+        public MapTile1_1 terrainType;
+        public SpriteName icon;
+        public string name, description;
         public bool uniqueBuilding = false;
         public bool canAutoBuild;
         public BuildCategoryTab buildCategory;
@@ -35,26 +37,40 @@ namespace VikingEngine.DSSWars.Build
 
         public ItemResource upkeep = ItemResource.Empty;
 
-        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint, 
+        public BuildInAreaOptions buildInArea = BuildInAreaOptions.WithInBorders;
+        public SpecialBuildRequirement specialBuildRequirement = SpecialBuildRequirement.None;
+        public BuildingGroundRequirement groundRequirement;
+
+        public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, BuildingGroundRequirement groundRequirement, 
+            SpriteName sprite, 
+            string name, string description,
+            CraftBlueprint blueprint, 
             bool canAutoBuild, BuildCategoryTab buildCategory,
             BuildFilterTag filterTag1,
             BuildFilterTag filterTag2,
             BuildFilterTag filterTag3,
             MapPaintToolCategory paintToolCategory, float buildTimeSec)
         {
+            this.name = name;
+            this.description = description;
+
+            this.groundRequirement = groundRequirement;
             this.canAutoBuild = canAutoBuild;
-            this.sprite = sprite;
+            this.icon = sprite;
             this.buildType = buildType;
             this.blueprint = blueprint;
-            terrainType = new SubTile(mainType, subType) { terrainAmount = 1 };
+            terrainType = new MapTile1_1(mainType, subType) { terrainAmount = 1 };
             //this.experienceType = experienceType;
             this.buildCategory = buildCategory;
             this.filterTag1 = filterTag1;
             this.filterTag2 = filterTag2;
             this.filterTag3 = filterTag3;
-            BuildLib.BuildOptions[(int)buildType] = this;
+            
             this.paintToolCategory = paintToolCategory;
             this.buildTimeSec = buildTimeSec;
+
+            BuildLib.BuildOptions[(int)buildType] = this;
+            BuildLib.TerrainToBuildType.Add(BuildLib.TerrainHash(mainType, subType), buildType);
         }
 
 
@@ -70,41 +86,41 @@ namespace VikingEngine.DSSWars.Build
         public string Label()
         {
             IconName.Building(buildType, out _, out string name);//LangLib.TerrainName(mainType, subType);
-            return name;
+            return name != null? name : $"Missing name for {buildType}";
         }
-        public string Description()
-        {
-            switch (terrainType.mainTerrain)
-            {
-                case TerrainMainType.Building:
-                    return LangLib.BuildingDescription((TerrainBuildingType)terrainType.subTerrain);
-                case TerrainMainType.Foil:
-                    return DssRef.lang.BuildingType_Farm_Description;
-                case TerrainMainType.Decor:
-                case TerrainMainType.Road:
-                    return DssRef.lang.BuildingType_Decor_Description;
-                case TerrainMainType.Wall:
-                    switch ((TerrainWallType)terrainType.subTerrain)
-                    {
-                        case TerrainWallType.StoneHouse:
-                            return DssRef.lang.Defence_WallDescription_Movement;
-                        default:
-                            return DssRef.lang.Defence_WallDescription_Movement + " " + DssRef.lang.Defence_WallDescription_GuardPost;
-                    }
+        //public string Description()
+        //{
+        //    switch (terrainType.mainTerrain)
+        //    {
+        //        case TerrainMainType.Building:
+        //            return LangLib.BuildingDescription((TerrainBuildingType)terrainType.subTerrain);
+        //        case TerrainMainType.Foil:
+        //            return DssRef.lang.BuildingType_Farm_Description;
+        //        case TerrainMainType.Decor:
+        //        case TerrainMainType.Road:
+        //            return DssRef.lang.BuildingType_Decor_Description;
+        //        case TerrainMainType.Wall:
+        //            switch ((TerrainWallType)terrainType.subTerrain)
+        //            {
+        //                case TerrainWallType.StoneHouse:
+        //                    return DssRef.lang.Defence_WallDescription_Movement;
+        //                default:
+        //                    return DssRef.lang.Defence_WallDescription_Movement + " " + DssRef.lang.Defence_WallDescription_GuardPost;
+        //            }
                     
-            }
+        //    }
 
-            return TextLib.Error;
-        }
+        //    return TextLib.Error;
+        //}
 
         public void destroy_async(City city, IntVector2 subPos)
         {
-            var sutile = new SubTile();
+            var sutile = new MapTile1_1();
             city.executeBuildEffectsOnCity(false, subPos, ref sutile, terrainType.mainTerrain, terrainType.subTerrain);
 
         }
 
-        public bool execute_async(City city, IntVector2 subPos, ref SubTile subTile, bool upgrade, bool payResources = true)
+        public bool execute_async(City city, IntVector2 subPos, ref MapTile1_1 subTile, bool upgrade, bool payResources = true)
         {            
             if (city.executeBuildEffectsOnCity(true, subPos, ref subTile, terrainType.mainTerrain, terrainType.subTerrain))
             {
@@ -146,5 +162,13 @@ namespace VikingEngine.DSSWars.Build
         {
             return blueprint.hasResources_ignorewater(city) || (altBlueprint != null && altBlueprint.hasResources_ignorewater(city));
         }
+    }
+
+    enum SpecialBuildRequirement
+    { 
+        None,
+        FoodStorage,
+        MaxSoldierQuarters, 
+        MaxExpansions,
     }
 }

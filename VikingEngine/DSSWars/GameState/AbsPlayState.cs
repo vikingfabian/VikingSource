@@ -7,13 +7,15 @@ using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.MapLayer;
+using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
@@ -31,12 +33,12 @@ namespace VikingEngine.DSSWars.GameState
         public bool isReady = false;
         public bool hasManorLords = false;
         public WorldResources resources = new WorldResources();
-        public Map.MapLayer_Factions factionsMap;
-        protected Map.MapLayer_Overview overviewMap;
-        public Map.MapLayer_Detail detailMap;
+        public MapLayer3_Far mapLayerFar;
+        public MapLayer2_Mid mapLayerMid;
+        public MapLayer1_Near mapLayerNear;
         public Culling culling;
 
-        public PathUpdateThread[] pathUpdates;
+        //public PathUpdateThread[] pathUpdates;
         protected ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_detail = new ConcurrentStack<VoxelModelInstance>();
         protected ConcurrentStack<Graphics.VoxelModelInstance> voxelModelInstancesPool_overview = new ConcurrentStack<VoxelModelInstance>();
 
@@ -63,7 +65,10 @@ namespace VikingEngine.DSSWars.GameState
        
         protected ExitGameStateThreads exitGameStateThreads;
 
+        protected bool bResourceMinuteUpdate = true;
         TimeStamp gameStartTime = TimeStamp.Now();
+
+        public float strongestArmy = 1f, strongestArmy_processing = 0;
 
         public AbsPlayState() 
             :base() 
@@ -71,7 +76,7 @@ namespace VikingEngine.DSSWars.GameState
             
             remotePlayers = new SpottedArray<Players.RemotePlayer>();
             remotePlayersCounter = new SpottedArrayCounter<RemotePlayer>(remotePlayers);
-
+            InitBuildOptions.InitRuleSet();
             DssRef.state = this;
             
         }
@@ -79,7 +84,11 @@ namespace VikingEngine.DSSWars.GameState
         virtual protected void onGameStart(bool newGame)
         {
             gameStartTime = TimeStamp.Now();
+#if DSS
             Input.Mouse.SetMenuMode(SteamWrapping.SteamActionSet.InGameControls);
+#else
+            Input.Mouse.SetMenuMode(true);
+#endif
         }
 
         public bool resourceCheckTime()
@@ -123,9 +132,16 @@ namespace VikingEngine.DSSWars.GameState
             DssRef.ambience.gameStart();
             culling = new Culling();
 
-            factionsMap = new MapLayer_Factions();
-            overviewMap = new Map.MapLayer_Overview(factionsMap);
-            detailMap = new Map.MapLayer_Detail();
+            CrossHeightMap crossHeightMap = new CrossHeightMap();
+
+            DssRef.world.fogTexture.initTexture();
+            mapLayerFar = new MapLayer3_Far(crossHeightMap);
+            mapLayerMid = new MapLayer2_Mid(mapLayerFar, crossHeightMap);
+            mapLayerNear = new MapLayer1_Near(crossHeightMap);
+           
+
+            crossHeightMap.init();
+
             ((DrawGame)draw).initMapShaders();
 
             foreach (var p in localPlayers)
@@ -271,15 +287,17 @@ namespace VikingEngine.DSSWars.GameState
             {
                 if (!host)
                 {
-                    overviewMap.refresh_async();
+                    mapLayerMid.refresh_async();
                 }
 
                 culling.asynch_update(time);
 
                
-                DssRef.state.detailMap.asynchUpdate();
-                overviewMap.unitMiniModels.asynchUpdate();
+                mapLayerNear.asynchUpdate();
+                mapLayerMid.unitsOnMap.asynchUpdate();
+                mapLayerFar.unitsOnMap.asynchUpdate();
 
+                DssRef.world.async_fog_update();
 
             }
             return exitThreads;
@@ -289,7 +307,7 @@ namespace VikingEngine.DSSWars.GameState
         {
             if (UpdateReady())
             {
-                overviewMap.runAsyncTask();
+                mapLayerMid.runAsyncTask();
             }
             return exitThreads;
         }
@@ -311,15 +329,33 @@ namespace VikingEngine.DSSWars.GameState
                         factions.sel.asynchSleepObjectsUpdate(time);                        
                     }
 
-
-                    foreach (var m in DssRef.world.cities)
+                    var citiesC = DssRef.world.cities.counter();
+                    //foreach (var m in DssRef.world.cities)
+                    while(citiesC.Next())
                     {
-                        if (m.IsNetHosted)
+                        if (citiesC.sel.IsNetHosted)
                         {
-                            m.async_sleepUpate(time);
+                            citiesC.sel.async_sleepUpate(time);
                         }
                     }
 
+                }
+            }
+            return exitThreads;
+        }
+
+        protected bool asyncResourcesUpdate(int id, float time)
+        {
+            //This thread is the only thay may edit subtiles
+            if (UpdateReady())
+            {
+                resources.asyncEditTiles();
+                //Runs every minute to upate any resource progression: trees grow, food spoil, etc
+                if (bResourceMinuteUpdate || StartupSettings.DebugResoursesSuperSpeed)
+                {
+                    bResourceMinuteUpdate = false;
+
+                    resources.asyncGrowUpdate();
                 }
             }
             return exitThreads;
@@ -355,6 +391,10 @@ namespace VikingEngine.DSSWars.GameState
         {
             int count = PathThreadCount();
 
+            DssRef.world.initPaths(count);
+
+            /*
+            //OLD
             pathUpdates = new PathUpdateThread[count + 1];
             int startIx = 0;
             int factionLength = DssRef.world.factions.Count / count;
@@ -373,6 +413,8 @@ namespace VikingEngine.DSSWars.GameState
             pathUpdates[count] = new PathUpdateThread_Player(count);
             //pathUpdates[count].PreallocatePools(1, 1);
             DssRef.world.PreallocatePools(count, count);
+
+            */
         }
 
         public void updateMouseVisible()
@@ -481,6 +523,8 @@ namespace VikingEngine.DSSWars.GameState
         {
             return null;
         }
+
+        abstract public bool GodPowers();
 
         public override bool MayUseLowLatencyGC()
         {

@@ -9,6 +9,8 @@ namespace VikingEngine.Graphics
     {
         public Effect shader = null;
 
+        virtual public void flushBuffer() { }
+
         abstract public void Draw(Mesh obj);
 
         abstract protected void SetVertexBufferEffect(AbsVoxelObj obj);

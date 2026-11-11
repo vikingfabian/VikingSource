@@ -1,0 +1,1804 @@
+using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.EngineSpace.Maths;
+
+namespace VikingEngine.DSSWars.Map.Map2
+{
+    enum Map2Pass
+    {
+        Empty,
+        NewWorld,
+        NodeGrid,
+        
+        Icon,
+        IconNoise,
+        Bioms,
+        
+        IconCities,
+        ScaleUp,
+        PostNoise,
+
+        NUM,
+
+        BuildMapData,
+
+        All,
+    }
+
+    class IconMapGenerator
+    {
+        public Map2GenerateSettings generateSettings = new Map2GenerateSettings();
+
+        const float LayerAddHeight = 0.15f;
+        const float Height_PostNoise = LayerAddHeight * 2.4f;
+
+        LoadingState loadingState = LoadingState.None;
+
+        public Map2Pass currentPass = 0;
+        BiomsLayout biomsLayout;
+        public IconWorldData iconWorld, iconWorldScaledUp;
+
+        public IconWorldData ActiveIconWorld => currentPass >= Map2Pass.ScaleUp ? iconWorldScaledUp : iconWorld;
+
+        //public WorldGenData2 world;
+        public NodeMap nodeMap;
+
+        public HeightMapTexture heightMapTexture = null;
+
+        GenerateCities generateCities = new GenerateCities();
+        Grid2D_L<GenTile> DataGrid()
+        {
+            if (currentPass >= Map2Pass.ScaleUp)
+            {
+                return iconWorldScaledUp.iconGrid;
+            }
+            else 
+            {
+                return iconWorld.iconGrid;
+            }
+        }
+        
+        //List<Vector2> connectPoints = null;
+        EngineSpace.Maths.SimplexNoise2D noiseMap;
+        NoiseOptions landNoise = new NoiseOptions(true, 0.1f, 4, 1f, 5f);
+        List<Task> tasks;
+
+        public IconMapConverter mapBuilder;
+        public void generate(Map2GenerateSettings generateSettings)
+        {
+            if (loadingState == LoadingState.None)
+            {
+
+                loadingState = LoadingState.Pass;
+
+                if (tasks.Count > 0)
+                {
+                    throw new Exception("Tasks stuck");
+                }
+
+                Task.Run(async () =>
+                {
+
+                    newWorldPass(generateSettings);
+                     
+                    await nodeTerrainPass(generateSettings);
+
+                    addNoiseTexture();
+
+                    processTexturePixels();
+
+                    loadingState = LoadingState.Complete;
+
+                });
+            }
+        }
+
+        public void addHeightMap(HeightMapTexture heightMap)
+        {
+            var previousPixelTexture = heightMapTexture?.pixelTexture;
+            heightMapTexture = heightMap;
+            if (previousPixelTexture != null && previousPixelTexture != heightMap?.pixelTexture)
+            {
+                Graphics.GpuResourceSync.Release(previousPixelTexture);
+            }
+        }
+
+        public void generateHeightMap()
+        {
+            heightMapTexture.apply(DataGrid());
+            processTexturePixels();
+
+            loadingState = LoadingState.Complete;
+        }
+
+        public void revertToIconPass()
+        {
+            loadingState = LoadingState.Pass;
+            Task.Run(async () =>
+            {
+                iconWorldScaledUp = null;
+                //dataGrid = iconWorld.iconGrid;
+                currentPass = Map2Pass.IconNoise;
+                processTexturePixels();
+                loadingState = LoadingState.Complete;
+            });
+        }
+
+        public void generatePassRange(Map2GenerateSettings generateSettings, Map2Pass start, Map2Pass end, Action onComplete)
+        {
+
+            loadingState = LoadingState.Pass;
+            if (currentPass < start)
+            {
+                start = currentPass +1;
+            }
+
+            Task.Run(async () =>
+            {
+                generatePassRange_async(generateSettings, start, end, onComplete, false);
+            });
+        }
+
+        public async Task generatePassRange_async(Map2GenerateSettings generateSettings, Map2Pass start, Map2Pass end, Action onComplete, bool backgroundLoading)
+        {
+            if (start == Map2Pass.Icon)
+            {
+                clearMap();
+            }
+            if (end < Map2Pass.Bioms)
+            {
+                generateCities = null;
+            }
+
+            for (Map2Pass pass = start; pass <= end; pass++)
+            {
+               await generatePass(generateSettings, pass);
+            }
+
+            currentPass = end;
+
+            if (!backgroundLoading)
+            {
+                if (end < Map2Pass.Icon)
+                {
+                    nodeMap.GenerateTexture();
+                }
+                else
+                {
+                    processTexturePixels();
+                }
+            }
+            loadingState = LoadingState.Complete;
+
+            if (onComplete != null)
+            {
+                Ref.update.AddSyncAction(onComplete);
+            }
+        }
+
+        public async Task generatePass(Map2GenerateSettings generateSettings, Map2Pass pass)
+        {
+            switch (pass)
+            {
+                case Map2Pass.NewWorld:
+                    newWorldPass(generateSettings);
+                    break;
+
+                case Map2Pass.NodeGrid:
+                    Graphics.GpuResourceSync.Release(nodeMap?.texture);
+                    nodeMap = new NodeMap();
+                    nodeMap.Generate(iconWorld, generateSettings);
+                    break;
+
+                case Map2Pass.Icon:
+                    nodeTerrainPass(generateSettings).Wait();
+                    break;
+
+                case Map2Pass.IconNoise:
+                    addNoiseTexture();
+                    break;
+
+                case Map2Pass.Bioms:
+                    biomsLayout = new BiomsLayout(iconWorld.rnd, generateSettings.mapScale.GetSizeCategory());
+                    biomsLayout.GenerateNodes(iconWorld);
+                    break;
+
+                case Map2Pass.IconCities:
+                    if (generateCities == null)
+                    {
+                        generateCities = new GenerateCities();
+                    }
+                    generateCities.generateCities(generateSettings, nodeMap, iconWorld);
+                    break;
+
+                case Map2Pass.ScaleUp:
+                    await scaleUp16x();
+                    break;
+
+                case Map2Pass.PostNoise:
+                    postNoise();
+                    break;
+
+                case Map2Pass.BuildMapData:
+                    mapBuilder = new IconMapConverter();
+                    mapBuilder.ConvertIcon(this);
+                    break;
+            }
+        }
+
+        public void refreshPass()
+        {
+            loadingState = LoadingState.Pass;
+         
+            Task.Run(async () =>
+            {
+                if (currentPass < Map2Pass.Icon)
+                {
+                    nodeMap.GenerateTexture();
+                }
+                else
+                {
+                    processTexturePixels();
+                }
+
+                loadingState = LoadingState.Complete;
+            });
+        }
+
+
+        private async Task nodeTerrainPass(Map2GenerateSettings generateSettings)
+        {
+            tasks = new List<Task>(64);
+            //await Task.WhenAll(tasks);
+
+            //DEBUG : Visualize the node grid for testing
+            Debug.Log("##begin nodeTerrainPass");
+            
+
+            List<Vector2> mountains = new List<Vector2>(128);
+            float placeDiff = NodeMap.NodePixWidth * 0.25f;
+            float largeIslandR = NodeMap.NodePixWidth * 2f;
+
+            for (int x = 0; x < nodeMap.nodeGrid.Size.X; x++)//Parallel.For(0, gridSz.X, x =>
+            {
+                for (int y = 0; y < nodeMap.nodeGrid.Size.Y; y++)
+                {
+                    if (nodeMap.nodeGrid.Get(x, y))
+                    {
+                        int nCount = 0;
+
+                        foreach (var dir in IntVector2.Dir8Array)
+                        {
+                            if (nodeMap.nodeGrid.TryGet(x + dir.X, y + dir.Y, out var nvalue) && nvalue)
+                            {
+                                nCount++;
+                            }
+                        }
+
+                        Vector2 center = new Vector2(NodeMap.start + x * NodeMap.NodePixWidth, NodeMap.start + y * NodeMap.NodePixWidth) + iconWorld.rnd.vector2_cirkle(iconWorld.rnd.Float(placeDiff));
+                        if (nCount == 0)
+                        {
+                            generateIslandAt(largeIslandR, center);
+                        }
+                        else if (nCount >= 6)
+                        {
+                            if (iconWorld.rnd.Chance(0.045))
+                            {
+                                mountains.Add(center);
+                                //generateMountainChains(center, false);
+                            }
+                            else
+                            {
+                                generateLargeIslandAt(largeIslandR, center);
+                            }
+                        }
+                        else
+                        {
+                            DrawMapOptions draw = new DrawMapOptions()
+                            {
+                                noiseStrength = iconWorld.rnd.Float(0.1f, 1.5f),
+                                noise = true,
+                                radius = iconWorld.rnd.Float(4, 14),
+                                flatness = 0.2f,
+                                addHeight = LayerAddHeight * iconWorld.rnd.Float(0.5f, 2f),
+                                quadChance = 0.3f,
+
+                                //biom = biomsLayout.get(iconWorld, center),
+                            };                            
+                            startTask_placeDotWithOptions(center, draw, false, 1);
+                        }
+                    }
+                }
+
+                await Task.WhenAll(tasks);
+                tasks.Clear();
+            }
+
+            Debug.Log("generateDigChains");
+            for (int i = 0; i < 100; i++)
+            {
+                generateDigChains(false);
+            }
+            await Task.WhenAll(tasks);
+            tasks.Clear();
+
+            Debug.Log("generateHills");
+            for (int i = 0; i < 20; i++)
+            {
+                generateHills(10, iconWorld.rnd.Int(8));
+            }
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    generateHills(50, iconWorld.rnd.Int(8));
+            //}
+            await Task.WhenAll(tasks);
+            tasks.Clear();
+
+            Debug.Log("generateMountainChains");
+            foreach (var mPos in mountains)
+            {
+                generateMountainChains(mPos, false);
+            }
+            await Task.WhenAll(tasks);
+            tasks.Clear();
+
+            Debug.Log("DONE");
+            //await Task.WhenAll(tasks);
+            //tasks.Clear();
+        }
+                
+
+        private async Task defaultWorldPass()
+        {
+            tasks = new List<Task>(64);
+
+            for (int i = 0; i < 2; i++)
+            {
+                generateLargeIsland(70);
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                generateLargeIsland(40);
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                generateLargeIsland(20);
+            }
+            await Task.WhenAll(tasks);
+            tasks.Clear();
+
+            for (int i = 0; i < 20; i++)
+            {
+                generateDigChains(true);
+            }
+            for (int i = 0; i < 40; i++)
+            {
+                generateDigChains(false);
+            }
+            await Task.WhenAll(tasks);
+            tasks.Clear();
+
+            int mountainCount = 9;
+
+            for (int i = 0; i < mountainCount; i++)
+            {
+                generateMountainChains();
+            }
+            await Task.WhenAll(tasks);
+            tasks.Clear();
+
+
+            for (int i = 0; i < 8; i++)
+            {
+                generateLandChains(20, true, true);
+            }
+            await Task.WhenAll(tasks);
+            tasks.Clear();
+
+            for (int i = 0; i < 16; i++)
+            {
+                generateLandChains(10, true, true);
+            }
+            await Task.WhenAll(tasks);
+            tasks.Clear();
+
+            for (int i = 0; i < 20; i++)
+            {
+                generateHills(10, iconWorld.rnd.Int(8));
+            }
+            for (int i = 0; i < 20; i++)
+            {
+                generateHills(50, iconWorld.rnd.Int(8));
+            }
+            await Task.WhenAll(tasks);
+            tasks.Clear();
+        }
+
+        private void newWorldPass(Map2GenerateSettings generateSettings)
+        {
+            iconWorld = new IconWorldData(generateSettings.mapScale);
+
+            noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData.worldId.seed);
+            noiseMap.setSeed(iconWorld.rnd.Int());
+            loadingState = LoadingState.Pass;
+
+            //dataGrid = iconWorld.iconGrid;
+
+            clearMap();
+        }
+
+        void clearMap()
+        {
+            var dataGrid = DataGrid();
+            if (dataGrid != null)
+            {
+                Parallel.For(0, dataGrid.Size.X, x =>
+                {
+                    for (int y = 0; y < dataGrid.Size.Y; y++)
+                    {
+                        var tile = dataGrid.Get(x, y);
+
+                        tile.groundY = MapLib.MapHeight2.WaterBottomY;
+                        dataGrid.Set(x, y, tile);
+                    }
+                });
+            }
+        }
+
+        void SmoothMap()
+        {
+            var dataGrid = DataGrid();
+            // Create a temporary grid to store the smoothed results
+            // We must read from 'dataGrid' and write to 'tempGrid' to avoid race conditions
+            Grid2D_L<GenTile> tempGrid = new Grid2D_L<GenTile>(dataGrid.Size);
+
+            // Thresholds
+            float heightDiffThreshold = 0.2f; // How "bumpy" it needs to be to trigger smoothing
+            float minHeight = MapLib.MapHeight2.WaterSurfaceY;           // Don't smooth below this (e.g., Water)
+            float maxHeight = MapLib.MapHeight2.MountainStartY;           // Don't smooth above this (e.g., Peaks)
+
+            Parallel.For(0, dataGrid.Size.X, x =>
+            {
+                for (int y = 0; y < dataGrid.Size.Y; y++)
+                {
+                    float currentH = dataGrid.Get(x, y).groundY;
+
+                    // CONSTRAINT 1: Value Range Check
+                    // If value is too low (water) or too high (mountain peaks), skip it.
+                    if (currentH <= minHeight || currentH > maxHeight)
+                    {
+                        tempGrid.Set(x, y, dataGrid.Get(x, y));
+                        continue;
+                    }
+
+                    // Check neighbors to calculate average and see if we need to smooth
+                    float totalHeight = 0;
+                    int count = 0;
+                    bool needsSmoothing = false;
+
+                    // Loop through 3x3 block (Moore neighborhood)
+                    for (int nx = x - 1; nx <= x + 1; nx++)
+                    {
+                        for (int ny = y - 1; ny <= y + 1; ny++)
+                        {
+                            // Boundary check
+                            if (nx >= 0 && nx < dataGrid.Size.X && ny >= 0 && ny < dataGrid.Size.Y)
+                            {
+                                float neighborH = dataGrid.Get(nx, ny).groundY;
+
+                                // CONSTRAINT 2: Difference Check
+                                // If ANY neighbor is significantly different, we flag this tile for smoothing
+                                if (Math.Abs(neighborH - currentH) > heightDiffThreshold)
+                                {
+                                    needsSmoothing = true;
+                                }
+
+                                totalHeight += neighborH;
+                                count++;
+                            }
+                        }
+                    }
+
+                    // Apply smoothing if conditions met
+                    if (needsSmoothing)
+                    {
+                        // "Even them out" -> Average of all neighbors
+                        float average = totalHeight / count;
+                        tempGrid.Set(x, y, new GenTile { groundY = average });
+                    }
+                    else
+                    {
+                        // If it's already smooth enough, keep original value
+                        tempGrid.Set(x, y, dataGrid.Get(x, y));
+                    }
+                }
+            });
+
+            // Apply the smoothed result back to the main data
+            dataGrid = tempGrid;
+            iconWorld.iconGrid = tempGrid;
+        }
+
+        async Task scaleUp16x()
+        {    
+            iconWorldScaledUp = iconWorld.CloneMe();
+            //dataGrid = iconWorldScaledUp.iconGrid;
+
+            Task cities = Task.Run(()=>{ generateCities.scaleUp16x(iconWorldScaledUp); });
+
+            bool[] scalePassesIs4 = {  true, false, true, true };
+            foreach (bool pass4 in scalePassesIs4)
+            {
+                if (pass4)
+                {
+                    scaleUp4();
+                }
+                else
+                {
+                    scaleUp8();
+                }                    
+            }
+
+            await cities;
+        }
+
+        // Universal blender that mixes Height, Color, and Biomes
+        // Universal blender that mixes Height and Biomes
+        GenTile BlendTiles(GenTile[] tiles, int count, BiomeWeight[] biomeBuffer)
+        {
+            float totalY = 0f;
+            int uniqueBiomes = 0;
+
+            for (int i = 0; i < count; i++)
+            {
+                GenTile t = tiles[i];
+                totalY += t.groundY;
+
+                // Calculate actual weights of the biomes in this tile
+                float w1 = 1f - t.secondBiomWeight;
+                float w2 = t.secondBiomWeight;
+
+                // Add to tallies
+                AddBiomeTally(biomeBuffer, ref uniqueBiomes, t.biom1, w1);
+                if (w2 > 0)
+                    AddBiomeTally(biomeBuffer, ref uniqueBiomes, t.biom2, w2);
+            }
+
+            GenTile result = new GenTile();
+            result.groundY = totalY / count;
+
+            // Resolve the top 2 biomes
+            ResolveTopBiomes(biomeBuffer, uniqueBiomes, out result.biom1, out result.biom2, out result.secondBiomWeight);
+
+            return result;
+        }
+
+        // Tally logic
+        void AddBiomeTally(BiomeWeight[] buffer, ref int uniqueCount, BiomType type, float weight)
+        {
+            for (int i = 0; i < uniqueCount; i++)
+            {
+                if (buffer[i].type == type)
+                {
+                    buffer[i].weight += weight;
+                    return;
+                }
+            }
+            buffer[uniqueCount].type = type;
+            buffer[uniqueCount].weight = weight;
+            uniqueCount++;
+        }
+
+        // Extracts the two highest weighted biomes and calculates their new mix ratio
+        void ResolveTopBiomes(BiomeWeight[] buffer, int uniqueCount, out BiomType b1, out BiomType b2, out float strength2)
+        {
+            if (uniqueCount == 0)
+            {
+                b1 = default; b2 = default; strength2 = 0f;
+                return;
+            }
+            if (uniqueCount == 1)
+            {
+                b1 = buffer[0].type; b2 = buffer[0].type; strength2 = 0f;
+                return;
+            }
+
+            int top1Idx = 0;
+            for (int i = 1; i < uniqueCount; i++)
+                if (buffer[i].weight > buffer[top1Idx].weight) top1Idx = i;
+
+            int top2Idx = -1;
+            for (int i = 0; i < uniqueCount; i++)
+            {
+                if (i == top1Idx) continue;
+                if (top2Idx == -1 || buffer[i].weight > buffer[top2Idx].weight) top2Idx = i;
+            }
+
+            b1 = buffer[top1Idx].type;
+            b2 = buffer[top2Idx].type;
+
+            float w1 = buffer[top1Idx].weight;
+            float w2 = buffer[top2Idx].weight;
+
+            // Calculate the new secondary biome strength relative to the surviving top two
+            strength2 = w2 / (w1 + w2);
+        }
+        void scaleUp4()
+        {
+            var dataGrid = iconWorldScaledUp.iconGrid;
+            Grid2D_L<GenTile> largeGrid = new Grid2D_L<GenTile>(dataGrid.Size * 2);
+
+            Parallel.For(0, dataGrid.Size.X, x =>
+            {
+                // Thread-local buffers to prevent allocations in the inner loop
+                GenTile[] tileBuffer = new GenTile[4];
+                BiomeWeight[] biomeBuffer = new BiomeWeight[8];
+
+                for (int y = 0; y < dataGrid.Size.Y; y++)
+                {
+                    int lgX = x * 2;
+                    int lgY = y * 2;
+
+                    int nextX = (x + 1 < dataGrid.Size.X) ? x + 1 : x;
+                    int nextY = (y + 1 < dataGrid.Size.Y) ? y + 1 : y;
+
+                    GenTile tl = dataGrid.Get(x, y);
+                    GenTile tr = dataGrid.Get(nextX, y);
+                    GenTile bl = dataGrid.Get(x, nextY);
+                    GenTile br = dataGrid.Get(nextX, nextY);
+
+                    // Top mix (TL + TR)
+                    tileBuffer[0] = tl; tileBuffer[1] = tr;
+                    GenTile top = BlendTiles(tileBuffer, 2, biomeBuffer);
+
+                    // Left mix (TL + BL)
+                    tileBuffer[0] = tl; tileBuffer[1] = bl;
+                    GenTile left = BlendTiles(tileBuffer, 2, biomeBuffer);
+
+                    // Center mix (TL + TR + BL + BR)
+                    tileBuffer[0] = tl; tileBuffer[1] = tr;
+                    tileBuffer[2] = bl; tileBuffer[3] = br;
+                    GenTile center = BlendTiles(tileBuffer, 4, biomeBuffer);
+
+                    largeGrid.Set(lgX, lgY, tl);
+                    largeGrid.Set(lgX + 1, lgY, top);
+                    largeGrid.Set(lgX, lgY + 1, left);
+                    largeGrid.Set(lgX + 1, lgY + 1, center);
+                }
+            });
+
+            //dataGrid = largeGrid;
+            iconWorldScaledUp.iconGrid = largeGrid;
+        }
+        void scaleUp8()
+        {
+            var dataGrid = iconWorldScaledUp.iconGrid;
+            Grid2D_L<GenTile> largeGrid = new Grid2D_L<GenTile>(dataGrid.Size * 2);
+
+            Parallel.For(0, dataGrid.Size.X, x =>
+            {
+                // Larger buffers since scaleUp8 looks at 3x3 grids (up to 9 tiles / 18 biomes)
+                GenTile[] tileBuffer = new GenTile[9];
+                BiomeWeight[] biomeBuffer = new BiomeWeight[18];
+
+                for (int y = 0; y < dataGrid.Size.Y; y++)
+                {
+                    int lgX = x * 2;
+                    int lgY = y * 2;
+
+                    // 1. Get fully smoothed tiles for the 4 corners
+                    GenTile sTL = GetSmoothedTile(x, y, tileBuffer, biomeBuffer);
+                    GenTile sTR = GetSmoothedTile(x + 1, y, tileBuffer, biomeBuffer);
+                    GenTile sBL = GetSmoothedTile(x, y + 1, tileBuffer, biomeBuffer);
+                    GenTile sBR = GetSmoothedTile(x + 1, y + 1, tileBuffer, biomeBuffer);
+
+                    // 2. Interpolate the gaps
+                    tileBuffer[0] = sTL; tileBuffer[1] = sTR;
+                    GenTile avgTop = BlendTiles(tileBuffer, 2, biomeBuffer);
+
+                    tileBuffer[0] = sTL; tileBuffer[1] = sBL;
+                    GenTile avgLeft = BlendTiles(tileBuffer, 2, biomeBuffer);
+
+                    tileBuffer[0] = sTL; tileBuffer[1] = sTR;
+                    tileBuffer[2] = sBL; tileBuffer[3] = sBR;
+                    GenTile avgCenter = BlendTiles(tileBuffer, 4, biomeBuffer);
+
+                    // 3. Assign
+                    largeGrid.Set(lgX, lgY, sTL);
+                    largeGrid.Set(lgX + 1, lgY, avgTop);
+                    largeGrid.Set(lgX, lgY + 1, avgLeft);
+                    largeGrid.Set(lgX + 1, lgY + 1, avgCenter);
+                }
+            });
+
+            //dataGrid = largeGrid;
+            iconWorldScaledUp.iconGrid = largeGrid;
+        }
+
+        // Upgraded helper that smooths ALL data (Height, Color, Biomes)
+        GenTile GetSmoothedTile(int cx, int cy, GenTile[] tileBuffer, BiomeWeight[] biomeBuffer)
+        {
+            var dataGrid = iconWorldScaledUp.iconGrid;
+
+            cx = (cx >= dataGrid.Size.X) ? dataGrid.Size.X - 1 : (cx < 0 ? 0 : cx);
+            cy = (cy >= dataGrid.Size.Y) ? dataGrid.Size.Y - 1 : (cy < 0 ? 0 : cy);
+
+            int count = 0;
+
+            for (int nx = cx - 1; nx <= cx + 1; nx++)
+            {
+                for (int ny = cy - 1; ny <= cy + 1; ny++)
+                {
+                    if (nx >= 0 && nx < dataGrid.Size.X && ny >= 0 && ny < dataGrid.Size.Y)
+                    {
+                        tileBuffer[count++] = dataGrid.Get(nx, ny);
+                    }
+                }
+            }
+
+            return BlendTiles(tileBuffer, count, biomeBuffer);
+        }
+       
+        void addNoiseTexture()
+        {
+            var dataGrid = DataGrid();
+            const int LoopDivs = 8;
+
+            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorld.metaData.worldId.seed + 11);
+            NoiseOptions postNoise = new NoiseOptions(true, 0.1f, 4, 1f, 30f);
+            float edgeThickness = LayerAddHeight * 1.6f;
+            //NoiseOptions islandNoise = new NoiseOptions(true, 0.1f, 4, 1f, 5f);
+
+            Rectangle2 area = new Rectangle2(dataGrid.Size);
+            area.size.X /= LoopDivs;
+
+            Parallel.For(0, dataGrid.Size.X, x =>
+            {
+                for (int y = 0; y < dataGrid.Size.Y; y++)
+                {
+                    var tile = dataGrid.Get(x, y);
+                    float edge = Bound.Max(Math.Abs(MapLib.MapHeight2.WaterSurfaceY - tile.groundY), edgeThickness) / edgeThickness;
+                    tile.groundY -= noiseMap.OctaveNoise2D(postNoise, x, y) * (0.08f + (1f - edge) * 0.3f); //*
+                                                                                            
+                    if (tile.groundY < MapLib.MapHeight2.WaterBottomY)
+                    { tile.groundY = MapLib.MapHeight2.WaterBottomY; }
+
+                    dataGrid.Set(x, y, tile);
+                }
+            });
+            
+        }
+
+        void postNoise()
+        {
+            var dataGrid = iconWorldScaledUp.iconGrid;
+
+            const bool PostNoise = true;
+            //const int PostProcessDivs = 8;
+
+            EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(iconWorldScaledUp.metaData.worldId.seed + 3);
+            NoiseOptions postNoise = new NoiseOptions(true, 0.1f, 4, 1f, 10f);
+
+            Parallel.For(0, dataGrid.Size.X, x =>
+            {
+                for (int y = 0; y < dataGrid.Size.Y; y++)
+                {
+                    var tile = dataGrid.Get(x, y);
+                    if (PostNoise)
+                    {
+                        tile.groundY -= noiseMap.OctaveNoise2D(postNoise, x, y) * 0.1f;
+                    }
+                    if (tile.groundY < MapLib.MapHeight2.WaterBottomY)
+                    { tile.groundY = MapLib.MapHeight2.WaterBottomY; }
+
+                    //tileColor(ref tile);
+                    dataGrid.Set(x, y, tile);
+                }
+            });
+        }
+        public void processTexturePixels()
+        {
+            IconWorldData icon = ActiveIconWorld;
+            var dataGrid = icon.iconGrid;
+
+            Parallel.For(0, dataGrid.Size.X, x =>
+            {
+                for (int y = 0; y < dataGrid.Size.Y; y++)
+                {
+                    var tile = dataGrid.Get(x, y);
+                   
+                    tile.color = Map.MapModels.TileColor.IconmapColor(new CombinedTile(tile));
+                    dataGrid.Set(x, y, tile);
+                }
+            });
+
+            if (generateCities != null)
+            {
+                if (icon.cities == null)
+                {
+                    icon.cities = new List<CityPlacementData>();
+                }
+
+                foreach (var c in icon.cities)
+                {
+                    {
+                        var tile = dataGrid.Get(c.pos);
+                        tile.color = Color.Red;
+                        dataGrid.Set(c.pos, tile);
+
+                        foreach (var dir in IntVector2.Dir8Array)
+                        {
+                            var npos = dir + c.pos;
+                            if (dataGrid.TryGet(npos, out var ntile))
+                            {
+                                ntile.color = Color.Pink;
+                                dataGrid.Set(npos, ntile);
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < c.secondary.count; i++)
+                    {
+                        IntVector2 secPos = c.secondary[i];
+                        var tile = dataGrid.Get(secPos);
+                        tile.color = Color.Orange;
+                        dataGrid.Set(secPos, tile);
+
+                        foreach (var dir in IntVector2.Dir4Array)
+                        {
+                            var npos = dir + secPos;
+                            if (dataGrid.TryGet(npos, out var ntile))
+                            {
+                                ntile.color = Color.Yellow;
+                                dataGrid.Set(npos, ntile);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+       
+
+        
+
+        void generateMountainChains()
+        {
+            var dataGrid = DataGrid();
+            generateMountainChains(iconWorld.rnd.vector2(dataGrid.Size.X - 1, dataGrid.Size.Y - 1), true);
+        }
+
+        void generateMountainChains(Vector2 center, bool bSideLinks)
+        {
+            
+                var dataGrid = DataGrid();
+
+                Range chainLengthRange2 = new Range(4, 10);
+                //Vector2 center = iconWorld.rnd.vector2(dataGrid.Size.X - 1, dataGrid.Size.Y - 1);
+
+                Rotation1D growDir = Rotation1D.Random(iconWorld.rnd);
+                Rotation1D leftDir = Rotation1D.D0;
+                Rotation1D rightDir = Rotation1D.D0;
+                refreshDirs();
+
+                const float MaxRadius = 8;
+                const float MinRadius = 4;
+
+                DrawMapOptions drawMountain = new DrawMapOptions()
+                {
+                    add = false,
+                    radius = iconWorld.rnd.Float(MinRadius, MaxRadius),
+                    flatness = 0.02f,
+                    addHeight = MapLib.MapHeight2.MountainPeekY,
+
+                    //biom = biomsLayout.get(iconWorld, center),
+                };
+                drawMountain.refreshRadius();
+
+                DrawMapOptions drawCenterGround = new DrawMapOptions()
+                {
+                    add = false,
+                    radius = iconWorld.rnd.Float(1, 2) * drawMountain.radius,
+                    flatness = 0.4f,
+                    addHeight = MapLib.MapHeight2.DefaultGroundY,
+                    //biom = drawMountain.biom,
+                };
+                drawCenterGround.refreshRadius();
+                drawCenterGround = drawAddCalc(center, drawCenterGround);
+            try
+            {
+                int leftSide = iconWorld.rnd.Int(0, 4);
+                int rightSide = iconWorld.rnd.Int(1, 20);
+
+                int connectedChains = iconWorld.rnd.Int(1, 4);
+
+                int nextCenterGrounds = iconWorld.rnd.Int(0, 7);
+
+                for (int connectedIx = 0; connectedIx < connectedChains; ++connectedIx)
+                {
+                    int chainLength = chainLengthRange2.GetRandom_Inc(iconWorld.rnd);
+
+                    //connectPoints.Add(center);
+                    for (int link = 0; link < chainLength; ++link)
+                    {
+                        if (nextCenterGrounds <= 0)
+                        {
+                            nextCenterGrounds = iconWorld.rnd.Int(2, 8);
+                            startTask_placeDotWithOptions(center, drawCenterGround, true, 2);
+                        }
+                        else
+                        {
+                            nextCenterGrounds--;
+                        }
+
+                        if (dataGrid.TryGet(new IntVector2(center), out var tile))
+                        {
+                            if (tile.groundY < MapLib.MapHeight2.LowGroundY && iconWorld.rnd.Chance(0.8))
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            return;
+                        }
+                
+
+
+                        if (bSideLinks)
+                        {
+                            bool growSides = link < chainLength / 2;
+                            sideLinks(ref leftSide, leftDir, growSides);
+                            sideLinks(ref rightSide, rightDir, growSides);
+                        }
+                        drawMountain.centerHeight = drawMountain.addHeight;
+                        placeMountainSquare(iconWorld.rnd, new IntVector2(center + iconWorld.rnd.vector2(new Vector2(drawMountain.radius * 0.4f))), drawMountain/*, generateNoise(world.rnd, true)*/);
+
+                        int sideMountains = iconWorld.rnd.Int(0, 5);
+                        for (int i = 0; i < sideMountains; i++)
+                        {
+                            DrawMapOptions draw = drawMountain;
+                            float scale = iconWorld.rnd.Float(0.5f, 0.9f);
+                            draw.centerHeight *= scale;
+                            draw.radius *= scale;
+                            placeMountainSquare(iconWorld.rnd, new IntVector2(center + iconWorld.rnd.vector2(new Vector2(drawMountain.radius * 1.7f))), draw/*, generateNoise(world.rnd, true)*/);
+                        }
+
+                        if (iconWorld.rnd.Chance(0.2))
+                        {
+                            growDir.Add(iconWorld.rnd.Plus_MinusF(0.2f));
+                            refreshDirs();
+                        }
+                        drawMountain.radius = Bound.Set(drawMountain.radius + iconWorld.rnd.Plus_MinusF(2f), MinRadius, MaxRadius);
+
+                        center += growDir.Direction(drawMountain.radius * iconWorld.rnd.Float(0.5f, 1.4f));
+
+                        //Forward check, no crossing
+                        Vector2 forwardCheckPos = center + growDir.Direction(drawMountain.radius);
+                        if (dataGrid.TryGet(new IntVector2(forwardCheckPos), out var forwardTile))
+                        {
+                            if (forwardTile.groundY > 3)
+                            {
+                                return;
+                            }
+                        }
+                    }
+
+                    //connectPoints.Add(center);
+
+                    growDir.Add(iconWorld.rnd.Plus_MinusF(0.2f));
+                    center += growDir.Direction(iconWorld.rnd.Float(100f, 200f) + drawMountain.radius);
+
+                    if (!dataGrid.InBounds(new IntVector2(center)))
+                    {
+                        break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                BlueScreen.ThreadException = e;
+            }
+
+            void refreshDirs()
+            {
+                leftDir = growDir;
+                leftDir.Add(-MathExt.TauOver4);
+
+                rightDir = growDir;
+                rightDir.Add(MathExt.TauOver4);
+            }
+
+            void sideLinks(ref int links, Rotation1D dir, bool grow)
+            {
+                if (links > 0)
+                {
+
+                    Vector2 sideCenter = center;
+
+                    DrawMapOptions drawMoutainSide = drawMountain;
+                    //drawMoutainSide.add = true;
+                    drawMoutainSide.radius *= iconWorld.rnd.Float(1f, 3f);
+                    drawMoutainSide.flatness = iconWorld.rnd.Float(0.1f, 0.3f);
+                    drawMoutainSide.addHeight *= iconWorld.rnd.Float(0.3f, 0.6f);
+                    drawMoutainSide = drawAddCalc(center, drawMoutainSide);
+
+                    for (int link = 0; link < links; ++link)
+                    {
+                        sideCenter += dir.Direction(drawMountain.radius * iconWorld.rnd.Float(0.3f, 0.6f));
+                        startTask_placeDotWithOptions(sideCenter, drawMoutainSide, true, 2);
+                        drawMoutainSide.adjustHeight(iconWorld.rnd.Float(-0.2f, 0.05f));
+                    }
+
+                    if (iconWorld.rnd.Chance(Bound.Max(0.1 + links * 0.1, 0.5)))
+                    {
+                        generateLandChains(sideCenter + iconWorld.rnd.vector2_cirkle(8), drawMoutainSide.radius * 2f, true);
+                    }
+                }
+                if (iconWorld.rnd.Chance(0.1))
+                {
+                    if (grow)
+                    {
+                        links += iconWorld.rnd.Int(-1, 3);
+                    }
+                    else
+                    {
+                        links += iconWorld.rnd.Int(-3, 1);
+                    }
+
+                    links = Bound.Set(links, 0, 30);
+                }
+
+            }
+        }
+
+        void placeMountainSquare(PcgRandom rnd, IntVector2 center, DrawMapOptions draw/*, NoiseOptions noiseOpt*/)
+        {
+            var dataGrid = DataGrid();
+            draw.refreshRadius();
+            //float noiseCap = new IntervalF(0.9f, 0.3f).GetFromPercent(noiseOpt.smoothness);
+            //float radiusPercCap = new IntervalF(0.2f, 0.5f).GetFromPercent(noiseOpt.smoothness);
+            //float percFallOffRadius = 1f - radiusPercCap;
+
+            float add = draw.centerHeight - MapLib.MapHeight2.WaterBottomY;
+
+
+            if (rnd.Chance(0.6))
+            {
+                Rectangle2 area = new Rectangle2(center, (int)draw.radius + 1);
+                ForXYLoop loopArea = new ForXYLoop(area);
+
+                while (loopArea.Next())
+                {
+                    //Create a pyramid shape
+                    if (dataGrid.InBounds(loopArea.Position))
+                    {
+                        int sideLength = loopArea.Position.SideLength(center);
+
+                        float height = (1f - sideLength / draw.radius) * add + MapLib.MapHeight2.WaterBottomY;
+                        placeTile(loopArea.Position, height, true);
+                    }
+                }
+            }
+            else
+            {
+                draw.radius *= 1.5f;
+                Rectangle2 area = new Rectangle2(center, (int)draw.radius + 1);
+                ForXYLoop loopArea = new ForXYLoop(area);
+
+                while (loopArea.Next())
+                {
+                    // Create a pyramid shape, rotated 45 degrees (diamond falloff via Manhattan distance)
+                    if (dataGrid.InBounds(loopArea.Position))
+                    {
+                        int dx = Math.Abs(loopArea.Position.X - center.X);
+                        int dy = Math.Abs(loopArea.Position.Y - center.Y);
+                        int manhattan = dx + dy;
+
+                        // Normalize so height hits water bottom at L1 distance == radius
+                        float t = Math.Min(1f, manhattan / draw.radius);
+                        float height = (1f - t) * add + MapLib.MapHeight2.WaterBottomY;
+
+                        placeTile(loopArea.Position, height,  true);
+                    }
+                }
+            }
+        }
+
+        void generateLandChains(float MaxRadius, bool addativeOnly, bool noise)
+        {
+            var dataGrid = DataGrid();
+            Vector2 center = iconWorld.rnd.vector2(dataGrid.Size.X - 1, dataGrid.Size.Y - 1);
+
+            int maxLoops = 50;
+            if (addativeOnly)
+            {
+                do
+                {
+                    if (--maxLoops < 0)
+                    {
+                        return;
+                    }
+                    center = iconWorld.rnd.vector2(dataGrid.Size.X - 1, dataGrid.Size.Y - 1);
+                } while (dataGrid.Get(new IntVector2(center)).groundY >= MapLib.MapHeight2.WaterSurfaceY);
+            }
+            else
+            {
+                do
+                {
+                    if (--maxLoops < 0)
+                    {
+                        return;
+                    }
+                    center = iconWorld.rnd.vector2(dataGrid.Size.X - 1, dataGrid.Size.Y - 1);
+                } while (dataGrid.Get(new IntVector2(center)).groundY < MapLib.MapHeight2.LowGroundY);
+            }
+
+            generateLandChains(center, MaxRadius, noise);
+        }
+
+        void generateLandChains(Vector2 center, float MaxRadius, bool noise)
+        {
+            var dataGrid = DataGrid();
+            Range chainLengthRange2 = new Range(3, 8);
+            if (MaxRadius < 6)
+            {
+                chainLengthRange2.Max = 15;
+            }
+
+            Rotation1D growDir = Rotation1D.Random(iconWorld.rnd);
+
+
+            DrawMapOptions draw = new DrawMapOptions()
+            {
+                noiseStrength = iconWorld.rnd.Float(0.1f, 1.5f),
+                noise = noise,
+                add = true,
+                radius = iconWorld.rnd.Float(MaxRadius * 0.02f, MaxRadius),
+                flatness = iconWorld.rnd.Float(0.05f, 0.2f),
+                addHeight = LayerAddHeight * iconWorld.rnd.Float(0.8f, 2f),
+
+                //biom = biomsLayout.get(iconWorld, center),
+            };
+
+            draw.quadChance = draw.radius < 20 ? 0.3f : 0;
+
+            draw = drawAddCalc(center, draw);
+
+            int fractals = 2 + (int)(draw.radius / 1);
+
+            float smoothness = iconWorld.rnd.Float();
+            int connectedChains = iconWorld.rnd.Int(1, 2);
+
+            for (int connectedIx = 0; connectedIx < connectedChains; ++connectedIx)
+            {
+                int chainLength = chainLengthRange2.GetRandom_Inc(iconWorld.rnd);
+                //connectPoints.Add(center);
+                for (int link = 0; link < chainLength; ++link)
+                {
+                    startTask_placeDotWithOptions(center + iconWorld.rnd.vector2_cirkle(1), draw, false, fractals);
+
+                    if (iconWorld.rnd.Chance(0.2))
+                    {
+                        growDir.Add(iconWorld.rnd.Plus_MinusF(0.2f));
+                    }
+                    if (iconWorld.rnd.Chance(0.2))
+                    {
+                        draw.adjustHeight(iconWorld.rnd.Plus_MinusF(0.1f));
+                    }
+                    draw.radius = Bound.Set(draw.radius + iconWorld.rnd.Plus_MinusF(1f), 1, MaxRadius);
+
+                    draw.refreshRadius();
+                    center += growDir.Direction(draw.flatRadius * iconWorld.rnd.Float_LowDisp(3f, 12f));
+
+                }
+                //connectPoints.Add(center);
+
+                growDir.Add(iconWorld.rnd.Plus_MinusF(0.2f));
+                center += growDir.Direction(iconWorld.rnd.Float(12f, 25f) * draw.radius); //skip to a new chain
+
+                if (!dataGrid.InBounds(new IntVector2(center)))
+                {
+                    break;
+                }
+            }
+
+            if (iconWorld.rnd.Chance(0.3))
+            {
+                int islandCount = iconWorld.rnd.Int(1, 8);
+                for (int i = 0; i < islandCount; ++i)
+                {
+                    generateIsland(center, draw.radius);
+                }
+            }
+        }
+
+        void generateLargeIsland(float MaxRadius)
+        {
+            var dataGrid = DataGrid();
+            PcgRandom rnd = new PcgRandom(iconWorld.rnd.Ushort());
+
+            tasks.Add(Task.Run(() =>
+            {
+                Vector2 center = rnd.vector2(dataGrid.Size.X, dataGrid.Size.Y);
+                
+                DrawMapOptions drawCenter = new DrawMapOptions()
+                {
+                    noiseStrength = rnd.Float(0.1f, 0.3f),
+                    noise = false,
+                    add = false,
+                    radius = rnd.Float(MaxRadius * 0.4f, MaxRadius),
+                    flatness = 0.6f,
+                    addHeight = LayerAddHeight * rnd.Float(0.9f, 2f),
+
+
+                    //biom = biomsLayout.get(iconWorld, center),
+                };
+
+                int chainLength = 1;
+                if (rnd.Chance(0.8)) 
+                {
+                    chainLength = rnd.Int(2, 4);
+                }
+
+                while (chainLength > 0)
+                {
+                    drawCenter = drawAddCalc(center, drawCenter);
+                    drawCenter.refreshRadius();
+
+                    startTask_placeDotWithOptions(center, drawCenter, false, 0);
+
+
+                    //place dots in a cirkle around
+                    int dotsCount = (int)(drawCenter.radius * rnd.Float(0.15f, 0.5f));
+
+                    for (int i = 0; i <= dotsCount; ++i)
+                    {
+                        DrawMapOptions drawDot = drawCenter;
+                        drawDot.radius *= rnd.Float(0.05f, 1.2f);
+                        drawDot.refreshRadius();
+                        drawDot.quadChance = drawDot.radius < 30 ? 0.6f : 0;
+                        drawDot.addHeight *= rnd.Float(0.8f, 1.1f);
+
+                        startTask_placeDotWithOptions(center + rnd.vector2_cirkle(drawCenter.flatRadius * rnd.Float(0.3f, 1.2f)), drawDot, true, 1);
+                    }
+
+                    chainLength--;
+
+                    if (chainLength > 0)
+                    {
+                        center += rnd.vector2_cirkle(drawCenter.flatRadius * rnd.Float(0.3f, 0.9f));
+                        drawCenter.radius *= rnd.Float(0.3f, 0.9f);
+                    }
+                }
+
+            }));
+
+            
+        }
+
+        void generateLargeIslandAt(float MaxRadius, Vector2 center)
+        {
+            PcgRandom rnd = new PcgRandom(iconWorld.rnd.Ushort());
+
+            tasks.Add(Task.Run(() =>
+            {
+
+                DrawMapOptions drawCenter = new DrawMapOptions()
+                {
+                    noiseStrength = rnd.Float(0.1f, 0.3f),
+                    noise = false,
+                    add = false,
+                    radius = rnd.Float(MaxRadius * 0.4f, MaxRadius),
+                    flatness = 0.6f,
+                    addHeight = LayerAddHeight * rnd.Float(0.5f, 1.4f),
+                    //heightCap = Height_MountainStart,
+
+                    //biom = biomsLayout.get(iconWorld, center),
+                };
+
+
+
+                int chainLength = 1;
+                if (rnd.Chance(0.8))
+                {
+                    chainLength = rnd.Int(2, 4);
+                }
+
+                while (chainLength > 0)
+                {
+                    drawCenter = drawAddCalc(center, drawCenter);
+                    drawCenter.refreshRadius();
+
+                    placeDotWithOptions(rnd, center, drawCenter, false, 0);
+
+
+                    //place dots in a cirkle around
+                    int dotsCount = (int)(drawCenter.radius * rnd.Float(0.15f, 0.5f));
+
+                    for (int i = 0; i <= dotsCount; ++i)
+                    {
+                        DrawMapOptions drawDot = drawCenter;
+                        drawDot.radius *= rnd.Float(0.05f, 1.2f);
+                        drawDot.refreshRadius();
+                        drawDot.quadChance = drawDot.radius < 30 ? 0.6f : 0;
+                        drawDot.addHeight *= rnd.Float(0.3f, 0.7f);
+                        drawDot.noise = true;
+
+                        placeDotWithOptions(rnd, center + rnd.vector2_cirkle(drawCenter.flatRadius * rnd.Float(0.3f, 1.2f)), drawDot, true, 1);
+                    }
+
+                    chainLength--;
+
+                    if (chainLength > 0)
+                    {
+                        center += rnd.vector2_cirkle(drawCenter.flatRadius * rnd.Float(0.3f, 0.9f));
+                        drawCenter.radius *= rnd.Float(0.3f, 0.9f);
+                    }
+                }
+
+            }));
+
+
+        }
+
+        void generateHills(float MaxRadius, int fractals)
+        {
+            var dataGrid = DataGrid();
+            PcgRandom rnd = new PcgRandom(iconWorld.rnd.Ushort());
+
+            tasks.Add(Task.Run(() =>
+            {
+                int maxLoops = 10;
+                Vector2 center = Vector2.Zero;
+                float groundY = 0;
+                do
+                {
+                    if (--maxLoops < 0)
+                    {
+                        return;
+                    }
+                    center = rnd.vector2(dataGrid.Size.X - 1, dataGrid.Size.Y - 1);
+                    groundY = dataGrid.Get(new IntVector2(center)).groundY;
+                } while (groundY < MapLib.MapHeight2.LowGroundY || groundY > MapLib.MapHeight2.MountainStartY);
+               
+                
+                DrawMapOptions draw = new DrawMapOptions()
+                {
+                    noiseStrength = rnd.Float(0.1f, 0.3f),
+                    noise = true,
+                    add = true,
+                    radius = rnd.Float(MaxRadius * 0.4f, MaxRadius),
+                    flatness = 0.1f,
+                    addHeight = LayerAddHeight * rnd.Float(1f, 3f),
+
+                    //biom = dataGrid.Get(new IntVector2(center)).biom1,
+                };
+                draw.quadChance = draw.radius < 20 ? 0.3f : 0;
+
+                draw = drawAddCalc(center, draw);
+                draw.refreshRadius();
+
+                startTask_placeDotWithOptions(center, draw, false, 1);
+
+                for (int i = 0; i < fractals; i++)
+                {
+                    center += rnd.vector2_cirkle(draw.radius * rnd.Float(0.6f, 2f));
+                    draw.radius *= rnd.Float(0.3f, 0.9f);
+                    draw.addHeight *= rnd.Float(0.4f, 0.95f);
+                    draw.refreshRadius();
+                    startTask_placeDotWithOptions(center, draw, false, 1);
+                }
+                
+
+            }));
+
+
+        }
+
+
+        void generateIsland(Vector2 landCenter, float landRadius)
+        {
+            var dataGrid = DataGrid();
+            if (landRadius > 1)
+            {
+                int maxLoops = 6;
+                Vector2 center = Vector2.Zero;
+
+                do
+                {
+                    if (--maxLoops < 0)
+                    {
+                        return;
+                    }
+                    float distance = iconWorld.rnd.Float(1.0f, 5f) * landRadius;
+                    center = landCenter + iconWorld.rnd.vector2_cirkle(distance);
+                } while (!dataGrid.TryGet(new IntVector2(center), out var tile) || tile.groundY > MapLib.MapHeight2.LowGroundY);
+
+                DrawMapOptions draw = new DrawMapOptions()
+                {
+                    noiseStrength = iconWorld.rnd.Float(0.1f, 1.5f),
+                    noise = true,
+                    add = true,
+                    radius = iconWorld.rnd.Float(0.2f, 0.6f) * landRadius,
+                    flatness = 0.4f,
+                    addHeight = LayerAddHeight * 0.5f,
+
+                    //biom = biomsLayout.get(iconWorld, center),
+                };
+                draw.quadChance = draw.radius < 20 ? 0.6f : 0;
+                draw = drawAddCalc(center, draw);
+
+                startTask_placeDotWithOptions(center, draw, false, 8);
+            }
+        }
+
+        void generateIslandAt(float landRadius, Vector2 center)
+        {
+            
+            DrawMapOptions draw = new DrawMapOptions()
+                {
+                    noiseStrength = iconWorld.rnd.Float(0.1f, 1.5f),
+                    noise = true,
+                    add = true,
+                    radius = iconWorld.rnd.Float(0.2f, 0.6f) * landRadius,
+                    flatness = 0.4f,
+                    addHeight = LayerAddHeight * 0.5f,
+                   //biom = biomsLayout.get(iconWorld, center),
+                };
+                draw.quadChance = draw.radius < 20 ? 0.6f : 0;
+                draw = drawAddCalc(center, draw);
+
+                startTask_placeDotWithOptions(center, draw, false, 8);
+            
+        }
+
+        void generateQuadIsland()
+        {
+            var dataGrid = DataGrid();
+            tasks.Add(Task.Run(() =>
+            {
+                PcgRandom rnd = new PcgRandom(iconWorld.rnd.Ushort());
+                
+           
+                Vector2 center = rnd.vector2(dataGrid.Size.X, dataGrid.Size.Y);
+                float landRadius = rnd.Int(5, 25);
+                if (landRadius > 1)
+                {
+                    //int maxLoops = 6;
+                    //Vector2 center = Vector2.Zero;
+
+                    //do
+                    //{
+                    //    if (--maxLoops < 0)
+                    //    {
+                    //        return;
+                    //    }
+                    //    float distance = iconWorld.rnd.Float(1.0f, 5f) * landRadius;
+                    //    center = landCenter + iconWorld.rnd.vector2_cirkle(distance);
+                    //} while (!dataGrid.TryGet(new IntVector2(center), out var tile) || tile.groundY > Height_LowGround);
+
+                    DrawMapOptions draw = new DrawMapOptions()
+                    {
+                        noiseStrength = rnd.Float(0.1f, 1.5f),
+                        noise = true,
+                        add = true,
+                        radius = rnd.Float(0.2f, 0.6f) * landRadius,
+                        flatness = 0.4f,
+                        addHeight = LayerAddHeight * 0.5f,
+                    };
+                    draw = drawAddCalc(center, draw);
+
+                    QuadPenShape quadPen = new QuadPenShape(rnd, center, landRadius);
+
+                    placeQuad(quadPen, draw);
+                        //startTask_placeDotWithOptions(center, draw, false, 8/*, generateNoise(world.rnd, true)*/);
+                    }
+            }));
+        }
+
+        void generateDigChains(bool large)
+        {
+            var dataGrid = DataGrid();
+            int maxLoops = 5;
+            Vector2 center = Vector2.Zero;
+
+            do
+            {
+                if (--maxLoops < 0)
+                {
+                    return;
+                }
+                center = iconWorld.rnd.vector2(dataGrid.Size.X -1, dataGrid.Size.Y -1);
+            } while (dataGrid.Get(new IntVector2(center)).groundY <= 0);
+
+            const float MinRadius = 2;
+
+            float MaxRadius;
+            Range chainLengthRange;
+            if (large)
+            {
+                MaxRadius = 10;
+                chainLengthRange = new Range(4, 32);
+            }
+            else
+            {
+                MaxRadius = 3;
+                chainLengthRange = new Range(2, 16);
+            }
+
+
+
+            Rotation1D growDir = Rotation1D.Random(iconWorld.rnd);
+
+            DrawMapOptions draw = new DrawMapOptions()
+            {
+                add = true,
+                radius = Math.Min(iconWorld.rnd.Float(MinRadius, MaxRadius), iconWorld.rnd.Float(MinRadius, MaxRadius)),
+                flatness = 0.0f,
+                addHeight = -BiomHeightColor.DefaultGroundYoffset * iconWorld.rnd.Float(0.6f, 4f),
+
+                //biom = dataGrid.Get(new IntVector2(center)).biom1,
+            };
+            draw = drawAddCalc(center, draw);
+
+            int fractal = 1;//draw.radius > 4 ? 2 : 1;
+
+            int connectedChains = iconWorld.rnd.Int(1, 4);
+            float smoothness = iconWorld.rnd.Float();
+
+            for (int connectedIx = 0; connectedIx < connectedChains; ++connectedIx)
+            {
+                int chainLength = chainLengthRange.GetRandom_Inc(iconWorld.rnd);
+
+                for (int link = 0; link < chainLength; ++link)
+                {
+
+                    startTask_placeDotWithOptions(center + iconWorld.rnd.vector2_cirkle(8), draw, false, fractal);
+
+                    if (iconWorld.rnd.Chance(0.2))
+                    {
+                        growDir.Add(iconWorld.rnd.Plus_MinusF(0.2f));
+                    }
+                    draw.radius = Bound.Set(draw.radius + iconWorld.rnd.Plus_MinusF(8f), 4, MaxRadius);
+
+                    center += growDir.Direction(draw.radius * iconWorld.rnd.Float(0.15f, 0.25f));
+
+                }
+
+                growDir.Add(iconWorld.rnd.Plus_MinusF(0.2f));
+                center += growDir.Direction(iconWorld.rnd.Float(10f, 20f) + draw.radius);
+
+                if (!dataGrid.InBounds(new IntVector2(center)))
+                {
+                    break;
+                }
+            }
+        }
+
+        DrawMapOptions drawAddCalc(Vector2 center, DrawMapOptions draw)
+        {
+            var dataGrid = DataGrid();
+            if (draw.add && dataGrid.TryGet(new IntVector2(center), out var tile))
+            {
+                if (draw.addHeight > 0)
+                {
+                    tile.groundY = Bound.Max(tile.groundY, MapLib.MapHeight2.MountainStartY);
+                }
+
+                draw.centerHeight = draw.addHeight * 0.25f + tile.groundY;
+
+                if (draw.addHeight > 0 && draw.centerHeight < MapLib.MapHeight2.DefaultGroundY)
+                {
+
+                    draw.addHeight += MapLib.MapHeight2.DefaultGroundY;
+                    draw.centerHeight = draw.addHeight;
+                    draw.radius += 0.5f;
+                    draw.flatness *= 0.5f;
+                }
+            }
+            else
+            {
+                draw.centerHeight = draw.addHeight;
+            }
+            return draw;
+
+        }
+
+        void startTask_placeDotWithOptions(Vector2 center, DrawMapOptions draw, bool placeIslands, int fractalDots)
+        {
+            tasks.Add(Task.Run(() =>
+            {
+                try
+                {
+                    PcgRandom rnd = new PcgRandom(iconWorld.rnd.Ushort());
+                    placeDotWithOptions(rnd, center, draw, placeIslands, fractalDots/*, noiseOptions*/);
+                }
+                catch(Exception e)
+                {
+                    BlueScreen.ThreadException = e;
+                }
+            }));
+        }
+
+        void placeDotWithOptions(PcgRandom rnd, Vector2 center, DrawMapOptions draw, bool placeIslands, int fractalDots)
+        {
+            if (rnd.Chance(draw.quadChance))
+            {
+                QuadPenShape penShape = new QuadPenShape(rnd, center, draw.radius);
+                placeQuad(penShape, draw);
+            }
+            else
+            {
+                if (draw.noise)
+                {
+                    placeDot_noise(rnd, center, draw);
+                }
+                else
+                {
+                    placeDot(rnd, center, draw);
+                }
+            }
+
+            if (fractalDots > 0 && draw.radius > 6)
+            {
+                draw.refreshRadius();
+
+                int fractalCount = iconWorld.rnd.Int(1, 4);
+                IntervalF radiusRange = new IntervalF(0.3f, 0.75f) * draw.radius;
+                IntervalF offsetRange = new IntervalF(0.5f, 0.9f) * Bound.Min(draw.flatRadius, 4);
+
+                for (int i = 0; i < fractalCount; ++i)
+                {
+                    Vector2 offset = iconWorld.rnd.vector2_cirkle(offsetRange.GetRandom(rnd));
+                    //noiseOptions.useNoise = true;
+                    DrawMapOptions drawFractal = draw;
+                    drawFractal.radius = radiusRange.GetRandom(rnd);
+
+                    placeDotWithOptions(rnd, center + offset, drawFractal, placeIslands, fractalDots - 1);
+                }
+
+            }
+
+
+            if (placeIslands && iconWorld.rnd.Chance(0.1))
+            {
+                int islandCount = iconWorld.rnd.Int(1, 4);
+                for (int i = 0; i < islandCount; ++i)
+                {
+                    generateIsland(center, draw.radius);
+                }
+            }
+        }
+
+        void placeDot(PcgRandom rnd, Vector2 center, DrawMapOptions draw)
+        {
+            var dataGrid = DataGrid();
+            draw.refreshRadius();
+            Rectangle2 area = new Rectangle2(new IntVector2(center), (int)draw.radius + 1);
+            ForXYLoop loopArea = new ForXYLoop(area);
+            while (loopArea.Next())
+            {
+                if (dataGrid.InBounds(loopArea.Position))
+                {
+                    Vector2 posDiff = loopArea.Position.Vec - center;
+                    float distFromCenter = (posDiff).Length();
+                    if (distFromCenter <= draw.radius)
+                    {
+                        //float percentDist = distFromCenter / draw.radius;
+                        placeTile(loopArea.Position, drawHeight(distFromCenter, draw),  draw.addHeight > 0);
+                    }
+                }
+            }
+        }
+        void placeDot_noise(PcgRandom rnd, Vector2 center, DrawMapOptions draw)
+        {
+            var dataGrid = DataGrid();
+            draw.refreshRadius();
+            Rectangle2 area = new Rectangle2(new IntVector2(center), (int)draw.radius + 1);
+            ForXYLoop loopArea = new ForXYLoop(area);
+            while (loopArea.Next())
+            {
+                if (dataGrid.InBounds(loopArea.Position))
+                {
+                    Vector2 posDiff = loopArea.Position.Vec - center;
+                    float distFromCenter = (posDiff).Length();
+                    if (distFromCenter <= draw.radius)
+                    {
+                        //float percentDist = distFromCenter / draw.radius;
+                        float add = Bound.Max( noiseMap.OctaveNoise2D(landNoise, loopArea.Position.X, loopArea.Position.Y) * 2f, 0.1f) * draw.noiseStrength;
+                        placeTile(loopArea.Position, drawHeight(distFromCenter, draw) + add,  draw.addHeight > 0);
+                    }
+                }
+            }
+        }
+
+
+        void placeQuad(QuadPenShape quadPen, DrawMapOptions draw)
+        {
+            draw.radius = quadPen.radius;
+            draw.refreshRadius();
+            var minmax = quadPen.BeginDraw(iconWorld);
+            
+            for (int y = minmax.min.Y; y <= minmax.max.Y; ++y)
+            {
+                for (int x = minmax.min.X; x <= minmax.max.X; ++x)
+                {
+                    var pos = new IntVector2(x, y);
+                    if (quadPen.DrawPixel(pos, out var intensity))
+                    {
+                        placeTile(pos, draw.centerHeight * intensity,  draw.addHeight > 0);
+                    }
+                }
+            }
+            
+        }
+
+
+
+        float drawHeight(float distFromCenter, DrawMapOptions draw)
+        {
+            float result;
+
+            if (distFromCenter < draw.flatRadius)
+            {
+                result =  draw.centerHeight;
+            }
+            else
+            {
+                float percTowardsEdge = (distFromCenter - draw.flatRadius) / draw.hillRadius;
+                result = draw.centerHeight * (1f - percTowardsEdge) + draw.edgeHeight * percTowardsEdge;
+            }
+
+            if (draw.heightCap.HasValue && result > draw.heightCap.Value)
+            {
+                return draw.heightCap.Value;
+            }
+            return result;
+        }
+
+
+        void placeTile(IntVector2 pos, float height, bool increase)
+        {
+            var dataGrid = DataGrid();
+            ref var tile = ref dataGrid.GetRef(pos);
+
+            if (increase)
+            {
+                if (height > tile.groundY)
+                {
+                    tile.groundY = height;                    
+                }
+            }
+            else
+            {
+                if (height < tile.groundY)
+                {
+                    tile.groundY = height;
+                }
+            }
+        }
+
+        public bool complete()
+        {
+            if (loadingState == LoadingState.Complete)
+            {
+                loadingState = LoadingState.None;
+            }
+
+            return loadingState == LoadingState.None;
+        }
+
+        enum LoadingState
+        {
+            None,
+            Pass,
+            Complete,
+        }
+    }
+}

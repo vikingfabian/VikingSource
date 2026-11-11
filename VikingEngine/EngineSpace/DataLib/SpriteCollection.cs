@@ -91,6 +91,10 @@ namespace VikingEngine.DataLib
 
         public static void Set(SpriteName name, Sprite sprite)
         {
+            if ((int)name == (int)SpriteName.EditorToolOptionAdd)
+            {
+                lib.DoNothing();
+            }
             Sprites[(int)name] = sprite;
         }
         

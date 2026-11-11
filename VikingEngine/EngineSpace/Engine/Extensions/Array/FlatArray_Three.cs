@@ -19,6 +19,26 @@ namespace VikingEngine
         public T value2;
         public T value3;
 
+        public FlatArray_Three() { }
+        public FlatArray_Three(T value1)
+        {
+            this.value1 = value1;
+            count = 1;
+        }
+        public FlatArray_Three(T value1, T value2)
+        {
+            this.value1 = value1;
+            this.value2 = value2;
+            count = 2;
+        }
+        public FlatArray_Three(T value1, T value2, T value3) 
+        {
+            this.value1 = value1;
+            this.value2 = value2;
+            this.value3 = value3;
+            count = 3;
+        }
+
         public void Add(T v)
         {
             switch (count)
@@ -146,6 +166,19 @@ namespace VikingEngine
             if (count > 2 && value3.Equals(value)) { RemoveAt(2); return; }
         }
 
+        public T PullRandom()
+        {
+            if (count > 0)
+            {
+                int ix = Ref.rnd.Int(count);
+                T result = this[ix];
+                RemoveAt(ix);
+                return result;
+            }
+
+            return default(T);
+        }
+
         /// <summary>
         /// Removes and returns the last element in the array.
         /// </summary>
@@ -202,6 +235,11 @@ namespace VikingEngine
             }
 
             return true;
+        }
+
+        public bool IsFull()
+        {
+            return count >= Capacity;
         }
     }
 }

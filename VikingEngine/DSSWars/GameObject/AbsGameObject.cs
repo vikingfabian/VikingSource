@@ -241,7 +241,7 @@ namespace VikingEngine.DSSWars.GameObject
                         content.Add(editButton);
                         content.space();
                     }
-                    content.Add(new RbText(name, Color.LightYellow));
+                    content.Add(new RbText(name, HudLib.ColEditText));
                     content.newLine();
                 }
             }

@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Graphics;
 using VikingEngine.Input;
 using VikingEngine.LootFest;
@@ -122,11 +123,15 @@ namespace VikingEngine.Engine
 
         protected static void CreateMainTarget(bool splitscreen)
         {
-            MainRenderTarget?.Dispose();
-            MainRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice,
-                 Bound.Min(Screen.RenderingResolution.X, MinWidth),
-                 Bound.Min(Screen.RenderingResolution.Y, MinHeigth),
-                false, SurfaceFormat.Color, DepthFormat.Depth24, 0, splitscreen ? RenderTargetUsage.PreserveContents : RenderTargetUsage.DiscardContents);
+            var previousTarget = MainRenderTarget;
+            using (Graphics.GpuResourceSync.Acquire())
+            {
+                MainRenderTarget = Graphics.GpuResourceSync.Track(new RenderTarget2D(graphicsDeviceManager.GraphicsDevice,
+                     Bound.Min(Screen.RenderingResolution.X, MinWidth),
+                     Bound.Min(Screen.RenderingResolution.Y, MinHeigth),
+                    false, SurfaceFormat.Color, DepthFormat.Depth24, 0, splitscreen ? RenderTargetUsage.PreserveContents : RenderTargetUsage.DiscardContents));
+            }
+            Graphics.GpuResourceSync.Release(previousTarget);
         }
 
         /* Properties */
@@ -212,32 +217,36 @@ namespace VikingEngine.Engine
             int newHeight = (int)(originalTexture.Height * scale);
 
             // 2. Create a RenderTarget2D to act as our new texture
-            RenderTarget2D renderTarget = new RenderTarget2D(
-                graphicsDeviceManager.GraphicsDevice,
-                newWidth,
-                newHeight,
-                false,
-                originalTexture.Format,
-                DepthFormat.None
-            );
+            using (Graphics.GpuResourceSync.Acquire())
+            {
+                RenderTarget2D renderTarget = new RenderTarget2D(
+                    graphicsDeviceManager.GraphicsDevice,
+                    newWidth,
+                    newHeight,
+                    false,
+                    originalTexture.Format,
+                    DepthFormat.None
+                );
+                Graphics.GpuResourceSync.Track(renderTarget);
 
-            // 3. Cache current render targets so we don't break the main game loop's rendering state
-            RenderTargetBinding[] currentTargets = graphicsDeviceManager.GraphicsDevice.GetRenderTargets();
+                // 3. Cache current render targets so we don't break the main game loop's rendering state
+                RenderTargetBinding[] currentTargets = graphicsDeviceManager.GraphicsDevice.GetRenderTargets();
 
-            // 4. Bind the new render target and clear it
-            graphicsDeviceManager.GraphicsDevice.SetRenderTarget(renderTarget);
-            graphicsDeviceManager.GraphicsDevice.Clear(Color.Transparent);
+                // 4. Bind the new render target and clear it
+                graphicsDeviceManager.GraphicsDevice.SetRenderTarget(renderTarget);
+                graphicsDeviceManager.GraphicsDevice.Clear(Color.Transparent);
 
-            // 5. Draw the original texture scaled down
-            // SamplerState.LinearClamp is critical here for smooth downsampling
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone);
-            spriteBatch.Draw(originalTexture, new Rectangle(0, 0, newWidth, newHeight), Color.White);
-            spriteBatch.End();
+                // 5. Draw the original texture scaled down
+                // SamplerState.LinearClamp is critical here for smooth downsampling
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone);
+                spriteBatch.Draw(originalTexture, new Rectangle(0, 0, newWidth, newHeight), Color.White);
+                spriteBatch.End();
 
-            // 6. Restore the original render targets back to the graphics device
-            graphicsDeviceManager.GraphicsDevice.SetRenderTargets(currentTargets);
+                // 6. Restore the original render targets back to the graphics device
+                graphicsDeviceManager.GraphicsDevice.SetRenderTargets(currentTargets);
 
-            return renderTarget;
+                return renderTarget;
+            }
         }
 
         virtual public void DeleteMe()
@@ -524,6 +533,7 @@ namespace VikingEngine.Engine
                 drawInContainersEvent();
 
                 graphicsDeviceManager.GraphicsDevice.SetRenderTarget(MainRenderTarget);
+                //Engine.Draw.TextureEffects?[(int)Graphics.TextureEffectType.Flat]?.flushBuffer();
                 drawEvent();
 
                 var frameRenderTimeInMs = (float)Stopwatch.GetElapsedTime(startTimestamp).TotalMilliseconds;

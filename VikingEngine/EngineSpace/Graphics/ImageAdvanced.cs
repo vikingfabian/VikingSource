@@ -51,6 +51,13 @@ namespace VikingEngine.Graphics
             }
         }
 
+        public void SetSprite(Sprite sprite)
+        {            
+            spriteIndex = -1;
+            ImageSource = sprite.Source;
+            Texture = sprite.Texture();   
+        }
+
         public void SetFullTextureSource()
         {
             if (Texture != null)

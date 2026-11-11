@@ -145,6 +145,7 @@ namespace VikingEngine.PJ.Lobby
 
         public void update()
         {
+#if PJ
             if (!PjRef.XboxLayout)
             {
                 if (prev.update())
@@ -159,15 +160,27 @@ namespace VikingEngine.PJ.Lobby
             }
 
             bool highlightNext = false;
-            foreach (var m in Input.XInput.controllers)
-            {
-                if (m.IsButtonDown(NextXInput))
-                {
-                    highlightNext = true;
 
-                    if (m.KeyDownEvent(NextXInput))
+            if (Ref.steam.isInitialized)
+            {
+                if (Ref.steam.input.AnyKeyDownEvent(SteamWrapping.SteamDigitalAction.Action_NextMode))
+                { 
+                    highlightNext = true;
+                    nextMode(1);
+                }
+            }
+            else
+            {
+                foreach (var m in Input.XInput.controllers)
+                {
+                    if (m.IsButtonDown(NextXInput))
                     {
-                        nextMode(1);
+                        highlightNext = true;
+
+                        if (m.KeyDownEvent(NextXInput))
+                        {
+                            nextMode(1);
+                        }
                     }
                 }
             }
@@ -175,8 +188,9 @@ namespace VikingEngine.PJ.Lobby
             next.highlight.Visible = highlightNext || next.mouseOver;
             
             unlockDlc.update();
+#endif
         }
-        
+
         void nextMode(int dir)
         {
             if (dir != 0)

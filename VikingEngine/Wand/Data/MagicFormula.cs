@@ -13,12 +13,19 @@ namespace VikingEngine.Core.Wand.Data
 
         public int triggerTier;
 
+        public int charges;
+
         public MagicFormula(MagicTrigger trigger, MagicTrigger_ObjectType triggerObject, MagicEffect effect, int triggerTier)
         {
             this.trigger = trigger;
             this.triggerObject = triggerObject;
             this.effect = effect;
             this.triggerTier = triggerTier;
+        }
+
+        public void Recharge()
+        {
+            charges = triggerTier;
         }
     }
 

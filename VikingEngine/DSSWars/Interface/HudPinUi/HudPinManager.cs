@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars.Interface.HudPinUi
             foreach (var kv in cityPins)
             {
                 City city = DssRef.world.cities[kv.Key];
-                if (city.ToPinHud(new ObjectHudArgs(content, player, false))) 
+                if (city.ToPinHud(new ObjectHudArgs(null,content, player, false))) 
                 {
                     foreach (var pin in kv.Value)
                     { 

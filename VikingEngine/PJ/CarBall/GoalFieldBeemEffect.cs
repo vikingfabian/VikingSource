@@ -8,7 +8,7 @@ namespace VikingEngine.PJ.CarBall
 {
     class GoalFieldBeemEffect : AbsUpdateable
     {
-        List2<Graphics.Image> images = new List2<Graphics.Image>(64);
+        List2_old<Graphics.Image> images = new List2_old<Graphics.Image>(64);
         VectorRect beamArea;
         int dir;
         float startOpaciy = 0.8f;
@@ -64,7 +64,7 @@ namespace VikingEngine.PJ.CarBall
 
         public override void Time_Update(float time_ms)
         {
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
             {
                 if (images.Count > 0)
                 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Resource

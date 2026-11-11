@@ -223,7 +223,7 @@ namespace VikingEngine.LootFest
             }
             else //if (Ref.TimePassed16ms)
             {
-                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+                for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//
                 {
                     flyDir = flyDir * (1f - accelerateTowardsFlyPathPerc) + flyPath.pathDir * accelerateTowardsFlyPathPerc;
                     flyDir.Normalize();
@@ -316,7 +316,7 @@ namespace VikingEngine.LootFest
 
         public bool MovUpdate_FallToGround(float gravity)
         {
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
             {
                 parent.Velocity.Y += gravity;
             }
@@ -357,7 +357,7 @@ namespace VikingEngine.LootFest
             {
                 if (physicsStatusFalling)
                 {
-                    for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+                    for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
                     {
                         parent.Velocity.Y += Gravity;
                     }

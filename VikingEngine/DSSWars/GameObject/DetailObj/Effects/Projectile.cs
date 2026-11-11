@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -284,7 +285,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             
 
-            if (Ref.GameTimePassed16ms > 0)
+            if (Ref.GameTimePassed33ms > 0)
             {
                 Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.BulletTrace, model.position);
                 //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.DssDamage, model.position);

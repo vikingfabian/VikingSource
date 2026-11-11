@@ -116,14 +116,14 @@ namespace VikingEngine.DSSWars.Interface
             Color NotSelectedIconCol = new Color(0.3f, 0.3f, 0.3f, 0.3f);
 
             bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Pause_GamePlay, out Color focusColor) && viewInput;
-            if (viewControllerTabs && DssRef.difficulty.setting_allowPauseCommand &&
+            if (viewControllerTabs && !DssRef.storage.ruleset_instance.module_noPauseCommand &&
                 player.gameControls.input.Controller_TabLeft.IsActive)
             {
                 content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
                 content.space(0.5f);
             }
 
-            if (DssRef.difficulty.setting_allowPauseCommand)
+            if (!DssRef.storage.ruleset_instance.module_noPauseCommand)
             {
                 //Play / Pause
                 content.Add(new ArtButton(Ref.isPaused ? RbButtonStyle.Primary : RbButtonStyle.OptionNotSelected,
@@ -136,7 +136,7 @@ namespace VikingEngine.DSSWars.Interface
                             content.hspace();
                         }
                         content.Add(new RbText(DssRef.lang.Input_Pause));
-                    }), DssRef.difficulty.setting_allowPauseCommand));
+                    }), !DssRef.storage.ruleset_instance.module_noPauseCommand));
 
                 //content.Add(new ArtButton(Ref.isPaused ? RbButtonStyle.OptionNotSelected : RbButtonStyle.Primary,
                 //    new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPlayIcon, 1, Ref.isPaused ? NotSelectedIconCol : Color.White) },

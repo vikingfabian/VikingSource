@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.DSSWars.Map.Map2
@@ -17,9 +18,11 @@ namespace VikingEngine.DSSWars.Map.Map2
         }
     }
 
+    
+
     class IconWorldData
     {
-        public WorldMetaData2 metaData2;
+        public WorldMetaData metaData;
         public Grid2D_L<GenTile> iconGrid;
         public List<CityPlacementData> cities = null;
         public PcgRandom rnd;
@@ -28,20 +31,26 @@ namespace VikingEngine.DSSWars.Map.Map2
         
         public IconWorldData()
         {
-            rnd = new PcgRandom(metaData2.seed);
+            if (metaData == null)
+            {
+                metaData = new WorldMetaData(Ref.rnd.Ushort(), new MapLib.MapScale( MapSizeCategory.Medium), -1);
+            }
+            rnd = new PcgRandom(metaData.worldId.seed);
 
         }
 
-        public IconWorldData(IntVector2 iconSize)
+        public IconWorldData(WorldMetaData metaData)
         {
-            metaData2 = new WorldMetaData2();
+            this.metaData = metaData;
+            rnd = new PcgRandom(metaData.worldId.seed);
 
-            rnd = new PcgRandom(metaData2.seed);
+            iconGrid = new Grid2D_L<GenTile>(metaData.mapScale.Size(true));
+        }
 
-            iconGrid = new Grid2D_L<GenTile>(iconSize);
-
-            //IntVector2 tileSz = iconGrid.Size * 16;
-
+        public IconWorldData(MapLib.MapScale scale)
+            :this(new WorldMetaData(Ref.rnd.Ushort(), scale, -1))
+        {
+            
         }
         public void writeIcon(System.IO.BinaryWriter w)
         {
@@ -58,7 +67,8 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
             int version = r.ReadInt32();
 
-            metaData2 = new WorldMetaData2();
+            metaData = new WorldMetaData(Ref.rnd.Ushort(), new MapLib.MapScale(MapSizeCategory.Medium), -1);
+            
             iconGrid = new Grid2D_L<GenTile>(IntVector2.FromReadUshort(r));
             for (int i = 0; i < iconGrid.array.Length; i++)
             {
@@ -69,16 +79,16 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public IconWorldData CloneMe()
         {
-            IconWorldData clone = new IconWorldData(this.iconGrid.Size);
+            IconWorldData clone = new IconWorldData(metaData);
 
-            clone.metaData2 = this.metaData2;
+            clone.metaData = this.metaData;
 
             if (this.cities != null)
             {
                 clone.cities = new List<CityPlacementData>(this.cities);
             }
 
-            clone.rnd = new PcgRandom(this.metaData2.seed);
+            clone.rnd = new PcgRandom(this.metaData.worldId.seed);
 
             clone.iconGrid = this.iconGrid.Clone();
 

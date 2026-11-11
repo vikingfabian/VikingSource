@@ -511,22 +511,40 @@ namespace VikingEngine.DSSWars
         public List<PFaction> aiPlayerAsynchUpdate_collectThreats(Faction aifaction, float threatFactor = 1.6f)
         { 
             aiPlayerAsynchUpdate_threats.Clear();
-
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref aifaction.cities, DssRef.world.cities, out City city))
             {
-                EcsStaticArrayCounter neighbors = city.CityNeighbors();
-                while (neighbors.Next(DssRef.world.cities, out City nCity))
+                var ncoll = city.Neighbors();
                 {
-                    if (nCity.pfaction.factionIndex != aifaction.myIndex &&
-                        !aiPlayerAsynchUpdate_threats.Contains(nCity.pfaction))
+                    foreach (var pncity in ncoll.list)
                     {
-                        aiPlayerAsynchUpdate_threats.Add(nCity.pfaction);
+                        var nCity = pncity.City();
+                        if (nCity.pfaction.factionIndex != aifaction.myIndex &&
+                            !aiPlayerAsynchUpdate_threats.Contains(nCity.pfaction))
+                        {
+                            aiPlayerAsynchUpdate_threats.Add(nCity.pfaction);
+                        }
                     }
                 }
+                City.ReturnToPool(ncoll);
             }
 
-            for (int i = aiPlayerAsynchUpdate_threats.Count - 1; i >= 0; i--)
+                /*
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref aifaction.cities, DssRef.world.cities, out City city))
+                {
+                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))
+                    {
+                        if (nCity.pfaction.factionIndex != aifaction.myIndex &&
+                            !aiPlayerAsynchUpdate_threats.Contains(nCity.pfaction))
+                        {
+                            aiPlayerAsynchUpdate_threats.Add(nCity.pfaction);
+                        }
+                    }
+                }
+                */
+                for (int i = aiPlayerAsynchUpdate_threats.Count - 1; i >= 0; i--)
             {
                 var otherFaction = aiPlayerAsynchUpdate_threats[i];
                 if (GetRelation(aifaction.pfaction, otherFaction).Relation >= RelationType.RelationType2_Good ||

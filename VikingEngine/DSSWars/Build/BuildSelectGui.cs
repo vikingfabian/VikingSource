@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
@@ -23,7 +24,7 @@ namespace VikingEngine.DSSWars.Build
             deleteSelection();
         }
 
-        public void Create(LocalPlayer player, IntVector2 subTilePos, bool canAct, int usesBuildQue, City city)
+        public void Create(LocalPlayer player, IntVector2 mapTilePos, bool canAct, int usesBuildQue, City city)
         {
             BuildSelectGui buildSelectGui;
 
@@ -44,7 +45,7 @@ namespace VikingEngine.DSSWars.Build
                 useCount = Count;
             }
 
-            buildSelectGui.position = subTilePos;
+            buildSelectGui.position = mapTilePos;
             buildSelectGui.mayBuild = canAct;
             if (canAct)
             {
@@ -57,7 +58,7 @@ namespace VikingEngine.DSSWars.Build
             buildSelectGui.usesBuildQue = usesBuildQue;
             buildSelectGui.City = city;
             buildSelectGui.model.Visible = true;
-            buildSelectGui.model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+            buildSelectGui.model.position = WP.MaptileToWorldPosXYZ(mapTilePos);
 
         }
 

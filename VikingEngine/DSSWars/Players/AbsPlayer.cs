@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Sentry;
 using System;
@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.Players
             //faction.player = this;
             faction.SetStartOwner(this);
             faction.OnNewPlayerModels();
-            DssRef.world.BordersUpdated = true;
+            DssRef.world.CrossMapTextureNeedsUpdate = true;
         }
 
         virtual public void SetColor(Color selected, bool netShare)
@@ -79,10 +79,12 @@ namespace VikingEngine.DSSWars.Players
 
         virtual public void refreshFlag()
         {
+            var previousFlag = flagTexture;
             flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
+            Graphics.GpuResourceSync.Release(previousFlag);
             pfaction.GetFaction()?.OnNewPlayerModels();
             
-            DssRef.world.BordersUpdated = true;
+            DssRef.world.CrossMapTextureNeedsUpdate = true;
         }
 
         public AbsPlayer(Faction faction, bool newGame)

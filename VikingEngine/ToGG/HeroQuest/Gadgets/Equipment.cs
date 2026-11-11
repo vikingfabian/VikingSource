@@ -20,7 +20,7 @@ namespace VikingEngine.ToGG.HeroQuest.Gadgets
 
         public ItemSlot mainhand, secondHand, body, trinket1, trinket2;
         public SlotArray mainhandArray, secondHandArray, bodyArray, trinketArray;
-        public List2<ItemSlot> list;
+        public List2_old<ItemSlot> list;
 
         public QuickBelt quickbelt;
 
@@ -37,7 +37,7 @@ namespace VikingEngine.ToGG.HeroQuest.Gadgets
             bodyArray = new SlotArray() { body };
             trinketArray = new SlotArray() { trinket1, trinket2 };
 
-            list = new List2<ItemSlot>
+            list = new List2_old<ItemSlot>
             {
                 mainhand, secondHand, body, trinket1, trinket2
             };

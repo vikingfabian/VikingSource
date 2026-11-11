@@ -13,11 +13,23 @@ namespace VikingEngine
     /// </summary>
     public struct FlatArray_Eight<T> where T : struct
     {
+        public FlatArray_Eight(T value1)
+        {
+            this.value1 = value1;
+            this.Count = 1;
+        }
         public FlatArray_Eight(T value1, T value2)
         {
             this.value1 = value1;
             this.value2 = value2;
-            this.count = 2;
+            this.Count = 2;
+        }
+        public FlatArray_Eight(T value1, T value2, T value3)
+        {
+            this.value1 = value1;
+            this.value2 = value2;
+            this.value3 = value3;
+            this.Count = 3;
         }
         public FlatArray_Eight(T value1, T value2, T value3, T value4)
         {
@@ -25,7 +37,7 @@ namespace VikingEngine
             this.value2 = value2;
             this.value3 = value3;
             this.value4 = value4;
-            this.count = 4;
+            this.Count = 4;
         }
         public FlatArray_Eight(T value1, T value2, T value3, T value4, T value5, T value6, T value7, T value8) 
         { 
@@ -37,10 +49,10 @@ namespace VikingEngine
             this.value6 = value6;
             this.value7 = value7;
             this.value8 = value8;
-            this.count = 8;
+            this.Count = 8;
         }
 
-        public int count;
+        public int Count;
         public T value1;
         public T value2;
         public T value3;
@@ -52,7 +64,7 @@ namespace VikingEngine
 
         public void Add(T v)
         {
-            switch (count)
+            switch (Count)
             {
                 case 0: value1 = v; break;
                 case 1: value2 = v; break;
@@ -64,7 +76,7 @@ namespace VikingEngine
                 case 7: value8 = v; break;
                 default: throw new InvalidOperationException("FlatArray is full.");
             }
-            count++;
+            Count++;
         }
 
         public T this[int index]
@@ -103,7 +115,7 @@ namespace VikingEngine
 
         public bool InBounds(int index)
         {
-            return index >= 0 && index < count;
+            return index >= 0 && index < Count;
         }
     }
 }

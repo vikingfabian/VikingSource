@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using VikingEngine.DataStream;
+using VikingEngine.Voxels;
 
 namespace VikingEngine.PJ
 {
     class Storage
     {
-        const int Version = 5;
+        const int Version = 6;
 
         public List<GamerData> joinedGamersSetup = null;
         public List<GamerData> startingRemoteGamers = null;
@@ -18,12 +20,15 @@ namespace VikingEngine.PJ
         public GameModeSettings modeSettings;
         public Network.LobbyPublicity lobbyPublicity = Network.LobbyPublicity.FriendsOnly;
 
-        public Storage()
+        public Storage(bool load)
         {
             PjRef.storage = this;
             Mode = PartyGameMode.Jousting;
 #if PCGAME
-            saveLoad(false, false);
+            if (load)
+            {
+                saveLoad(false, false);
+            }
 #endif
         }
 
@@ -34,6 +39,12 @@ namespace VikingEngine.PJ
                 "PartyJoustingSettings", ".sav",
                 true,
                 false);
+            
+            
+            if (save)
+            {
+                filePath.CreateDirectory();
+            }
             
             new FileIO_2(save, filePath, write, read, startThread);
         }
@@ -70,29 +81,40 @@ namespace VikingEngine.PJ
         {
             int version = r.ReadInt32();
 
-            if (version <5)
+            if (version <6 || version > Version)
             {
                 return;
             }
-            //Ref.gamesett.readEmbeddedSettingsAndVersion(r);
 
-            mode = (PartyGameMode)r.ReadByte();
-            modeSettings = new GameModeSettings(mode);
-            DataStream.SafeStream safeStream = new DataStream.SafeStream(r);
-
-            safeStream.beginReadChunk();
-            int joinedGamersCount = r.ReadInt32();
-            for (int i = 0; i < joinedGamersCount; ++i)
+            try
             {
-                if (joinedGamersSetup == null)
+
+                mode = (PartyGameMode)r.ReadByte();
+                modeSettings = new GameModeSettings(mode);
+                DataStream.SafeStream safeStream = new DataStream.SafeStream(r);
+
+                safeStream.beginReadChunk();
+                int joinedGamersCount = r.ReadInt32();
+                for (int i = 0; i < joinedGamersCount; ++i)
                 {
-                    joinedGamersSetup = new List<GamerData>();
+                    if (joinedGamersSetup == null)
+                    {
+                        joinedGamersSetup = new List<GamerData>();
+                    }
+
+                    joinedGamersSetup.Add(new GamerData(r, version));
                 }
-
-                joinedGamersSetup.Add(new GamerData(r, version));
+                safeStream.endReadChunk(PlatformSettings.DevBuild);
             }
-            safeStream.endReadChunk(PlatformSettings.DevBuild);
-
+            catch (Exception e)
+            {
+                new Storage(false);
+#if DEBUG
+                //throw e;
+#else
+                
+#endif
+            }
             //if (version >= 1)
             //{
             //    lobbyPublicity = (Network.LobbyPublicity)r.ReadByte();

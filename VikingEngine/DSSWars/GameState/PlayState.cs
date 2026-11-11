@@ -1,4 +1,4 @@
-//#define DEBUG_CLIENT
+﻿//#define DEBUG_CLIENT
 
 
 using Microsoft.Xna.Framework;
@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars
         public bool casualControls;
 
         TechnologyManager technologyManager = new TechnologyManager();
-        bool bResourceMinuteUpdate = true;
+        
         bool slowMinuteUpdate = true;
         bool netMapUpdate = false;
 
@@ -424,9 +424,10 @@ namespace VikingEngine.DSSWars
                     LocalHost().baseOnGameStart();
                 }
 
-                foreach (var m in DssRef.world.cities)
+                var citiesC = DssRef.world.cities.counter();
+                while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
                 {
-                    m.onGameStart(newGame);
+                    citiesC.sel.onGameStart(newGame);
                 }
 
                 if (newGame && (DssRef.storage.runTutorial == false || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
@@ -479,9 +480,12 @@ namespace VikingEngine.DSSWars
             AutoSaveTimeStamp.setNow();
             events.onGameStarted();
 
-            if ((newGame && LocalHost().IntutorialMode()) == false)
+            if (PlatformSettings.DebugLevel > BuildDebugLevel.Dev)
             {
-                menuSystem.pauseMenu();
+                if ((newGame && LocalHost().IntutorialMode()) == false)
+                {
+                    menuSystem.pauseMenu();
+                }
             }
         }
 
@@ -588,9 +592,10 @@ namespace VikingEngine.DSSWars
                         citiesStart = Stopwatch.GetTimestamp();
                     }
 
-                    foreach (var m in DssRef.world.cities)
+                    var citiesC = DssRef.world.cities.counter();
+                    while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
                     {
-                        m.update();
+                        citiesC.sel.update();
                     }
 
                     if (profiling && citiesStart > 0)
@@ -662,9 +667,10 @@ namespace VikingEngine.DSSWars
             {   
                 if (isReady)
                 {
-                    foreach (var m in DssRef.world.cities)
+                    var citiesC = DssRef.world.cities.counter();
+                    while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
                     {
-                        m.PauseUpdate();
+                        citiesC.sel.PauseUpdate();
                     }
 
                     var factions = DssRef.world.factions.counter();
@@ -685,30 +691,38 @@ namespace VikingEngine.DSSWars
 
             switch (processTime.update())
             {
-                case ProcessEvent.OverviewMap:
-                    overviewMap.HalfSecondUpdate();
+                case ProcessEvent.MidLayerMap:
+                    mapLayerMid.HalfSecondUpdate();
+                    break;
+                case ProcessEvent.FarLayerMap:
+                    mapLayerFar.HalfSecondUpdate();
                     break;
                 case ProcessEvent.SubTileReload:
-                    if (detailMap != null)
+                    if (mapLayerNear != null)
                     {
-                        detailMap.oneSecondUpdate = true;
+                        mapLayerNear.oneSecondUpdate = true;
                     }
 
-                    if (overviewMap != null)
+                    if (mapLayerMid != null)
                     {
-                        overviewMap.bRefreshTimer = true;
+                        mapLayerMid.bRefreshTimer = true;
                     }
                     break;
             }
             
-            overviewMap.update();
+            mapLayerMid.update();
 
-            if (profiling && mapStart > 0)
-            {
-                mapMs = (float)Stopwatch.GetElapsedTime(mapStart).TotalMilliseconds;
-            }
+            //if (bUserUpdate)
+            //{
+            updateUserInput(bUserMapUpdate);
+            //}
+            //else
+            //{ 
+                
+            //}
 
             // --- User Input Update (runs unconditionally) ---
+            /*
             float userInputMs = 0f;
             long userInputStart = 0;
             if (profiling)
@@ -733,6 +747,7 @@ namespace VikingEngine.DSSWars
                     citiesMs, factionsMs, factionOneSecMs,
                     mapMs, userInputMs, particlesMs);
             }
+            */
         }
 
         //float AutoSaveTimeSec = DssRef.storage.autoSaveInterval_Minutes * TimeExt.MinuteInSeconds;
@@ -870,19 +885,20 @@ namespace VikingEngine.DSSWars
 
                 if (!Ref.isPaused)
                 {
-                    foreach (var m in DssRef.world.cities)
+                    var citiesC = DssRef.world.cities.counter();
+                    while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
                     {
-                        if (m.IsNetHosted)
+                        if (citiesC.sel.IsNetHosted)
                         {
-                            m.async_workUpdate((int)Ref.TargetGameTimeSpeed);
-                            m.async_conscriptUpdate(time);
-                            m.async_deliveryUpdate();
+                            citiesC.sel.async_workUpdate((int)Ref.TargetGameTimeSpeed);
+                            citiesC.sel.async_conscriptUpdate(time);
+                            citiesC.sel.async_deliveryUpdate();
                         }
                         else
                         {
-                            if (arraylib.HasMembers(m.workerUnits))
+                            if (arraylib.HasMembers(citiesC.sel.workerUnits))
                             {
-                                m.async_workUpdate((int)Ref.TargetGameTimeSpeed);
+                                citiesC.sel.async_workUpdate((int)Ref.TargetGameTimeSpeed);
                             }
                         }
                     }
@@ -911,28 +927,28 @@ namespace VikingEngine.DSSWars
                 bool minute = DssRef.time.pullMinute(ref asynchGameObjectsMinutes);
 
                 int cityCount = 0;
-                foreach (var m in DssRef.world.cities)
+                var citiesC = DssRef.world.cities.counter();
+                while (citiesC.Next())
                 {
-                    if (m.cityType > CityType.UnClaimed)
-                    {
-                        m.asynchGameObjectsUpdate(minute);
+                    //if (m.cityType > CityType.UnClaimed)
+                    //{
+                        citiesC.sel.asynchGameObjectsUpdate(minute);
                         cityCount++;
-                    }
+                    //}
                 }
                 DssRef.world.claimedCityCount = cityCount;
 
+                strongestArmy_processing = 0;
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    //if (factions.sel.IsNetHosted())
-                    //{
+                   
                     if (factions.sel.player != null)
                     {
                         factions.sel.asynchGameObjectsUpdate(time, seconds, minute);
                     }
-                    //}
                 }
-
+                strongestArmy = strongestArmy_processing;
             }
             return exitThreads;
         }
@@ -943,9 +959,11 @@ namespace VikingEngine.DSSWars
             {
                 DssRef.world.unitCollAreaGrid.asynchUpdate();
 
-                foreach (var m in DssRef.world.cities)
+                var citiesC = DssRef.world.cities.counter();
+
+                while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
                 {
-                    m.asyncNearObjectsUpdate();
+                    citiesC.sel.asyncNearObjectsUpdate();
                 }
 
                 var factions = DssRef.world.factions.counter();
@@ -961,22 +979,7 @@ namespace VikingEngine.DSSWars
             return exitThreads;
         }
 
-        bool asyncResourcesUpdate(int id, float time)
-        {
-            //This thread is the only thay may edit subtiles
-            if (UpdateReady())
-            {
-                resources.asyncEditTiles();
-                //Runs every minute to upate any resource progression: trees grow, food spoil, etc
-                if (bResourceMinuteUpdate || StartupSettings.DebugResoursesSuperSpeed)
-                {
-                    bResourceMinuteUpdate = false;
-
-                    resources.asyncGrowUpdate();
-                }
-            }
-            return exitThreads;
-        }
+        
 
         bool asyncSlowUpdate(int id, float time)
         {
@@ -1026,13 +1029,16 @@ namespace VikingEngine.DSSWars
 
         public override int PathThreadCount()
         {
-            return 4;
+            return 2;
         }
         public override PlayState playstate()
         {
             return this;
         }
-
+        public override bool GodPowers()
+        {
+            return DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator;
+        }
         public override PlayStateType PlayType()
         {
             return PlayStateType.Play;

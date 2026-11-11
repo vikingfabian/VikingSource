@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.Data
 {
@@ -35,20 +36,18 @@ namespace VikingEngine.DSSWars.Data
         const int Version = 1;
         public WorldMetaId worldId;
 
-        public MapSize mapSize;
+        //public MapSize mapSize;
+        public Map.MapLib.MapScale mapScale;
         public int saveIndex = -1;
         public bool IsGenerated => saveIndex < 0;
         public PcgRandom objRnd;
         public bool customEditorMap = false;
 
-        public WorldMetaData(ushort seed, MapSize mapSize, int saveIndex)
+        public WorldMetaData(ushort seed, MapScale mapSize, int saveIndex)
         {
-            //this.seed = seed;
-            //objSeed = Ref.rnd.Ushort();
-
             worldId = new WorldMetaId() { seed = seed, objSeed = Ref.rnd.Ushort() };
             objRnd = new PcgRandom(worldId.objSeed);
-            this.mapSize = mapSize;
+            this.mapScale = mapSize;
             this.saveIndex = saveIndex;
         }
 
@@ -67,10 +66,8 @@ namespace VikingEngine.DSSWars.Data
         {
             w.Write(Version);
 
-            //w.Write(seed);
-            //w.Write(objSeed);
             worldId.write(w);
-            w.Write((byte)mapSize);
+            //w.Write((byte)mapSize);
             w.Write((short)saveIndex);
         }
 
@@ -78,11 +75,9 @@ namespace VikingEngine.DSSWars.Data
         {
             int version = r.ReadInt32();
              
-            //seed = r.ReadUInt16();
-            //objSeed = r.ReadUInt16();
             worldId.read(r);
             objRnd = new PcgRandom(worldId.objSeed);
-            mapSize = (MapSize)r.ReadByte();
+            //mapSize = (MapSize)r.ReadByte();
             saveIndex = r.ReadInt16();
         }
 

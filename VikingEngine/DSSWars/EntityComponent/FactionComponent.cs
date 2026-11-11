@@ -6,6 +6,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.XP;
 
 namespace VikingEngine.DSSWars
 {
@@ -13,21 +14,23 @@ namespace VikingEngine.DSSWars
     {
         public Diplomacy diplomacy;
         const int DefaultFactionCount = 64;
-        public GroupedResource[] factionResourceOverviews = new GroupedResource[DefaultFactionCount * CityResourceIndex.COUNT];
-        public WorkPriority[] factionWork = new WorkPriority[DefaultFactionCount * WorkTemplate.COUNT];
+        public GroupedResource[] factionResourceOverviews;
+        public WorkPriority[] factionWork;
+        public TechTreeNodeProgress_Faction[] faction_techNodes /*= new TechTreeNodeProgress[DefaultFactionCount * TechTreeNodeProgress.NodeCount]*/;
 
-        void init_FactionComponents()
+        public void init_FactionComponents(int factionCount)
         {
-            factionResourceOverviews = new GroupedResource[factions.Array.Length * CityResourceIndex.COUNT];
-            factionWork = new WorkPriority[factions.Array.Length * WorkTemplate.COUNT];
+            factionCount = Math.Max(factionCount, DefaultFactionCount);
+            factionResourceOverviews = new GroupedResource[factionCount * CityResourceIndex.COUNT];
+            factionWork = new WorkPriority[factionCount * WorkTemplate.COUNT];
+            faction_techNodes = new TechTreeNodeProgress_Faction[factionCount * TechTreeNodeProgress_City.NodeCount];
             //diplomaticRelations = new DiplomaticRelation[MathExt.GaussSum(factions.Array.Length)];
-            diplomacy = new Diplomacy(factions.Array.Length);
+            diplomacy = new Diplomacy(factionCount);
 
             for (int i = 0; i < factions.Array.Length; i++)
             {
                 if (factions.Array[i] != null)
                 { 
-                    //factions.Array[i].resourceComponentStartIndex = i * CityResoureIndex.COUNT;
                     initFaction(factions.Array[i]);
                 }
             }
@@ -35,11 +38,18 @@ namespace VikingEngine.DSSWars
 
         public void factionComponentsAdd(Faction faction)
         {
+            //if (factionResourceOverviews == null)
+            //{
+            //    init_FactionComponents();
+            //    return;
+            //}
+
             if (factions.Array.Length * CityResourceIndex.COUNT >= factionResourceOverviews.Length)
             {
                 int startIndex = factionResourceOverviews.Length;
                 Array.Resize(ref factionResourceOverviews, factionResourceOverviews.Length * 2);
                 Array.Resize(ref factionWork, factionWork.Length * 2);
+                Array.Resize(ref faction_techNodes, faction_techNodes.Length * 2);
                 //Array.Resize(ref diplomaticRelations, MathExt.GaussSum((factions.Array.Length -1) * 2));
                 diplomacy = new Diplomacy((factions.Array.Length - 1) * 2);
             }

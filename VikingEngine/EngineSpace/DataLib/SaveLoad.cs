@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -117,7 +117,16 @@ namespace VikingEngine.DataLib
             List<string> lines = new List<string>();
             try
             {
-                StreamReader re = File.OpenText(filePath);
+                StreamReader re;
+                if (OperatingSystem.IsAndroid() && !File.Exists(filePath))
+                {
+                    Stream assetStream = Microsoft.Xna.Framework.TitleContainer.OpenStream(DataStream.FileToDiskManager.NormalizeAndroidAssetPath(filePath));
+                    re = new StreamReader(assetStream);
+                }
+                else
+                {
+                    re = File.OpenText(filePath);
+                }
                 string input = null;
                 while ((input = re.ReadLine()) != null)
                 {

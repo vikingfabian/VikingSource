@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using VikingEngine.DSSWars;
@@ -37,15 +37,18 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
 
         private void CreateRenderTargets()
         {
-            _shadowMap?.Dispose();
-
-            _shadowMap = new RenderTarget2D(
-                Engine.Draw.graphicsDeviceManager.GraphicsDevice,
-                _shadowMapSize,
-                _shadowMapSize,
-                false,
-                SurfaceFormat.Single, // Use Single for higher precision depth values
-                DepthFormat.Depth24);
+            var previousShadowMap = _shadowMap;
+            using (GpuResourceSync.Acquire())
+            {
+                _shadowMap = GpuResourceSync.Track(new RenderTarget2D(
+                    Engine.Draw.graphicsDeviceManager.GraphicsDevice,
+                    _shadowMapSize,
+                    _shadowMapSize,
+                    false,
+                    SurfaceFormat.Single, // Use Single for higher precision depth values
+                    DepthFormat.Depth24));
+            }
+            GpuResourceSync.Release(previousShadowMap);
         }
 
 
@@ -134,7 +137,7 @@ namespace VikingEngine.EngineSpace.Graphics.DrawProcess
 
         public void Dispose()
         {
-            _shadowMap?.Dispose();
+            GpuResourceSync.Release(_shadowMap);
             _shadowMap = null;
         }
 

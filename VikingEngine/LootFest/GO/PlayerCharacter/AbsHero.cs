@@ -1855,8 +1855,8 @@ namespace VikingEngine.LootFest.GO.PlayerCharacter
                     if (inputMap.jump.IsDown)
                     {
                         jumpHoldTimeLeft -= Ref.DeltaTimeMs;
-                        for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
-                        { Velocity.Y += Engine.Update.Time16msInSeconds * holdJumpForcePerSec; }
+                        for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
+                        { Velocity.Y += Engine.Update.Time33msInSeconds * holdJumpForcePerSec; }
 
                         if (PlatformSettings.DevBuild && prevJumpUpdate == Ref.TotalTimeSec)
                         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -87,7 +87,7 @@ namespace VikingEngine.Graphics
         public override void DeleteMe()
         {
             base.DeleteMe();
-            renderTarget?.renderTarget.Dispose();
+            GpuResourceSync.Release(renderTarget?.renderTarget);
             renderTarget = null;
         }
     }

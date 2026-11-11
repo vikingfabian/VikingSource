@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Data.GameSetup;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
@@ -38,16 +40,16 @@ namespace VikingEngine.DSSWars.Players
                 switch (DssRef.difficulty.bossSize)
                 {
                     case BossSize.Small:
-                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 60;
+                        maxDiplomacy = CityHallSetup.HeadCityStartMaxWorkForce * 60;
                         break;
                     case BossSize.Medium:
-                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 120;
+                        maxDiplomacy = CityHallSetup.HeadCityStartMaxWorkForce * 120;
                         break;
                     case BossSize.Large:
-                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 200;
+                        maxDiplomacy = CityHallSetup.HeadCityStartMaxWorkForce * 200;
                         break;
                     case BossSize.Huge:
-                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 300;
+                        maxDiplomacy = CityHallSetup.HeadCityStartMaxWorkForce * 300;
                         break;
                 }
             }
@@ -56,16 +58,16 @@ namespace VikingEngine.DSSWars.Players
                 switch (DssRef.difficulty.bossSize)
                 {
                     case BossSize.Small:
-                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 30;
+                        maxDiplomacy = CityHallSetup.HeadCityStartMaxWorkForce * 30;
                         break;
                     case BossSize.Medium:
-                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 60;
+                        maxDiplomacy = CityHallSetup.HeadCityStartMaxWorkForce * 60;
                         break;
                     case BossSize.Large:
-                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 100;
+                        maxDiplomacy = CityHallSetup.HeadCityStartMaxWorkForce * 100;
                         break;
                     case BossSize.Huge:
-                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 140;
+                        maxDiplomacy = CityHallSetup.HeadCityStartMaxWorkForce * 140;
                         break;
                 }
                 
@@ -120,7 +122,7 @@ namespace VikingEngine.DSSWars.Players
         public void EnterMap(/*Faction takeOverFaction, */List<PFaction> servantFactions, List<PFaction> darkLordAllies)
         {
             
-            pfaction.GetFaction().money.copper = DssConst.HeadCityStartMaxWorkForce * 1000000;
+            pfaction.GetFaction().money.copper = CityHallSetup.HeadCityStartMaxWorkForce * 1000000;
 
             //this.servantFactions = darkLordAllies;
             //Faction greenwood = DssRef.world.faction(DssRef.settings.Faction_GreenWood);
@@ -174,29 +176,37 @@ namespace VikingEngine.DSSWars.Players
                 var city = pfaction.GetFaction().cities.GetRandom(Ref.rnd, DssRef.world.cities);
                 if (city != null)
                 {
-                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
-                    while (neighbors.Next(DssRef.world.cities, out City nCity))
+                    CityCollection ncoll = city.Neighbors();
                     {
-                        var nFaction = nCity.pfaction.GetFaction();
-                        if (nFaction != null &&
-                            nFaction != pfaction.GetFaction() &&
-                            nFaction.diplomaticSide != DiplomaticSide.Light &&
-                            !DssRef.world.diplomacy.PositiveRelationWithPlayer(nFaction))
+                        //    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                        //while (neighbors.Next(DssRef.world.cities, out City nCity))
+                        //{
+                        foreach (var pnCity in ncoll.list)
                         {
-                            if (servantFactions == null)
+                            City nCity = pnCity.City();
+                            var nFaction = nCity.pfaction.GetFaction();
+                            if (nFaction != null &&
+                                nFaction != pfaction.GetFaction() &&
+                                nFaction.diplomaticSide != DiplomaticSide.Light &&
+                                !DssRef.world.diplomacy.PositiveRelationWithPlayer(nFaction))
                             {
-                                servantFactions = new List<PFaction>(8);
-                            }
-
-                            lock (servantFactions)
-                            {
-                                if (!servantFactions.Contains(nFaction.pfaction))
+                                if (servantFactions == null)
                                 {
-                                    servantFactions.Add(nFaction.pfaction);
+                                    servantFactions = new List<PFaction>(8);
+                                }
+
+                                lock (servantFactions)
+                                {
+                                    if (!servantFactions.Contains(nFaction.pfaction))
+                                    {
+                                        servantFactions.Add(nFaction.pfaction);
+                                    }
                                 }
                             }
                         }
+
                     }
+                    City.ReturnToPool(ncoll);
                 }
             }
         }

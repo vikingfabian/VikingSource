@@ -509,6 +509,7 @@ namespace VikingEngine.Engine
 
         public void SetDrawArea(int numplayers, int myScreenIx, bool updateCam, Player player)
         {
+            this.ScreenIndex = myScreenIx;
             float zoom;
             GetDrawArea(numplayers, myScreenIx, out zoom);
            

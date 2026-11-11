@@ -1,28 +1,76 @@
 
 Change log:
-* Compressed the size of resources
+
 * 
 
-KNOWN ISSUES
-x reassign dont work with controller
-x hide achievements
-X timeline checkbox on steamworks
 x adjust "all facts"
 
-## QoL Part 2 ## (December 17)
+
+#MAP 2.0 UPDATE
+* 20 new songs added, made by Cosme Leites
+* 9 new build types
 * The color range of voxel models have been adjusted
 * Build and craft work will reserve items to avoid negative numbers (it is not perfect) 
 * Truce timer is pinned to hud
 * Made the dark horde slow and idle
 * All animal pens have double upkeep
 
-Worker count limit
-* Made to better control the flow of work
-! Prototype: ui be improved if it works
+World map 2.0
+The world map is rebuilt from the ground up to allow for more details, higher performance and is easier to modify in runtime.
+* Worlds are now twice the size. 
+* All terrain is textured
 
-Delivery request
-* Affects any auto delivery (auto city or auto item)
-! Prototype: ui be improved if it works
+Some downsides of the new map
+* Longer load times
+* Increased storage sizes for saves
+* Flickering from layer swaps are worse
+* The refresh rate of minimap textures are slower
+
+Ground properties
+* Tiles have a ground type, these limit what you can build and soldier movement
+* Some tiles can be terraformed into others
+
+Dynamic world
+* Factions and cities are now dynamic and can be added/removed during runtime.
+* The unclamied city areas are replaced with a "place anywhere" city founding.
+* Cities can grow and claim more land.
+
+Path 3.0
+A new high performance path finding algorithm with four hierarchy levels.
+* Is better adapted to handle terrain and walls.
+* Can handle a more detailed map.
+* Will use roads
+
+Map editor 2.0
+* New map generator built for much more control over both map generation and map editing.
+* Node editor to give more control over the world shape
+* Icon editor: Allows fast editing in 1/16 scale
+* Height map: Load images and use them to generate the world
+
+Fog of war
+* The fog dont represent eye sight like most games, instead its the area you recieve information from
+* Idle armies will scout the sourronding area
+x Share information with diplomatic relations
+
+City profiles (prototype)
+* Premade setups for cities, will replace the automatic city button
+* Also planned to replace the faction wide settings
+* Currently affects resource management and buildings
+
+Onboarding and Game modules
+* Optional challenge modules have been added
+* A couple of high friction mechanics, like starvation and deserters, have been split off to optional modules
+* Difficulty numbers have been decreased to counter the % creep
+
+X Discover resource pools
+
+Resources
+x Item conversion menu
+* 2 new resources: fine wood and meat
+
+New work management tools (prototype)
+* Worker count limit, made to better control the flow of work (! Prototype: ui will be improved if it works
+* Delivery request. Affects any auto delivery (auto city or auto item) (! Prototype: ui will be improved if it works
 
 Soldier abilities
 * Added a parry system. Weapons with high parry will block melee attacks from those with low.
@@ -40,39 +88,22 @@ Performance
 * The terrain shadow renderer now supports textures (Uygar "Agent" Yilmaz)
 * Fixed stuck game process on exit (Uygar "Agent" Yilmaz)
 * Reduced menu render calls (Uygar "Agent" Yilmaz)
+* Flags are changed to linears arrays
+* Flag textures are only created once and share one big texture
+* Compressed the memory size of resources
 
 Vulkan
 * DSS now runs on Vulkan, which is more performant and modern than OpenGL (Uygar "Agent" Yilmaz)
-* Map loading is now done on multiple CPU cores and runs smoother
-
-#MAP 2.0 UPDATE
-
-Worker max count
-* A new way to manage city work (prototype version)
-
-World map 2.0
-The world map is rebuilt from the ground up to allow for more details, higher performance and is easier to modify in runtime.
-* Worlds are now twice the size.
-
-Path 3.0
-A new high performance path finding algorithm with four hierarchy levels.
-* Is better adapted to handle terrain and walls.
-* Can handle a more detailed map.
-
-Map editor 2.0
-* New map generator built for much more control over both map generation and map editing.
-* Node editor to give more control over the world shape
-* Icon editor: Allows fast editing in 1/16 scale
-* Height map: Load images and use them to generate the world
+* Map terrain loading is now done on multiple CPU cores and runs smoother
 
 
-
-
+Black Bolt Industries
+* Made an evil factory puzzle game in a one week game jam. Available as extra content.
 
 
 ##ICONS TODO
-* all cities icon
-* gray rounded button
+* ground type
+* city profile
 
 #MOUNTED TODO
 * 
@@ -105,6 +136,11 @@ The game is a strategy wargame, with medieval and low fantasy theme.
 Where English is used in gaming, use a “hybrid” translation.
 For Thai, use a pipe (|) between words, example: "สวัสดี|ตอน|เช้า"
 
+#Languages above 2%
+English, German, French, Japanese, Simplified Chinese, Russian, Spanish
+
+Steam page prompt:
+output the text inside a Markdown code block rather than generating a .txt
 
 ##
 Translate all strings to French.

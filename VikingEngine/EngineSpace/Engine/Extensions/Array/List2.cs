@@ -1,275 +1,184 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace VikingEngine
 {
-    class List2<T> : List<T>
-    {
-        bool forwardLoop;
-        public int selIndex = -1;
-        public T sel;
-        public bool endPosition;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
 
-        public List2()
-            : base()
-        { }
+    /// <summary>
+    /// More optimized and feature rich list, make sure to always pass as "ref" since its a struct!
+    /// </summary>
+    public struct List2<T> : IEnumerable<T>
+    {
+        public T[] Array;
+        //public T sel = default;
+        public int selIndex = -1;
+        public int Count = 0;
+
+        // Handles the null array scenario
+        public int Capacity => Array?.Length ?? 0;
 
         public List2(int capacity)
-            : base(capacity)
-        { }
-
-        public List2(IEnumerable<T> collection)
-            : base(collection)
-        {  
+        {
+            Array = new T[capacity];
         }
 
-        public bool SelectItem(T selectItem)
+        // 1. Classic RemoveAt: Shifts all subsequent elements left
+        public void RemoveAt(int index)
         {
-            for (int i = 0; i < this.Count; ++i)
+            ValidateIndex(index);
+            Count--;
+            if (index < Count)
             {
-                if (this[i].Equals(selectItem))
-                {
-                    sel = this[i];
-                    selIndex = i;
-                    return true;
-                }
+                System.Array.Copy(Array, index + 1, Array, index, Count - index);
             }
+            Array[Count] = default;
+        }
 
+        // 2. Performant RemoveAt: Swaps the last element into the removed slot
+        public void RemoveAtSwapBack(int index)
+        {
+            ValidateIndex(index);
+            Count--;
+            if (index < Count)
+            {
+                Array[index] = Array[Count];
+            }
+            Array[Count] = default;
+        }
+
+        // 3. Locked Index RemoveAt: Replaces with default, leaves Count intact so indices don't shift
+        public void RemoveAtPreserveIndex(int index)
+        {
+            ValidateIndex(index);
+            Array[index] = default;
+            // Note: Count is not decremented to maintain array alignment
+        }
+
+        // Selection Methods
+        //public void Next()
+        //{
+        //    int idx = IndexOf(sel);
+        //    if (idx >= 0 && idx < Count - 1)
+        //    {
+        //        sel = Array[idx + 1];
+        //    }
+        //}
+
+        //public void Previous()
+        //{
+        //    int idx = IndexOf(sel);
+        //    if (idx > 0)
+        //    {
+        //        sel = Array[idx - 1];
+        //    }
+        //}
+
+        public T Sel()
+        {
+            return Array[selIndex];
+        }
+        public T Sel_safe()
+        {
+            if (selIndex >= 0 && selIndex < Count)
+            {
+                return Array[selIndex];
+            }
+            return default;
+        }
+        public ref T SelRef()
+        {
+            return ref Array[selIndex];
+        }
+
+        // Standard List Features
+        public ref T this[int index]
+        {
+            get
+            {
+                ValidateIndex(index);
+                return ref Array[index];
+            }
+        }
+
+        public void Add(T item)
+        {
+            EnsureCapacity(Count + 1);
+            Array[Count++] = item;
+        }
+
+        public bool Remove(T item)
+        {
+            int index = IndexOf(item);
+            if (index >= 0)
+            {
+                RemoveAt(index);
+                return true;
+            }
             return false;
         }
 
-        public bool InBound(int index)
+        public void Clear()
         {
-            return index >= 0 && index < this.Count;
-        }
-
-        public void SelectIndex(int index)
-        {
-            if (InBound(index))
+            if (Array != null)
             {
-                sel = this[index];
-                selIndex = index;
+                System.Array.Clear(Array, 0, Count);
             }
-        }
-
-        public void Add(T item, bool select)
-        {
-            if (select)
-            {
-                sel = item;
-                selIndex = this.Count;
-            }
-            this.Add(item);
-        }
-
-        public void AddFirst(T item)
-        {
-            Insert(0, item);
-        }
-
-        public void selectNext_Rollover()
-        {
-            if (++selIndex >= Count)
-            {
-                selIndex = 0;
-            }
-
-            sel = this[selIndex];
-        }
-
-        public void selectFirst()
-        {
-            selIndex = 0;
-            if (Count > 0)
-            {
-                sel = this[selIndex];
-            }
-        }
-
-        public void selectNext()
-        {
-            if (selIndex + 1 < Count)
-            {
-                ++selIndex;
-                sel = this[selIndex];
-            }
-        }
-
-        public bool Next_IsEnd(bool rollover)
-        {
-            selectNext();
-            return IsLast;
-        }
-
-        public void selectPrev()
-        {
-            if (selIndex > 0)
-            {
-                --selIndex;
-                sel = this[selIndex];
-            }
-        }
-
-        public T PeekNext(bool rollover, out int nextIx, out bool reachedEnd)
-        {
-            nextIx = selIndex + 1;
-            if (nextIx >= this.Count)
-            {
-                if (rollover)
-                { nextIx = 0; }
-                else
-                { nextIx = this.Count - 1; }
-
-                reachedEnd = true;
-            }
-            else
-            {
-                reachedEnd = false;
-            }
-
-            return this[nextIx];
-        }
-
-        public void loopBegin(int startIndex, bool forwardLoop = true)
-        {
-            this.forwardLoop = forwardLoop;
-            endPosition = false;
-
-            selIndex = startIndex + (forwardLoop? -1 : 1);
-        }
-
-        public void loopBegin(bool forwardLoop = true)
-        {
-            this.forwardLoop = forwardLoop;
-            endPosition = false;
-            loopReset();
-        }
-
-        public void loopReset()
-        {
-            selIndex = forwardLoop ? -1 : Count;
-        }
-
-        public bool loopNext()
-        {
-            if (forwardLoop)
-            {
-                endPosition = ++selIndex >= Count;
-            }
-            else
-            {
-                endPosition = --selIndex < 0 || Count == 0;
-            }
-
-            if (endPosition)
-            {
-                sel = default(T);
-                return false;
-            }
-
-            sel = this[selIndex];
-            return true;
-        }
-
-        public void loopRemove()
-        {
-            RemoveAt(selIndex);
-            if (forwardLoop) --selIndex;
-        }
-
-        public void loopRemove(T item)
-        {
-            if (item.Equals(sel))
-            {
-                loopRemove();
-            }
-            else
-            {
-                this.Remove(item);
-            }
-        }
-
-        public void set(T item)
-        {
-            this[selIndex] = item;
-            sel = this[selIndex];
-        }
-        public void setEmpty()
-        {
-            this[selIndex] = default(T);
-            sel = this[selIndex];
-        }
-
-        public bool IsEmpty => this[selIndex].Equals(default(T));
-     
-        public bool IsFirst => selIndex == 0;
-
-        public bool IsLast => selIndex == Count - 1;
-
-        public T First => this[0];
-
-        public T Selection() {return this[selIndex]; } 
-        public T Last => this[this.Count - 1];
-        
-        public void Unselect()
-        {
-            sel = default(T);
+            Count = 0;
             selIndex = -1;
         }
 
-        public bool HasSelection => selIndex >= 0 && selIndex < Count;
+        public bool Contains(T item) => IndexOf(item) >= 0;
 
-        public bool NoSelection => selIndex < 0 || selIndex >= Count;
-
-        public void DeleteAll()
+        public int IndexOf(T item)
         {
-            for (int i = Count - 1; i >= 0; --i)
-            {
-                if (this[i] is IDeleteable &&
-                    this[i] != null)
-                {
-                    ((IDeleteable)this[i]).DeleteMe();
-                }
-            }
-            Clear();            
+            if (Array == null) return -1;
+            return System.Array.IndexOf(Array, item, 0, Count);
         }
 
-        public void SetMaxCount(int maxCount, bool removeLast = true)
+        private void EnsureCapacity(int min)
         {
-            while (Count > maxCount)
+            if (Array == null)
             {
-                if (removeLast)
-                {
-                    RemoveLast();
-                }
-                else
-                {
-                    RemoveFirst();
-                }
+                Array = new T[min == 0 ? 4 : min];
+                return;
+            }
+
+            if (Array.Length < min)
+            {
+                int newCapacity = Array.Length == 0 ? 4 : Array.Length * 2;
+                if (newCapacity < min) newCapacity = min;
+
+                T[] newArray = new T[newCapacity];
+                System.Array.Copy(Array, newArray, Count);
+                Array = newArray;
             }
         }
 
-        public T RemoveFirst()
+        private void ValidateIndex(int index)
         {
-            var result = this[0];
-            RemoveAt(0);
-
-            return result;
+            if ((uint)index >= (uint)Count)
+                throw new ArgumentOutOfRangeException(nameof(index));
         }
 
-        public T RemoveLast()
+        public IEnumerator<T> GetEnumerator()
         {
-            int ix = this.Count - 1;
-            var result = this[this.Count - 1];
-            RemoveAt(ix);
-
-            return result;
+            for (int i = 0; i < Count; i++)
+            {
+                yield return Array[i];
+            }
         }
 
+        public bool HasValue()
+        {
+            return Count > 0;
+        }
 
+        public bool IsEmpty()
+        {
+            return Count == 0;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
-
 }

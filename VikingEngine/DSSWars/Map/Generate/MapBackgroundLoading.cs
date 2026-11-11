@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.PJ.Joust;
 
 namespace VikingEngine.DSSWars.Map.Generate
@@ -18,7 +19,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             :base()
         { }
 
-        public void generate(GenerateMapPass pass)
+        public void generate(Map2.Map2Pass pass)
         {
             loadingState = LoadingState.StorageDone;
             generateLoopUntilSuccess(null, pass, true);
@@ -42,17 +43,26 @@ namespace VikingEngine.DSSWars.Map.Generate
         TimeStamp abortCompleteTime;
 
 
-        public GenerateMap dataGenerate = null;
-        GenerateMap postGenerate;
+        public Map2.IconMapGenerator dataGenerate = null;
+        Map2PostGenerate postGenerate = null;
+        //GenerateMap postGenerate;
         int failCount = 0;
         bool generateSuccess =false;
         CancellationTokenSource tokenSource;
         public SaveStateMeta loadMeta;
-        public MapGenerateSettings generateSettings = new MapGenerateSettings();
+        public Map2GenerateSettings generateSettings;
 
         public MapBackgroundLoading()
         { }
-        public MapBackgroundLoading(MapGenerateSettings generateSettings)
+
+        public MapBackgroundLoading(Map2.IconMapGenerator generator)
+        {
+            this.generateSettings = generator.generateSettings;
+            dataGenerate = generator;
+            begin();
+        }
+
+        public MapBackgroundLoading(Map2GenerateSettings generateSettings)
         { 
             this.generateSettings = generateSettings;
             begin();
@@ -60,6 +70,10 @@ namespace VikingEngine.DSSWars.Map.Generate
         public MapBackgroundLoading(SaveStateMeta loadMeta)
         {
             this.loadMeta = loadMeta;
+            if (loadMeta == null)
+            {
+                generateSettings = new Map2GenerateSettings() { mapScale = DssRef.storage.ruleset.mapSize };
+            }
             begin();
         }
 
@@ -68,14 +82,14 @@ namespace VikingEngine.DSSWars.Map.Generate
             if (loadMeta != null)
             {
                 DssRef.storage.generateNewMaps = loadMeta.worldmeta.IsGenerated;
-                DssRef.storage.ruleset.mapSize = loadMeta.worldmeta.mapSize;
+                DssRef.storage.ruleset.mapSize = loadMeta.worldmeta.mapScale;
             }
 
             if (GenerateNewMap())
             {
 
                 loadingState = LoadingState.StorageDone;
-                generateLoopUntilSuccess(loadMeta, GenerateMapPass.All, false);
+                generateLoopUntilSuccess(loadMeta, Map2Pass.All, false);
             }
             else
             {
@@ -97,7 +111,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 if (StartupSettings.SaveLoadSpecificMap.HasValue)
                 {
-                    DssRef.storage.ruleset.mapSize = StartupSettings.SaveLoadSpecificMap.Value;
+                    DssRef.storage.ruleset.mapSize = new MapLib.MapScale( StartupSettings.SaveLoadSpecificMap.Value);
                     loadingNumber = 1;
                 }
                 storage.loadMap(worldMeta);
@@ -113,7 +127,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             return DssRef.world;
         }
 
-        protected void generateLoopUntilSuccess(SaveStateMeta loadMeta, GenerateMapPass generatePass, bool customEditorMap)
+        protected void generateLoopUntilSuccess(SaveStateMeta loadMeta, Map2Pass generatePass, bool customEditorMap)
         {
             generateSuccess = false;
             tokenSource = new CancellationTokenSource();
@@ -127,12 +141,14 @@ namespace VikingEngine.DSSWars.Map.Generate
                     {
                         List<Task> extraTasks = new List<Task>();
 
-                        if (dataGenerate == null ||
-                            generatePass == GenerateMapPass.All ||
-                            generatePass == GenerateMapPass.Clear ||
-                            generatePass == GenerateMapPass.AllTerrain)
+                        if (dataGenerate == null)
+                        //||
+                        //    generatePass == Map2Pass.All)
+                            //||
+                            //generatePass == GenerateMapPass.Clear ||
+                            //generatePass == GenerateMapPass.AllTerrain)
                         {
-                            dataGenerate = new GenerateMap();
+                            dataGenerate = new Map2.IconMapGenerator();
                         }
 
                         WorldMetaData worldmeta;
@@ -148,31 +164,33 @@ namespace VikingEngine.DSSWars.Map.Generate
                             seed = Ref.rnd.Ushort();
                         }
 
-                        bool success;
-                        if (generatePass == GenerateMapPass.All)
+                        //bool success;
+                        if (generatePass == Map2Pass.All)
                         {
                             List<Task> tasks = new List<Task>();
-                            success = dataGenerate.Generate(false, worldmeta, generateSettings, tasks).Result;
-                            await Task.WhenAll(tasks);
+                            //success = dataGenerate.Generate(false, worldmeta, generateSettings, tasks).Result;
+                            await dataGenerate.generatePassRange_async(generateSettings, dataGenerate.currentPass +1, Map2Pass.BuildMapData, null, true);
+                            //success = true;
                         }
                         else
                         {
-                            success = dataGenerate.GeneratePass(worldmeta, generateSettings, generatePass, extraTasks);
+                            //success = dataGenerate.GeneratePass(worldmeta, generateSettings, generatePass, extraTasks);
+                            await dataGenerate.generatePass(generateSettings, generatePass);
                         }
 
-                        if (success)
-                        {
+                        //if (success)
+                        //{
                             if (!abort)
                             {
-                                DssRef.world = dataGenerate.world;
+                                DssRef.world = dataGenerate.mapBuilder.world;
                             }
                             generateSuccess = true;
                             return;
-                        }
-                        else
-                        {
-                            failCount++;
-                        }
+                        //}
+                        //else
+                        //{
+                        //    failCount++;
+                        //}
 
                         await Task.WhenAll(extraTasks);
                     }
@@ -196,7 +214,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 if (generateSuccess)
                 {
-                    if (dataGenerate.world.generatePassCompleted >= GenerateMapPass.Countries)
+                    if (dataGenerate.currentPass >=  Map2Pass.NUM)
                     {
                         postGenerateUpdate();
                     }
@@ -225,26 +243,31 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 if (loadingState <= LoadingState.StorageDone)
                 {
-                    //TODO WHY NULL
-                    if (dataGenerate != null)
+                    loadingState = LoadingState.Post1Started;
+                    Task.Factory.StartNew(async () =>
                     {
-                        loadingState = LoadingState.Post1Started;
-                        //postGenerate = new Map.Generate.GenerateMap();
-                        //postGenerate.generateSubTiles(dataGenerate.world);
-                    }
+                        try
+                        {
+                            if (dataGenerate != null)
+                            {
+                                
+                                postGenerate = new Map2PostGenerate(dataGenerate.mapBuilder.world);
+                                postGenerate.placeTerrain();
+                                postGenerate.citiesAndFactionsSetup(dataGenerate.generateSettings);
+
+                                loadingState++;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            BlueScreen.ThreadException = ex;
+
+                        }
+                    });
                 }
-                else if (loadingState == LoadingState.Post1Started)
+                else if (loadingState == LoadingState.PostPart1Done)
                 {
-                    //if (postGenerate.postComplete)
-                    {
-                        loadingState = LoadingState.Post2Started;
-                        postGenerate = new Map.Generate.GenerateMap();
-                        postGenerate.postLoadGenerate_Part2(dataGenerate.world, loadMeta);
-                    }
-                }
-                else if (loadingState == LoadingState.Post2Started)
-                {
-                    if (postGenerate.postComplete)
+                    //if (postGenerate.citiesComplete)
                     {
                         loadingState = LoadingState.Complete;
                     }
@@ -285,7 +308,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 if (DssRef.storage.generateNewMaps && !generateSuccess)
                 {
-                    return string.Format(DssRef.lang.Progressbar_MapLoadingState_GeneratingPercentage, GenerateMap.LoadStatus, failCount);
+                    return string.Format(DssRef.lang.Progressbar_MapLoadingState_GeneratingPercentage, "??"/*GenerateMap.LoadStatus*/, failCount);
                 }
 
                 string part = string.Format(DssRef.lang.Progressbar_MapLoadingState_LoadPart, (int)loadingState, (int)LoadingState.Complete);
@@ -310,7 +333,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 if (GenerateNewMap())
                 {
                     if (!abort)
-                    { DssRef.world = dataGenerate.world; }
+                    { DssRef.world = dataGenerate.mapBuilder.world; }
                 }
                 else
                 {
@@ -332,8 +355,8 @@ namespace VikingEngine.DSSWars.Map.Generate
             StorageDone,
             Post1Started,
             PostPart1Done,
-            Post2Started,
-            PostPart2Done,
+            //Post2Started,
+            //PostPart2Done,
             Complete,
         }
     }

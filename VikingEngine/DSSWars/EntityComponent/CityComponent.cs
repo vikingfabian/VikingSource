@@ -16,10 +16,12 @@ namespace VikingEngine.DSSWars
 {  
     partial class WorldData
     {
-        public EcsStaticIndexArray neighborCities;
+        //public EcsStaticIndexArray neighborCities;
         public GroupedResource[] cityResouces;
         public WorkPriority[] cityWork;
         public StorageSize[] cityStorage;
+
+        public TechTreeNodeProgress_City[] city_techNodes;
 
         const int WorkerXpCOUNT = (int)WorkExperienceType.NUM_NONE;
         int nextXpIndex = 0;
@@ -30,6 +32,15 @@ namespace VikingEngine.DSSWars
         {
             city.resourceComponentStartIndex = CityResourceIndex.COUNT * city.myIndex;
            
+        }
+
+        public TechTreeNodeProgress_City GetTech(int city, TechNodeType nodeType)
+        {
+            return city_techNodes[city * TechTreeNodeProgress_City.NodeCount + (int)nodeType];
+        }
+        public void SetTech(int city, TechNodeType nodeType, TechTreeNodeProgress_City value)
+        { 
+            city_techNodes[city * TechTreeNodeProgress_City.NodeCount + (int)nodeType] = value;
         }
 
         public void initWorkerXp(int cityCount)
@@ -230,12 +241,83 @@ namespace VikingEngine.DSSWars
 
         public void Init_CityComponents(int cityCount)
         {
-            initWorkerXp(cityCount);
+            initWorkerXp(cityCount); //Is dynamic
 
+            cityResouces = Array.Empty<GroupedResource>();
+            //neighborCities = new EcsStaticIndexArray(0, 0);
+            cityWork = Array.Empty<WorkPriority>();
+            cityStorage = Array.Empty<StorageSize>();
+            city_techNodes = new TechTreeNodeProgress_City[TechTreeNodeProgress_City.NodeCount * cityCount];
+
+            ExpandCityComponents(cityCount);
+            /*
+            int resourceStart = 0;
+            //int workStart = 0;
+
+            int startWood, startLinnen, startFood;
+            if (DssRef.storage.ruleset.factionStartSize == FactionStartSize.Settler)
+            {
+                startWood = 120;
+                startLinnen = 120;
+                startFood = 120;
+            }
+            else
+            {
+                startWood = 20;
+                startLinnen = 20;
+                startFood = 200;
+            }
+
+            for (int i = 0; i < cityWork.Length; i++)
+            {
+                cityWork[i] = new WorkPriority(0);
+            }
+
+            int resStartIndex = 0;
+            int startIndex = 0;
+            for (int cityIx = 0; cityIx < cityCount; cityIx++)
+            {
+                for (int resourceIx = 0; resourceIx < CityResourceIndex.COUNT; ++resourceIx)
+                {
+                    cityResouces[resourceStart + resourceIx] = new GroupedResource();
+                }
+
+                cityResouces[resStartIndex + CityResourceIndex.wood].amount = startWood;
+                cityResouces[resStartIndex + CityResourceIndex.fuel].amount = 100;
+                cityResouces[resStartIndex + CityResourceIndex.stone].amount = 20;
+                cityResouces[resStartIndex + CityResourceIndex.food].amount = startFood;
+                cityResouces[resStartIndex + CityResourceIndex.skinLinnen].amount = startLinnen;                
+                cityResouces[resStartIndex + CityResourceIndex.iron].amount = 20;
+
+                resourceStart += CityResourceIndex.COUNT;
+
+                WorkTemplate.InitComponents(cityWork, startIndex);
+
+                startIndex += WorkTemplate.COUNT;
+            }
+
+            for (int i = 0; i < cityStorage.Length; i++)
+            {
+                cityStorage[i] = new StorageSize();
+            }
+            */
+        }
+        public int CurrentCityComponentCount()
+        {
+            return cityResouces.Length / CityResourceIndex.COUNT;
+        }
+        public void ExpandCityComponents(int cityCount)
+        {
+            /*
             cityResouces = new GroupedResource[CityResourceIndex.COUNT * cityCount];
             neighborCities = new EcsStaticIndexArray(18, cityCount);
             cityWork = new WorkPriority[WorkTemplate.COUNT * cityCount];
             cityStorage = new StorageSize[StorageSize.COUNT * cityCount];
+            */
+            Array.Resize(ref cityResouces, CityResourceIndex.COUNT * cityCount);
+            //neighborCities.Resize(18, cityCount);
+            Array.Resize(ref cityWork, WorkTemplate.COUNT * cityCount);
+            Array.Resize(ref cityStorage, StorageSize.COUNT * cityCount);
 
             //int resourceStart = 0;
             //int workStart = 0;
@@ -272,7 +354,7 @@ namespace VikingEngine.DSSWars
                 cityResouces[resStartIndex + CityResourceIndex.fuel].amount = 100;
                 cityResouces[resStartIndex + CityResourceIndex.stone].amount = 20;
                 cityResouces[resStartIndex + CityResourceIndex.food].amount = startFood;
-                cityResouces[resStartIndex + CityResourceIndex.skinLinnen].amount = startLinnen;                
+                cityResouces[resStartIndex + CityResourceIndex.skinLinnen].amount = startLinnen;
                 cityResouces[resStartIndex + CityResourceIndex.iron].amount = 20;
 
                 resStartIndex += CityResourceIndex.COUNT;

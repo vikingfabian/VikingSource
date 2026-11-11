@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -60,6 +60,11 @@ namespace VikingEngine.DataStream
             //2.Create new file
             string path = file.CompletePath(true);
             Stream stream = null;
+            string dir = Path.GetDirectoryName(path);
+            if (!string.IsNullOrEmpty(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
             stream = File.Create(path);
 
             stream.Write(data, 0, data.Length);
@@ -181,6 +186,15 @@ namespace VikingEngine.DataStream
             //            stream?.Dispose();
 
             byte[] data = null;
+            if ((OperatingSystem.IsAndroid() || OperatingSystem.IsIOS()) && !file.Storage)
+            {
+                if (TryReadAndroidContentAsset(path, out data))
+                {
+                    return data;
+                }
+                Debug.LogError("Android content asset does not exist or is empty: " + path);
+                return null;
+            }
 
             if (File.Exists(path))
             {
@@ -357,7 +371,63 @@ namespace VikingEngine.DataStream
                 }
             }
             else
+            {
+                if (OperatingSystem.IsAndroid())
+                {
+                    return AndroidContentAssetExists(file.CompletePath(false));
+                }
                 return DataLib.SaveLoad.FilesInContentDir(file.LocalDirectoryPath).Length > 0;
+            }
+        }
+
+        public static string NormalizeAndroidAssetPath(string path)
+        {
+            string normalized = path.Replace('\\', '/').TrimStart('/');
+            while (normalized.Contains("//"))
+            {
+                normalized = normalized.Replace("//", "/");
+            }
+            return normalized;
+        }
+
+        public static bool AndroidContentAssetExists(string path)
+        {
+            try
+            {
+                using (Stream stream = Microsoft.Xna.Framework.TitleContainer.OpenStream(NormalizeAndroidAssetPath(path)))
+                {
+                    return stream != null;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool TryReadAndroidContentAsset(string path, out byte[] data)
+        {
+            data = null;
+            try
+            {
+                using (Stream stream = Microsoft.Xna.Framework.TitleContainer.OpenStream(NormalizeAndroidAssetPath(path)))
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        stream.CopyTo(ms);
+                        if (ms.Length > 0)
+                        {
+                            data = ms.ToArray();
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("TryReadAndroidContentAsset: " + path + ", " + e.Message);
+            }
+            return false;
         }
 
         static readonly long MinSaveTime = TimeSpan.FromSeconds(1).Ticks;

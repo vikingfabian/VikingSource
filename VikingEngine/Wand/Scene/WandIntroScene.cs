@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Scene;
 using VikingEngine.Core.Wand.Render;
+using VikingEngine.DSSWars;
 
 namespace VikingEngine.Core.Wand.Scene
 {
@@ -11,8 +12,8 @@ namespace VikingEngine.Core.Wand.Scene
         public WandIntroScene()
             : base(true)
         {
-            DSSWars.HudLib.Init();
-            new Models();
+            HudLib.Init();
+            new VikingEngine.Core.Wand.Render.Models();
         }
 
         public override void Time_Update(float time)

@@ -42,7 +42,7 @@ namespace VikingEngine.PJ.CarBall
                     }
                 }
 
-                image.Position += speed * cballLib.PartialUpdateLength;
+                image.Position += speed /** cballLib.PartialUpdateLength*/;
 
                 bound.Center = image.Position;
 

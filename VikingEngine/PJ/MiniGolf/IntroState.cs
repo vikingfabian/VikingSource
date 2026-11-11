@@ -9,7 +9,7 @@ namespace VikingEngine.PJ.MiniGolf
 {
     class IntroState : AbsPJGameState
     {   
-        public IntroState(List2<GamerData> joinedGamers)
+        public IntroState(List2_old<GamerData> joinedGamers)
             :base(false)
         {
             Input.Mouse.Hide();//Input.Mouse.Visible = false;
@@ -19,7 +19,8 @@ namespace VikingEngine.PJ.MiniGolf
 
             const float MusicVol = 0.6f;
 
-            Microsoft.Xna.Framework.Media.MediaPlayer.Stop();
+            Ref.music.stop(false);
+
             Ref.music.SetPlaylist(new List<Sound.SongData>
                 {
                     new Sound.SongData(PjLib.MusicFolder + "lazy_town", "Lazy Town", null, true, MusicVol),

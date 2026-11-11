@@ -13,8 +13,6 @@ namespace VikingEngine.DSSWars.XP
     struct ResearchProgress
     {
         public int points = 0;
-        //public int bookpressCount = 0;
-        //public int researchCenterCount = 0;
 
         public ResearchProgress()
         { }
@@ -407,32 +405,6 @@ namespace VikingEngine.DSSWars.XP
                 }
             }
         }
-//        public void gainTechSpread(TechnologyTemplate from, int gainSpeed)
-//        {
-//#if DEBUG
-//            if (gainSpeed < 0)
-//                throw new Exception();
-//#endif
-
-//            tech(ref advancedBuilding.points, from.advancedBuilding.points, AdvancedBuildingUnlock);
-//            tech(ref advancedFarming.points, from.advancedFarming.points, AdvancedFarmingUnlock);
-//            tech(ref advancedCasting.points, from.advancedCasting.points, AdvancedCastingUnlock);
-//            tech(ref iron.points, from.iron.points, IronUnlock);
-//            if (iron.points >= IronUnlock)
-//                tech(ref steel.points, from.steel.points, SteelUnlock);
-//            tech(ref catapult.points, from.catapult.points, CatapultUnlock);
-//            tech(ref blackPowder.points, from.blackPowder.points, BlackPowderUnlock);
-//            if (blackPowder.points >= BlackPowderUnlock)
-//                tech(ref gunPowder.points, from.gunPowder.points, GunPowderUnlock);
-
-//            void tech(ref int thisTech, int otherTech, int unlock)
-//            {
-//                if (otherTech >= unlock && thisTech < unlock)
-//                {
-//                    thisTech = Bound.Max(thisTech + gainSpeed, unlock);
-//                }
-//            }
-//        }
 
         public void addFactionUnlocked(TechnologyTemplate from, bool toCity, bool includeProgress)
         {

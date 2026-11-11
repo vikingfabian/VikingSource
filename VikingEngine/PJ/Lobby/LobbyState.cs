@@ -10,6 +10,7 @@ using VikingEngine.Network;
 using VikingEngine.PJ.Display;
 using VikingEngine.PJ.Lobby;
 using VikingEngine.PJ.PjEngine;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.PJ
 {
@@ -73,17 +74,20 @@ namespace VikingEngine.PJ
             PjRef.host = host;
 
             searchLobbiesTimer.TimeLeft = TimeExt.SecondsToMS(3);
-            PjRef.LobbySong.PlayStored();
+            //PjRef.LobbySong.PlayStored();
+            Ref.music.endlessLoop = true;
+            Ref.music.PlayMusic(new Sound.SongData(PjLib.ContentFolder + "Elevating", true, 0.24f));
+            
 
             Input.Mouse.ViewAll();//Input.Mouse.Visible = true;
-            this.joinedLocalGamers = new List2<GamerData>();
+            this.joinedLocalGamers = new List2_old<GamerData>();
             refreshControllersInUse();
 
             Ref.draw.ClrColor = PjLib.ClearColor;
             //Background
             const float SkySzAdd = 20;
             Graphics.Image sky = new Graphics.Image(SpriteName.birdSkyTex, new Vector2(-SkySzAdd), Engine.Screen.ResolutionVec + new Vector2(SkySzAdd * PublicConstants.Twice), ImageLayers.Background9);
-            sky.Opacity = 0.2f;
+            sky.Opacity = 0.4f;
 
             initTopBar();
             initBottomMenu();
@@ -218,7 +222,9 @@ namespace VikingEngine.PJ
                 monitorOptionSz = buttonSz * 0.7f;
 
                 VectorRect area = new VectorRect(menuButton.area.Right + bigButtonsSize.X, Engine.Screen.SafeArea.Bottom - buttonSz.Y, buttonSz.X, buttonSz.Y);
-                windowToggleButton = new MenuButton(area, true, SpriteName.NO_IMAGE, HudLib.LayButtons, HudLib.ButtonSettings);
+                windowToggleButton = new MenuButton(area, true, 
+                    Engine.Screen.PcDisplayMode == Engine.WindowDisplayMode.Windowed? SpriteName.MenuIconMonitorArrowsOut : SpriteName.MenuIconMonitorArrowsIn, 
+                    HudLib.LayButtons, HudLib.ButtonSettings);
                 windowToggleButton.iconScaleDown = 0.2f;
                 windowToggleButton.refreshIconSz();
 
@@ -381,11 +387,11 @@ namespace VikingEngine.PJ
             draw = new VikingEngine.Engine.Draw2D();
         }
 
-        public void onDlcChanged()
-        {
-            openMenu(InputSource.DefaultPC);
-            menusystem.dlcChangedMenu();
-        }
+        //public void onDlcChanged()
+        //{
+        //    openMenu(InputSource.DefaultPC);
+        //    menusystem.dlcChangedMenu();
+        //}
 
 
         void generateStartPositions()
@@ -520,7 +526,7 @@ namespace VikingEngine.PJ
 
         Range localPlayersCountLimits()
         {
-            Range count = PjRef.storage.modeSettings.localPlayerRange;//PjLib.ModeSettings(PjRef.storage.mode).localPlayerRange;
+            Range count = PjRef.storage.modeSettings.localPlayerRange;
 
             if (joinedRemotes.Count > 0)
             {
@@ -545,15 +551,17 @@ namespace VikingEngine.PJ
         public void CloseMenu()
         {
             if (menusystem != null)
-            {
-                menusystem.DeleteMe();
+            {               
+                menusystem.closeMenu();
                 menusystem = null;
             }
         }
 
-        public MenuSystem openMenu(Input.InputSource menuUser)
+        public MenuSystem openMenu()
         {
-            menusystem = new MenuSystem(this, menuUser);
+            Ref.steam.input.SetActionSet(SteamActionSet.MenuControls);
+
+            menusystem = new MenuSystem(this);
 
             return menusystem;
         }
@@ -618,6 +626,8 @@ namespace VikingEngine.PJ
             refreshRemoteGamersDisplay();
             refreshPlayerCount(false);
         }
+
+
 
         List<Player.RemoteGamerData> listRemoteGamers()
         {
@@ -799,10 +809,10 @@ namespace VikingEngine.PJ
             {
                 updateLostDisplay();
             }
-            else if (menusystem != null)
+            else if (menusystem != null && menusystem.Open)
             {
-                if (menusystem.menu.Update() ||
-                    MenuSystem.CloseMenuInput())
+                menusystem.menuUpdate();
+                if (MenuSystem.CloseMenuInput())
                 {
                     CloseMenu();
                 }
@@ -824,6 +834,7 @@ namespace VikingEngine.PJ
                 {
                     if (windowToggleButton.update())
                     {
+                      Ref.gamesett.SetDisplayMode(Engine.Screen.PcDisplayMode == Engine.WindowDisplayMode.Windowed? Engine.WindowDisplayMode.BorderlessFullscreen : Engine.WindowDisplayMode.Windowed);
                         //Ref.gamesett.fullscreenProperty(0, true, !Engine.Screen.PcTargetFullScreen);
                     }
                     if (monitorOptions.update())
@@ -837,7 +848,7 @@ namespace VikingEngine.PJ
 
                 if (menuInput)
                 {
-                    openMenu(menuUser);
+                    openMenu();
                 }
 
                 if (PjRef.host && startButton.Enabled && startInput)
@@ -1030,6 +1041,8 @@ namespace VikingEngine.PJ
                 CloseMenu();
                 lostControllerDisplay = new LostControllerDisplay();
             }
+
+            IgnoredLostController = true;
         }
 
         void removeDisconnectedGamers()
@@ -1131,13 +1144,16 @@ namespace VikingEngine.PJ
                     return PlatformSettings.DevBuild;
                     
                 case GameModeAccessibility.Beta_3:
-                    PjRef.RefreshDlcStatus();
-                    return PjRef.Dlc2BETA;
-
-                case GameModeAccessibility.Paid_4:
-                    PjRef.RefreshDlcStatus();
-                    //canPlay = PjRef.Dlc1Characters || PjRef.Dlc2BETA;
+                    //PjRef.RefreshDlcStatus();
+#if DEBUG
                     return true;
+#endif
+                    return PjLib.ViewBetaModes;
+
+                //case GameModeAccessibility.Paid_4:
+                //    PjRef.RefreshDlcStatus();
+                //    //canPlay = PjRef.Dlc1Characters || PjRef.Dlc2BETA;
+                //    return true;
 
                 default:
                     return true;
@@ -1169,6 +1185,7 @@ namespace VikingEngine.PJ
 
         void updateJoinInput()
         {
+#if PJ
 #if PCGAME
             for (int i = suggestJoinIcons.Count - 1; i >= 0; --i)
             {
@@ -1224,24 +1241,48 @@ namespace VikingEngine.PJ
                 removeGamerInput();
             }
 #endif
-            
 
-            //XBOX JOIN
-            foreach (var xboxController in Input.XInput.controllers)
+
+
+            if (Ref.steam.isInitialized)
             {
-                if (xboxController.Connected)
+                foreach (var ctrl in Ref.steam.input.controllers)
                 {
-                    foreach (var button in PjLib.XinputAvailableJoinButtons)
+                    if (ctrl != null && ctrl.connected)
                     {
-                        if (xboxController.KeyDownEvent(button))
+                        for (SteamDigitalAction action = PjLib.FirstSteamJoinButton; action <= PjLib.LastSteamJoinButton; action++)
                         {
-                            tryAddLocalGamer(new XboxButtonMap(button, xboxController.Index));
+                            if (ctrl.KeyDownEvent(action))
+                            {
+                                tryAddLocalGamer(new SteamButtonMap(SteamActionSet.DefaultSet, action, ctrl.Index));
+                            }
+                        }
+                        if (ctrl.KeyDownEvent(SteamDigitalAction.Action_RemovePlayer))
+                        {
+                            removeGamerInput();
                         }
                     }
-
-                    if (xboxController.KeyDownEvent(Buttons.DPadLeft))
+                }
+            }
+            else
+            {
+                //XBOX JOIN
+                foreach (var xboxController in Input.XInput.controllers)
+                {
+                    if (xboxController.Connected)
                     {
-                        removeGamerInput();
+                        foreach (var button in PjLib.XinputAvailableJoinButtons)
+                        {
+                            if (xboxController.KeyDownEvent(button))
+                            {
+                                tryAddLocalGamer(new XboxButtonMap(button, xboxController.Index));
+                            }
+                        }
+
+                        if (xboxController.KeyDownEvent(Buttons.DPadLeft))
+                        {
+                            removeGamerInput();
+                        }
                     }
                 }
             }
@@ -1255,6 +1296,7 @@ namespace VikingEngine.PJ
                 }
                 joinedLocalGamers[i].lobbyUpdate(this);
             }
+#endif
         }
 
         public override void NetEvent_SessionsFound(List<AbsAvailableSession> availableSessions)
@@ -1420,7 +1462,8 @@ namespace VikingEngine.PJ
                     Ref.netSession.setLobbyJoinable(false);
                 }
 
-                MediaPlayer.Stop();
+                //MediaPlayer.Stop();
+                Ref.music.stop(false);
 
                 if (Ref.steam.isInitialized)
                 {
@@ -1469,7 +1512,9 @@ namespace VikingEngine.PJ
                         new ExitToLobbyState(1000, true);
                         PjRef.achievements.secretMeatPie.Unlock();
                         break;
-
+                    case PartyGameMode.StupidHorse:
+                        new StupidHorse.StupidHorseScene(joinedLocalGamers, 0);
+                        break;
                 }
                 PjRef.storage.saveLoad(true, true);
 
@@ -1490,10 +1535,11 @@ namespace VikingEngine.PJ
             if (Ref.gamestate is LobbyState)
             {
                 Reset();
+                HudLib.Init();
 
                 if (menusystem != null)
                 {
-                    ((LobbyState)Ref.gamestate).openMenu(menusystem.menu.inputSource).options();
+                    ((LobbyState)Ref.gamestate).openMenu();
                 }
             }
         }

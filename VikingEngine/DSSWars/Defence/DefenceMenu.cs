@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;

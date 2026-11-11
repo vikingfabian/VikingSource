@@ -13,7 +13,7 @@ namespace VikingEngine.PJ.Bagatelle
         Texture2D bgTexture;
         Graphics.Image cannon, ball, bumpCount, buttonPress;
 
-        public BagatelleTutorialScreen(List2<GamerData> joinedGamers)
+        public BagatelleTutorialScreen(List2_old<GamerData> joinedGamers)
             :base(false)
         {
             if (PjRef.host)
@@ -24,13 +24,10 @@ namespace VikingEngine.PJ.Bagatelle
 
             this.joinedLocalGamers = joinedGamers;
            
-
-            
-           
-
             const float MusicVol = 0.6f;
 
-            Microsoft.Xna.Framework.Media.MediaPlayer.Stop();
+            //Microsoft.Xna.Framework.Media.MediaPlayer.Stop();
+            Ref.music.stop(false);
             Ref.music.SetPlaylist(new List<Sound.SongData>
                 {
                     new Sound.SongData(PjLib.MusicFolder + "AgriculturalHuts", "Agricultural Huts", null, true, MusicVol),

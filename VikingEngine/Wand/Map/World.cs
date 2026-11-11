@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.Wand.Data;
 using VikingEngine.Core.Wand.GO.Creature;
 using VikingEngine.Core.Wand.Laws;
 
@@ -8,7 +9,7 @@ namespace VikingEngine.Core.Wand.Map
 {
     class World
     {
-        
+        public MagicFormulaCollection magicFormulas = new MagicFormulaCollection();
         public PlayerCharacter hero;
         public MapData map;
         public TurnOrderManager turnOrderManager = new TurnOrderManager();

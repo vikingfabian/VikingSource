@@ -10,7 +10,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Interface.MapObjMenu;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.Engine;
@@ -42,6 +42,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         Vector2 controllerPointer_storedPos_defaultObject;
         Vector2 controllerPointer_storedPos_faction;
         Vector2 controllerPointer_storedPos_diplomacy;
+
+        public bool editorBuildMode = false;
        
         public GameControls(LocalPlayer player, InputMap input)
         {
@@ -60,7 +62,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             map = new Players.MapControls(player);
             if (player.pfaction.GetFaction().mainCity != null)
             {
-                map.setCameraPos(player.pfaction.GetFaction().mainCity.tilePos);
+                map.setCameraPos(player.pfaction.GetFaction().mainCity.maptilePos);
             }
             refreshFaction();
             refreshGameSpeedOptions(true);
@@ -498,7 +500,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             var tabs = build.availableBuildOptions(city, true);
                             var index = arraylib.IndexFromValue(tabs, build.placeBuildingType);
                             index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
-                            build.buildingTypeClick(tabs[index]);
+                            build.buildingTypeClick(tabs[index], build.placeTerraformType);
                         }
                         break;
                     case ControllerTabFocus.Pause_GamePlay:
@@ -639,7 +641,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void updateMapShortCuts()
         {
-            if (player.mapLayersManager.current.DrawDetailLayer)
+            if (player.mapLayersManager.current.DrawNearLayer)
             {
                 if (input.Build.DownEvent && map.hover.subTile.city.pfaction == player.pfaction)
                 {
@@ -663,7 +665,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         if (build != BuildAndExpandType.NUM_NONE)
                         {
                             List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-                            BuildLib.AvailableBuildTypes(available, map.hover.subTile.city, false);
+                            AvailableBuildTypes.Available(available, map.hover.subTile.city, false);
                             if (!available.Contains(build))
                             {
                                 build = BuildAndExpandType.NUM_NONE;
@@ -875,7 +877,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
 
             if (map.hover.obj != null &&
-                (map.hover.obj.pfaction.GetFaction() == player.pfaction.GetFaction() || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
+                (map.hover.obj.pfaction.GetFaction() == player.pfaction.GetFaction() || DssRef.state.GodPowers()))
             {
                 SoundLib.click.Play();
                 map.onSelect();
@@ -938,9 +940,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public void selectAreaCity()
         {
             if (map.selection.obj == null &&
-                DssRef.world.tileGrid.TryGet(map.tilePosition, out var tile))
+                DssRef.world.tileGrid.TryGet(map.sumtilePosition, out var tile))
             {
-                var city = tile.City();
+                var city = tile.pcity.City();
                 if (city.pfaction == player.pfaction)
                 {
                     mapSelect(city);
@@ -1172,8 +1174,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             if (army != null)
             {
-                army.mapExecute();
-                
+                army.mapExecute();                
 
                 if (input.inputSource.ControllerMode)
                 {
@@ -1190,7 +1191,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             if (DssRef.state.IsSinglePlayer_LocalAndOnline() && (input.inputSource.HasKeyBoard || tabFocus() == ControllerTabFocus.Pause_GamePlay))
             {
-                if ((DssRef.difficulty.setting_allowPauseCommand || StartupSettings.PauseCheat) &&
+                if ((!DssRef.storage.ruleset_instance.module_noPauseCommand || StartupSettings.PauseCheat) &&
                     input.PauseGame.DownEvent)
                 {
                     Ref.TogglePause();
@@ -1248,11 +1249,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         }
         public bool InBuildOrdersMode(bool includeZoomLevel = true)
         {
+            if (editorBuildMode)
+            {
+                return true;
+            }
+
             return player.cityTab == MenuTab.Build &&
                 map.selection.obj != null &&
                 map.selection.obj.gameobjectType() == GameObjectType.City &&
                 build.buildMode != SelectTileResult.None &&
-                (!includeZoomLevel || player.mapLayersManager.current.DrawDetailLayer);
+                (!includeZoomLevel || player.mapLayersManager.current.DrawNearLayer);
         }
     }
 

@@ -25,7 +25,7 @@ namespace VikingEngine.Graphics
         }
 
         private readonly ConcurrentQueue<PendingAddition> _pendingAdditions = new ConcurrentQueue<PendingAddition>();
-        private readonly Queue<AbsVoxelModelInstance> _loadingQueue = new Queue<AbsVoxelModelInstance>();
+        private readonly ConcurrentQueue<AbsVoxelModelInstance> _loadingQueue = new ConcurrentQueue<AbsVoxelModelInstance>();
         private readonly Dictionary<int, InstancedDrawBatch> _batches = new Dictionary<int, InstancedDrawBatch>(128);
         private readonly List<AbsDraw> _fallbackDrawList = new List<AbsDraw>(64);
 
@@ -62,7 +62,10 @@ namespace VikingEngine.Graphics
 
         public void Add(AbsVoxelModelInstance instance)
         {
-            //Debug.CrashIfThreaded();
+            if (!PlatformSettings.LoadResourcesInBackground)
+            {
+                Debug.CrashIfThreaded();
+            }
 
             if (instance.master == null)
             {
@@ -76,8 +79,28 @@ namespace VikingEngine.Graphics
 
         public void Add(int masterId, AbsDraw model)
         {
-            _pendingAdditions.Enqueue(new PendingAddition(masterId, model));
-            model.OnDrawBatchAdd();
+            if (PlatformSettings.LoadResourcesInBackground)
+            {
+                _pendingAdditions.Enqueue(new PendingAddition(masterId, model));
+                model.OnDrawBatchAdd();
+            }
+            else
+            {
+                Debug.CrashIfThreaded();
+                AddToBatchDirect(masterId, model);
+                model.OnDrawBatchAdd();
+            }
+        }
+
+        private void AddToBatchDirect(int masterId, AbsDraw model)
+        {
+            if (!_batches.TryGetValue(masterId, out var batch))
+            {
+                batch = new InstancedDrawBatch(masterId);
+                _batches.Add(masterId, batch);
+            }
+
+            batch.Add(model);
         }
 
         private void DrainPendingAdditions()
@@ -90,29 +113,22 @@ namespace VikingEngine.Graphics
                     continue;
                 }
 
-                if (!_batches.TryGetValue(pending.MasterId, out var batch))
-                {
-                    batch = new InstancedDrawBatch(pending.MasterId);
-                    _batches.Add(pending.MasterId, batch);
-                }
-
-                batch.Add(pending.Model);
+                AddToBatchDirect(pending.MasterId, pending.Model);
             }
         }
 
         private void ProcessLoadingQueue()
         {
             int count = _loadingQueue.Count;
-            while (count-- > 0)
+            for (int i = 0; i < count && _loadingQueue.TryDequeue(out var model); i++)
             {
-                var model = _loadingQueue.Dequeue();
                 if (!model.InRenderList)
                 {
                     model.OnDrawBatchRemove();
                 }
                 else if (model.master != null)
                 {
-                    Add(model.master.modelIndex, model);
+                    AddToBatchDirect(model.master.modelIndex, model);
                 }
                 else
                 {
@@ -396,16 +412,16 @@ namespace VikingEngine.Graphics
 
             if (existingBuffer != null && !existingBuffer.IsDisposed)
             {
-                existingBuffer.Dispose();
+                GpuResourceSync.Release(existingBuffer);
             }
 
             int newCap = Math.Max(Math.Max(currentCap * 2, requiredCapacity), 32);
-            var newBuffer = new DynamicVertexBuffer(
+            var newBuffer = GpuResourceSync.Track(new DynamicVertexBuffer(
                 gd,
                 VertexVoxelInstance.VertexDeclaration,
                 newCap,
                 BufferUsage.WriteOnly
-            );
+            ));
 
             _frameInstanceBuffers[frameGroupIndex] = newBuffer;
             _frameBufferCapacities[frameGroupIndex] = newCap;
@@ -619,7 +635,7 @@ namespace VikingEngine.Graphics
             {
                 if (_frameInstanceBuffers[i] != null && !_frameInstanceBuffers[i].IsDisposed)
                 {
-                    _frameInstanceBuffers[i].Dispose();
+                    GpuResourceSync.Release(_frameInstanceBuffers[i]);
                 }
             }
             _frameInstanceBuffers.Clear();

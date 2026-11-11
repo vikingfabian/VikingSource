@@ -16,8 +16,6 @@ namespace VikingEngine.Input
         public const float ButtonHoldTimeMs = 500;
         public static void Init(MainGame main)
         {
-            
-
             XInput.Init();
         }
 
@@ -29,6 +27,20 @@ namespace VikingEngine.Input
             {
                 Mouse.Update();
             }
+        }
+
+        public static AbsController GetController(IButtonMap button)
+        {
+            if (button.inputSource == InputSourceType.XController)
+            {
+                return Input.XInput.controllers[button.ControllerIndex];
+            }
+            else if (button.inputSource == InputSourceType.SteamInput)
+            {
+                return Ref.steam.input.controllers[button.ControllerIndex];
+            }
+
+            throw new NotImplementedException();
         }
 
         public static bool AnyKeyDownEvent()

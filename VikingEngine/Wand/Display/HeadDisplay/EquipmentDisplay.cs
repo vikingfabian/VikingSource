@@ -24,7 +24,8 @@ namespace VikingEngine.Core.Wand.Display.HeadDisplay
             menu = new RichMenu(HudLib.RbSettings, area, new Vector2(10), RichMenu.DefaultRenderEdge, ImageLayers.Top2, new PlayerData(PlayerData.AllPlayers));
             menu.addBackground(HudLib.HudMenuBackground, ImageLayers.Top2_Back);
 
-            refreshMenu();
+            menu.needRefresh = true;
+            //refreshMenu();
         }
         public void update(ref bool mouseOver)
         {
@@ -35,7 +36,12 @@ namespace VikingEngine.Core.Wand.Display.HeadDisplay
             }
         }
 
-        public void refreshMenu()
+        public void NeedRefresh()
+        {
+            menu.needRefresh = true;
+        }
+
+        void refreshMenu()
         {
             equipmentMenu();
         }
@@ -56,12 +62,17 @@ namespace VikingEngine.Core.Wand.Display.HeadDisplay
             content.Add(new RbSeperationLine());
             content.newParagraph();
             content.h2("Wands", HudLib.TitleColor_Label);
+            content.newLine();
 
             for (int i = 0; i < EquipmentSetup.MaxWandCount; ++i)
             {
                 if (i < equipmentSetup.wands.Count)
                 {
-                    content.Add(new RbText($"Wand {i + 1}"));
+                    if (equipmentSetup.selectedWand.HasValue && equipmentSetup.selectedWand.Value == i)
+                    {
+                        HudLib.BulletPoint(content);
+                    }
+                    equipmentSetup.wands.Array[i].ToHud(content, i);
                 }
                 content.Add(new RbSeperationLine());
                 content.newParagraph();

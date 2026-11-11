@@ -1,14 +1,6 @@
 ﻿
-* steam timeline
-* updated to the latest monogame framework
-* updated to .NET10 which should be slightly faster
-
-
-X acceleration error in golf (FPS lock?)
-x no sound in setting
-x error icon in lobby
-x misplaced image in lobby bg
-x steam input, action file
+* Option to disconnect controllers
+* Repaired controller icons next to avatars
 
 
 Kolla "nano golf", kopiera :)

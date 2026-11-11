@@ -48,6 +48,9 @@ namespace VikingEngine.DSSWars
         public static readonly Color TitleColor_Name_Dark = Color.Brown;
         public static readonly Color TitleColor_TypeName = Color.LightGray;
         public static readonly Color TitleColor_TypeName_Dark = new Color(50, 50, 50);
+
+        public static readonly Color Color_SuperPrimary = new Color(209, 178, 85);
+
         public static readonly Color TitleColor_Label = new Color(0, 128, 153);
         public static readonly Color TitleColor_Label2 = new Color(60, 108, 133);
         public static readonly Color TitleColor_Label_Dark = new Color(0, 63, 76);
@@ -84,7 +87,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color ColFilterSelected = ColorExt.GrayScale(0.8f);//ColorExt.AlmostWhite;
         public static readonly Color ColFilterUnSelected = ColorExt.GrayScale(0.5f);
 
-
+        public static readonly Color ColEditText = Color.LightYellow;
         public const ImageLayers PopMenuLayer = ImageLayers.Lay5_Back;
 
         public const ImageLayers HeadDisplayContentLayer = ImageLayers.Lay6;
@@ -161,7 +164,7 @@ namespace VikingEngine.DSSWars
             {
                 disableTexture = SpriteName.WarsHudPrimaryButtonDisabled
             };
-            RbSettings.artSuperPrimaryButtonTex = new HUD.NineSplitSettings(SpriteName.cmdHudBorderButton, 1, 8, nineTextureEdge, true, true)
+            RbSettings.artSuperPrimaryButtonTex = new HUD.NineSplitSettings(SpriteName.WarsHudSuperPrimaryButton, 1, 8, nineTextureEdge, true, true)
             {
                 disableTexture = SpriteName.WarsHudPrimaryButtonDisabled
             };
@@ -215,6 +218,11 @@ namespace VikingEngine.DSSWars
             {
                 notSelectedTexture = SpriteName.WarsHudFilterButton,
             };
+
+            RbSettings.TechSelect = new NineSplitSettings(SpriteName.WarsTechButtonEnabled, 1, 8, nineTextureEdge, true, true);
+            RbSettings.TechHover = new NineSplitSettings(SpriteName.WarsTechButtonDisabled, 1, 8, nineTextureEdge, true, true);
+            RbSettings.Module = new NineSplitSettings(SpriteName.WarsHudModuleButton, 1, 8, nineTextureEdge, true, true);
+
 
             PopMenuButtonTexture = new HUD.NineSplitSettings(SpriteName.WarsHudPopUpButton, 1, 8, nineTextureEdge, true, true);
 
@@ -277,6 +285,13 @@ namespace VikingEngine.DSSWars
                 head1col = TitleColor_Head,
                 head2col = TitleColor_Head2,
             };
+
+            DropDownBuilder.DropDownArrow = SpriteName.WarsHudDropDownArrow;
+            DropDownBuilder.Selected = SpriteName.WarsHudDropDownArrow;
+            DropDownBuilder.NotSelected = SpriteName.WarsHudDropDownArrow;
+            DropDownBuilder.Default = SpriteName.WarsHudDropDownArrow;
+
+            DropDownBuilder.selectedCaptionColor = MenuMoreOptionsArrowCol;
         }
         public static void IndexToHud(RichBoxContent content, int myIndex, bool IsNetHosted)
         {
@@ -705,7 +720,7 @@ namespace VikingEngine.DSSWars
         }
         public static void Description(RichBoxContent content, string description)
         {
-            content.text("\"" + description + "\"").overrideColor = InfoYellow_Light;
+            content.text(description, InfoYellow_Light);
         }
 
         public static void Label(RichBoxContent content, SpriteName icon, string text)

@@ -139,7 +139,7 @@ namespace VikingEngine.ToGG.ToggEngine.Map
 
                 if (model.content != null/* && Ref.TimePassed16ms*/)
                 {
-                    for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+                    for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//
                     {
                         foreach (var m in model.content.emitters)
                         {

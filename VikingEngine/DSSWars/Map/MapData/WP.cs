@@ -1,0 +1,252 @@
+﻿using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
+
+namespace VikingEngine.DSSWars
+{
+    /// <summary>
+    /// Position helper
+    /// </summary>
+    static class WP
+    {
+        public static readonly Vector2 TileScaleV2 = new Vector2(MapChunkData8_8.ModelScale);
+        static readonly Vector2 TileHalfScaleV2 = TileScaleV2 * PublicConstants.Half;
+
+        public static float SubTileHeight(Vector3 wp)
+        {
+            return DssRef.world.subTileGrid.Get(ToMapTilePos(wp)).groundY;
+        }
+
+        public static Vector2 ToWorldPosXZ(IntVector2 tile)
+        {
+            return tile.Vec * TileScaleV2;
+        }
+
+        public static bool EqualPosition(Vector3 wp, IntVector2 maptile)
+        {
+            return Math.Abs(wp.X * MapTile1_1.ModelScale_Inv - maptile.X) < 0.7f &&
+                Math.Abs(wp.Z * MapTile1_1.ModelScale_Inv - maptile.Y) < 0.7f;
+        }
+
+        public static Vector3 ChunkToWorldPos(IntVector2 tile, float y = 0)
+        {
+            return new Vector3(tile.X * MapChunkData8_8.ModelScale, y, tile.Y * MapChunkData8_8.ModelScale);
+        }
+
+        public static IntVector2 ToSumTilePos(Vector3 pos)
+        {
+            return new IntVector2(pos.X * SumTile4_4.ModelScale_Inv, pos.Z * SumTile4_4.ModelScale_Inv);
+        }
+
+        public static IntVector2 ToMapTilePos(Vector3 pos)
+        {
+            return new IntVector2(pos.X * MapTile1_1.ModelScale_Inv, pos.Z  * MapTile1_1.ModelScale_Inv);
+        }
+        
+        public static IntVector2 ToSubTilePos_TopLeft(IntVector2 pos)
+        {
+            return new IntVector2(pos.X * MapTile1_1.ModelScale_Inv, pos.Y * MapTile1_1.ModelScale_Inv);
+        }
+
+        public static Rectangle2 ToSubTilePos(Rectangle2 area)
+        {
+            area *= MapTile1_1.ModelScale_Inv;
+            return area;
+        }
+        public static Vector3 MaptileToWorldPosXZ_TopLeft(IntVector2 maptilePos)
+        {
+            return new Vector3(maptilePos.X * MapTile1_1.ModelScale - MapTile1_1.ModelScaleHalf, 0, maptilePos.Y * MapTile1_1.ModelScale - MapTile1_1.ModelScaleHalf);
+        }
+        public static Vector3 MaptileToWorldPosXZ(IntVector2 maptilePos)
+        {
+            return new Vector3(maptilePos.X * MapTile1_1.ModelScale, 0, maptilePos.Y * MapTile1_1.ModelScale);
+        }
+        public static Vector2 MaptileToWorldPos_V2(IntVector2 maptilePos)
+        {
+            return new Vector2(maptilePos.X * MapTile1_1.ModelScale, maptilePos.Y * MapTile1_1.ModelScale);
+        }
+        public static Vector3 MaptileToWorldPosXYZ(IntVector2 maptilePos)
+        {
+            Vector3 worldPos = MaptileToWorldPosXZ(maptilePos);
+            if (DssRef.world.subTileGrid.TryGet(maptilePos, out var tile))
+            {
+                worldPos.Y = tile.groundY;
+            }
+            return worldPos;
+        }
+
+        public static Vector3 WorldPosToClosestSubtile_Centered(Vector3 worldPos)
+        {
+            var subtile = ToMapTilePos(worldPos);
+            worldPos = MaptileToWorldPosXZ(subtile);
+            worldPos.Y = DssRef.world.subTileGrid.Get(subtile).groundY;
+
+            return worldPos;
+        }
+
+        public static Vector3 SubtileToWorldPosXZgroundY_Centered(IntVector2 subtilePos)
+        {
+            var result = new Vector3(
+               subtilePos.X * MapTile1_1.ModelScale,
+               0,
+               subtilePos.Y * MapTile1_1.ModelScale);
+            
+            if (DssRef.world.subTileGrid.TryGet(subtilePos, out MapTile1_1 subTile))
+            {
+                result.Y = subTile.groundY;
+            }
+
+            return result;
+        }
+                
+        /// <summary>
+        /// Picks ground height from subtiles, not bound safe
+        /// </summary>
+        public static float GroundY(Vector3 wp)
+        {
+            return DssRef.world.subTileGrid.Get(
+                Convert.ToInt32(wp.X * MapTile1_1.ModelScale_Inv + 3.5f),
+                Convert.ToInt32(wp.Z * MapTile1_1.ModelScale_Inv + 3.5f)).groundY;
+        }
+
+        public static Vector3 SetGroundY(Vector3 wp)
+        {
+            if (DssRef.world.subTileGrid.TryGet(
+                Convert.ToInt32(wp.X * MapTile1_1.ModelScale_Inv),
+                Convert.ToInt32(wp.Z * MapTile1_1.ModelScale_Inv), out var tile))
+            {
+                wp.Y =  tile.groundY;
+                if (wp.Y < MapHeight2.WaterSurfaceY)
+                {
+                    wp.Y = MapHeight2.WaterSurfaceY;
+                }
+            }
+            return wp;
+        }
+
+        public static float GroundY_SumTile(IntVector2 sumTilePos)
+        {
+            //Will sample two positions
+            IntVector2 tilePos = sumTilePos * SumTile4_4.TileWidth + IntVector2.One;
+            float h1 = DssRef.world.subTileGrid.Get(tilePos).groundY;
+            float h2 = DssRef.world.subTileGrid.Get(tilePos + IntVector2.One).groundY;
+            return (h1 + h2) / 2;
+        }
+
+        public static void Rotation1DToQuaterion(Graphics.Mesh mesh, float rotation)
+        {
+            if (mesh != null)
+            {
+                mesh.Rotation.QuadRotation = Quaternion.CreateFromYawPitchRoll(MathHelper.TwoPi - rotation, 0, 0);
+            }
+        }
+
+        public static void Rotation1DToQuaterion(Graphics.AbsVoxelObj mesh, float rotation)
+        {
+            if (mesh != null)
+            {
+                mesh.Rotation.QuadRotation = Quaternion.Identity;
+                mesh.Rotation.RotateWorldX(MathHelper.Pi - rotation);
+            }
+        }
+
+        public static RotationQuarterion ToQuaterion(float rotation)
+        {
+            RotationQuarterion rot = new RotationQuarterion(Quaternion.CreateFromYawPitchRoll(MathHelper.TwoPi - rotation, 0, 0));//RotationQuarterion.Identity;
+            
+            return rot;
+        }
+
+        public static float birdDistance(AbsMapObject obj1, IntVector2 tilePos2)
+        {
+            return (obj1.maptilePos - tilePos2).Length();
+        }
+        public static float birdDistance(AbsMapObject obj1, AbsMapObject obj2)
+        {
+            return (obj1.maptilePos - obj2.maptilePos).Length();
+        }
+
+        public static void writeTilePos(System.IO.BinaryWriter w, IntVector2 position)
+        {
+            position.writeUshort(w);
+        }
+
+        public static IntVector2 readTilePos(System.IO.BinaryReader r)
+        {
+            var result = IntVector2.Zero;
+            result.readUshort(r);
+            return result;
+        }
+
+        public static void writeSubTilePos(System.IO.BinaryWriter w, IntVector2 position)
+        {
+            position.WriteUInt24(w);
+        }
+
+        public static IntVector2 readSubTilePos(System.IO.BinaryReader r)
+        {
+            var result = IntVector2.Zero;
+            result.ReadUInt24(r);
+            return result;
+        }
+
+        public static void readPosXZ_old(System.IO.BinaryReader r, out Vector3 position, out IntVector2 tilePos)
+        {
+            position = Vector3.Zero;
+            position.X = (float)r.ReadHalf();
+            position.Z = (float)r.ReadHalf();
+
+            tilePos = new IntVector2(position.X, position.Z);
+        }
+
+        public static void WritePosXZPercentU16(BinaryWriter w, Vector3 position)
+        {
+            StreamLib.WriteFloatAsPercentU16(w, position.X, DssRef.world.Size.X);
+            StreamLib.WriteFloatAsPercentU16(w, position.Z, DssRef.world.Size.Y);
+        }
+
+        public static void ReadPosXZPercentU16(BinaryReader r, out Vector3 position, out IntVector2 maptilePos)
+        {
+            position = Vector3.Zero;
+            position.X = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.X);
+            position.Z = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.Y);
+
+            maptilePos = new IntVector2(position.X * MapTile1_1.ModelScale_Inv, position.Z * MapTile1_1.ModelScale_Inv);
+        }
+
+        public static bool ReadPosXZPercentU16_ZeroCheck(BinaryReader r, out Vector3 position, out IntVector2 maptilePos)
+        {
+            position = Vector3.Zero;
+            position.X = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.X);
+            position.Z = StreamLib.ReadFloatFromPercentU16(r, DssRef.world.Size.Y);
+
+            maptilePos = new IntVector2(position.X * MapTile1_1.ModelScale_Inv, position.Z * MapTile1_1.ModelScale_Inv);
+
+            return position.X > 0;
+        }
+
+        public static IntVector2 MaptileToSumTile(IntVector2 mapTilePos)
+        {
+            return mapTilePos / SumTile4_4.TileWidth;
+        }
+
+        public static IntVector2 SumTileToMaptile(IntVector2 sumTilePos)
+        {
+            return sumTilePos * SumTile4_4.TileWidth;
+        }
+        public static IntVector2 MaptileToSumTile_centered(IntVector2 mapTilePos)
+        {
+            return (mapTilePos + (SumTile4_4.TileWidth / 2)) / SumTile4_4.TileWidth;
+        }
+        public static IntVector2 MaptileToChunk(IntVector2 mapTilePos)
+        {
+            return mapTilePos / MapChunkData8_8.TileWidth;
+        }
+    }
+}

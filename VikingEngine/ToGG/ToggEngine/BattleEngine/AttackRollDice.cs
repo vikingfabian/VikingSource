@@ -173,7 +173,7 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
 
         void updateRotationBounce()
         {
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)
             {
                 var force = -rotationAdd * 8f;
                 fullRotationSpeed = fullRotationSpeed * 0.6f + force;

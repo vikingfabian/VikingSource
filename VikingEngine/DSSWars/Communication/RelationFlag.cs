@@ -46,12 +46,14 @@ namespace VikingEngine.DSSWars.Communication
             if (positionUpdate != Ref.TotalFrameCount)
             {
                 positionUpdate = Ref.TotalFrameCount;
-                Vector3 wp = Vector3.Zero;
+                
                 var landAreaCenter = faction.landAreaCenter(out cityPos);
-                wp.X = landAreaCenter.X + 0.5f;
-                wp.Z = landAreaCenter.Y - 6;
+                Vector3 wp = WP.MaptileToWorldPosXZ(landAreaCenter);
+                //wp.X += 0;
+                //wp.Z -= 10;
 
                 position = player.playerData.view.From3DToScreenPos(wp);
+                position.Y -= Engine.Screen.IconSize * 1.3f;
             }
         }
     }

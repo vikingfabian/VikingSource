@@ -9,10 +9,11 @@ namespace VikingEngine.PJ.Match3
     {
         Texture2D bgTexture;
 
-        public Match3LoadState(List2<GamerData> joinedGamers)
+        public Match3LoadState(List2_old<GamerData> joinedGamers)
             :base(false)
         {
-            Input.Mouse.Hide();//Input.Mouse.Visible = false;
+            Input.Mouse.Hide();
+            Ref.music.stop(false);
 
             this.joinedLocalGamers = joinedGamers;
             Ref.draw.ClrColor = Color.Black;

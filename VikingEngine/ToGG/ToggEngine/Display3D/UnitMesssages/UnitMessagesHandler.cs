@@ -8,7 +8,7 @@ namespace VikingEngine.ToGG.ToggEngine.Display3D
 {
     class UnitMessagesHandler
     {
-        List2<UnitMessageGroup> messageGroups = new List2<UnitMessageGroup>(4);
+        List2_old<UnitMessageGroup> messageGroups = new List2_old<UnitMessageGroup>(4);
 
         public UnitMessagesHandler()
         {   

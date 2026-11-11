@@ -63,13 +63,14 @@ namespace VikingEngine.PJ
 
         public void refreshIsLast(bool isLast)
         {
+#if PJ
             removeIcon.Visible = true;
 
             if (isLast)
             {
                 if (removeInput == null && PjRef.ViewExtraControllerInput())
                 {
-                    removeInput = new Graphics.Image(SpriteName.DpadLeft,
+                    removeInput = new Graphics.Image(HudLib.InputIcon(SpriteName.NO_IMAGE, SteamWrapping.SteamDigitalAction.Action_RemovePlayer, SpriteName.DpadLeft),
                         removeArea.RightCenter, Engine.Screen.IconSizeV2, ImageLayers.Lay2, true);
                     removeInput.Xpos += removeInput.Width * 0.5f;
                 }
@@ -84,6 +85,7 @@ namespace VikingEngine.PJ
                     removeIcon.Visible = false;
                 }
             }
+#endif
         }
 
         public static void GamerAvatarFrameAndJoustAnimal(VectorRect area, ImageLayers layer, GamerData gamerdata,
@@ -136,9 +138,9 @@ namespace VikingEngine.PJ
 
 
             if (gamer.button != null &&
-                (gamer.button.inputSource == Input.InputSourceType.XController))
+                (gamer.button.inputSource == Input.InputSourceType.XController || gamer.button.inputSource == Input.InputSourceType.SteamInput))
             {
-                controllerIcon = new Graphics.Image((SpriteName)((int)SpriteName.PixController1 + Bound.Set(gamer.button.ControllerIndex, 0, 5)),
+                controllerIcon = new Graphics.Image((SpriteName)((int)SpriteName.PixController1 + Bound.Set(gamer.button.ControllerIndex, 0, 7)),
                     button.Position, button.Size, ImageLayers.AbsoluteBottomLayer, true);
                 controllerIcon.LayerBelow(button);
                 controllerIcon.Xpos -= controllerIcon.Height * 1.0f;

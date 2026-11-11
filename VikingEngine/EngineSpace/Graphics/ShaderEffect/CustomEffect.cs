@@ -75,7 +75,11 @@ namespace VikingEngine.Graphics
                 modelListMesh.Draw();
             //}
         }
-
+        public override void flushBuffer()
+        {
+            base.flushBuffer();
+            prevTexture = null;
+        }
         
 
         protected override void SetVertexBufferEffect(AbsVoxelObj obj)

@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace VikingEngine.Graphics
 {
+    /*
     class CCG_PieceDamage : ParticleSystem
     {
         public CCG_PieceDamage()
@@ -53,4 +54,5 @@ namespace VikingEngine.Graphics
             settings.MaxColor = Color.LightGray;
         }
     }
+    */
 }

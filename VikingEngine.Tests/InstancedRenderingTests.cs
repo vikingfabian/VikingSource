@@ -222,6 +222,68 @@ namespace VikingEngine.Tests
             collection.RemoveAndDraw(false, 0, null, null, null);
             Assert.Equal(1, collection.FallbackDrawListCount);
         }
+
+        [Fact]
+        public void DrawBatchCollection_BackgroundLoadingEnabled_AllowsMultiThreadedAdditions()
+        {
+            bool previousSetting = PlatformSettings.LoadResourcesInBackground;
+            PlatformSettings.LoadResourcesInBackground = true;
+            try
+            {
+                MainGame.SetMainThreadForTest();
+                var collection = new DrawBatchCollection();
+                const int itemCount = 64;
+                var models = new TestVoxelObj[itemCount];
+                var nullMasterInstances = new VoxelModelInstance[itemCount];
+
+                for (int i = 0; i < itemCount; i++)
+                {
+                    models[i] = new TestVoxelObj { Visible = true };
+                    nullMasterInstances[i] = new VoxelModelInstance(null, false);
+                }
+
+                System.Threading.Tasks.Parallel.For(0, itemCount, i =>
+                {
+                    collection.Add(1, models[i]);
+                    collection.Add(nullMasterInstances[i]);
+                });
+
+                collection.RemoveAndDraw(false, 0, null, null, null);
+                Assert.Equal(itemCount, collection.FallbackDrawListCount);
+
+                for (int i = 0; i < itemCount; i++)
+                {
+                    Assert.True(nullMasterInstances[i].InRenderList);
+                }
+            }
+            finally
+            {
+                PlatformSettings.LoadResourcesInBackground = previousSetting;
+            }
+        }
+
+        [Fact]
+        public void DrawBatchCollection_BackgroundLoadingDisabled_AddsDirectlyOnMainThread()
+        {
+            bool previousSetting = PlatformSettings.LoadResourcesInBackground;
+            PlatformSettings.LoadResourcesInBackground = false;
+            try
+            {
+                MainGame.SetMainThreadForTest();
+                var collection = new DrawBatchCollection();
+                var model = new TestVoxelObj { Visible = true };
+
+                collection.Add(1, model);
+                Assert.True(model.InRenderList);
+
+                collection.RemoveAndDraw(false, 0, null, null, null);
+                Assert.Equal(1, collection.FallbackDrawListCount);
+            }
+            finally
+            {
+                PlatformSettings.LoadResourcesInBackground = previousSetting;
+            }
+        }
     }
 
     internal class TestVoxelObj : AbsVoxelObj

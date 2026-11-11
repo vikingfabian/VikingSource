@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Win32;
 using VikingEngine.Engine;
 using System.Runtime.CompilerServices;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace VikingEngine.Input
 {
@@ -43,7 +44,15 @@ namespace VikingEngine.Input
 
         public static void SetMenuMode(bool menu)
         {
+#if DSS
             SetMenuMode(menu? SteamWrapping.SteamActionSet.MenuControls : SteamWrapping.SteamActionSet.InGameControls);
+#else
+            MenuMode = menu;
+            foreach (var ins in Instances)
+            {
+                ins.RefreshMouseVisible();
+            }
+#endif
         }
 
         public static void SetMenuMode(SteamWrapping.SteamActionSet actionSet)
@@ -138,7 +147,43 @@ namespace VikingEngine.Input
             }
 
             previousMouseState = currentMouseState;
-            currentMouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
+            if (OperatingSystem.IsAndroid() || OperatingSystem.IsIOS())
+            {
+                var touches = TouchPanel.GetState();
+                if (touches.Count > 0)
+                {
+                    var touch = touches[0];
+                    var isPressed = touch.State == TouchLocationState.Pressed
+                                   || touch.State == TouchLocationState.Moved;
+                    currentMouseState = new MouseState(
+                        (int)touch.Position.X,
+                        (int)touch.Position.Y,
+                        currentMouseState.ScrollWheelValue,
+                        isPressed
+                            ? ButtonState.Pressed
+                            : ButtonState.Released,
+                        ButtonState.Released,
+                        ButtonState.Released,
+                        ButtonState.Released,
+                        ButtonState.Released);
+                }
+                else
+                {
+                    currentMouseState = new MouseState(
+                        currentMouseState.X,
+                        currentMouseState.Y,
+                        currentMouseState.ScrollWheelValue,
+                        ButtonState.Released,
+                        ButtonState.Released,
+                        ButtonState.Released,
+                        ButtonState.Released,
+                        ButtonState.Released);
+                }
+            }
+            else
+            {
+                currentMouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
+            }
 
             PrevPosition = Position;
             PrevRealPosition = RealPosition;

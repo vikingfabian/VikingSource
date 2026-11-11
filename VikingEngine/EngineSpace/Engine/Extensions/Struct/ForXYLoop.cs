@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,8 @@ namespace VikingEngine
         IntVector2 max;
         IntVector2 nextPos;
         public IntVector2 Position;
+
+        public int stepLength = 1;
 
         bool done;
         public bool Done
@@ -40,11 +43,11 @@ namespace VikingEngine
         public IntVector2 Next_Old()
         {
             IntVector2 result = nextPos;
-            nextPos.X++;
+            nextPos.X += stepLength;
             if (nextPos.X > max.X)
             {
                 nextPos.X = min.X;
-                nextPos.Y++;
+                nextPos.Y+= stepLength;
                 if (nextPos.Y > max.Y)
                     done = true;
             }
@@ -58,11 +61,11 @@ namespace VikingEngine
         {
             bool result = !done;
             Position = nextPos;
-            nextPos.X++;
+            nextPos.X+= stepLength;
             if (nextPos.X > max.X)
             {
                 nextPos.X = min.X;
-                nextPos.Y++;
+                nextPos.Y+= stepLength;
                 if (nextPos.Y > max.Y)
                     done = true;
             }
@@ -74,11 +77,11 @@ namespace VikingEngine
         {
             for (int i = 0; i < 2; i++)
             {
-                nextPos.X--;
+                nextPos.X-= stepLength;
                 if (nextPos.X < min.X)
                 {
                     nextPos.X = max.X;
-                    nextPos.Y--;
+                    nextPos.Y-= stepLength;
                 }
             }
 

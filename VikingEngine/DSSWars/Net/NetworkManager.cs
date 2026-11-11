@@ -14,7 +14,7 @@ using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
@@ -485,8 +485,8 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssWorldTiles:
                     DssRef.world.readNet_Tile(packet.r);//l 32 * 4 * 4
-                    overviewMap.bRefreshDataRecieved = true;
-                    DssRef.world.BordersUpdated = true;
+                    mapLayerMid.bRefreshDataRecieved = true;
+                    DssRef.world.CrossMapTextureNeedsUpdate = true;
                     break;
 
                 case PacketType.DssWorldSubTiles:
@@ -555,7 +555,7 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.TextChat:
                     {
-                        var message = new ChatLogMessage(sender.networkPeer.peer, StreamLib.ReadString_safe(packet.r));
+                        var message = new ChatLogMessage(sender.networkPeer.peer, StreamLib.ReadString2(packet.r));
                         chatLog.Add(message);
                         RichBoxContent content = new RichBoxContent();
 
@@ -1251,7 +1251,7 @@ namespace VikingEngine.DSSWars
                     if (aiPlayer != null)
                     {
                         aiPlayer.AssignFaction(player.pfaction.GetFaction());
-                        DssRef.world.BordersUpdated = true;
+                        DssRef.world.CrossMapTextureNeedsUpdate = true;
                     }
                 }
 

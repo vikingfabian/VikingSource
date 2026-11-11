@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VikingEngine.DSSWars.GameState.VoxelEditor;
+using VikingEngine.DSSWars.Map.MapLayer;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.Graphics.DeferredRendering;
 using VikingEngine.EngineSpace.Graphics.DeferredRendering.Lights;
@@ -42,7 +43,7 @@ namespace VikingEngine.DSSWars
     {
         RenderTarget2D overviewMapTarget;
         
-        public const int UnitDetailLayer = 0;
+        public const int NearLayer = 0;
         public const int MidLayer = 1;
         public const int FarLayer = 2;
         public const int WaterEffectLayer = 3;
@@ -52,7 +53,10 @@ namespace VikingEngine.DSSWars
         public DrawGame()
             : base()
         {
-            overviewMapTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, MainRenderTarget.Width, MainRenderTarget.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
+            using (Graphics.GpuResourceSync.Acquire())
+            {
+                overviewMapTarget = Graphics.GpuResourceSync.Track(new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, MainRenderTarget.Width, MainRenderTarget.Height, false, SurfaceFormat.Color, DepthFormat.Depth24));
+            }
 
             drawBatch = new DrawBatchCollection();
 
@@ -80,7 +84,7 @@ namespace VikingEngine.DSSWars
         public override void DeleteMe()
         {
             base.DeleteMe();
-            overviewMapTarget.Dispose();
+            Graphics.GpuResourceSync.Release(overviewMapTarget);
         }
        
         protected override void drawEvent()
@@ -95,7 +99,7 @@ namespace VikingEngine.DSSWars
             {
                 Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
 
-                Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
+                MapLayerManager drawUnits = MapLayerManager.CameraIndexToView[cameraIndex];
                 if (drawUnits.prevLayer != null)
                 {
                     hasFadingLayer = true;
@@ -113,7 +117,7 @@ namespace VikingEngine.DSSWars
                 {
                     EffectBasicVertexColor.Singleton.basicEffect.DirectionalLight1.DiffuseColor = DssRef.state.localPlayers[cameraIndex].ShaderThemeColor;
 
-                    Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
+                    MapLayerManager drawUnits = MapLayerManager.CameraIndexToView[cameraIndex];
                     if (drawUnits.prevLayer != null)
                     {
                         drawDetailLayer(cameraIndex, drawUnits.prevLayer, overviewMapTarget);
@@ -128,7 +132,7 @@ namespace VikingEngine.DSSWars
             {
                 
                     EffectBasicVertexColor.Singleton.basicEffect.DirectionalLight1.DiffuseColor = DssRef.state.localPlayers[cameraIndex].ShaderThemeColor;
-                    Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
+                MapLayerManager drawUnits = MapLayerManager.CameraIndexToView[cameraIndex];
 
                     drawDetailLayer(cameraIndex, drawUnits.current, MainRenderTarget);
                 
@@ -142,8 +146,8 @@ namespace VikingEngine.DSSWars
 
                 for (int cameraIndex = 0; cameraIndex < ActivePlayerScreens.Count; ++cameraIndex)
                 {
-                    
-                        Map.MapLayerManager drawUnits = Map.MapLayerManager.CameraIndexToView[cameraIndex];
+
+                    MapLayerManager drawUnits = MapLayerManager.CameraIndexToView[cameraIndex];
                         if (drawUnits.prevLayer != null)
                         {
                             Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
@@ -182,11 +186,11 @@ namespace VikingEngine.DSSWars
             else
             {
                 EffectBasicVertexColor.Singleton.basicEffect.AmbientLightColor = DssRef.time.ShaderDayLight_Objects;
-                Map.MapLayer_Detail.ModelEffect.SetColor(DssRef.time.ShaderDayLight_Map);
+                MapLayer1_Near.ModelEffect.SetColor(DssRef.time.ShaderDayLight_Map);
             }
         }
 
-        void drawDetailLayer(int cameraIndex, Map.MapLayer lay, RenderTarget2D previousTarget)
+        void drawDetailLayer(int cameraIndex, MapLayer lay, RenderTarget2D previousTarget)
         {
             var localPlayer = DssRef.state.localPlayers[cameraIndex];
             Engine.PlayerData p = ActivePlayerScreens[cameraIndex];
@@ -200,7 +204,7 @@ namespace VikingEngine.DSSWars
 
             switch (lay.type)
             {
-                case Map.MapDetailLayerType.UnitDetail1:
+                case MapDetailLayerType.Layer1_Near:
 
                     //SHADOW
                     if (Ref.gamesett.modelShadow)
@@ -209,32 +213,33 @@ namespace VikingEngine.DSSWars
                         shadowProcessor.light.updateScene(Camera, area.Width, area.Height);
                         shadowProcessor.BeginShadowMapPass();
                         {
-                            shadowProcessor.DrawRenderListMembersDepthOnly(UnitDetailLayer, DrawObjType.MeshGenerated, cameraIndex);
-                            DssRef.state.detailMap.updateAndDraw(true, shadowProcessor.shader, shadowProcessor.light, cameraIndex);
+                            shadowProcessor.DrawRenderListMembersDepthOnly(NearLayer, DrawObjType.MeshGenerated, cameraIndex);
+                            DssRef.state.mapLayerNear.updateAndDraw(true, shadowProcessor.shader, shadowProcessor.light, cameraIndex, localPlayer);
                             drawBatch.DrawDepth(cameraIndex, shadowProcessor.light, shadowProcessor.shader);
                         }
                         graphicsDeviceManager.GraphicsDevice.SetRenderTarget(previousTarget);
                         graphicsDeviceManager.GraphicsDevice.Viewport = p.view.Viewport;
 
-                        shadowProcessor.DrawModelsWithShadow(UnitDetailLayer, Graphics.DrawObjType.MeshGenerated, Camera, cameraIndex);
-                        DssRef.state.detailMap.drawWithShadow(cameraIndex, Camera, shadowProcessor.shader, shadowProcessor.light);
+                        shadowProcessor.DrawModelsWithShadow(NearLayer, Graphics.DrawObjType.MeshGenerated, Camera, cameraIndex);
+                        DssRef.state.mapLayerNear.drawWithShadow(cameraIndex, Camera, shadowProcessor.shader, shadowProcessor.light);
                         drawBatch.RemoveAndDraw(true, cameraIndex, Camera, shadowProcessor.shader, shadowProcessor.light);
                     }
                     else
                     {
-                        DrawGenerated(UnitDetailLayer, cameraIndex);
-                        DssRef.state.detailMap.updateAndDraw(false, shadowProcessor.shader, shadowProcessor.light, cameraIndex);
+                        DrawGenerated(NearLayer, cameraIndex);
+                        DssRef.state.mapLayerNear.updateAndDraw(false, shadowProcessor.shader, shadowProcessor.light, cameraIndex, localPlayer);
                         drawBatch.RemoveAndDraw(false, cameraIndex, Camera, null, shadowProcessor.light);
                     }
                     graphicsDeviceManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
                     graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
-                    Draw3d(UnitDetailLayer, cameraIndex);
+                    DssRef.state.mapLayerNear.drawCrossMap(cameraIndex, localPlayer);
+                    Draw3d(NearLayer, cameraIndex);
                     //oceanProcess.draw(UnitDetailLayer, Camera, cameraIndex, shadowProcessor.light, shadowProcessor._shadowMap);
 
                     if (Ref.gamesett.waterFoam)
                     {
                         graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Additive;
-                        DssRef.state.detailMap.drawWaterEdges(cameraIndex);
+                        DssRef.state.mapLayerNear.drawWaterEdges(cameraIndex);
                         //Draw3d(WaterEffectLayer, cameraIndex);
                         WaveXzEffect.GetWaveSingletonSafe().DrawMeshes(WaterEffectLayer, cameraIndex);
                         graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
@@ -246,21 +251,29 @@ namespace VikingEngine.DSSWars
                     //graphicsDeviceManager.GraphicsDevice.SetRenderTarget(previousTarget);
                     break;
 
-                case Map.MapDetailLayerType.TerrainOverview2:
+                case MapDetailLayerType.Layer2_Mid:
                     //graphicsDeviceManager.GraphicsDevice.SetRenderTarget(previousTarget);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
-                    DssRef.state.detailMap.Update_outOfFocus();
+                    DssRef.state.mapLayerNear.Update_outOfFocus();
+                   
                     DrawGenerated(MidLayer, cameraIndex);
                     Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+
+                    DssRef.state.mapLayerMid.Draw(cameraIndex, localPlayer);
+                    Engine.Draw.TextureEffects?[(int)Graphics.TextureEffectType.Flat]?.flushBuffer();
                     Draw3d(MidLayer, cameraIndex);
-                    Draw3d(FarLayer, cameraIndex);
+                    //Draw3d(FarLayer, cameraIndex);
                     localPlayer.DrawMidLayer_Mesh(cameraIndex);
                     break;
 
-                case Map.MapDetailLayerType.FullOverview4:
-                case Map.MapDetailLayerType.FactionColors3:
-                    DssRef.state.detailMap.Update_outOfFocus();
-                    DssRef.state.factionsMap.Draw(cameraIndex, localPlayer);
+                case MapDetailLayerType.Layer4_VeryFar:
+                case MapDetailLayerType.Layer3_Far:
+                    Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.Opaque;
+                    DssRef.state.mapLayerNear.Update_outOfFocus();
+                    DrawGenerated(FarLayer, cameraIndex);
+                    Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+                    DssRef.state.mapLayerFar.Draw(cameraIndex, localPlayer);
+                    Engine.Draw.TextureEffects?[(int)Graphics.TextureEffectType.Flat]?.flushBuffer();
                     Draw3d(FarLayer, cameraIndex);
                     //Draw3d(FarLayer, cameraIndex);
                     break;                    

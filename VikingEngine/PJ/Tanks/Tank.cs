@@ -105,7 +105,7 @@ namespace VikingEngine.PJ.Tanks
 
             sumVelocity = velocity + pushForce;
 
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
             {
                 if (pushForce.Length() < tankLib.MinTankPushSpeed)
                 {

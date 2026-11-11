@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine;
-using VikingEngine.DSSWars;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void setAsStartArmy()
         {
            
-            refreshGroupPlacements2(tilePos, false, true, false);
+            refreshGroupPlacements2(maptilePos, false, true, false);
             setMaxFood();
         }
 
@@ -115,7 +115,7 @@ namespace VikingEngine.DSSWars.GameObject
             else
             {
                 //Order new food
-                City city = DssRef.world.tileGrid.Get(tilePos).City();
+                City city = DssRef.world.tileGrid.Get(WP.MaptileToSumTile( maptilePos)).pcity.City();
                 if (city != null && city.pfaction.TryGetFaction(out _))
                 {
                     float bufferGoal_percentage = -1;
@@ -157,7 +157,8 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 int statusIx = getOrCreateFreeWorker();
                                 var status = workerStatuses[statusIx];
-                                status.createWorkOrder(WorkType.TrossCityTrade, (int)foodType, 0, XP.WorkExperienceType.NUM_NONE, WorkPriorityType.NUM_NONE, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
+                                //status.createWorkOrder(WorkType.TrossCityTrade, (int)foodType, 0, XP.WorkExperienceType.NUM_NONE, -1, city.maptilePos, null);
+                                status.createWorkOrder(WorkType.TrossCityTrade, (int)foodType, 0, XP.WorkExperienceType.NUM_NONE, WorkPriorityType.NUM_NONE, -1, city.maptilePos, null);
                                 if (goldValue > 0)
                                 {
                                     foodCosts_import.add(status.carry.amount);
@@ -181,7 +182,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             int getOrCreateFreeWorker()
             {
-                var worker = new WorkerStatus(true) { subTileEnd = WP.ToSubTilePos_Centered(tilePos) };
+                var worker = new WorkerStatus(true) { subTileEnd = maptilePos };
                 lock (WorkerStatusLock)
                 {
                     for (int i = 0; i < workerStatuses.Count; i++)
@@ -214,7 +215,7 @@ namespace VikingEngine.DSSWars.GameObject
                         lp.hud.messages.armyLowFoodMessage(this);
                     }));
                 }
-                else if (!DssRef.storage.ruleset_instance.centralGold && money.copper > -soldiersCount * DssConst.FoodGoldValue_BlackMarket * 100)
+                else if (!DssRef.storage.ruleset_instance.module_physicalGold && money.copper > -soldiersCount * DssConst.FoodGoldValue_BlackMarket * 100)
                 {
                     allowDept = true;
                 }

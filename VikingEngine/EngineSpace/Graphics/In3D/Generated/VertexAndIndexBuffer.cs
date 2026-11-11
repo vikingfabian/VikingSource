@@ -53,27 +53,36 @@ namespace VikingEngine.Graphics
         public AbsVertexAndIndexBuffer(IVerticeData verticeData)
             :base(false)
         {
+            if (!GpuResourceSync.Enabled)
+            {
+                GC.SuppressFinalize(this);
+            }
             if (verticeData == null || verticeData.DrawData.numVertices == 0 || Ref.update.exitApplication)
             {
                 return;
             }
             try
             {
-                vertexBuffer_GPU = new VertexBuffer(Engine.Draw.graphicsDeviceManager.GraphicsDevice,
-                        verticeData.VertexDeclaration,
-                        verticeData.DrawData.numVertices, BufferUsage.WriteOnly);
-                verticeData.SetVertexBuffer(vertexBuffer_GPU);
-
-                indexBuffer = new IndexBuffer(Engine.Draw.graphicsDeviceManager.GraphicsDevice, verticeData.DrawData.bitSize,
-                    verticeData.DrawData.indexDrawOrderLength, BufferUsage.WriteOnly);
-
-                if (verticeData.DrawData.bitSize == IndexElementSize.SixteenBits)
+                using (GpuResourceSync.Acquire())
                 {
-                    indexBuffer.SetData(verticeData.DrawData.indexDrawOrder16, 0, verticeData.DrawData.indexDrawOrderLength);
-                }
-                else
-                {
-                    indexBuffer.SetData(verticeData.DrawData.indexDrawOrder32, 0, verticeData.DrawData.indexDrawOrderLength);
+                    vertexBuffer_GPU = new VertexBuffer(Engine.Draw.graphicsDeviceManager.GraphicsDevice,
+                            verticeData.VertexDeclaration,
+                            verticeData.DrawData.numVertices, BufferUsage.WriteOnly);
+                    GpuResourceSync.SuppressFinalizer(vertexBuffer_GPU);
+                    verticeData.SetVertexBuffer(vertexBuffer_GPU);
+
+                    indexBuffer = new IndexBuffer(Engine.Draw.graphicsDeviceManager.GraphicsDevice, verticeData.DrawData.bitSize,
+                        verticeData.DrawData.indexDrawOrderLength, BufferUsage.WriteOnly);
+                    GpuResourceSync.SuppressFinalizer(indexBuffer);
+
+                    if (verticeData.DrawData.bitSize == IndexElementSize.SixteenBits)
+                    {
+                        indexBuffer.SetData(verticeData.DrawData.indexDrawOrder16, 0, verticeData.DrawData.indexDrawOrderLength);
+                    }
+                    else
+                    {
+                        indexBuffer.SetData(verticeData.DrawData.indexDrawOrder32, 0, verticeData.DrawData.indexDrawOrderLength);
+                    }
                 }
 
                 //lösning på crash
@@ -84,6 +93,12 @@ namespace VikingEngine.Graphics
                 Debug.LogError("AbsVertexAndIndexBuffer, " + e.Message);
                 vertexBuffer_GPU = null;
             }
+        }
+
+        ~AbsVertexAndIndexBuffer()
+        {
+            GpuResourceSync.Release(vertexBuffer_GPU);
+            GpuResourceSync.Release(indexBuffer);
         }
 
         /* Family methods */
@@ -108,7 +123,7 @@ namespace VikingEngine.Graphics
         public void SetBuffer()
         {
             var gd = Engine.Draw.graphicsDeviceManager?.GraphicsDevice;
-            if (gd != null && vertexBuffer_GPU != null)
+            if (gd != null && vertexBuffer_GPU != null && !vertexBuffer_GPU.IsDisposed)
             {
                 Engine.Draw.PreviousVertexBuffer = bufferId;
                 gd.SetVertexBuffer(vertexBuffer_GPU);

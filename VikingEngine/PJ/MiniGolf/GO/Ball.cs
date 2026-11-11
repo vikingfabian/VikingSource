@@ -117,7 +117,9 @@ namespace VikingEngine.PJ.MiniGolf
         {
             FieldSquare onSquare = GolfRef.field.tryGetSquare(image.Position);
 
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+            bool trace = false;
+
+            for (int i = 0; i < Ref.GameTimePassed8ms; ++i)//if (Ref.TimePassed16ms)
             { //Friction update
                 float speed = velocity.Length();
                 if (speed < GolfRef.gamestate.MinSpeed)
@@ -153,10 +155,16 @@ namespace VikingEngine.PJ.MiniGolf
                     }
                     else
                     {
-                        traceParticlesUpdate();
+                        trace = true;
+                        
                         velocity *= friction;
                     }
                 }
+            }
+
+            if (trace)
+            {
+                traceParticlesUpdate();
             }
 
             if (bumpTime.HasTime)
@@ -316,15 +324,16 @@ namespace VikingEngine.PJ.MiniGolf
 
                     pos += Rotation1D.Random().Direction(GolfRef.gamestate.BallScale * Ref.rnd.Plus_MinusF(0.2f));
                     scale = new Vector2(GolfRef.gamestate.BallScale * 0.5f);
-                    opacity = 1f;
+                    opacity = 0.7f;
                 }
                 else if (gamer.animalSetup.theme == AnimalTheme.Rainbow)
                 {
-                    opacity = 1f;
+                    opacity = 0.7f;
                     color = RainBowColors[rainbowColor.Next()];
                 }
                 else if (gamer.animalSetup.theme == AnimalTheme.Zombie)
                 {
+                    opacity = 0.5f;
                     color = Color.Violet;
                 }
 
@@ -345,7 +354,7 @@ namespace VikingEngine.PJ.MiniGolf
         void updateRotation()
         {
             image.Rotation += rotationSpeed * Ref.DeltaTimeSec;
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
             {
                 if (Math.Abs(rotationSpeed) > 0.1f)
                 {
@@ -420,7 +429,7 @@ namespace VikingEngine.PJ.MiniGolf
             }
             else
             {
-                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
                 {
                     diff.Normalize();
                     addForce(diff * GolfRef.gamestate.MaxClubForce * 0.015f, null);

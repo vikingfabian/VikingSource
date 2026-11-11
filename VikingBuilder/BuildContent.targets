@@ -5,7 +5,7 @@
 			<_RawContentTemp>$(ProjectDir)$(IntermediateOutputPath)</_RawContentTemp>
 			<ContentOutput>$(_RawContentOutput.TrimEnd('\').TrimEnd('/'))</ContentOutput>
 			<ContentTemp>$(_RawContentTemp.TrimEnd('\').TrimEnd('/'))</ContentTemp>
-			<ContentArgs>build -p $(MonoGamePlatform) -s VikingBuilder/Assets -o &quot;$(ContentOutput)&quot; -i &quot;$(ContentTemp)&quot;</ContentArgs>
+			<ContentArgs>build -p $(MonoGamePlatform) -s VikingBuilder/Assets -o &quot;$(ContentOutput)&quot; -i &quot;$(ContentTemp)&quot; --compress $(CompressContent)</ContentArgs>
 			<ContentCommand>$(MSBuildThisFileDirectory)bin\$(Configuration)\VikingBuilder</ContentCommand>
 		</PropertyGroup>
 

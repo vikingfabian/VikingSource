@@ -1,4 +1,4 @@
-﻿
+
 using System;
 
 using System.Collections.Generic;
@@ -64,7 +64,10 @@ namespace VikingEngine.SteamWrapping
                 }
             }
 
-            UserAchievementStoredCallback = new Callback<UserAchievementStored_t>(OnUserAchievementStored, false);
+            if (Ref.steam.isInitialized)
+            {
+                UserAchievementStoredCallback = new Callback<UserAchievementStored_t>(OnUserAchievementStored, false);
+            }
 
         }
 

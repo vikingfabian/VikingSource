@@ -400,7 +400,7 @@ namespace VikingEngine.SteamWrapping
                         //    leaderboardsInitialized = true;
                         //    //leaderBoards.OnUserStatsRecieved(caller);
                         //}
-                        if (stats != null)
+                        if (stats != null && stats.gamestats != null)
                         {
                             stats.OnUserStatsRecieved(caller);
                             statsInitialized = true;

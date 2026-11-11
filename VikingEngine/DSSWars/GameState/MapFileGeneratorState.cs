@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars
     {
         public const int MapCountPerSize = 16;
 
-        MapSize loadingSz = 0;
+        MapSizeCategory loadingSz = 0;
         int loadingNumber = 1;
 
         Graphics.TextBoxSimple loadingStatusText;
@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars
             else
             {
                 loadingStatusText.TextString = "Building " + loadingSz.ToString() + " map " +
-                    loadingNumber.ToString() + ". Process: " + GenerateMap.LoadStatus.ToString() + "%" + Environment.NewLine +
+                    loadingNumber.ToString() + ". Process: " + /*GenerateMap.LoadStatus.ToString() +*/ "%" + Environment.NewLine +
                     "Failed maps: " + failCount.ToString();
                 
             }
@@ -65,8 +65,8 @@ namespace VikingEngine.DSSWars
                     }
                     else
                     {
-                        MapSize startSize = 0;
-                        for (loadingSz = startSize; loadingSz < MapSize.NUM; ++loadingSz)
+                        MapSizeCategory startSize = 0;
+                        for (loadingSz = startSize; loadingSz < MapSizeCategory.NUM; ++loadingSz)
                         {
                             for (loadingNumber = 1; loadingNumber <= MapCountPerSize; ++loadingNumber)
                             {
@@ -81,23 +81,23 @@ namespace VikingEngine.DSSWars
                     complete = true;
 
 
-                    async Task generateLoopUntilSucess(MapSize size, int number)
+                    async Task generateLoopUntilSucess(MapSizeCategory size, int number)
                     {
                         while (true)
                         {
-                            List<Task> tasks = new List<Task>();
-                            bool success = new GenerateMap().Generate(true, new Data.WorldMetaData(Ref.rnd.Ushort(), loadingSz, loadingNumber), new MapGenerateSettings(), tasks).Result;
+                            //List<Task> tasks = new List<Task>();
+                            //bool success = new GenerateMap().Generate(true, new Data.WorldMetaData(Ref.rnd.Ushort(), loadingSz, loadingNumber), new MapGenerateSettings(), tasks).Result;
 
-                            await Task.WhenAll(tasks);
+                            //await Task.WhenAll(tasks);
 
-                            if (success)
-                            {
+                            //if (success)
+                            //{
                                 return;
-                            }
-                            else
-                            {
-                                failCount++;
-                            }
+                            //}
+                            //else
+                            //{
+                            //    failCount++;
+                            //}
                         }
 
                     }

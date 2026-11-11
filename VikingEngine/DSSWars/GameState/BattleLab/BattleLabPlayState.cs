@@ -18,5 +18,6 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         {
             return PlayStateType.BattleLab;
         }
+        
     }
 }

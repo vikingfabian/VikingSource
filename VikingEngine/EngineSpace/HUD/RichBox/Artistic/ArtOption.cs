@@ -20,6 +20,11 @@ namespace VikingEngine.HUD.RichBox.Artistic
             checkImage.Create(group);
             group.carriage.position.X += 4;            
         }
+
+        public static RbImage OptionImage(bool selected, RichBoxSettings richBoxSettings)
+        {
+            return new RbImage(selected ? richBoxSettings.optionOn: richBoxSettings.optionOff, 0.76f);
+        }
     }
 
     class ArtToggle : ArtButton

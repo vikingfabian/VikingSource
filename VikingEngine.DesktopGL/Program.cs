@@ -1,6 +1,8 @@
-﻿using Steamworks;
+using Steamworks;
 using VikingEngine;
 using VikingEngine.SteamWrapping;
+
+PlatformSettings.LoadResourcesInBackground = false;
 
 new SteamManager();
 

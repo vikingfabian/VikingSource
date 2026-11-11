@@ -71,7 +71,7 @@ namespace VikingEngine.ToGG.Effects
         {
             model.Position += speed * Ref.DeltaTimeSec;
 
-            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
             {
                 speed *= 0.7f;
             }

@@ -27,67 +27,67 @@ namespace VikingEngine.DSSWars
 
             //north
             {
-                PolygonColor[] north = new PolygonColor[WorldData.TileSubDivitions];
-                Vector2 topLeft = new Vector2(-LargeTileHalfWidth, -LargeTileHalfWidth - WorldData.SubTileWidth);
-                for (int i = 0; i < WorldData.TileSubDivitions; i++)
+                PolygonColor[] north = new PolygonColor[Map.MapData.MapTile1_1.ModelScale_Inv];
+                Vector2 topLeft = new Vector2(-LargeTileHalfWidth, -LargeTileHalfWidth - Map.MapData.MapTile1_1.ModelScale);
+                for (int i = 0; i < Map.MapData.MapTile1_1.ModelScale_Inv; i++)
                 {
                     north[i] = Graphics.PolygonColor.QuadXZ(
                            topLeft,
-                           WorldData.SubTileWidthV2, false, 0,
+                           Map.MapData.MapTile1_1.ModelScaleV2, false, 0,
                            SpriteName.WaterEdgeMask_coast,
                            Dir4.E,
                            color);
-                    topLeft.X += WorldData.SubTileWidth;
+                    topLeft.X += Map.MapData.MapTile1_1.ModelScale;
                 }
                 WaterEdgeOrtho_Dir_List[(int)Dir4.N] = north;
             }
             //south
             {
-                PolygonColor[] south = new PolygonColor[WorldData.TileSubDivitions];
+                PolygonColor[] south = new PolygonColor[Map.MapData.MapTile1_1.ModelScale_Inv];
                 Vector2 topLeft = new Vector2(-LargeTileHalfWidth, LargeTileHalfWidth);
-                for (int i = 0; i < WorldData.TileSubDivitions; i++)
+                for (int i = 0; i < Map.MapData.MapTile1_1.ModelScale_Inv; i++)
                 {
                     south[i] = Graphics.PolygonColor.QuadXZ(
                            topLeft,
-                           WorldData.SubTileWidthV2, false, 0,
+                           Map.MapData.MapTile1_1.ModelScaleV2, false, 0,
                            SpriteName.WaterEdgeMask_coast,
                            Dir4.W,
                            color);
-                    topLeft.X += WorldData.SubTileWidth;
+                    topLeft.X += Map.MapData.MapTile1_1.ModelScale;
                 }
                 WaterEdgeOrtho_Dir_List[(int)Dir4.S] = south;
             }
 
             //west
             {
-                PolygonColor[] west = new PolygonColor[WorldData.TileSubDivitions];
-                Vector2 topLeft = new Vector2(-LargeTileHalfWidth - WorldData.SubTileWidth, -LargeTileHalfWidth);
-                for (int i = 0; i < WorldData.TileSubDivitions; i++)
+                PolygonColor[] west = new PolygonColor[Map.MapData.MapTile1_1.ModelScale_Inv];
+                Vector2 topLeft = new Vector2(-LargeTileHalfWidth - Map.MapData.MapTile1_1.ModelScale, -LargeTileHalfWidth);
+                for (int i = 0; i < Map.MapData.MapTile1_1.ModelScale_Inv; i++)
                 {
                     west[i] = Graphics.PolygonColor.QuadXZ(
                            topLeft,
-                           WorldData.SubTileWidthV2, false, 0,
+                           Map.MapData.MapTile1_1.ModelScaleV2, false, 0,
                            SpriteName.WaterEdgeMask_coast,
                            Dir4.S,
                            color);
-                    topLeft.Y += WorldData.SubTileWidth;
+                    topLeft.Y += Map.MapData.MapTile1_1.ModelScale;
                 }
                 WaterEdgeOrtho_Dir_List[(int)Dir4.W] = west;
             }
 
             //east
             {
-                PolygonColor[] east = new PolygonColor[WorldData.TileSubDivitions];
+                PolygonColor[] east = new PolygonColor[Map.MapData.MapTile1_1.ModelScale_Inv];
                 Vector2 topLeft = new Vector2(LargeTileHalfWidth, -LargeTileHalfWidth);
-                for (int i = 0; i < WorldData.TileSubDivitions; i++)
+                for (int i = 0; i < Map.MapData.MapTile1_1.ModelScale_Inv; i++)
                 {
                     east[i] = Graphics.PolygonColor.QuadXZ(
                            topLeft,
-                           WorldData.SubTileWidthV2, false, 0,
+                           Map.MapData.MapTile1_1.ModelScaleV2, false, 0,
                            SpriteName.WaterEdgeMask_coast,
                            Dir4.N,
                            color);
-                    topLeft.Y += WorldData.SubTileWidth;
+                    topLeft.Y += Map.MapData.MapTile1_1.ModelScale;
                 }
                 WaterEdgeOrtho_Dir_List[(int)Dir4.E] = east;
             }

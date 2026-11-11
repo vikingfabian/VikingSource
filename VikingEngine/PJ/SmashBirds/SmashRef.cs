@@ -9,7 +9,7 @@ namespace VikingEngine.PJ.SmashBirds
     static class SmashRef
     {
         public static SmashGameState gamestate;
-        public static List2<Gamer> gamers;
+        public static List2_old<Gamer> gamers;
         public static Map map;
         public static ObjectCollection objects;
 

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.XP;
@@ -169,14 +170,14 @@ namespace VikingEngine.DSSWars.GameObject
                 var buildData = BuildLib.BuildOptions[(int)build];
                 IntVector2 buildPos = IntVector2.NegativeOne;
 
-                if (CityStructure.Find(this, buildData.terrainType.mainTerrain, buildData.terrainType.subTerrain, out IntVector2 sameBuilding))
+                if (CityStructureProcess.Find(this, buildData.terrainType.mainTerrain, buildData.terrainType.subTerrain, out IntVector2 sameBuilding))
                 {
                     findAdjacentFreeSpot(Casual_EdgeRandomizer, sameBuilding, ref buildPos);
                 }
 
                 if (buildPos.X < 0)
                 {
-                    if (!CityStructure.FindEmpty(this, out buildPos))
+                    if (!CityStructureProcess.FindEmpty(this, out buildPos))
                     {
                         return;
                     }
@@ -187,7 +188,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (buildData.execute_async(this, buildPos, ref subTile, upgrade))
                 {
-                    EditSubTile edit = new EditSubTile(true, true, buildPos, subTile, true, true, false) { netShare = true };
+                    EditSubTile edit = new EditSubTile(true, true, buildPos, subTile, true, false, true, false) { netShare = true };
                     edit.ExecuteEdit();
                 }
             }

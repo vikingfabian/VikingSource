@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.Engine;
 using VikingEngine.LootFest.Data;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 using VikingEngine.PJ.Moba.GO;
+using VikingEngine.DSSWars.Map.MapLayer;
+using VikingEngine.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars
 {
@@ -64,21 +65,20 @@ namespace VikingEngine.DSSWars
             
             asynch_updateTiles();
             
-                foreach (var p in DssRef.state.localPlayers)
-                {
-                    p.unitsPixelTexture.asynch_Begin();
-                }
-            
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                p.unitsPixelTexture.asynch_Begin();
+            }
 
             var factions = DssRef.world.factions.counter();
             while (factions.Next())
             {
                 factions.sel.asynchCullingUpdate(time, cullingStateA);
             }
-
-            foreach (var m in DssRef.world.cities)
+            var citiesC = DssRef.world.cities.counter();
+            while (citiesC.Next()) //foreach (var m in DssRef.world.cities)
             {
-                m.asynchCullingUpdate(time, cullingStateA);
+                citiesC.sel.asynchCullingUpdate(time, cullingStateA);
             }
 
             foreach (var lp in DssRef.state.localPlayers)
@@ -117,9 +117,9 @@ namespace VikingEngine.DSSWars
             cullingStateA = !cullingStateA;
         }
 
-        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, IntVector2 pos)
+        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, IntVector2 mapTilePos)
         {
-            if (DssRef.world.tileGrid.TryGet(pos, out Map.Tile tile))
+            if (DssRef.world.chunkGrid.TryGet(mapTilePos, out Map.MapData.MapChunkData8_8 tile))
             {
                 if (cullingStateA)
                 { GetRenderState_enter(ref tile.bits_renderStateA, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
@@ -129,18 +129,11 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, IntVector2 pos, int cameraIx)
+        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, IntVector2 mapTilePos, int cameraIx)
         {
-            //if (DssRef.world.tileGrid.TryGet(pos, out Map.Tile tile))
-            //{
-            //    if (cullingStateA)
-            //    { GetRenderState_enter(ref tile.bits_renderStateA, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
-            //    else
-            //    { GetRenderState_enter(ref tile.bits_renderStateB, ref enterRender_overviewLayer, ref enterRender_detailLayer); }
-
-            //}
+          
             var state = bStateA ? players[cameraIx].stateA : players[cameraIx].stateB;
-            if (state.enterArea.IntersectPoint(pos))
+            if (state.enterArea.IntersectPoint(mapTilePos))
             {
                 enterRender_overviewLayer = state.midLayer;
                 enterRender_detailLayer = state.detailLayer;
@@ -152,10 +145,10 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public bool InRender_Asynch(int playerIx, bool bStateA, ref IntVector2 pos)
+        public bool InRender_Asynch(int playerIx, bool bStateA, ref IntVector2 mapTilePos)
         {           
             var state = bStateA ? players[playerIx].stateA : players[playerIx].stateB;
-            return state.enterArea.IntersectPoint(pos);
+            return state.enterArea.IntersectPoint(mapTilePos);
         }
 
         public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, ref IntVector2 minpos, ref IntVector2 maxpos)
@@ -178,21 +171,23 @@ namespace VikingEngine.DSSWars
             enterRender_detailLayer = detailLayer;
         }
 
-        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, ref Vector2 minpos, ref Vector2 maxpos)
+        public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, bool inFogView, ref Vector2 minWp, ref Vector2 maxWp)
         {
             bool enterOverview = false;
             bool enterDetail = false;
 
-            for (int cameraIndex = 0; cameraIndex < Ref.draw.ActivePlayerScreens.Count; ++cameraIndex)
+            if (inFogView)
             {
-                var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
-                if (state.enterArea.IntersectRect(minpos, maxpos))
+                for (int cameraIndex = 0; cameraIndex < Ref.draw.ActivePlayerScreens.Count; ++cameraIndex)
                 {
-                    enterOverview |= state.midLayer;
-                    enterDetail |= state.detailLayer;                    
+                    var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
+                    if (state.enterArea.IntersectRect(minWp * MapTile1_1.ModelScale_Inv, maxWp * MapTile1_1.ModelScale_Inv))
+                    {
+                        enterOverview |= state.midLayer;
+                        enterDetail |= state.detailLayer;
+                    }
                 }
             }
-
             enterRender_overviewLayer = enterOverview;
             enterRender_detailLayer = enterDetail;
            
@@ -285,7 +280,7 @@ namespace VikingEngine.DSSWars
 
         public void asynch_update(bool bStateA, ref bool detailView)
         {
-            Map.MapLayerManager detailLayer = Map.MapLayerManager.CameraIndexToView[index];
+            MapLayerManager detailLayer = MapLayerManager.CameraIndexToView[index];
             bool hasValue1, hasValue2, hasValue3, hasValue4;
             Vector3 topleft = playerData.view.Camera.CastRayInto3DPlane(playerData.view.DrawAreaF.Position, playerData.view.Viewport, mapPlane, out hasValue1);
             Vector3 topright = playerData.view.Camera.CastRayInto3DPlane(playerData.view.DrawAreaF.RightTop, playerData.view.Viewport, mapPlane, out hasValue2);
@@ -305,24 +300,25 @@ namespace VikingEngine.DSSWars
                 float top = lib.SmallestValue(topleft.Z, topright.Z);
                 float bottom = lib.LargestValue(bottomleft.Z, bottomright.Z);
 
-                Rectangle2 screenArea = Rectangle2.FromTwoTilePoints(new IntVector2(left, top), new IntVector2(right, bottom));
+                Rectangle2 screenArea = Rectangle2.FromTwoTilePoints(new IntVector2(left * MapTile1_1.ModelScale_Inv, top * MapTile1_1.ModelScale_Inv), 
+                    new IntVector2(right * MapTile1_1.ModelScale_Inv, bottom * MapTile1_1.ModelScale_Inv));
                 Rectangle2 screenAreaRaw = screenArea;
                 DssRef.state.localPlayers[index].cullingTileArea = screenArea;
 
-                if (detailLayer.current.DrawFar)
+                if (detailLayer.current.DrawFarLayer)
                 {
                     //screenArea.SetMaxRadius(120, 100);
                     MaxUpdateArea(ref screenArea);
                 }
                
                 PlayerCullingState state = bStateA ? stateA : stateB;
-                state.detailLayer = detailLayer.current.DrawDetailLayer;
+                state.detailLayer = detailLayer.current.DrawNearLayer;
                 detailView |= state.detailLayer;
-                state.midLayer = detailLayer.current.DrawMid;
-                state.farLayer = detailLayer.current.DrawFar;
+                state.midLayer = detailLayer.current.DrawMidLayer;
+                state.farLayer = detailLayer.current.DrawFarLayer;
                 if (detailLayer.prevLayer != null)
                 {
-                    state.midLayer |= detailLayer.prevLayer.DrawMid;
+                    state.midLayer |= detailLayer.prevLayer.DrawMidLayer;
                 }
                 state.async_playerViewToRenderState(bStateA, screenArea, screenAreaRaw, detailLayer.current);
             }
@@ -365,8 +361,8 @@ namespace VikingEngine.DSSWars
             Rectangle2 enter = area;
             PlayerCulling.MaxUpdateArea(ref enter);
 
-            area.SetBounds(DssRef.world.tileBounds);
-            enter.SetBounds(DssRef.world.tileBounds);
+            area.SetBounds(DssRef.world.maptileBounds);
+            enter.SetBounds(DssRef.world.maptileBounds);
 
             screenAreaRaw = area;
             enterArea = enter;
@@ -376,38 +372,39 @@ namespace VikingEngine.DSSWars
             midLayer = r.ReadBoolean();
         }
 
-        public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Rectangle2 screenAreaRaw, Map.MapLayer layer)
+        public void async_playerViewToRenderState(bool bStateA, Rectangle2 screenArea, Rectangle2 screenAreaRaw, MapLayer layer)
         {
             this.screenAreaRaw = screenAreaRaw;
             enterArea = screenArea;
+            enterArea.size.Y += Map.MapData.MapChunkData8_8.TileWidth;
 
-            if (enterArea.Width <= 4)
+            if (enterArea.Width / Map.MapData.MapChunkData8_8.TileWidth <= 4)
             {
-                enterArea.AddRadius(2);
+                enterArea.AddRadius(2 * Map.MapData.MapChunkData8_8.TileWidth);
             }
-            else if (enterArea.Width <= 8)
+            else if (enterArea.Width / Map.MapData.MapChunkData8_8.TileWidth <= 8)
             {
-                enterArea.AddWidthRadius(1);
+                enterArea.AddWidthRadius(1 * Map.MapData.MapChunkData8_8.TileWidth);
             }
-            else if (enterArea.Width > 14)
+            else if (enterArea.Width / Map.MapData.MapChunkData8_8.TileWidth > 14)
             {
-                enterArea.AddWidthRadius(-1);
+                enterArea.AddWidthRadius(-1 * Map.MapData.MapChunkData8_8.TileWidth);
             }
 
-            enterArea.SetTileBounds(DssRef.world.tileBounds);
+            enterArea.SetBounds(DssRef.world.maptileBounds);
             exitArea = enterArea;
-            exitArea.AddRadius(1);
+            exitArea.AddRadius(1 * Map.MapData.MapChunkData8_8.TileWidth);
             attensionArea = enterArea;
-            attensionArea.AddRadius(20);
+            attensionArea.AddRadius(20 * Map.MapData.MapChunkData8_8.TileWidth);
 
-            attensionArea_subTile = new Rectangle2(WP.ToSubTilePos_TopLeft(attensionArea.pos), (attensionArea.size + 1) * WorldData.TileSubDivitions);
+            //attensionArea_subTile = new Rectangle2(attensionArea.pos, attensionArea.size + 1 * Map.MapData.MapChunkData8_8.TileWidth);
 
             //Debug.Log(DebugLogType.MSG, "state " + (bStateA ? "A " : "B ") + screenArea.ToString());
 
             var loopArea = exitArea;
             loopArea.size += 1;
 
-            loopArea.SetTileBounds(DssRef.world.tileBounds);
+            loopArea.SetBounds(DssRef.world.chunkBounds);
 
             if (loopArea.size.X > 0 && loopArea.size.Y > 0)
             {
@@ -422,19 +419,19 @@ namespace VikingEngine.DSSWars
                         enterRender = true;
                     }
 
-                    var tile = DssRef.world.tileGrid.Get(loop.Position);
+                    var tile = DssRef.world.chunkGrid.Get(loop.Position);
                     //Debug.Log("Tile Get(A) " + loop.Position.ToString() + ", " + tile.ToString());
                     if (bStateA)
                     {
-                        Culling.SetRenderState(ref tile.bits_renderStateA, !enterRender, enterRender, layer.DrawFullOverview, layer.DrawDetailLayer);
+                        Culling.SetRenderState(ref tile.bits_renderStateA, !enterRender, enterRender, layer.DrawVeryFarLayer, layer.DrawNearLayer);
                         //if (value > tile.renderStateA) { tile.renderStateA = value; }
                     }
                     else
                     {
-                        Culling.SetRenderState(ref tile.bits_renderStateB, !enterRender, enterRender, layer.DrawFullOverview, layer.DrawDetailLayer);
+                        Culling.SetRenderState(ref tile.bits_renderStateB, !enterRender, enterRender, layer.DrawVeryFarLayer, layer.DrawNearLayer);
                         //if (value > tile.renderStateB) { tile.renderStateB = value; }
                     }
-                    DssRef.world.tileGrid.Set(loop.Position, tile);
+                    DssRef.world.chunkGrid.Set(loop.Position, tile);
                     //Debug.Log("Tile Set(A) " + loop.Position.ToString() + ", " + tile.ToString());
 
                 }
@@ -447,7 +444,7 @@ namespace VikingEngine.DSSWars
             var loopArea = exitArea;
             loopArea.size += 1;
 
-            loopArea.SetTileBounds(DssRef.world.tileBounds);
+            loopArea.SetBounds(DssRef.world.chunkBounds);
 
             ForXYLoop loop = new ForXYLoop(loopArea);
             if (loopArea.Width > 0 && loopArea.Height > 0)
@@ -455,7 +452,7 @@ namespace VikingEngine.DSSWars
 
                 while (loop.Next())
                 {
-                    var tile = DssRef.world.tileGrid.Get(loop.Position);
+                    var tile = DssRef.world.chunkGrid.Get(loop.Position);
                     if (bStateA)
                     {
                         tile.bits_renderStateA = Culling.NoRender;
@@ -464,7 +461,7 @@ namespace VikingEngine.DSSWars
                     {
                         tile.bits_renderStateB = Culling.NoRender;
                     }
-                    DssRef.world.tileGrid.Set(loop.Position, tile);
+                    DssRef.world.chunkGrid.Set(loop.Position, tile);
                 }
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.DSSWars.Map.Map2
@@ -24,8 +25,6 @@ namespace VikingEngine.DSSWars.Map.Map2
         public float noiseStrength;
         public double quadChance;
 
-        //public BiomType biom;
-
         public void refreshHeight()
         {
             centerHeight = addHeight;
@@ -36,16 +35,15 @@ namespace VikingEngine.DSSWars.Map.Map2
             flatRadius = radius * flatness;
             hillRadius = radius - flatRadius;
 
-            if (addHeight > 0) //add
+            if (addHeight > 0)
             {
                 edgeHeight = centerHeight - (hillRadius * 0.1f * addHeight);
             }
 
             else
             {
-                edgeHeight = Bound.Min(centerHeight - (hillRadius * 0.1f * addHeight), Map2Generator.Height_WaterBottom);
+                edgeHeight = Bound.Min(centerHeight - (hillRadius * 0.1f * addHeight), MapHeight2.WaterBottomY);
             }
-            //centerHeight = addHeight;
         }
 
         public void refreshRadius_PaintTool()
@@ -53,21 +51,13 @@ namespace VikingEngine.DSSWars.Map.Map2
             flatRadius = radius * flatness;
             hillRadius = radius - flatRadius;
 
-            //if (addHeight > 0) //add
-            //{
-            //    edgeHeight = centerHeight - (hillRadius * 0.1f * addHeight);
-            //}
-
-            //else
-            //{
-                edgeHeight = 0.05f * centerHeight;
-            //}
-            //centerHeight = addHeight;
+            edgeHeight = 0.05f * centerHeight;
+            
         }
 
         public void adjustHeight(float add)
         {
-            if (centerHeight + add > Map2Generator.Height_LowGround)
+            if (centerHeight + add > MapHeight2.LowGroundY)
             {
                 centerHeight += add;
                 edgeHeight += add;

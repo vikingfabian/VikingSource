@@ -233,19 +233,27 @@ namespace VikingEngine.DSSWars.Data
             {
                 content.text(string.Format(DssRef.lang.Settings_DifficultyLevel, difficulty.PercDifficulty));
             }
-            content.icontext(SpriteName.WarsMapIcon, DssRef.lang.Lobby_MapSizeTitle + ": " + WorldData.SizeString(DssRef.world.metaData.mapSize));
+            content.icontext(SpriteName.WarsMapIcon, DssRef.lang.Lobby_MapSizeTitle + ": " + DssRef.world.metaData.mapScale.SizeString());
 
             if (!tooltip)
             {
-                content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.centralGold), DssRef.lang.Settings_CentralGold);
-                content.icontext(HudLib.CheckImage(difficulty.setting_allowPauseCommand), DssRef.lang.Settings_AllowPause);
+                //xx
+                //content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.module_physicalGold), DssRef.lang.Settings_CentralGold);
+                //content.icontext(HudLib.CheckImage(difficulty.setting_allowPauseCommand), DssRef.lang.Settings_AllowPause);
+                /*
+                 content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.module_fogOfWar), DssRef.todoLang.Module_FogOfWar);
+                 content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.module_foodAndWater), DssRef.todoLang.Module_FoodUpkeep);
+                 content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.module_deptAndDeserters), DssRef.todoLang.Module_LossOfUnits);
+                 content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.module_physicalGold), DssRef.todoLang.Module_LocalGold);
+                 content.icontext(HudLib.CheckImage(DssRef.storage.ruleset_instance.module_noPauseCommand), DssRef.todoLang.Module_NoPause);
 
-                content.icontext(SpriteName.WarsResource_Food, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(ruleset.setting_foodMulti)));
-                content.icontext(SpriteName.WarsResource_WaterAdd, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(ruleset.setting_waterMulti)));
-                content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(ruleset.setting_childMulti)));
-                content.icontext(SpriteName.WarsHammer, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(ruleset.setting_craftMulti)));
-                content.icontext(SpriteName.WarsTechnology_Unlocked, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_TechMultiplier, ruleset.TechMultiProperty(null, false, 0)));
-
+                 content.icontext(SpriteName.WarsResource_Food, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(ruleset.setting_foodMulti)));
+                 content.icontext(SpriteName.WarsResource_WaterAdd, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(ruleset.setting_waterMulti)));
+                 content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(ruleset.setting_childMulti)));
+                 content.icontext(SpriteName.WarsHammer, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(ruleset.setting_craftMulti)));
+                 content.icontext(SpriteName.WarsTechnology_Unlocked, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_TechMultiplier, ruleset.TechMultiProperty(null, false, 0)));
+                */
+                ruleset.gameSetupToHud(content);
                 var time = HudLib.TimeSpan_LongText(gameTime);
                 content.text(string.Format(DssRef.lang.EndGameStatistics_Time, time));
 
@@ -373,7 +381,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 w.Write(SaveGamestate.SubVersion);
 
-                StreamLib.WriteString(w, playerName);
+                StreamLib.WriteString2(w, playerName);
                 w.Write(casual);
                 statistics.writeGameState(w);
                 w.Write(matchWinner);
@@ -390,7 +398,15 @@ namespace VikingEngine.DSSWars.Data
                 }
 #endif
 
-                playerName = StreamLib.ReadString(r);
+                if (metaVersion < 139)
+                {
+                    playerName = StreamLib.ReadString(r);
+                }
+                else
+                {
+                    playerName = StreamLib.ReadString2(r);
+                }
+                
                 casual = r.ReadBoolean();
                 statistics = new Statistics();
                 statistics.readGameState(r, metaVersion);

@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace VikingEngine.DataStream
 {
@@ -17,11 +18,15 @@ namespace VikingEngine.DataStream
         public override void write(FilePath file, MemoryStream data, Action onComplete)
         {
             string path = file.CompletePath(true);
+            string dir = Path.GetDirectoryName(path);
+            if (!string.IsNullOrEmpty(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
 
             using (FileStream fileStream = new FileStream(path, FileMode.Create, System.IO.FileAccess.Write))
             {
                 data.CopyTo(fileStream);
-                fileStream.Dispose();
             }
             onComplete();
         }
@@ -30,13 +35,22 @@ namespace VikingEngine.DataStream
         {
             string path = file.CompletePath(false);
 
-            if (file.Content || File.Exists(path))
+            if ((OperatingSystem.IsAndroid() || OperatingSystem.IsIOS()) && file.Content)
             {
-                using (FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
+                try
                 {
-                    fileStream.CopyTo(data);
-                    fileStream.Dispose();
+                    using Stream assetStream = TitleContainer.OpenStream(FileToDiskManager.NormalizeAndroidAssetPath(path));
+                    assetStream.CopyTo(data);
                 }
+                catch (Exception e)
+                {
+                    Debug.LogError("PCStorage.read Android asset: " + path + ", " + e.Message);
+                }
+            }
+            else if (file.Content || File.Exists(path))
+            {
+                using FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+                fileStream.CopyTo(data);
             }
 
             onComplete();

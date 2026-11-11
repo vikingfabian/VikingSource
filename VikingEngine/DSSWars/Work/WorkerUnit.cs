@@ -6,10 +6,13 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
@@ -36,7 +39,7 @@ namespace VikingEngine.DSSWars.Work
         float finalizeWorkTime;
         GameTimer workAnimation = new GameTimer(1f, true, true);
         bool isShip = false;
-        int prevX, prevZ;
+        IntVector2 prevmapTile;//X, prevZ;
         float walkDist_beforeRefresh = 0f;
         AbsWorkEffect workEffect = null;
         PFaction pFaction;
@@ -50,7 +53,7 @@ namespace VikingEngine.DSSWars.Work
             model = mapObject.pfaction.GetFaction().AutoLoadModelInstance_batched(
                  DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f);
 
-            model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
+            model.position = WP.MaptileToWorldPosXZ(status.subTileStart);
 
 #if DEBUG
             if (Debug.CorruptValue(model.position))
@@ -125,12 +128,12 @@ namespace VikingEngine.DSSWars.Work
 #endif
                         updateGroudY(false);
 
-                        if (Convert.ToInt32(model.position.X) != prevX || Convert.ToInt32(model.position.Z) != prevZ)
+                        IntVector2 maptile = WP.ToMapTilePos(model.position);
+                        if (maptile != prevmapTile)//Convert.ToInt32(model.position.X) != prevX || Convert.ToInt32(model.position.Z) != prevZ)
                         {
-                            prevX = Convert.ToInt32(model.position.X);
-                            prevZ = Convert.ToInt32(model.position.Z);
+                            prevmapTile = maptile;
                             //Tile tile;
-                            if (DssRef.world.tileGrid.TryGet(prevX, prevZ, out Tile tile))
+                            if (DssRef.world.subTileGrid.TryGet(prevmapTile, out var tile))
                             {
                                 isShip = tile.IsWater();
                                 if (isShip)
@@ -144,7 +147,7 @@ namespace VikingEngine.DSSWars.Work
                         {
                             if (/*Ref.TimePassed16ms &&*/ Ref.peRnd.ChanceF(0.3f/Ref.UpdateTimes60FPS))
                             {
-                                Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, Tile.WaterSurfaceY),
+                                Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, MapHeight2.WaterSurfaceY),
                                     DssConst.Men_StandardModelScale * 0.2f, 4);
                             }
                         }
@@ -166,7 +169,7 @@ namespace VikingEngine.DSSWars.Work
                             if (workAnimation_soundframe())
                             {
                                 workEffect?.onSoundAnimation();
-                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile1_1 subTile))
                                 {
                                     switch ((TerrainSubFoilType)subTile.subTerrain)
                                     {
@@ -175,33 +178,51 @@ namespace VikingEngine.DSSWars.Work
                                         case TerrainSubFoilType.TreeHard:
                                             SoundLib.woodcut.Play(model.position);
                                             break;
-                                        case TerrainSubFoilType.TreeApple:
-                                        case TerrainSubFoilType.TreeBanana:
-                                        case TerrainSubFoilType.WheatFarm:
-                                        case TerrainSubFoilType.WheatFarmUpgraded:
-                                        case TerrainSubFoilType.LinenFarm:
-                                        case TerrainSubFoilType.LinenFarmUpgraded:
-                                        case TerrainSubFoilType.RapeSeedFarm:
-                                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                                        case TerrainSubFoilType.HempFarm:
-                                        case TerrainSubFoilType.HempFarmUpgraded:
-                                            if (SoundStackManager.RareAvailable())
-                                            {
-                                                SoundLib.scythe.Play(model.position);
-                                            }
-                                            break;
-                                        case TerrainSubFoilType.StoneBlock:
+                                       
+                                        case TerrainSubFoilType.LargeStones:
                                             SoundLib.pickaxe.Play(model.position);
                                             break;
-                                        case TerrainSubFoilType.ClayPit:
-                                        case TerrainSubFoilType.BogIron:
-                                        case TerrainSubFoilType.Stones:
+                                        //case TerrainSubFoilType.ClayPit:
+                                        //case TerrainSubFoilType.BogIron:
+                                        default:
+                                        case TerrainSubFoilType.SmallStones:
                                             if (SoundStackManager.RareAvailable())
                                             {
                                                 SoundLib.dig.Play(model.position);
                                             }
                                             break;
                                     }
+                                }
+                            }
+                            break;
+                        case WorkType.GatherFarm:
+                            if (workAnimation_soundframe())
+                            {
+                                workEffect?.onSoundAnimation();
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile1_1 subTile))
+                                {
+                                    if (SoundStackManager.RareAvailable())
+                                    {
+                                        SoundLib.scythe.Play(model.position);
+                                    }
+                                    //switch ((TerrainSubFarmType)subTile.subTerrain)
+                                    //{
+                                    //    case TerrainSubFarmType.TreeApple:
+                                    //    case TerrainSubFarmType.TreeBanana:
+                                    //    case TerrainSubFarmType.WheatFarm:
+                                    //    case TerrainSubFarmType.WheatFarmUpgraded:
+                                    //    case TerrainSubFarmType.LinenFarm:
+                                    //    case TerrainSubFarmType.LinenFarmUpgraded:
+                                    //    case TerrainSubFarmType.RapeSeedFarm:
+                                    //    case TerrainSubFarmType.RapeSeedFarmUpgraded:
+                                    //    case TerrainSubFarmType.HempFarm:
+                                    //    case TerrainSubFarmType.HempFarmUpgraded:
+                                    //        if (SoundStackManager.RareAvailable())
+                                    //        {
+                                    //            SoundLib.scythe.Play(model.position);
+                                    //        }
+                                    //        break;
+                                    //}
                                 }
                             }
                             break;
@@ -221,7 +242,7 @@ namespace VikingEngine.DSSWars.Work
                         case WorkType.Craft:
                             if (workAnimation_soundframe())
                             {
-                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile1_1 subTile))
                                 {
                                     var building = (TerrainBuildingType)subTile.subTerrain;
 
@@ -274,7 +295,7 @@ namespace VikingEngine.DSSWars.Work
                         switch (status.work)
                         {
                             case WorkType.GatherFoil:
-                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile1_1 subTile))
                                 {
                                     switch ((TerrainSubFoilType)subTile.subTerrain)
                                     {
@@ -284,22 +305,22 @@ namespace VikingEngine.DSSWars.Work
                                             SoundLib.tree_falling.Play(model.position);
                                             break;
 
-                                        case TerrainSubFoilType.Stones:
+                                        case TerrainSubFoilType.SmallStones:
                                             if (SoundStackManager.RareAvailable())
                                             {
                                                 SoundLib.pickup.Play(model.position);
                                             }
                                             break;
                                     }
-                                    EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
+                                    EditSubTile.OntileChange(status.subTileEnd);
                                 }
                                 break;
                             case WorkType.Plant:
                                 int waterCost;
-                                switch ((TerrainSubFoilType)DssRef.world.subTileGrid.Get(status.subTileEnd).subTerrain)
+                                switch ((TerrainSubFarmType)DssRef.world.subTileGrid.Get(status.subTileEnd).subTerrain)
                                 {
-                                    case TerrainSubFoilType.TreeApple:
-                                    case TerrainSubFoilType.TreeBanana:
+                                    case TerrainSubFarmType.TreeApple:
+                                    case TerrainSubFarmType.TreeBanana:
                                         waterCost = DssConst.OrchardWaterCost;
                                         break;
                                     default:
@@ -309,7 +330,7 @@ namespace VikingEngine.DSSWars.Work
                                 SoundLib.drop_item.Play(model.position);
                                 /*new ResourceEffect*/
                                 SpriteText3D.GetOrCreate().init(ItemResourceType.Water_G, -waterCost, model.position, ResourceEffectType.Add);
-                                EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
+                                EditSubTile.OntileChange(status.subTileEnd);
                                 break;
                             case WorkType.DropOff:
                                 SoundLib.drop_item.Play(model.position);
@@ -379,7 +400,7 @@ namespace VikingEngine.DSSWars.Work
             switch (status.work)
             {
                 case WorkType.Craft:
-                    if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
+                    if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out MapTile1_1 subTile))
                     {
                         var building = (TerrainBuildingType)subTile.subTerrain;
 
@@ -429,7 +450,7 @@ namespace VikingEngine.DSSWars.Work
                 {
                     //remove hidden status
                     model.Visible = true;
-                    model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
+                    model.position = WP.MaptileToWorldPosXZ(status.subTileStart);
 #if DEBUG
                     if (Debug.CorruptValue(model.position))
                     {
@@ -518,9 +539,9 @@ namespace VikingEngine.DSSWars.Work
         {
             ref WorkerStatus status = ref parentMapObject.getRefWorkerStatus(myIndex);
             walkDist_beforeRefresh = 0;
-            goalPos = WP.SubtileToWorldPosXZ(status.subTileEnd);
-            goalPos.X += WorldData.SubTileWidth * 0.25f;
-            goalPos.Z += WorldData.SubTileWidth * 0.1f;
+            goalPos = WP.MaptileToWorldPosXZ(status.subTileEnd);
+            goalPos.X += Map.MapData.MapTile1_1.ModelScale * 0.25f;
+            goalPos.Z += Map.MapData.MapTile1_1.ModelScale * 0.1f;
 
             walkDir = VectorExt.SafeNormalizeV3(goalPos - model.position);
             WP.Rotation1DToQuaterion(model, lib.V2ToAngle(VectorExt.V3XZtoV2(walkDir)));
@@ -558,7 +579,7 @@ namespace VikingEngine.DSSWars.Work
 #if DEBUG
                     resourceModel.DebugName = "resourceModel";
 #endif
-                    resourceModel.AddToRender(DrawGame.UnitDetailLayer);
+                    resourceModel.AddToRender(DrawGame.NearLayer);
                     resourceModel.Rotation = DssLib.FaceCameraRotation;
                 }
                 updateResourceModel();
@@ -576,11 +597,11 @@ namespace VikingEngine.DSSWars.Work
         {
             if (DssRef.world.unitBounds.IntersectPoint(model.position.X, model.position.Z))
             {
-                float y = DssRef.world.SubTileHeight(model.position) + 0.01f;//ModelGroundYAdj;
+                float y = WP.SubTileHeight(model.position) + 0.01f;//ModelGroundYAdj;
 
-                if (y < Tile.UnitMinY)
+                if (y < MapHeight2.UnitMinY)
                 {
-                    y = Tile.UnitMinY;
+                    y = MapHeight2.UnitMinY;
                 }
 
                 if (y != model.position.Y)

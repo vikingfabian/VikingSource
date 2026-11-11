@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Steamworks;
@@ -1190,7 +1190,11 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                                 {
                                     using (FileStream stream = new FileStream(path.CompleteLocalPath(false), FileMode.Open))
                                     {
-                                        var texture = Texture2D.FromStream(Draw.graphicsDeviceManager.GraphicsDevice, stream);
+                                        Texture2D texture;
+                                        using (Graphics.GpuResourceSync.Acquire())
+                                        {
+                                            texture = Graphics.GpuResourceSync.Track(Texture2D.FromStream(Draw.graphicsDeviceManager.GraphicsDevice, stream));
+                                        }
                                         file.Tag = texture;
 
                                         menu_sp.needRefresh = true;

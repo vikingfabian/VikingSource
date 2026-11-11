@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Delivery;
@@ -79,7 +80,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         if (!correctOwner && DssRef.world.diplomacy.GetRelation(pfaction, othercity.pfaction).Relation >= RelationType.RelationType2_Good)
                                         {
                                             correctOwner = true;
-                                            if (!othercity.IsNetHosted && status.remoteDeliveryUpdateRequest.minPassed(5))
+                                            if (!othercity.IsNetHosted && status.remoteDeliveryUpdateRequest.hasMinPassed(5))
                                             { 
                                                 var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssDeliverStatusRequest, Network.PacketReliability.Unrelyable,
                                                     Network.SendPacketTo.OneSpecific, othercity.NetHostingPeer().fullId, out var packet);
@@ -138,7 +139,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                             if (status.countdown.TimeOut())
                             {
-                                City othercity = DssRef.world.cities[status.inProgress.ToCity()];
+                                City othercity = DssRef.world.cities.GetIndex_Safe(status.inProgress.ToCity());
 
                                 if (othercity.pfaction != pfaction && !othercity.IsNetHosted)
                                 {
@@ -190,7 +191,7 @@ namespace VikingEngine.DSSWars.GameObject
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                     while (citiesC.Next(ref pfaction.GetFaction().cities, DssRef.world.cities, out City citySel))
                     {
-                        if (citySel != this && tilePos.SideLength(citySel.tilePos) <= DssConst.DeliveryMaxDistance)
+                        if (citySel != this && maptilePos.SideLength(citySel.maptilePos) <= DssConst.DeliveryMaxDistance)
                         {
                             if (status.CanRecieve(sendItem, citySel.myIndex, out int hasAmount))
                             {

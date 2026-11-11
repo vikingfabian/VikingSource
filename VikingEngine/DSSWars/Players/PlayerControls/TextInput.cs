@@ -34,4 +34,29 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             base.textInput_complete(result, tag);
         }
     }
+
+    class CityProfileTextInput : AbsTextInputUpdate
+    {        
+        public CityProfileTextInput()
+            : base()
+        {
+            string name = DssRef.storage.cityProfileStorage.profiles.Sel().name;
+            init(name, null, null);
+            InitComplete();
+        }
+
+        public override void textInput_refresh(bool textLengthChanged)
+        {
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                p.hud.needRefresh = true;
+            }
+        }
+
+        public override void textInput_complete(string result, object tag)
+        {
+            DssRef.storage.cityProfileStorage.profiles.Sel().NameEditEvent(result, tag);
+            base.textInput_complete(result, tag);
+        }
+    }
 }

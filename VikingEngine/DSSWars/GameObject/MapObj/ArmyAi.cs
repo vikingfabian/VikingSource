@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Players;
@@ -41,15 +42,13 @@ namespace VikingEngine.DSSWars.GameObject
         public IntVector2 walkGoal, adjustedWalkGoal;
         GameTimeStamp teleportTime;
 
+        
+        GameTimeStamp lastActiveTime = GameTimeStamp.None;
         public IntVector2 nextNodePos;
         public AbsMapObject attackTarget = null;
         public PFaction attackTargetFaction;
-        //bool nextPathNode = false;
-            
-        //public ArmyAi(Army army)
-        //{
-        //    this.army = army;
-        //}
+        
+
 
         public void aiUpdate(bool fullUpdate)
         {
@@ -150,7 +149,7 @@ namespace VikingEngine.DSSWars.GameObject
             return objective == ArmyObjective.Attack && path.NodeCountLeft() == 3;
         }
 
-        public void asyncPathUpdate(int pathThreadIndex)
+        public void asyncPathUpdate(Path3Thread thread)
         {
             //if (IdleObjetive())
             //{
@@ -187,7 +186,7 @@ namespace VikingEngine.DSSWars.GameObject
             var groupsC = groups.counter();
             while (groupsC.Next())
             {
-                groupsC.sel.asyncPathUpdate(pathThreadIndex);
+                groupsC.sel.asyncPathUpdate(thread);
             }
         }
 
@@ -347,7 +346,7 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        public void Ai_Order_MoveTo(IntVector2 goalTilePos)
+        public void Ai_Order_MoveTo(Vector3 goalPos)
         {
             //if (orderOutsidePlayerAttension(goalTilePos))
             //{
@@ -359,7 +358,7 @@ namespace VikingEngine.DSSWars.GameObject
             //}
             //else
             //{ 
-                Order_MoveTo(goalTilePos);
+                Order_MoveTo(WP.ToMapTilePos(goalPos));
             //}
         }
 
@@ -379,7 +378,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void calcTeleportTime(IntVector2 to)
         {
-            float dist = to.SideLength(tilePos);
+            float dist = to.SideLength(maptilePos);
             float speedPerSec = (isShip ? transportSpeedSea : transportSpeedLand) * TimeExt.SecondToMs;
             float time = dist / speedPerSec;
             teleportTime.setTimeFromNow(time); //= Ref.TotalGameTimeSec + time;
@@ -425,7 +424,7 @@ namespace VikingEngine.DSSWars.GameObject
         bool orderOutsidePlayerAttension(AbsMapObject target)
         {            
             return target.pfaction.TryGetAiPlayer(out _) &&
-                orderOutsidePlayerAttension(target.tilePos);
+                orderOutsidePlayerAttension(target.maptilePos);
         }
 
         bool orderOutsidePlayerAttension(IntVector2 to)
@@ -433,7 +432,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             return Ref.peRnd.Chance(0.4) &&
                 !inRender_overviewLayer &&
-                DssRef.state.culling.outsidePlayerAttension(tilePos) &&
+                DssRef.state.culling.outsidePlayerAttension(maptilePos) &&
                 DssRef.state.culling.outsidePlayerAttension(to);
         }
 
@@ -448,7 +447,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             clearObjective();
 
-            if (goalTilePos != tilePos)
+            if (goalTilePos != maptilePos)
             {
                 walkGoal = goalTilePos;
                 adjustedWalkGoal = walkGoal;
@@ -485,16 +484,16 @@ namespace VikingEngine.DSSWars.GameObject
             clearObjective();
             objective = ArmyObjective.Halt;
 
-            setWalkNode(tilePos, true, false, false);
+            setWalkNode(maptilePos, true, false, false);
             onNewGoal(false);
         }
 
         void onNewGoal(bool teleport)
         {
             IntVector2 goal;
-            if (IdleObjetive())
+            if (IdleObjective())
             {
-                goal = tilePos;
+                goal = maptilePos;
                 //needPath_playerview = false;
             }
             else if (objective == ArmyObjective.Attack || objective == ArmyObjective.TeleportAttack)
@@ -502,11 +501,11 @@ namespace VikingEngine.DSSWars.GameObject
                 AbsMapObject attackTarget_sp = attackTarget;
                 if (attackTarget_sp != null)
                 {
-                    goal = attackTarget_sp.tilePos;
+                    goal = attackTarget_sp.maptilePos;
                 }
                 else
                 {
-                    goal = tilePos;
+                    goal = maptilePos;
                 }
             }
             else
@@ -515,22 +514,22 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
 
-            if (DssRef.world.tileGrid.TryGet(goal, out var tile))
+            if (DssRef.world.subTileGrid.TryGet(goal, out var tile))
             {
-                if (tile.tileContent == TileContent.City)
+                if (tile.TileContentIsCity())
                 {
-                    IntVector2 dir = walkGoal - tilePos;
+                    IntVector2 dir = walkGoal - maptilePos;
                     if (dir.HasValue())
                     {
                         IntVector2 adjusted = goal - dir.Normal();
-                        if (DssRef.world.tileGrid.Get(adjusted).IsWater())
+                        if (DssRef.world.subTileGrid.Get(adjusted).IsWater())
                         {
                             int closestDist = 10;
 
                             for (Dir8 d = 0; d < Dir8.NUM; d++)
                             {
                                 IntVector2 pos = IntVector2.FromDir8(d) + goal;
-                                if (DssRef.world.tileGrid.Get(pos).IsLand())
+                                if (DssRef.world.subTileGrid.Get(pos).IsLand())
                                 {
                                     var l = goal.SideLength(pos);
                                     if (l < closestDist)
@@ -548,7 +547,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 walkGoal = goal;
 
-                walkGoalAsShip = DssRef.world.tileGrid.Get(goal).IsWater();
+                walkGoalAsShip = DssRef.world.subTileGrid.Get(goal).IsWater();
                 refreshGroupPlacements2(goal, true, teleport);
 
                 goalId++;
@@ -589,7 +588,7 @@ namespace VikingEngine.DSSWars.GameObject
                 var center = groups.GetIndex_Safe(mostCenterGroup);
                 if (center != null)
                 {
-                    var path_sp = center.path;
+                    var path_sp = center.path_old;
 
                     if (path_sp == null)
                     {
@@ -718,7 +717,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
        
-        override public bool IdleObjetive()
+        override public bool IdleObjective()
         {
             if (objective == ArmyObjective.Attack) 
             {

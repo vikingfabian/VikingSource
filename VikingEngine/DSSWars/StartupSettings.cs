@@ -8,9 +8,10 @@ namespace VikingEngine.DSSWars
 {
     static class StartupSettings 
     {
-        public static string LeaderboardVersion = "aug2026";
+        public const bool AlwaysRefreshMap = true;
+        public static string LeaderboardVersion = "may2027";
         public static bool LeaderboardInBeta = PlatformSettings.DevBuild ? true :
-           false; //RETAIL
+           true; //RETAIL
 
         //public static bool AutoStartLevel = false;
 
@@ -26,13 +27,15 @@ namespace VikingEngine.DSSWars
 
 
         //## DEFAULT FALSE ##
-        public static bool EndlessResources = PlatformSettings.DevBuild ? true : 
+        public static bool ViewCoords = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE    
+        public static bool EndlessResources = PlatformSettings.DevBuild ? true :
+                    false;//DO NOT CHANGE    
 
-        public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? true :
+        public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
 
-        public static bool UnlockAllProgress = PlatformSettings.DevBuild ? false :
+        public static bool UnlockAllProgress = PlatformSettings.DevBuild ? true :
             false;//DO NOT CHANGE
 
         public static bool PauseCheat = PlatformSettings.DevBuild ? false :
@@ -50,16 +53,13 @@ namespace VikingEngine.DSSWars
         public static bool DebugResoursesSuperSpeed = PlatformSettings.DevBuild ? false :
            false;//DO NOT CHANGE
         
-        public static bool BlockBackgroundLoading = PlatformSettings.DevBuild ? false :
-            false;//DO NOT CHANGE
-
         public static bool BlockMessages = PlatformSettings.DevBuild ? false :
            false;//DO NOT CHANGE
 
         public static bool BlockTooltip = PlatformSettings.DevBuild ? false :
           false;//DO NOT CHANGE
 
-        public static MapSize? SaveLoadSpecificMap = PlatformSettings.DevBuild ? null :
+        public static MapSizeCategory? SaveLoadSpecificMap = PlatformSettings.DevBuild ? null :
             null;//DO NOT CHANGE
 
 

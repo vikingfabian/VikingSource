@@ -77,7 +77,7 @@ namespace VikingEngine.Graphics
             const float MinChaseSpeed = 0.0001f;
             if (l > MinChaseSpeed)
             {
-                for (int i = 0; i < Ref.TimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.TimePassed33ms; ++i)//if (Ref.TimePassed16ms)
                 {
                     currentChaseLength = l * positionChaseLengthPercentage;
                     currentChaseLength = Bound.Set(currentChaseLength, MinChaseSpeed, maxChaseLength);
@@ -188,7 +188,7 @@ namespace VikingEngine.Graphics
                     }
                 }
 
-                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)
+                for (int i = 0; i < Ref.GameTimePassed33ms; ++i)
                 {
                     currentZoom += (targetZoom - currentZoom) * zoomChaseLengthPercentage;
                 }

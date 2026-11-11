@@ -19,9 +19,11 @@ namespace VikingEngine.PJ
         public VectorRect activeScreenArea;
         public VectorRect activeScreenSafeArea;
 
-        public List2<GamerData> joinedLocalGamers;
+        public List2_old<GamerData> joinedLocalGamers;
         public int matchCount;
         public float timeSinceInput = 0;
+
+        public bool IgnoredLostController = false;
               
 
         public AbsPJGameState(bool isPlayState)
@@ -87,26 +89,42 @@ namespace VikingEngine.PJ
 
         protected bool pauseInput(out InputSource inputType)
         {
+#if PJ
             if (Input.Keyboard.KeyDownEvent(Keys.Escape))
             {
                 inputType = new InputSource( InputSourceType.Keyboard);
                 return true;
             }
 
-            foreach (XController controller in Input.XInput.controllers)
+            if (Ref.steam.isInitialized)
             {
-                if (controller.Connected && 
-                    (controller.KeyDownEvent(Buttons.Start) || controller.BackButtonDownEvent()))
+                foreach (var controller in Input.XInput.controllers)
                 {
-                    Engine.XGuide.LocalHostIndex = controller.Index;
-                    inputType = new InputSource(InputSourceType.XController, controller.Index);
-                    return true;
+                    if (Ref.steam.input.AnyKeyDownEvent(SteamDigitalAction.Action_Start))
+                    {
+                        Engine.XGuide.LocalHostIndex = controller.Index;
+                        inputType = new InputSource(InputSourceType.SteamInput, controller.Index);
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                foreach (XController controller in Input.XInput.controllers)
+                {
+                    if (controller.Connected &&
+                        (controller.KeyDownEvent(Buttons.Start) || controller.BackButtonDownEvent()))
+                    {
+                        Engine.XGuide.LocalHostIndex = controller.Index;
+                        inputType = new InputSource(InputSourceType.XController, controller.Index);
+                        return true;
+                    }
                 }
             }
 
             checkIdlePlay();
 
-
+#endif
             inputType = InputSource.Empty;
             return false;
         }
@@ -184,7 +202,8 @@ namespace VikingEngine.PJ
                 Engine.Sound.PauseAllLoopedSounds(false);
                 if (hasMusic)
                 {
-                    MediaPlayer.Resume();
+                    //MediaPlayer.Resume();
+                    Ref.music.Resume();
                 }
                 closeMenu();
 
@@ -197,7 +216,8 @@ namespace VikingEngine.PJ
             if (pauseMenu == null && isPlayState)
             {
                 timeSinceInput = 0;
-                MediaPlayer.Pause();
+                // MediaPlayer.Pause();
+                Ref.music.Pause();
                 Engine.Sound.PauseAllLoopedSounds(true);
 
                 setMenuLayer();
@@ -221,7 +241,11 @@ namespace VikingEngine.PJ
 
             foreach (var m in joinedLocalGamers)
             {
-                if (m.button.inputSource == InputSourceType.XController)
+                if (m.button.inputSource == InputSourceType.SteamInput)
+                {
+                    Ref.steam.input.controllers[m.button.ControllerIndex].hasUser = true;
+                }
+                else if (m.button.inputSource == InputSourceType.XController)
                 {
                     Input.XInput.Instance(m.button.ControllerIndex).hasUser = true;
                 }
@@ -232,14 +256,28 @@ namespace VikingEngine.PJ
 
         protected void updateLostControllers()
         {
-            if (lostControllerTimer.CountDown())
+            if (!IgnoredLostController && lostControllerTimer.CountDown())
             {
-                foreach (var m in Input.XInput.controllers)
+                if (Ref.steam.isInitialized)
                 {
-                    if (m.hasUser && !m.Connected)
+                    foreach (var m in Ref.steam.input.controllers)
                     {
-                        onLostController();
-                        return;
+                        if (m != null && m.hasUser && !m.connected)
+                        {
+                            onLostController();
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var m in Input.XInput.controllers)
+                    {
+                        if (m.hasUser && !m.Connected)
+                        {
+                            onLostController();
+                            return;
+                        }
                     }
                 }
             }

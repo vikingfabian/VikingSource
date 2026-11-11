@@ -8,6 +8,8 @@ using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.Input;
+using VikingEngine.LootFest;
+using VikingEngine.LootFest.GO.Characters;
 using VikingEngine.Sound;
 using VikingEngine.SteamWrapping;
 
@@ -89,17 +91,30 @@ namespace VikingEngine.PJ
             Engine.LoadContent.LoadSound(LoadedSound.wolfScare, PjLib.ContentFolder + "jump_scare");
             Engine.LoadContent.LoadSound(LoadedSound.bassdrop, PjLib.ContentFolder + "Bassbomb");
             part++;
+
+            SoundManager.whip = new SoundContainerSingle(PjLib.SoundFolder + "whip_normal", 0.7f);
+            SoundManager.whip_perfect = new SoundContainerSingle(PjLib.SoundFolder + "whip_perfect", 0.7f);
+            SoundManager.whip_fail = new SoundContainerSingle(PjLib.SoundFolder + "whip_fail", 0.7f);
+            SoundManager.success = new SoundContainerSingle(PjLib.SoundFolder + "Heal", 0.7f);
+            SoundManager.scroll_back = new SoundContainerSingle(PjLib.SoundFolder + "scroll_back", 0.8f);
+            SoundManager.scroll_forward = new SoundContainerSingle(PjLib.SoundFolder + "scroll_forward", 0.8f);
+            SoundManager.option_select = new SoundContainerSingle(PjLib.SoundFolder + "option_select", 0.2f);
+            SoundManager.option_deselect = new SoundContainerSingle(PjLib.SoundFolder + "option_deselect", 0.7f);
+            SoundManager.soft_buzz_error = new SoundContainerSingle(PjLib.SoundFolder + "soft_buzz_error", 0.1f);
+
+
             //Ref.music = new Sound.MusicPlayer();
-            PjRef.JoustSong = new Sound.SongData(PjLib.ContentFolder + "Hemisphere Three", "Standard Joust", null, false, 1f);
-            PjRef.JoustSong.LoadAndStore();
-            PjRef.LobbySong = new Sound.SongData(PjLib.ContentFolder + "Elevating", "Lobby", null, true, 0.3f);
-            PjRef.LobbySong.LoadAndStore();
+            //PjRef.JoustSong = new Sound.SongData(PjLib.ContentFolder + "Hemisphere Three", "Standard Joust", null, false, 1f);
+            //PjRef.JoustSong.LoadAndStore();
+            //PjRef.LobbySong = new Sound.SongData(PjLib.ContentFolder + "Elevating", "Lobby", null, true, 0.3f);
+            //PjRef.LobbySong.LoadAndStore();
             part++;
 
             VikingEngine.HUD.Gui.LoadContent();
             part++;
             new LoadBaseTextures();
             new SpriteSheet();
+            HudLib.Init();
             part++;
 
             PjRef.Init();
@@ -111,11 +126,12 @@ namespace VikingEngine.PJ
 
         protected override void asyncDataProcessLoading()
         {
+            
         }
 
         protected override void asyncStorageLoading(ref int part)
         {
-            new Storage();
+            new Storage(true);
             part++;
         }
 
@@ -150,15 +166,25 @@ namespace VikingEngine.PJ
             //Engine.XGuide.LocalHostIndex = SignedInPLayer;
 
             //if (PlatformSettings.DevBuild)
+#if DEBUG
             {
+                //new StupidHorse.StupidHorseScene(new List2<GamerData> {
+                //    new GamerData() { button = new KeyboardButtonMap(
+                //    Microsoft.Xna.Framework.Input.Keys.Space), joustAnimal = JoustAnimal.Pig1, hat =  Hat.NoHat  },
+
+                //    new GamerData() { button = new KeyboardButtonMap(
+                //    Microsoft.Xna.Framework.Input.Keys.Right), joustAnimal = JoustAnimal.Bird1, hat =  Hat.NoHat  }
+                //}, 0);
+                //return;
                 //new MiniGolf.MinigolfState();
                 //    //new SpaceWar.SpacePlayState();
                 //    //new GameState.WolfScare();
                 //    //new Strategy.Editor();
                 //    //new Story.LoadMapState();//Story.StoryPlayState();
                 //    new Bagatelle.BagatellePlayState(null, 0);
+
             }
-            
+#endif
             new LobbyState();
         }
 

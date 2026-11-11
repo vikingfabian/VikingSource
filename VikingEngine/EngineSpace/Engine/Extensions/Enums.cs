@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -689,7 +689,7 @@ namespace VikingEngine
         Xbox,
         PCGame,
     }
-    enum StartProgram
+    public enum StartProgram
     {
         LootFest3,
         //Seedgenerator,

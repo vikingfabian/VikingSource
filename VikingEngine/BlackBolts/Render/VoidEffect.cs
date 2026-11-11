@@ -24,7 +24,7 @@ namespace VikingEngine.Core.BlackBolts.Render
         {
             plane.Rotation.RotateWorldX(0.005f * Ref.DeltaGameTimeMs);
 
-            if (timeStamp.secPassed(0.8f))
+            if (timeStamp.hasSecPassed(0.8f))
             {
                 DeleteMe();
             }

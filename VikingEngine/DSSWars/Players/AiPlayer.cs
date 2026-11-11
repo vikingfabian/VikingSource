@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using VikingEngine.Core.DSSWars.Data.GameSetup;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
@@ -707,7 +709,7 @@ namespace VikingEngine.DSSWars.Players
                         faction.growthMultiplier = 1.5f;
                         faction.viewOnLargeMap = true;
                         faction.storyProtectedFaction = true;
-                        faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 10);
+                        faction.addGold_factionWide(CityHallSetup.HeadCityStartMaxWorkForce * 10);
                         techSetup();
                         faction.technology.blackPowder.points = TechnologyTemplate.FactionUnlock;
                     }
@@ -853,7 +855,7 @@ namespace VikingEngine.DSSWars.Players
                     name = DssRef.lang.FactionName_SouthHara;
                     faction.viewOnLargeMap = true;
                     faction.storyProtectedFaction = true;
-                    faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 5);
+                    faction.addGold_factionWide(CityHallSetup.HeadCityStartMaxWorkForce * 5);
 
                     techSetup();
                     faction.technology.catapult.points = TechnologyTemplate.FactionUnlock;
@@ -872,7 +874,7 @@ namespace VikingEngine.DSSWars.Players
                         faction.growthMultiplier = 4f;
                         faction.hasDeserters = false;
                         
-                        faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
+                        faction.addGold_factionWide(CityHallSetup.HeadCityStartMaxWorkForce * 1000);
 
                         techSetup();
                     }
@@ -886,7 +888,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 4f;
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_Hatu;
-                    faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
+                    faction.addGold_factionWide(CityHallSetup.HeadCityStartMaxWorkForce * 1000);
                     techSetup();
                     break;
 
@@ -902,7 +904,7 @@ namespace VikingEngine.DSSWars.Players
                         faction.growthMultiplier = 4f;
                         faction.hasDeserters = false;
                         
-                        faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 1000);
+                        faction.addGold_factionWide(CityHallSetup.HeadCityStartMaxWorkForce * 1000);
                         techSetup();
                     }
                     break;
@@ -940,7 +942,7 @@ namespace VikingEngine.DSSWars.Players
                     defaultSetup();
                     techSetup();
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
-                    faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 10);
+                    faction.addGold_factionWide(CityHallSetup.HeadCityStartMaxWorkForce * 10);
                     return true;
                 }
 
@@ -1482,6 +1484,7 @@ namespace VikingEngine.DSSWars.Players
 
         void settlerCheck()
         {
+            /*
             var faction = pfaction.GetFaction();
             if (faction.cities.Count > 0)
             {
@@ -1506,24 +1509,27 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
             }
+            */
         }
 
         void armiesWithSettlerUpdate()
         {
+            /*
             var armiesC = pfaction.GetFaction().armies.counter();
             while (armiesC.Next())
             {
-                if (DssRef.world.tileGrid.TryGet(armiesC.sel.tilePos, out var tile))
+                if (DssRef.world.tileGrid.TryGet(armiesC.sel.maptilePos, out var tile))
                 {
-                    var city = tile.City();
+                    var city = tile.pcity.City();
                     if (city.cityType == CityType.UnClaimed &&
-                        city.tilePos.SideLength(armiesC.sel.tilePos) <= 2 &&
+                        city.maptilePos.SideLength(armiesC.sel.maptilePos) <= 2 &&
                         armiesC.sel.HasSettler(out var settler))
                     {
-                        SettlerCommandTarget.OrderSettler(settler, city.cityHallSubtilePos);
+                        SettlerCommandTarget.OrderSettler(settler, city.maptilePos);
                     }
                 }
             }
+            */
         }
 
         void diplomacyCheck(List<PFaction> wars)
@@ -1791,7 +1797,7 @@ namespace VikingEngine.DSSWars.Players
                         for (int i = 0; i < Trials; i++)
                         {
                             var army = faction.armies.GetRandomUnsafe(Ref.rnd);
-                            if (army != null && army.IdleObjetive() && army.groups.Count >= 5)
+                            if (army != null && army.IdleObjective() && army.groups.Count >= 5)
                             {
                                 mainArmy = army;
                                 mainArmyState = MainArmyState_CollectSupport;
@@ -1876,7 +1882,7 @@ namespace VikingEngine.DSSWars.Players
                             nextDecisionTimer.MilliSeconds += 4000;
                             if (city.distanceTo(mainArmy) > 2)
                             {
-                                mainArmy.Ai_Order_MoveTo(city.tilePos);
+                                mainArmy.Order_MoveTo(city.maptilePos);
                             }
                         }
                         else
@@ -1909,7 +1915,7 @@ namespace VikingEngine.DSSWars.Players
 
                     if (city != null)
                     {
-                        collectLooseArmies(city.tilePos);
+                        collectLooseArmies(city.maptilePos);
                     }
                     else
                     {
@@ -1919,7 +1925,7 @@ namespace VikingEngine.DSSWars.Players
                 else if (mainArmyState == MainArmyState_Attack ||
                     mainArmyState == MainArmyState_Defend)
                 {
-                    if (mainArmy.IdleObjetive())
+                    if (mainArmy.IdleObjective())
                     {
                         mainArmyState = MainArmyState_CollectSupport;
                     }
@@ -1932,14 +1938,14 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        if (DssRef.world.tileGrid.TryGet(mainArmy.tilePos, out Tile tile))
+                        if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(mainArmy.maptilePos), out SumTile4_4 tile) && tile.pcity.HasValue())
                         {
-                            var city = tile.City();
-                            if (city.pfaction == pfaction)
+                            var city = tile.pcity.City();
+                            if (city != null && city.pfaction == pfaction)
                             {
                                 if (city.distanceTo(mainArmy) <= 2)
                                 {
-                                    collectLooseArmies(city.tilePos);
+                                    collectLooseArmies(city.maptilePos);
                                     //mainArmyBuyAtCity(city);
                                     mainArmyState = MainArmyState_BuySoldiers;
                                     mainArmyBuyAtCity(city, false);
@@ -1947,7 +1953,7 @@ namespace VikingEngine.DSSWars.Players
                                 }
                                 else
                                 {
-                                    mainArmy.Ai_Order_MoveTo(city.tilePos);
+                                    mainArmy.Order_MoveTo(city.maptilePos);
                                 }
                             }
                         }
@@ -1995,7 +2001,7 @@ namespace VikingEngine.DSSWars.Players
             }
             if (mainArmyState == MainArmyState_Attack || mainArmyState == MainArmyState_Defend)
             {
-                return !mainArmy.IdleObjetive();
+                return !mainArmy.IdleObjective();
             }
             return false;
         }
@@ -2050,7 +2056,7 @@ namespace VikingEngine.DSSWars.Players
                 double chance = army.objective == ArmyObjective.None ? 0.8 : 0.1;
                 if (a != mainArmy && Ref.rnd.Chance(chance))
                 {
-                    army.Ai_Order_MoveTo(toPos);
+                    army.Order_MoveTo(toPos);
                 }
             }
         }
@@ -2064,23 +2070,29 @@ namespace VikingEngine.DSSWars.Players
 
             City city = null;
 
-            EcsStaticArrayCounter neighbors = inDanger.CityNeighbors();
-            while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (int m in inDanger.neighborCities)
+            CityCollection ncoll = inDanger.Neighbors();
             {
+                //EcsStaticArrayCounter neighbors = inDanger.CityNeighbors();
+                //while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (int m in inDanger.neighborCities)
+                //{
                 //City c = DssRef.world.cities[m];
-                if (nCity.pfaction == pfaction)
+                foreach (var pnCity in ncoll.list)
                 {
-                    if (city == null)
+                    City nCity = pnCity.City();
+                    if (nCity.pfaction == pfaction)
                     {
-                        city = nCity;
-                    }
-                    else if (nCity.workForce.amount > city.workForce.amount)
-                    {
-                        city = nCity;
+                        if (city == null)
+                        {
+                            city = nCity;
+                        }
+                        else if (nCity.workForce.amount > city.workForce.amount)
+                        {
+                            city = nCity;
+                        }
                     }
                 }
             }
-
+            City.ReturnToPool(ncoll);
             return city;
         }
 
@@ -2116,7 +2128,7 @@ namespace VikingEngine.DSSWars.Players
 
             bool check(City city)
             {
-                DssRef.world.unitCollAreaGrid.collectOpponentArmies(pfaction, city.tilePos, 1, DssRef.world.unitCollAreaGrid.armies_aiUpdate);
+                DssRef.world.unitCollAreaGrid.collectOpponentArmies(pfaction, city.maptilePos, 1, DssRef.world.unitCollAreaGrid.armies_aiUpdate);
 
 
                 foreach (var army in DssRef.world.unitCollAreaGrid.armies_aiUpdate)
@@ -2153,35 +2165,42 @@ namespace VikingEngine.DSSWars.Players
 
         public bool IsWarBorderCity(City city, bool inWarOnly)
         {
-            EcsStaticArrayCounter neighbors = city.CityNeighbors();
-            while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var nIx in city.neighborCities)
+            CityCollection ncoll = city.Neighbors();
             {
+                //EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                //while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var nIx in city.neighborCities)
+                //{
                 //var nCity = DssRef.world.cities[nIx];
-                if (nCity.pfaction != pfaction
-                    && nCity.pfaction.TryGetFaction(out _))
+                foreach (var pnCity in ncoll.list)
                 {
-                    //if (nCity.pfaction != faction.myIndex)
-                    //{
+                    City nCity = pnCity.City();
+                    if (nCity.pfaction != pfaction
+                        && nCity.pfaction.TryGetFaction(out _))
+                    {
+                        //if (nCity.pfaction != faction.myIndex)
+                        //{
                         var relation = DssRef.world.diplomacy.GetRelation(nCity.pfaction, pfaction);
-                    if (relation.Relation <= RelationType.RelationTypeN1_Enemies)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-
-                        if (!inWarOnly &&
-                            relation.Relation <= RelationType.RelationType0_Neutral &&
-                            nCity.pfaction.TryGetFaction(out var nf) && 
-                            pfaction.TryGetFaction(out var f) &&
-                            nf.militaryStrength > f.militaryStrength * 2)
+                        if (relation.Relation <= RelationType.RelationTypeN1_Enemies)
                         {
                             return true;
                         }
+                        else
+                        {
+
+                            if (!inWarOnly &&
+                                relation.Relation <= RelationType.RelationType0_Neutral &&
+                                nCity.pfaction.TryGetFaction(out var nf) &&
+                                pfaction.TryGetFaction(out var f) &&
+                                nf.militaryStrength > f.militaryStrength * 2)
+                            {
+                                return true;
+                            }
+                        }
+                        //}
                     }
-                    //}
                 }
             }
+            City.ReturnToPool(ncoll);
 
             return false;
         }
@@ -2215,7 +2234,7 @@ namespace VikingEngine.DSSWars.Players
                         return null;
                     }
 
-                    float l = (otherCity.tilePos - myCity.tilePos).Length();
+                    float l = (otherCity.maptilePos - myCity.maptilePos).Length();
 
                     if (l < closestDistance)
                     { 
@@ -2243,31 +2262,37 @@ namespace VikingEngine.DSSWars.Players
                 {
                     return null;
                 }
-
-                EcsStaticArrayCounter neighbors = myCity.CityNeighbors();
-                while (neighbors.Next(DssRef.world.cities, out City nCity))
+                CityCollection ncoll = myCity.Neighbors();
                 {
-                    var cityFaction = nCity.pfaction.GetFaction();
-                    if (cityFaction != null && cityFaction != faction && cityFaction != weakestOpponent)
+                    //    EcsStaticArrayCounter neighbors = myCity.CityNeighbors();
+                    //while (neighbors.Next(DssRef.world.cities, out City nCity))
+                    //{
+                    foreach (var pnCity in ncoll.list)
                     {
-                        if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium &&
-                            cityFaction.player.IsLocalPlayer())
+                        City nCity = pnCity.City();
+                        var cityFaction = nCity.pfaction.GetFaction();
+                        if (cityFaction != null && cityFaction != faction && cityFaction != weakestOpponent)
                         {
-                            return myCity;
-                        }
+                            if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium &&
+                                cityFaction.player.IsLocalPlayer())
+                            {
+                                return myCity;
+                            }
 
-                        if (weakestOpponent == null)
-                        {
-                            city = myCity;
-                            weakestOpponent = cityFaction;
-                        }
-                        else if (cityFaction.militaryStrength < weakestOpponent.militaryStrength)
-                        {
-                            city = myCity;
-                            weakestOpponent = cityFaction;
+                            if (weakestOpponent == null)
+                            {
+                                city = myCity;
+                                weakestOpponent = cityFaction;
+                            }
+                            else if (cityFaction.militaryStrength < weakestOpponent.militaryStrength)
+                            {
+                                city = myCity;
+                                weakestOpponent = cityFaction;
+                            }
                         }
                     }
                 }
+                City.ReturnToPool(ncoll);
             }
 
             return city;
@@ -2281,7 +2306,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 //if (armyC.sel.ai.objective == ArmyObjective.None)
                 //{
-                var otherArmy = DssRef.world.unitCollAreaGrid.AdjacenToArmy(pfaction, armyC.sel.pointer(), armyC.sel.tilePos, Army.MaxTradeDistance +1);
+                var otherArmy = DssRef.world.unitCollAreaGrid.AdjacenToArmy(pfaction, armyC.sel.armyPointer(), armyC.sel.maptilePos, Army.MaxTradeDistance +1);
                 if (otherArmy != null)
                 {
                     Army army1, army2;
@@ -2387,7 +2412,7 @@ namespace VikingEngine.DSSWars.Players
             for (int i = 0; i < 3; i++)
             {
                 var army2 = faction.armies.GetRandomUnsafe(Ref.rnd);
-                if (army2 != null && army2.IdleObjetive())
+                if (army2 != null && army2.IdleObjective())
                 {
                     if (army == null ||
                         army2.strengthValue > army.strengthValue)
@@ -2405,7 +2430,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.state.events.RunAi() && army != null && opponent != null)
             {
-                var areaPos = UnitCollAreaGrid.ToAreaPos(army.tilePos);
+                var areaPos = UnitCollAreaGrid.ToAreaPos(army.maptilePos);
                 DssRef.world.unitCollAreaGrid.collectCitiesAndArmies(areaPos, 2, army.strengthValue * 0.8f, DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate,
                     PFaction.Empty, opponent.pfaction);
                 if (DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate.Count > 0)
@@ -2427,7 +2452,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 //var faction = pfaction.GetFaction();
 
-                var areaPos = UnitCollAreaGrid.ToAreaPos(army.tilePos);
+                var areaPos = UnitCollAreaGrid.ToAreaPos(army.maptilePos);
 
                 int compareCityCount = 4;
 
@@ -2438,7 +2463,7 @@ namespace VikingEngine.DSSWars.Players
                 //TODO pick random city
                 foreach (var city in DssRef.world.unitCollAreaGrid.cities_aiUpdate)
                 {
-                    if (city.cityType > CityType.UnClaimed && army.strengthValue > city.strengthValue + city.ai_armyDefenceValue)
+                    if (/*city.cityType > CityType.UnClaimed &&*/ army.strengthValue > city.strengthValue + city.ai_armyDefenceValue)
                     {
                         if (DssRef.world.diplomacy.botMayStartWar(pfaction.GetFaction(), city.pfaction.GetFaction(), warCount))//mayAttackFaction(city.GetFaction()))
                         {

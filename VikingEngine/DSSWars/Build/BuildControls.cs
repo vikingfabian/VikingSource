@@ -10,11 +10,16 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine;
+using VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Defence;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Presentation;
@@ -48,6 +53,7 @@ namespace VikingEngine.DSSWars.Build
         
         public SelectTileResult buildMode = SelectTileResult.None;
         public BuildAndExpandType placeBuildingType = BuildAndExpandType.OrchardApple;
+        public GroundType placeTerraformType = GroundType.Default;
         bool availableBuildingType = true;
         public MapPaintToolShape toolShape = MapPaintToolShape.Area;
 
@@ -56,6 +62,8 @@ namespace VikingEngine.DSSWars.Build
         City city;
         bool blockBuildUpdate = false;
         public bool ordersDifferFromPriority = false;
+
+        public DetailEditorTool editorTool = null;
 
         public BuildAndExpandType CompressedBuildMode()
         {
@@ -85,7 +93,7 @@ namespace VikingEngine.DSSWars.Build
         {
             this.city = city;
             List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-            BuildLib.AvailableBuildTypes(available, city, false);
+            AvailableBuildTypes.Available(available, city, false);
             availableBuildingType = available.Contains(placeBuildingType);
             
         }
@@ -102,78 +110,92 @@ namespace VikingEngine.DSSWars.Build
 
         bool actOnTile(IntVector2 subTilePos, bool commit, out int usesBuildQue, out City city)
         {
-            if (buildMode == SelectTileResult.Build)
+            switch (buildMode)
             {
-                usesBuildQue = 1;
-                var mayBuild = adjustMayBuild(SelectedSubTile.MayBuild(subTilePos, player, out bool upgrade, out city));
-                
-                //if (!availableBuildingType)
-                //{
-                //    mayBuild = MayBuildResult.No_OutsideRegion;
-                //}
-                
-                if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
-                {
-
-                    if (commit)
+                case SelectTileResult.Terraform:
+                case SelectTileResult.Build:
                     {
-                        if (DssRef.difficulty.GodPowers())
+                        usesBuildQue = 1;
+                        var mayBuild = adjustMayBuild(SelectedSubTile.MayBuild(subTilePos, player, out GroundType? mustTerraform, out bool upgrade, out city));
+
+                        if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
                         {
-                            var build = BuildLib.BuildOptions[(int)placeBuildingType];
-                            SubTile subTile = DssRef.world.subTileGrid.Get(subTilePos);
-                            if (build.execute_async(city, subTilePos, ref subTile, upgrade, false))
+
+                            if (commit)
                             {
-                                EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, subTile, true, true, false);
-                                edit.Submit();
+                                if (DssRef.state.GodPowers())
+                                {
+                                   
+
+                                    var build = BuildLib.BuildOptions[(int)placeBuildingType];
+                                    MapTile1_1 subTile = DssRef.world.subTileGrid.Get(subTilePos);
+                                    if (mustTerraform.HasValue)
+                                    {
+                                        subTile.groundType = mustTerraform.Value;
+                                    }
+                                    if (build.execute_async(city, subTilePos, ref subTile, upgrade, false))
+                                    {
+                                        EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, subTile, true,mustTerraform.HasValue, true, false);
+                                        edit.Submit();
+                                    }
+
+                                    new GodBuild(subTilePos);
+                                }
+                                else if (placeBuildingOption().blueprint.meetsRequirements(city))
+                                {
+                                    player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.FollowTool, toolAdd);
+                                }
+                                else
+                                {
+                                    //Remove current orders
+                                    player.orders.orderConflictingSubTile(subTilePos, true);
+                                }
+                            }
+                            else
+                            {
+                                if (player.orders.orderConflictingSubTile(subTilePos, false))
+                                {
+                                    usesBuildQue = -1;
+                                }
                             }
 
-                            new GodBuild(subTilePos);
-                        }
-                        else if (placeBuildingOption().blueprint.meetsRequirements(city))
-                        {
-                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.FollowTool, toolAdd);
-                        }
-                        else
-                        {
-                            //Remove current orders
-                            player.orders.orderConflictingSubTile(subTilePos, true);
+                            return true;
                         }
                     }
-                    else
+                    break;
+                case SelectTileResult.Demolish:
                     {
-                        if (player.orders.orderConflictingSubTile(subTilePos, false))
+                        usesBuildQue = 0;
+                        if (SelectedSubTile.MayDemolish(subTilePos, player, out city))
                         {
-                            usesBuildQue = -1;
+                            if (commit)
+                            {
+                                if (DssRef.difficulty.GodPowers())
+                                {
+                                    BuildTool.Demolish(city, subTilePos, true);
+                                    new GodBuild(subTilePos);
+                                }
+                                else
+                                {
+                                    player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos), ActionOnConflict.FollowTool, toolAdd);
+                                }
+                            }
+
+                            return true;
                         }
                     }
+                    break;
 
-                    return true;
-                }
-            }
-            else if (buildMode == SelectTileResult.Demolish)
-            {
-                usesBuildQue = 0;
-                if (SelectedSubTile.MayDemolish(subTilePos, player, out city))
-                {
-                    if (commit)
+                case SelectTileResult.EditorBuild:
+                    city = null;
+                    usesBuildQue = 0;
+                    return editorTool.actOnTile(subTilePos, commit);
+
+                default:
                     {
-                        if (DssRef.difficulty.GodPowers())
-                        {
-                            BuildLib.Demolish(city, subTilePos);
-                            new GodBuild(subTilePos);
-                        }
-                        else
-                        {
-                            player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos), ActionOnConflict.FollowTool, toolAdd);
-                        }
+                        usesBuildQue = 0;
                     }
-
-                    return true;
-                }
-            }
-            else
-            {
-                usesBuildQue = 0;
+                    break;
             }
 
             city = null;
@@ -412,111 +434,115 @@ namespace VikingEngine.DSSWars.Build
                 return true;
             }
         }
-
-
         public void autoPlaceBuilding(City city, int count)
         {
+            AutoPlaceBuilding(city, placeBuildingType, city.workTemplate.Get(WorkPriorityType.buildOrders).value, count);
+        }
 
-            BuildAndExpandType buildType = placeBuildingType;
-
+        public static void AutoPlaceBuilding(City city, BuildAndExpandType buildType, byte priority, int count)
+        {
             Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    List<IntVector2> positions = new List<IntVector2>(count);
-                    CityStructure structure = new CityStructure();
-                    structure.update( DssRef.world, city, 1);
-
-                    findBuildPositons_AutoBuilder(positions);
-                    if (count > 0)
+                    if (city.pfaction.TryGetLocalPlayer(out var player))
                     {
-                        findBuildPositons_Loop(positions);
-                    }
+                        List<IntVector2> positions = new List<IntVector2>(count);
+                        CityStructureProcess structure = new CityStructureProcess();
+                        structure.update(DssRef.world, city, 1);
 
-                    foreach (IntVector2 position in positions)
-                    {
-                        player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(WorkTemplate.MaxPrio, true, city, position, placeBuildingType, false), ActionOnConflict.Cancel, ToolAddType.NUM_NONE, false);
-                    }
-
-                    void findBuildPositons_AutoBuilder(List<IntVector2> result)
-                    {
-                        if (city.buildingStructure.getCount(buildType) > 0)
+                        findBuildPositons_AutoBuilder(positions);
+                        if (count > 0)
                         {
-                            var prevPos = structure.buildingPosition.getPos(buildType);
-                            if (prevPos.X > 0)
-                            {
-                                findAdjacentFreeSpot(prevPos);
-                            }
+                            findBuildPositons_Loop(positions);
                         }
 
-                        void findAdjacentFreeSpot(IntVector2 center)
+                        foreach (IntVector2 position in positions)
                         {
-                            ForXYEdgeLoopRandomPicker Auto_EdgeRandomizer = new ForXYEdgeLoopRandomPicker();
-                            for (int r = 0; r <= 2; r++)
-                            {
-                                if (r == 0)
-                                {
-                                    Auto_EdgeRandomizer.addDir4(center);
-                                    Auto_EdgeRandomizer.add(center);
-                                }
-                                else
-                                { 
-                                    Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
-                                }
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(priority, true, city, position, buildType, false), ActionOnConflict.Cancel, ToolAddType.NUM_NONE, false);
+                        }
 
-                                while (Auto_EdgeRandomizer.Next())
+                        void findBuildPositons_AutoBuilder(List<IntVector2> result)
+                        {
+                            if (city.buildingStructure.getCount(buildType) > 0)
+                            {
+                                var prevPos = structure.buildingPosition.getPos(buildType);
+                                if (prevPos.X > 0)
                                 {
-                                    if (city.MayAutoBuildHere(Auto_EdgeRandomizer.Position) &&
-                                        !player.orders.orderConflictingSubTile(Auto_EdgeRandomizer.Position, false))
+                                    findAdjacentFreeSpot(prevPos);
+                                }
+                            }
+
+                            void findAdjacentFreeSpot(IntVector2 center)
+                            {
+                                ForXYEdgeLoopRandomPicker Auto_EdgeRandomizer = new ForXYEdgeLoopRandomPicker();
+                                for (int r = 0; r <= 2; r++)
+                                {
+                                    if (r == 0)
                                     {
-                                        result.Add(Auto_EdgeRandomizer.Position);
-                                        //player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade), ActionOnConflict.Cancel);
-                                        if (--count <= 0)
-                                        { return; }
+                                        Auto_EdgeRandomizer.addDir4(center);
+                                        Auto_EdgeRandomizer.add(center);
+                                    }
+                                    else
+                                    {
+                                        Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
+                                    }
+
+                                    while (Auto_EdgeRandomizer.Next())
+                                    {
+                                        if (city.MayAutoBuildHere(Auto_EdgeRandomizer.Position) &&
+                                            !player.orders.orderConflictingSubTile(Auto_EdgeRandomizer.Position, false))
+                                        {
+                                            result.Add(Auto_EdgeRandomizer.Position);
+
+                                            if (--count <= 0)
+                                            { return; }
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
 
-                    void findBuildPositons_Loop(List<IntVector2> result)
-                    {
-                        IntVector2 topleft;
-                        ForXYLoop subTileLoop;
-
-                        int cityradius = city.cityTileArea.size.SideLength() / 2;
-                        for (int radius = 1; radius <= cityradius; ++radius)
+                        void findBuildPositons_Loop(List<IntVector2> result)
                         {
-                            int distanceValue = -radius;
-                            ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                            IntVector2 topleft;
+                            ForXYLoop subTileLoop;
 
-                            while (cirkleLoop.Next())
+                            int cityradius = city.citySumTileArea.size.SideLength() / 2;
+                            for (int radius = 1; radius <= cityradius; ++radius)
                             {
-                                if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+                                int distanceValue = -radius;
+                                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(WP.MaptileToSumTile(city.maptilePos), radius));
+
+                                while (cirkleLoop.Next())
                                 {
-                                    var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
-                                    if (tile.CityIndex == city.myIndex && tile.MayBuild())
+
+                                    if (DssRef.world.tileGrid.TryGet(cirkleLoop.Position, out var sumTile))
                                     {
-                                        topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
-                                        subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
-
-                                        while (subTileLoop.Next())
+                                        if (sumTile.pcity.cityIndex == city.myIndex)
                                         {
-                                            var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+                                            topleft = WP.SumTileToMaptile( cirkleLoop.Position);
+                                            subTileLoop = new ForXYLoop(topleft, topleft + Map.MapData.MapTile1_1.ModelScale_Inv_MaxIndex);
 
-                                            if (subTile.MayBuild(placeBuildingType, out bool upgrade)
-                                                &&
-                                                !player.orders.orderConflictingSubTile(subTileLoop.Position, false))
+                                            while (subTileLoop.Next())
                                             {
-                                                result.Add(subTileLoop.Position);
-                                                //player.orders.addOrder(new BuildOrder(WorkTemplate.MaxPrio, true, city, subTileLoop.Position, placeBuildingType, upgrade), ActionOnConflict.Cancel);
-                                                if (--count <= 0)
-                                                { return; }
+                                                var subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+
+                                                if (subTile.MayBuild(buildType, true, out GroundType? mustTerraform, out bool upgrade) == MayBuildResult.Yes
+                                                    &&
+                                                    !player.orders.orderConflictingSubTile(subTileLoop.Position, false))
+                                                {
+                                                    result.Add(subTileLoop.Position);
+
+                                                    if (--count <= 0)
+                                                    { return; }
+                                                }
                                             }
                                         }
                                     }
                                 }
+                                
                             }
                         }
                     }
@@ -535,7 +561,7 @@ namespace VikingEngine.DSSWars.Build
             List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
 
             if (player.tutorial == null || player.tutorial.AdvisorMode())
-            { BuildLib.AvailableBuildTypes(available, city, false); }
+            { AvailableBuildTypes.Available(available, city, false); }
             else
             { available = player.tutorial.AvailableBuildTypes(); }
 
@@ -623,7 +649,7 @@ namespace VikingEngine.DSSWars.Build
                             var build = BuildLib.BuildOptions[(int)opt];
 
                             var optButton = new ArtOption(opt == city.autoExpandFarmType, new List<AbsRichBoxMember> {
-                        new RbImage(build.sprite),
+                        new RbImage(build.icon),
                         new RbSpace(),
                         new RbText(build.Label())
                         }, new RbAction(() =>
@@ -638,7 +664,7 @@ namespace VikingEngine.DSSWars.Build
 
                     content.newParagraph();
 
-                    city.workTemplate.Get(WorkPriorityType.autoBuild).toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.pfaction.GetFaction(), city, ItemResourceType.NONE);
+                    city.workTemplate.Get(WorkPriorityType.autoBuild).toHud(WorkPriorityType.autoBuild, player, content, city, player.pfaction.GetFaction());//, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE,, ItemResourceType.NONE, null);
                     
                 }
             }
@@ -653,9 +679,18 @@ namespace VikingEngine.DSSWars.Build
                     }
                 }
 
-                upgradeButtons(player, content, city, buildOpt);
-
-                buildOptionsToHud(content, viewTabs);
+                if (player.buildCategoryTab == BuildCategoryTab.Upgrade)
+                {
+                    upgradeButtons(player, content, city, buildOpt);
+                }
+                if (player.buildCategoryTab == BuildCategoryTab.Terraform)
+                {
+                    terraformOptionsToHud(content);
+                }
+                else
+                {
+                    buildOptionsToHud(content, viewTabs);
+                }
 
                 if (player.tutorial == null || !player.tutorial.DisplayCompressedBuildTab())
                 {
@@ -730,8 +765,9 @@ namespace VikingEngine.DSSWars.Build
                     content.newLine();
                     HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
                     content.newLine();
-                    city.workTemplate.Get(WorkPriorityType.buildOrders).toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders,
-                        player.pfaction.GetFaction(), city, ItemResourceType.NONE);
+                    city.workTemplate.Get(WorkPriorityType.buildOrders).toHud(WorkPriorityType.buildOrders, player, content, city, player.pfaction.GetFaction());
+                        // DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders,
+                        // ItemResourceType.NONE);
                     content.newLine();
                     content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                         new RbImage(SpriteName.WarsConstructBuildingIcon),
@@ -747,9 +783,7 @@ namespace VikingEngine.DSSWars.Build
 
         private void upgradeButtons(LocalPlayer player, RichBoxContent content, City city, BuildOption buildOpt)
         {
-            if (player.buildCategoryTab == BuildCategoryTab.Upgrade)
-            {
-
+            
                 if (city.buildingStructure.buildingLevel_logistics == 1)
                 {
 
@@ -786,7 +820,7 @@ namespace VikingEngine.DSSWars.Build
                                 content.newLine();
                                 HudLib.BulletPoint(content);
                                 content.Add(new RbText(DssRef.lang.XP_UnlockBuilding, HudLib.SecondaryTextColor));
-                                content.Add(new RbImage(opt.sprite));
+                                content.Add(new RbImage(opt.icon));
                                 content.space();
                                 content.Add(new RbText(opt.Label()));
                             }
@@ -811,7 +845,7 @@ namespace VikingEngine.DSSWars.Build
                         }, new RbAction(city.upgradeCityHall), new RbTooltip(city.upgradeCityHallTooltip),
                             city.CanUpgradeCityHall()));
                 }
-            }
+            
 
            
         }
@@ -843,9 +877,11 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Decor,
                 BuildCategoryTab.Upgrade,
                 BuildCategoryTab.Filter,
+                BuildCategoryTab.Terraform,
+
             };
 
-            if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
+            if (DssRef.state.GodPowers())
             {
                 buildCategories.Insert(buildCategories.Count - 1, BuildCategoryTab.GodPower);
             }
@@ -867,6 +903,35 @@ namespace VikingEngine.DSSWars.Build
             }
         }
 
+        const float BuildButtonScale = 2.1f;
+
+        void terraformOptionsToHud(RichBoxContent content)
+        {
+            content.Add(new RichBoxScale(BuildButtonScale));
+            content.newLine();
+
+            for (int i = 0; i < GroundPropertiesLib.TerraformOptions.Count; ++i)//each (var m in GroundPropertiesLib.TerraformOptions)
+            {
+                GroundType groundType = GroundPropertiesLib.TerraformOptions[i];
+                var groundProp = GroundPropertiesLib.Get(groundType);
+
+                IconName.GroundType(groundType, out var icon, out var name);
+
+                var buttonIcon = new RbImage(icon);
+                var buttonContent = new List<AbsRichBoxMember> { buttonIcon };                
+                var button = new ArtToggle(buildMode == SelectTileResult.Terraform && placeBuildingType == BuildAndExpandType.TERRAFORM && placeTerraformType == groundType, 
+                    buttonContent,
+               new RbAction2Arg<BuildAndExpandType, GroundType>(buildingTypeClick,  BuildAndExpandType.TERRAFORM, groundType, RbSoundType.Option),
+                new RbTooltip(groundTooltip, groundType));
+
+                content.Add(button);
+            }
+
+            content.Add(new RichBoxScale(1));
+
+            content.newParagraph();
+            exitBuildButton(content);
+        }
 
         void buildOptionsToHud(RichBoxContent content, bool viewTabs)
         {
@@ -892,7 +957,7 @@ namespace VikingEngine.DSSWars.Build
                         null, true, player.buildFilterTag == tag ? HudLib.ColFilterSelected : HudLib.ColFilterUnSelected));
                 }
             }
-            content.Add(new RichBoxScale(2.1f));
+            content.Add(new RichBoxScale(BuildButtonScale));
             content.newLine();
 
             foreach (var opt in available)
@@ -901,7 +966,7 @@ namespace VikingEngine.DSSWars.Build
 
                 var buildCount = city.buildingStructure.getCount(opt);
 
-                var buttonIcon = new RbImage(build.sprite);
+                var buttonIcon = new RbImage(build.icon);
                 var buttonContent = new List<AbsRichBoxMember> { buttonIcon };
                 if (buildCount > 0)
                 {
@@ -909,14 +974,19 @@ namespace VikingEngine.DSSWars.Build
                 }
 
                 var button = new ArtToggle(buildMode == SelectTileResult.Build && placeBuildingType == opt, buttonContent,
-                new RbAction1Arg<BuildAndExpandType>(buildingTypeClick, opt, RbSoundType.Option),
+                new RbAction2Arg<BuildAndExpandType, GroundType>(buildingTypeClick, opt, placeTerraformType, RbSoundType.Option),
                 new RbTooltip(buildingTooltip, opt));
 
 
                 bool availableBuild = true;
-                if (opt == BuildAndExpandType.Logistics)
+                switch (build.specialBuildRequirement)//opt == BuildAndExpandType.Logistics)
                 {
-                    availableBuild = city.CanBuildLogistics(1);
+                    case SpecialBuildRequirement.FoodStorage:
+                        availableBuild = city.CanBuildLogistics(1);
+                        break;
+                    case SpecialBuildRequirement.MaxSoldierQuarters:
+                        availableBuild = city.CanBuildSoldierQuarters(out _, out _);
+                        break;
                 }
 
                 button.enabled = availableBuild;
@@ -937,7 +1007,11 @@ namespace VikingEngine.DSSWars.Build
                 }, new RbAction1Arg<SelectTileResult>(modeClick, SelectTileResult.Demolish, RbSoundType.Option)));
 
             content.space();
+            exitBuildButton(content);
+        }
 
+        private void exitBuildButton(RichBoxContent content)
+        {
             if (buildMode != SelectTileResult.None)
             {
                 var button = new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
@@ -950,11 +1024,13 @@ namespace VikingEngine.DSSWars.Build
                 content.Add(button);
                 content.space();
 
-                //if (buildMode == SelectTileResult.Build)
-                //{
-                //    buildOpt = BuildLib.BuildOptions[(int)placeBuildingType];
-                //}
             }
+        }
+        void groundTooltip(RichBoxContent content, object tag)
+        {
+            GroundType groundType = (GroundType)tag;
+            IconName.GroundType(groundType, out var icon, out var name);
+            content.icontext(icon, name);
         }
 
         void buildingTooltip(RichBoxContent content, object tag)
@@ -962,7 +1038,7 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType type = (BuildAndExpandType)tag;
 
             BuildOption build = BuildLib.BuildOptions[(int)type];
-            content.h2(TextLib.LargeFirstLetter(build.Label())).overrideColor = HudLib.TitleColor_TypeName;
+            content.h2(TextLib.LargeFirstLetter(build.Label()), HudLib.TitleColor_Head);
 
             //content.newLine();
             build.blueprint.toMenu(content, city, false, true, true);
@@ -972,15 +1048,63 @@ namespace VikingEngine.DSSWars.Build
                 build.altBlueprint.toMenu(content, city, false, false);
             }
             content.Add(new RbSeperationLine(HudLib.TitleColor_Head, 0.2f));
-            //content.newLine();
-            content.Add(new RbText(DssRef.lang.BuildHud_BuildTime + ":", HudLib.TitleColor_Label));
-            content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Hud_Time_XSeconds, build.buildTimeSec)));
+           
+            HudLib.LabelAndText(content, SpriteName.WarsConstructBuildingIcon, DssRef.lang.BuildHud_BuildTime, string.Format(DssRef.lang.Hud_Time_XSeconds, build.buildTimeSec));
+
+            IconName.GroundRequirement(build.groundRequirement, out var groundReqIcon, out var groundReqText);
+            HudLib.LabelAndText(content, groundReqIcon, DssRef.todoLang.GroundRequired, groundReqText);
+
 
             content.Add(new RbSeperationLine());
-            HudLib.Description(content, build.Description());
+            if (build.description != null)
+            {
+                content.text(build.description, HudLib.InfoYellow_Light);
+            }
 
             content.newLine();
+
+            if (build.specialBuildRequirement != SpecialBuildRequirement.None)
+            {
+                
+
+                switch (build.specialBuildRequirement)
+                {
+                    case SpecialBuildRequirement.FoodStorage:
+                        {
+                            HudLib.BulletPoint(content);
+                            content.Add(new RbImage(SpriteName.WarsResource_Food));
+                            content.space();
+                            bool canBuild = city.CanBuildLogistics(1);
+                            content.Add(new RbImage(canBuild ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+                            content.hspace();
+                            var reqText = new RbText(string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, DssConst.Logistics1FoodStorage));
+                            reqText.overrideColor = canBuild ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                            content.Add(reqText);
+                        }
+                        break;
+                    case SpecialBuildRequirement.MaxSoldierQuarters:
+                        var maxSoldierQuarters = city.HallSetup().maxSoldierQuarters;
+                        if (maxSoldierQuarters.HasLimit)
+                        {
+                            bool canBuild = city.CanBuildSoldierQuarters(out int count, out int max);//count < maxSoldierQuarters.Value;
+
+                            HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RbText(DssRef.todoLang.BuildingType_SoldiersQuarter));
+                            content.newLine();
+                            content.Add(new RbText(string.Format(DssRef.lang.Resource_MaxAmount, maxSoldierQuarters)));
+                            content.newLine();
+
+                           
+                            content.Add(new RbImage(canBuild ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+                            content.hspace();
+                            content.Add(new RbText(string.Format(DssRef.lang.Resource_CurrentAmount, count), canBuild ? HudLib.AvailableColor : HudLib.NotAvailableColor));
+                        }
+                        break;
+                }
+            }
+
             switch (type)
             {
                 case BuildAndExpandType.Cesspit:
@@ -1020,7 +1144,7 @@ namespace VikingEngine.DSSWars.Build
                     HudLib.Label(content, DssRef.lang.Hud_ThisCity);
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsResource_Water));
-                    content.Add(new RbText(string.Format(DssRef.lang.Resource_CurrentAmount, city.res_water.amount)));
+                    content.Add(new RbText(string.Format(DssRef.lang.Resource_CurrentAmount, city.resourceAmount(CityResourceIndex.water))));
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsResource_Water));
                     content.Add(new RbText(string.Format(DssRef.lang.Resource_MaxAmount, city.maxWaterTotal)));
@@ -1074,17 +1198,7 @@ namespace VikingEngine.DSSWars.Build
 
                 case BuildAndExpandType.Logistics:
 
-                    HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbImage(SpriteName.WarsResource_Food));
-                    content.space();
-                    bool canBuild = city.CanBuildLogistics(1);
-                    content.Add(new RbImage(canBuild ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
-                    content.hspace();
-                    var reqText = new RbText(string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, DssConst.Logistics1FoodStorage));
-                    reqText.overrideColor = canBuild ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                    content.Add(reqText);
+                    
 
                     content.newParagraph();
                     HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Gain);
@@ -1106,7 +1220,7 @@ namespace VikingEngine.DSSWars.Build
                         content.newLine();
                         HudLib.BulletPoint(content);
                         content.Add(new RbText(DssRef.lang.XP_UnlockBuilding, HudLib.SecondaryTextColor));
-                        content.Add(new RbImage(opt.sprite));
+                        content.Add(new RbImage(opt.icon));
                         content.space();
                         content.Add(new RbText(opt.Label()));
                     }
@@ -1122,16 +1236,35 @@ namespace VikingEngine.DSSWars.Build
                         content.newLine();
                         HudLib.BulletPoint(content);
                         content.Add(new RbText(DssRef.lang.XP_UnlockBuilding, HudLib.SecondaryTextColor));
-                        content.Add(new RbImage(opt.sprite));
+                        content.Add(new RbImage(opt.icon));
                         content.space();
                         content.Add(new RbText(opt.Label()));
                     }
 
                     break;
 
+                case BuildAndExpandType.TingsHouse:
+                    ReadOnlySpan<BuildAndExpandType> replace = stackalloc BuildAndExpandType[]
+                        {
+                            BuildAndExpandType.Logistics,
+                            BuildAndExpandType.Economics,
+                            BuildAndExpandType.ManorLord,
+                            BuildAndExpandType.GreatHall,
+                        };
+
+                    HudLib.Label(content, ".Will replace");
+                    foreach (var m in replace)
+                    {
+                        var building = BuildLib.Get(m);
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbImage(building.icon));
+                        content.hspace();
+                        content.Add(new RbText(building.name));                        
+                    }
+                    break;
+
                 case BuildAndExpandType.Noblehouse:
-
-
                     HudLib.BulletPoint(content);
                     //content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
                     content.Add(new RbText(string.Format(DssRef.lang.NobleHouse_HousingCount, DssConst.NobleHouseMenCount)));
@@ -1173,20 +1306,20 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.WheatFarm:
-                    farmHud(false, new ItemResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount), ItemResource.Empty);
+                    farmHud(false, new ItemResource(ItemResourceType.RawFood_G, DssConst.WheatFoodAmount), ItemResource.Empty);
                     break;
                 case BuildAndExpandType.WheatFarmUpgraded:
-                    farmHud(true, new ItemResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount), ItemResource.Empty);
+                    farmHud(true, new ItemResource(ItemResourceType.RawFood_G, DssConst.WheatFoodAmount), ItemResource.Empty);
 
                     break;
 
                 case BuildAndExpandType.LinenFarm:
-                    farmHud(false, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.LinenHarvestAmount), ItemResource.Empty);
+                    farmHud(false, new ItemResource(ItemResourceType.SkinLinen_G, DssConst.LinenHarvestAmount), ItemResource.Empty);
 
                     break;
 
                 case BuildAndExpandType.LinenFarmUpgraded:
-                    farmHud(true, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.LinenHarvestAmount), ItemResource.Empty);
+                    farmHud(true, new ItemResource(ItemResourceType.SkinLinen_G, DssConst.LinenHarvestAmount), ItemResource.Empty);
                     break;
 
                 case BuildAndExpandType.RapeSeedFarm:
@@ -1198,11 +1331,11 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.HempFarm:
-                    farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount));
+                    farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.SkinLinen_G, DssConst.HempLinenAndFuelAmount));
                     break;
 
                 case BuildAndExpandType.HempFarmUpgraded:
-                    farmHud(true, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount));
+                    farmHud(true, new ItemResource(ItemResourceType.SkinLinen_G, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount));
                     break;
 
                 case BuildAndExpandType.TrapperHut:
@@ -1420,7 +1553,7 @@ namespace VikingEngine.DSSWars.Build
                         content.newLine();
                         HudLib.BulletPoint(content);
                         content.Add(new RbText(DssRef.lang.XP_UnlockBuilding));
-                        content.Add(new RbImage(opt.sprite));
+                        content.Add(new RbImage(opt.icon));
                         content.space();
                         content.Add(new RbText(opt.Label()));
                     }
@@ -1734,25 +1867,23 @@ namespace VikingEngine.DSSWars.Build
             }
         }
 
-        public void buildingTypeClick(BuildAndExpandType type)
+        public void buildingTypeClick(BuildAndExpandType type, GroundType groundType)
         {
             if (player.gameControls.input.inputSource.ControllerMode)
             {
                 blockBuildUpdate = true;
             }
 
-            //buildMode = SelectTileResult.Build;
-            //placeBuildingType = type;
-            //availableBuildingType = true;
+            if (type == BuildAndExpandType.TERRAFORM)
+            {
+                placeTerraformType = groundType;
+            }
             SetBuildMode(type);
             player.gameControls.setMenuFocus(false, true);
-
-            
-            //player.gameControls.mapControls.setObjectMenuFocus(false);
         }
         public void SetBuildMode(BuildAndExpandType type) 
         {
-            buildMode = SelectTileResult.Build;
+            buildMode = type == BuildAndExpandType.TERRAFORM? SelectTileResult.Terraform : SelectTileResult.Build;
             placeBuildingType = type;
             availableBuildingType = true;
         }

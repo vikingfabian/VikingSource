@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.Communication
                 questFlags.Add(new QuestFlag()
                 {
                     GameObject = factory,
-                    tilePos = factory.tilePos,
+                    tilePos = factory.maptilePos,
                     icon = new Graphics.Image(SpriteName.WarsFactoryIcon, Vector2.Zero, Screen.IconSizeV2, HudLib.DiplomacyDisplayLayer - 4, true),
                 });
             }
@@ -102,11 +102,12 @@ namespace VikingEngine.DSSWars.Communication
                 Faction faction = rel.pfaction.GetFaction();
                 
                 if (faction != null &&
+                    faction.fogExplored &&
                     faction.player != null &&
                     faction.isAlive &&
                     !faction.HasZeroUnits() &&
                     rel.inCullingView &&
-                    (!player.mapLayersManager.current.DrawFullOverview || faction.displayInFullOverview() || rel == selected))
+                    (!player.mapLayersManager.current.DrawVeryFarLayer || faction.displayInFullOverview() || rel == selected))
                 {
                     
                     rel.updatePos(player, faction);
@@ -121,7 +122,6 @@ namespace VikingEngine.DSSWars.Communication
 
                         rel.bg = new Graphics.Image(SpriteName.WarsRelationFlag, rel.flag.position, relBgSize, HudLib.DiplomacyDisplayLayer + 1 + layerAdd, true);
                         rel.bg.Color = faction.Color();
-                        //rel.bg.ColorAndAlpha(Color.Black, 0.8f);
                         rel.bg.Height *= 1.5f;
                         rel.bg.Ypos += rel.bg.Height * 0.25f;
 
@@ -239,30 +239,10 @@ namespace VikingEngine.DSSWars.Communication
                     if (player.gameControls.input.mouseSelect.DownEvent)
                     {
                         selectFaction(currentHover.pfaction);
-                        //selected = currentHover;
-
-                        //SoundLib.select_faction.Play();
-                        //player.hud.needRefresh = true;
-
-                        //if (player.gameControls.input.inputSource.IsController)
-                        //{
-                        //    player.gameControls.setMenuFocus(true, true);
-                        //}
-
-                        //var faction = DssRef.world.faction(selected.faction);
-
-                        //previousFactionsLookedAt.Remove(faction);
-                        //if (previousFactionsLookedAt.Count > PreviousFactionsLookedAtCount)
-                        //{ 
-                        //    arraylib.RemoveLast(previousFactionsLookedAt);
-                        //}
-                        //previousFactionsLookedAt.Insert(0, faction);
                     }
                 }
                 else
                 {
-                    //hoverbox.Visible = false;
-
                     if (player.gameControls.input.mouseSelect.DownEvent)
                     {
                         cancel();
@@ -288,13 +268,8 @@ namespace VikingEngine.DSSWars.Communication
 
             relationArrows.update(selectedFaction, selectedFlagPos, this);
 
-            //updateSelectBox(currentHover, hoverbox);
-            //updateSelectBox(selected, seletionbox);
-
             hoverGui.updateSelectBox(player, currentHover);
             selectGui.updateSelectBox(player, selected);
-
-
 
         }
 

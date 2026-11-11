@@ -1,5 +1,5 @@
 using Microsoft.Xna.Framework;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Map.Settings;
 
 namespace VikingEngine.Tests.Legacy
@@ -19,6 +19,12 @@ namespace VikingEngine.Tests.Legacy
         public LegacySubTile()
         {
         }
+    }
+
+    public enum TileContent : byte
+    {
+        NONE,
+        City,
     }
 
     public struct LegacyTile
@@ -44,7 +50,7 @@ namespace VikingEngine.Tests.Legacy
         public LegacyTile()
         {
             CityIndex = -1;
-            heightLevel = Height.DeepWaterHeight;
+            heightLevel = BiomHeightColor.DeepWaterHeight;
         }
     }
 }

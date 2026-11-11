@@ -1,4 +1,4 @@
-﻿#if PCGAME
+#if PCGAME
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -115,8 +115,13 @@ namespace VikingEngine.SteamWrapping
                 textureData[i * 4 + 3] = a;
             }
 
-            Texture2D result = new Texture2D(Draw.graphicsDeviceManager.GraphicsDevice, sideLength, sideLength, false, SurfaceFormat.Color);
-            result.SetData(textureData);
+            Texture2D result;
+            using (Graphics.GpuResourceSync.Acquire())
+            {
+                result = new Texture2D(Draw.graphicsDeviceManager.GraphicsDevice, sideLength, sideLength, false, SurfaceFormat.Color);
+                result.SetData(textureData);
+                Graphics.GpuResourceSync.Track(result);
+            }
             return new SteamImageLoadData(SteamImageLoadState.ImageLoadedCorrectly, result);
         }
 

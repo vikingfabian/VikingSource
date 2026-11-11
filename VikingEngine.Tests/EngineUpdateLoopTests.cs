@@ -119,34 +119,34 @@ namespace VikingEngine.Tests
                 Ref.isPaused = false;
                 Ref.GameTimeSpeed = 1f;
 
-                // 1. Initial tick with delta exceeding Time16ms (~33.33ms)
+                // 1. Initial tick with delta exceeding Time33ms (~33.33ms)
                 Ref.DeltaTimeMs = 40f;
                 update.Time_Update(40f);
 
-                Assert.Equal(1, Ref.GameTimePassed16ms);
-                Assert.Equal(1, Ref.TimePassed16ms);
+                Assert.Equal(1, Ref.GameTimePassed33ms);
+                Assert.Equal(1, Ref.TimePassed33ms);
 
                 // 2. Subsequent tick with small delta: both timers should reset to 0
                 Ref.DeltaTimeMs = 5f;
                 update.Time_Update(5f);
 
-                Assert.Equal(0, Ref.GameTimePassed16ms);
-                Assert.Equal(0, Ref.TimePassed16ms);
+                Assert.Equal(0, Ref.GameTimePassed33ms);
+                Assert.Equal(0, Ref.TimePassed33ms);
 
-                // 3. Paused state: TimePassed16ms increments with real time, GameTimePassed16ms stays 0
+                // 3. Paused state: TimePassed33ms increments with real time, GameTimePassed33ms stays 0
                 Ref.isPaused = true;
                 Ref.DeltaTimeMs = 40f;
                 update.Time_Update(40f);
 
-                Assert.Equal(0, Ref.GameTimePassed16ms);
-                Assert.Equal(1, Ref.TimePassed16ms);
+                Assert.Equal(0, Ref.GameTimePassed33ms);
+                Assert.Equal(1, Ref.TimePassed33ms);
 
                 // 4. Tick with 0 delta: both reset to 0
                 Ref.DeltaTimeMs = 0f;
                 update.Time_Update(0f);
 
-                Assert.Equal(0, Ref.GameTimePassed16ms);
-                Assert.Equal(0, Ref.TimePassed16ms);
+                Assert.Equal(0, Ref.GameTimePassed33ms);
+                Assert.Equal(0, Ref.TimePassed33ms);
             }
             finally
             {

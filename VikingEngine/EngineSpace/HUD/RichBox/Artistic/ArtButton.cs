@@ -32,6 +32,9 @@ namespace VikingEngine.HUD.RichBox.Artistic
 
         Filter,
         FilterSelected,
+        Module,
+        TechHover,
+        TechSelect,
     }
 
     public class ArtButton : AbsRbButton
@@ -120,6 +123,16 @@ namespace VikingEngine.HUD.RichBox.Artistic
                 case RbButtonStyle.Filter:
                     textureSett = group.settings.artFilterButtonTex.Selected(false);
                     break;
+                case RbButtonStyle.Module:
+                    textureSett = group.settings.Module;
+                    break;
+                case RbButtonStyle.TechSelect:
+                    textureSett = group.settings.TechSelect;
+                    break;
+                case RbButtonStyle.TechHover:
+                    textureSett = group.settings.TechHover;
+                    break;
+
             }
             texture = new HUD.NineSplitAreaTexture(textureSett.Enabled(enabled), area, layer + 1);
 

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.PickUp;
+using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.HeroQuest.Display;
 
 namespace VikingEngine.Input
@@ -71,6 +72,9 @@ namespace VikingEngine.Input
                     break;
                 case ButtonMapType.NoButtonMap:
                     result = new NoButtonMap();
+                    break;
+                case ButtonMapType.SteamInput:
+                    result = new SteamButtonMap();
                     break;
                 case ButtonMapType.XController:
                     result = new XboxButtonMap();

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Interface;
@@ -50,7 +51,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void basicInit()
         {
             
-            tilePos = WP.ToTilePos(position);
+            maptilePos = WP.ToSumTilePos(position);
 
             
             name.setDefault("Pin " + myIndex.ToString());
@@ -78,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
             nameToHud(args.content, !tooltip);
 
             args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
-            if (!tagToHud(args.content))
+            if (!Tag.tagToHud(args.content))
             {
                 var faction = pfaction.GetFaction();
                 if (faction != null)
@@ -269,20 +270,17 @@ namespace VikingEngine.DSSWars.GameObject
         {
             name.read(r, subVersion);
             
-            WP.ReadPosXZPercentU16(r, out position, out tilePos);
+            WP.ReadPosXZPercentU16(r, out position, out maptilePos);
 
-            if (subVersion >= 115)
-            {
+            
                 var hbytes = new TwoHalfByte();
                 hbytes.read(r);
                 pingMessage = (PingMessage)hbytes.Value1;
                 netInteractLevel = (NetInteractLevel)hbytes.Value2;
-            }
-            if (subVersion >= 116)
-            {
+            
                 modelVariant = r.ReadByte();
-                Tag.read(r, subVersion);
-            }
+                Tag.read(r);
+           
         }
 
         public void createOverViewModel()
@@ -290,8 +288,8 @@ namespace VikingEngine.DSSWars.GameObject
             var f = pfaction.GetFaction();
             if (f != null && Net_IsVisible())
             {
-                tilePos = WP.ToTilePos(position);
-                this.position.Y = DssRef.world.tileGrid.Get(tilePos).ModelGroundY() + 0.05f;
+                maptilePos = WP.ToSumTilePos(position);
+                this.position.Y = DssRef.world.subTileGrid.Get(maptilePos).groundY + 0.05f;
                 bound = new BoundingSphere(position, 0.3f);
 
                 overviewModel?.DeleteMe();
@@ -316,7 +314,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void asynchCullingUpdate(float time, bool bStateA)
         {
-            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, tilePos, IsNetHosted ? pfaction.GetPlayer().GetLocalPlayer().playerData.localPlayerIndex : 0);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, maptilePos, IsNetHosted ? pfaction.GetPlayer().GetLocalPlayer().playerData.localPlayerIndex : 0);
         }
 
         public override void setInRenderState()

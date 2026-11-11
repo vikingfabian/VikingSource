@@ -230,9 +230,10 @@ namespace VikingEngine.DSSWars.Delivery
 
         public bool CanRecieve(ItemResourceType sendItem, int cityIx, out int recieverHasAmountPlusDeliveries)
         {
-            if (arraylib.InBound(DssRef.world.cities, cityIx))
+            City recievingCity = DssRef.world.cities.GetIndex_Safe(cityIx);
+            if (recievingCity != null)
             {
-                City recievingCity = DssRef.world.cities[cityIx];
+                recievingCity = DssRef.world.cities[cityIx];
                 if (profile.type == DeliveryType_Men)
                 {
                     recieverHasAmountPlusDeliveries = recievingCity.workForce.amount + recievingCity.workForce.deliverCount;
@@ -315,9 +316,10 @@ namespace VikingEngine.DSSWars.Delivery
             }
             else
             {
-                if (arraylib.InBound(DssRef.world.cities, profile.toCity))
+                var c = DssRef.world.cities.GetIndex_Safe(profile.toCity);
+                if (c != null)
                 {
-                    remaining = DeliveryProfile.DeliveryTime(from, DssRef.world.cities[profile.toCity], level, out _).LongString();
+                    remaining = DeliveryProfile.DeliveryTime(from, c, level, out _).LongString();
                 }
                 else
                 {
@@ -451,7 +453,7 @@ namespace VikingEngine.DSSWars.Delivery
 
         public static TimeLength DeliveryTime(City from, City othercity, int level, out float distance)
         {
-            distance = VectorExt.Length((othercity.tilePos - from.tilePos).Vec);
+            distance = VectorExt.Length((othercity.maptilePos - from.maptilePos).Vec);
             float time = distance / DssVar.Men_StandardWalkingSpeed_PerSec;
             if (from.cityCulture == CityCulture.Networker)
             {

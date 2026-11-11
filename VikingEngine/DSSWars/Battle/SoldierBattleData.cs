@@ -208,7 +208,7 @@ namespace VikingEngine.DSSWars.Battle
 
         public bool InQueue(AbsSoldierUnit parent)
         {
-            if (lastBlockTime.secPassed(parent.soldierData.blocksRefillTimeSec))
+            if (lastBlockTime.hasSecPassed(parent.soldierData.blocksRefillTimeSec))
             {
                 lastBlockTime.setNow();
                 if (blocks < maxBlock)

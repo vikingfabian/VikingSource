@@ -21,6 +21,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.ToGG;
 
 
@@ -61,14 +62,15 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             //}
         }
 
-        public MapObjMenu(LocalPlayer player, City city, RichBoxContent content, out RichBoxContent secondMenuContent)
+        public MapObjMenu(LocalPlayer player, City city, RichMenu menu, RichBoxContent content, out RichBoxContent secondMenuContent)
         {
             this.player = player;
             this.city = city;
+            //this.menu = menu;
             mapObj = city;
             secondMenuContent = null;
 
-            if (!DssRef.storage.ruleset_instance.centralGold)
+            if (!DssRef.storage.ruleset_instance.module_physicalGold)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsMoney));
@@ -81,16 +83,10 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
             if (city.automateCity && !player.profile.casualControls) 
             {
-                city.CityDetailsHud(false, player, content);
+                city.CityDetailsHud(false, player, menu, content);
             }
             else
             {
-#if DEBUG
-                //content.Button("*soldier", new RbAction(()=> { city.debugGuardConscript( ItemResourceType.Sword); }) , null, true);
-                //content.Button("*archer", new RbAction(() => { city.debugConscript(ItemResourceType.Bow); }), null, true);
-                //content.Button("*ballista", new RbAction(() => { city.debugConscript(ItemResourceType.Ballista); }), null, true);
-#endif
-
                 int tabSel = 0;
 
                 var tabs = new List<ArtTabMember>((int)MenuTab.NUM_NONE);
@@ -150,7 +146,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                 switch (player.cityTab)
                 {
                     case MenuTab.Info:
-                        city.CityDetailsHud(false, player, content);
+                        city.CityDetailsHud(false, player, menu, content);
                         break;
 
                     case MenuTab.Resources:
@@ -513,6 +509,10 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             switch (player.progressSubTab)
             {
                 default:
+                    
+                    new TechtreeMenu().ToHud(city, player, content, player.hud.objMenu.menu);
+
+                    content.newParagraph();
                     new TechnologyHud(player, city).technologyHud(content, city.pfaction.GetFaction());
                     break;
 
@@ -854,48 +854,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         {
             if (player.tutorial == null || player.tutorial.DisplayResourseSubTabs())
             {
-                /*
-                for (ResourceManagementType managementType = 0; managementType < ResourceManagementType.Auto; managementType++)
-                {
-                    IconName.Tab(managementType, out SpriteName managementIcon, out string managementName);
-
-                    content.newLine();
-                    content.Add(new ArtButton(RbButtonStyle.HoverArea,
-                        new List<AbsRichBoxMember> { new RbImage(managementIcon) },
-                        null, new RbTooltip_Text(managementName)));
-
-                    for (ResourceGroupType group = 0; group < ResourceGroupType.NUM; group++)
-                    {
-                        if (group == ResourceGroupType.Mint)
-                        {
-                            bool includeMint = managementType == ResourceManagementType.WorkPrio && city.buildingStructure.CoinMinter_count > 0;
-                            if (!includeMint)
-                            {
-                                continue;
-                            }
-                        }
-
-                        IconName.Tab(group, out SpriteName groupIcon, out string groupName);
-                        var tab = new ResourcesSubTab(managementType, group);
-                        content.Add(new ArtButton(player.resourcesSubTab.EqualTab(tab)? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
-                            new List<AbsRichBoxMember> { new RbImage(groupIcon) },
-                            new RbAction1Arg<ResourcesSubTab>((resourcesSubTab) =>
-                            {
-                                if (player.resourcesSubTab.managementType != resourcesSubTab.managementType)
-                                {   
-                                    SoundLib.SubTab(resourcesSubTab.managementType);
-                                }
-                                player.resourcesSubTab = resourcesSubTab;
-
-                            }, tab, RbSoundType.Option),
-                            new RbTooltip(resourceTabToolTip, tab)));
-                        
-                    }
-
-                    HudLib.InfoButton(content, new RbTooltip(resourceTabsInfo, managementType));
-
-                }
-                */
+               
                 for (ResourceManagementType managementType = 0; managementType < ResourceManagementType.Auto; managementType++)
                 {
                     IconName.Tab(managementType, out SpriteName managementIcon, out string managementName);
@@ -983,11 +942,12 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
                     //bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
 
-                    city.GetGroupedResource(CityResourceIndex.wood).toMenu(content, ItemResourceType.Wood_Group, ref reachedBuffer, player, city);//New solution
-                    
+                    city.GetGroupedResource(CityResourceIndex.wood).toMenu(content, ItemResourceType.Wood_G, ref reachedBuffer, player, city);//New solution
+                    city.GetGroupedResource(CityResourceIndex.FineWood).toMenu(content, ItemResourceType.FineWood_G, ref reachedBuffer, player, city);//New solution
+
                     city.GetGroupedResource(CityResourceIndex.fuel).toMenu(content, ItemResourceType.Fuel_G, ref reachedBuffer, player, city);
                     int totalmines = 0;
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_coal, ItemResourceType.Coal, Map.SubTile.Empty, ref totalmines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_coal, ItemResourceType.Coal, Map.MapData.MapTile1_1.Empty, ref totalmines);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Fuel1, null, true);
                     content.space();
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Charcoal);
@@ -997,40 +957,29 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     city.GetGroupedResource(CityResourceIndex.Brick).toMenu(content, ItemResourceType.Brick, ref reachedBuffer, player, city);// Replace "res_stone", and continue with the rest
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.ClayBrick);
 
-                    city.GetGroupedResource(CityResourceIndex.skinLinnen).toMenu(content, ItemResourceType.SkinLinen_Group, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResourceIndex.skinLinnen).toMenu(content, ItemResourceType.SkinLinen_G, ref reachedBuffer, player, city);
 
                     content.newParagraph();
 
-                    city.GetGroupedResource(CityResourceIndex.rawFood).toMenu(content, ItemResourceType.RawFood_Group, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResourceIndex.Meat).toMenu(content, ItemResourceType.Meat, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResourceIndex.rawFood).toMenu(content, ItemResourceType.RawFood_G, ref reachedBuffer, player, city);
                     city.GetGroupedResource(CityResourceIndex.Salt).toMenu(content, ItemResourceType.Salt, ref reachedBuffer, player, city);
-                    
 
-                    city.GetGroupedResource(CityResourceIndex.food).toMenu(content, ItemResourceType.Food_G, ref reachedBuffer, player, city);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Food1, CraftResourceLib.Food2);
-                    content.space();
+                    if (DssRef.storage.ruleset_instance.module_foodAndWater)
+                    {
+                        city.GetGroupedResource(CityResourceIndex.food).toMenu(content, ItemResourceType.Food_G, ref reachedBuffer, player, city);
+                        HudLib.blueprintButton(city, player, content, CraftResourceLib.Food1, CraftResourceLib.Food2);
+                        content.space();
 
-                    //content.Add(new ArtToggle(city.res_food_safeguard, new List<AbsRichBoxMember> {
-                    //        new RbImage(city.res_food_safeguard? SpriteName.WarsProtectedStockpileOn : SpriteName.WarsProtectedStockpileOff, 0.7f),
-                    //    },
-                    //new RbAction(() =>
-                    //{
-                    //    city.res_food_safeguard = !city.res_food_safeguard;
-                    //}),
-                    //new RbTooltip((RichBoxContent content, object tag) =>
-                    //{
-                    //    content.text(string.Format(DssRef.lang.Resource_FoodSafeGuard_Description, DssConst.WorkSafeGuardAmount)).overrideColor = HudLib.InfoYellow_Light;
-                    //    content.text(city.res_food_safeguard ? DssRef.lang.Hud_On : DssRef.lang.Hud_Off);
-                    //})));
+                        city.GetGroupedResource(CityResourceIndex.ConservedFood).toMenu(content, ItemResourceType.ConservedFood, ref reachedBuffer, player, city);
+                        HudLib.blueprintButton(city, player, content, CraftResourceLib.ConservedFood_Barrel, CraftResourceLib.ConservedFood_Smoked);
 
-                    city.GetGroupedResource(CityResourceIndex.ConservedFood).toMenu(content, ItemResourceType.ConservedFood, ref reachedBuffer, player, city);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.ConservedFood_Barrel, CraftResourceLib.ConservedFood_Smoked);
+                        city.GetGroupedResource(CityResourceIndex.beer).toMenu(content, ItemResourceType.Beer, ref reachedBuffer, player, city);
+                        HudLib.blueprintButton(city, player, content, CraftResourceLib.Beer);
 
-                    city.GetGroupedResource(CityResourceIndex.beer).toMenu(content, ItemResourceType.Beer, ref reachedBuffer, player, city);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Beer);
-
-                    city.GetGroupedResource(CityResourceIndex.coolingfluid).toMenu(content, ItemResourceType.CoolingFluid, ref reachedBuffer, player, city);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.CoolingFluid);
-                    
+                        city.GetGroupedResource(CityResourceIndex.coolingfluid).toMenu(content, ItemResourceType.CoolingFluid, ref reachedBuffer, player, city);
+                        HudLib.blueprintButton(city, player, content, CraftResourceLib.CoolingFluid);
+                    }
 
                     
 
@@ -1077,23 +1026,23 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     int totalMines = 0;
 
                     city.GetGroupedResource(CityResourceIndex.ironore).toMenu(content, ItemResourceType.IronOre_G, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_bogIron, ItemResourceType.BogIron, Map.SubTile.Empty, ref totalMines);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_iron, ItemResourceType.Iron_G, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_bogIron, ItemResourceType.BogIron, Map.MapData.MapTile1_1.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_iron, ItemResourceType.Iron_G, Map.MapData.MapTile1_1.Empty, ref totalMines);
 
                     city.GetGroupedResource(CityResourceIndex.TinOre).toMenu(content, ItemResourceType.TinOre, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_tin, ItemResourceType.Tin, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_tin, ItemResourceType.Tin, Map.MapData.MapTile1_1.Empty, ref totalMines);
 
                     city.GetGroupedResource(CityResourceIndex.CopperOre).toMenu(content, ItemResourceType.CopperOre, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_copper, ItemResourceType.Copper, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_copper, ItemResourceType.Copper, Map.MapData.MapTile1_1.Empty, ref totalMines);
 
                     city.GetGroupedResource(CityResourceIndex.LeadOre).toMenu(content, ItemResourceType.LeadOre, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_lead, ItemResourceType.Lead, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_lead, ItemResourceType.Lead, Map.MapData.MapTile1_1.Empty, ref totalMines);
 
                     city.GetGroupedResource(CityResourceIndex.SilverOre).toMenu(content, ItemResourceType.SilverOre, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_silver, ItemResourceType.Silver, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_silver, ItemResourceType.Silver, Map.MapData.MapTile1_1.Empty, ref totalMines);
 
                     city.GetGroupedResource(CityResourceIndex.GoldOre).toMenu(content, ItemResourceType.GoldOre, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_gold, ItemResourceType.Gold, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_gold, ItemResourceType.Gold, Map.MapData.MapTile1_1.Empty, ref totalMines);
                     HudLib.blueprintButton(city, player, content, Minting.ConvertGoldOre);
 
                     content.newParagraph();
@@ -1115,10 +1064,10 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
 
                     city.GetGroupedResource(CityResourceIndex.RawMithril).toMenu(content, ItemResourceType.RawMithril, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_mithril, ItemResourceType.Mithril, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_mithril, ItemResourceType.Mithril, Map.MapData.MapTile1_1.Empty, ref totalMines);
 
                     city.GetGroupedResource(CityResourceIndex.Sulfur).toMenu(content, ItemResourceType.Sulfur, ref reachedBuffer, player, city);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_sulfur, ItemResourceType.Sulfur, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_sulfur, ItemResourceType.Sulfur, Map.MapData.MapTile1_1.Empty, ref totalMines);
                     content.newParagraph();
 
 

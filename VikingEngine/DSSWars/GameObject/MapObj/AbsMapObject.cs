@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,6 @@ namespace VikingEngine.DSSWars.GameObject
         /// <summary>
         /// Pågående strider, om order ges läggs inte battle till förrän armeerna är intill varandra
         /// </summary>
-
         public bool enterRender_overviewLayer_async = false;
         public bool enterRender_detailLayer_async = false;
         public bool inRender_overviewLayer = false;
@@ -35,7 +34,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float strengthValue = -1;
         public float mobilityValue = 0;
 
-        public IntVector2 tilePos = IntVector2.NegativeOne;
+        public IntVector2 maptilePos= IntVector2.NegativeOne;
         public TimeStamp lastNetUpdate = new TimeStamp();
         public int previousIncome_copp = 0;
         public Money money = new Money(0);
@@ -98,7 +97,7 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public bool lowFood() { throw new NotImplementedException(); }
         public bool payGold(int cost)
         {
-            if (DssRef.storage.ruleset_instance.centralGold)
+            if (DssRef.storage.ruleset_instance.module_physicalGold)
             {
                 var faction = pfaction.GetFaction();
                 if (faction == null)
@@ -115,7 +114,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool payGold(int cost, bool allowDept)
         {
-            if (DssRef.storage.ruleset_instance.centralGold)
+            if (DssRef.storage.ruleset_instance.module_physicalGold)
             {
                 var faction = pfaction.GetFaction();
                 if (faction == null)
@@ -139,7 +138,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (IsNetHosted || lastNetUpdate.belowTime_sec(20))
             {
-                DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, tilePos);
+                DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, maptilePos);
             }
             else
             {
@@ -197,9 +196,9 @@ namespace VikingEngine.DSSWars.GameObject
             return VectorExt.Length(position.X - tilePos.X, position.Z - tilePos.Y);
         }
 
-        public Map.Tile Tile()
+        public Map.MapData.SumTile4_4 Tile()
         {
-            return DssRef.world.tileGrid.Get(tilePos);
+            return DssRef.world.tileGrid.Get(maptilePos);
         }
         public override void toButtonContent(RichBoxContent content, bool dark)
         {
@@ -220,31 +219,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.Add(new RbText(myIndex.ToString(), dark ? HudLib.TitleColor_TypeName_Dark : HudLib.TitleColor_TypeName));
 
         }
-        virtual public void tagSprites(out SpriteName back, out SpriteName art)
-        {
-            back = Tag.TagBack();//Data.TagLib.BackSprite(tagBack);
-            art = Tag.TagArt();//Data.TagLib.ArtSprite(tagArt);
-        }
-        public bool tagToHud(RichBoxContent content)
-        {
-            tagSprites(out SpriteName back, out SpriteName art);
-            if (back != TagLib.NoBackSprite)
-            {
-                if (art == SpriteName.NO_IMAGE)
-                {
-                    content.Add(new RbImage(back));
-                }
-                else
-                {
-                    content.Add(new RbOverlapImage(
-                        new RbImage(back),
-                        art, Vector2.Zero, 0.8f));
-                }
-                return true;
-            }
-
-            return false;
-        }
+       
 
         public bool LocalMember
         {
@@ -269,7 +244,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override IntVector2 TilePos()
         {
-            return tilePos;
+            return maptilePos;
         }
         public override Vector3 WorldPos()
         {

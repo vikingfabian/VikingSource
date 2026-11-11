@@ -9,7 +9,7 @@ namespace VikingEngine.PJ.CarBall
     {
         Texture2D fieldTexture;
 
-        public CarBallTutorialScreen(List2<GamerData> joinedGamers)
+        public CarBallTutorialScreen(List2_old<GamerData> joinedGamers)
             :base(false)
         {
             Input.Mouse.Hide();//Input.Mouse.Visible = false;
@@ -18,6 +18,7 @@ namespace VikingEngine.PJ.CarBall
             Ref.draw.ClrColor = Color.Black;
 
             new Timer.AsynchActionTrigger(loadContent_Asynch, true);
+            Ref.music.stop(false);
         }
 
         void loadContent_Asynch()

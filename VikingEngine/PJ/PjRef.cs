@@ -31,8 +31,8 @@ namespace VikingEngine.PJ
             }
         }
 
-        public static Sound.SongData JoustSong;
-        public static Sound.SongData LobbySong;
+        //public static Sound.SongData JoustSong;
+        //public static Sound.SongData LobbySong;
         public static Storage storage;
         public static PjEngine.Achievements achievements;
         public static List<Vector2> StartPositions;
@@ -81,7 +81,7 @@ namespace VikingEngine.PJ
 
         public static bool ViewExtraControllerInput()
         {
-            return XboxLayout || Input.XInput.HasConnectedController();
+            return XboxLayout || Input.XInput.HasConnectedController() || Ref.steam.input.connectCount > 0;
         }
     }
 }

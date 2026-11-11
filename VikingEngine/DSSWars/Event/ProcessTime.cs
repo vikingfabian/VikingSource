@@ -25,8 +25,9 @@ namespace VikingEngine.DSSWars.Event
                     case 0: return ProcessEvent.SubTileReload;
                     
                     case 1:
+                        return ProcessEvent.FarLayerMap;
                     case 2:
-                        return ProcessEvent.OverviewMap;
+                        return ProcessEvent.MidLayerMap;
 
                     case 4:
                         quarter = -1;
@@ -50,6 +51,7 @@ namespace VikingEngine.DSSWars.Event
     {
         None,
         SubTileReload, //one second
-        OverviewMap, //500ms
+        MidLayerMap, //500ms
+        FarLayerMap,
     }
 }

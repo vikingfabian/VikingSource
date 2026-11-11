@@ -200,12 +200,12 @@ namespace VikingEngine
             //return fromlist.ConvertAll(x => x as TTo);
         }
 
-        public static List2<TTo> CastValueL2<TFrom, TTo>(List<TFrom> fromlist)
+        public static List2_old<TTo> CastValueL2<TFrom, TTo>(List<TFrom> fromlist)
             where TFrom : IConvertible
             where TTo : IConvertible
         {
             var toType = typeof(TTo);
-            List2<TTo> toList = new List2<TTo>(fromlist.Count);
+            List2_old<TTo> toList = new List2_old<TTo>(fromlist.Count);
             foreach (var m in fromlist)
             {
                 toList.Add((TTo)Convert.ChangeType(m, toType));//(TTo)m);
@@ -436,6 +436,10 @@ namespace VikingEngine
         public static bool HasMembers<T>(T[] array)
         {
             return array != null && array.Length > 0;
+        }
+        public static bool HasMembers<T>(SpottedArray<T> list)
+        {
+            return list != null && list.Count > 0;
         }
 
         public static int SafeCount<T>(T[] array)

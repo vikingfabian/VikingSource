@@ -10,6 +10,8 @@ namespace VikingEngine.DSSWars.UserGeneratedContent
 {
     static class UGClib
     {
+        public const string WorkshopSavesLocalFolder = "User";
+        public const string WorkshopSavesFolder = "Workshop";
         public const string UGCFolder = "UserGeneratedContent";
         public static readonly string ModelReplaceFolder = Path.Combine(UGCFolder, "vox_replace");
 

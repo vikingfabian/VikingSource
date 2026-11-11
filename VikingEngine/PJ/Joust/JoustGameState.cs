@@ -32,7 +32,7 @@ namespace VikingEngine.PJ.Joust
         public List<PlatformService.AchievementSettings> endLevelAchievements = new List<PlatformService.AchievementSettings>();
 
 
-        public JoustGameState(List2<GamerData> joinedGamers, int matchCount)
+        public JoustGameState(List2_old<GamerData> joinedGamers, int matchCount)
             : base(true)
         {
 
@@ -44,7 +44,9 @@ namespace VikingEngine.PJ.Joust
             this.matchCount = matchCount + 1;
             this.joinedLocalGamers = joinedGamers;
 
-            PjRef.JoustSong.PlayStored();
+            //PjRef.JoustSong.PlayStored();
+            Ref.music.endlessLoop = true;
+            Ref.music.PlayMusic(new Sound.SongData(PjLib.ContentFolder + "Hemisphere Three", true, 1f));
 
             Gamer.Init();
 

@@ -457,7 +457,7 @@ namespace VikingEngine.Voxels
             layers.list[layer].refreshFrameCount(currentFrame.Length);
         }
 
-        const int Version = 1;
+        const int Version = 2;
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(Version);

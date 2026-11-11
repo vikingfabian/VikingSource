@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,7 +29,9 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         public void GenerateTexture()
         {
+            var previousTexture = texture;
             texture = new PixelTexture(nodeGrid.Size * TextureScale);
+            GpuResourceSync.Release(previousTexture);
 
             refreshAllPixels();
         }

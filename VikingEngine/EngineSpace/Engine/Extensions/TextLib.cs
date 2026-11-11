@@ -290,7 +290,7 @@ namespace VikingEngine
             return Convert.ToInt32(percent * 100).ToString();
         }
 
-        public static string PercentAddText(float percent)
+        public static string PercentAddTextF(float percent)
         {
             if (percent < 0f)
             {
@@ -299,6 +299,18 @@ namespace VikingEngine
             else
             {
                 return "+" + PercentTextWithSymbol(percent);
+            }
+        }
+
+        public static string PercentAddTextInt(int percent)
+        {
+            if (percent < 0)
+            {
+                return percent.ToString() + "%";
+            }
+            else
+            {
+                return "+" + percent.ToString() + "%";
             }
         }
 

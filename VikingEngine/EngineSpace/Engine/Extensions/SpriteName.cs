@@ -5,6 +5,29 @@ using System.Text;
 
 namespace VikingEngine
 {
+    public struct SpriteVariantCount
+    {
+        SpriteName first;
+        int variants;
+
+        public SpriteVariantCount(SpriteName first, int variants = 1)
+        {
+            this.first = first;
+            this.variants = variants;
+        }
+
+        public SpriteName GetRandom(PcgRandom random)
+        {
+            if (variants <= 1)
+            {
+                return first;
+            }
+            return (SpriteName)((int)first + random.Int(variants));
+        }
+
+
+    }
+
     public enum SpriteName : short
     {
         NO_IMAGE = 0,
@@ -210,9 +233,11 @@ namespace VikingEngine
         PixController4,
         PixController5,
         PixController6,
+        PixController7,
+        PixController8,
 
         DisconnectSquare,
-
+        DoConnectDevice,
         
 
         GenericButton0,
@@ -1869,6 +1894,24 @@ namespace VikingEngine
         pjMenuIcon,
         pjTitleText,
 
+        pjRichMenuBg,
+        pjRichButton,
+        pjRichButton_Round,
+        pjRichButton_RoundNotSelected,
+        pjRichCheckOn,
+        pjRichCheckOff,
+        pjRichDragButton,
+
+        pjRichDropDownArrow,
+        pjRichListArrowSelected,
+        pjRichListArrowNotSelected,
+
+        pjRichListArrowDefault,
+
+        pjFPSIcon,
+        pjScreenFPSIcon,
+        pjYoutubeIcon,
+
         birdLobbyVisibilityAnyone,
         birdLobbyVisibilityFriends,
         birdLobbyVisibilityHidden,
@@ -2217,6 +2260,20 @@ namespace VikingEngine
         golfBugHideN2,
         golfBugDead,
 
+        stupidHorse,
+        stupidHorseBlink,
+        stupidHorseJump,
+        stupidHorseShadow,
+
+      
+        stupidHorseWingLarge,
+        stupidHorseWingSmall,
+        stupidHorseWhip,
+
+        DKbarrel,
+        DKbarrel_full,
+
+
         m3BrickYellow,
         m3BrickRed,
         m3BrickOrange,
@@ -2325,6 +2382,7 @@ namespace VikingEngine
 
         MenuIconExit,
         MenuIconResume,
+        MenuIconMasterVol,
         MenuIconMusicVol,
         MenuIconSoundVol,
         MenuPixelIconMusicVol,
@@ -2342,7 +2400,10 @@ namespace VikingEngine
 
         MenuIconMonitorFrame,
         MenuIconMonitorArrowsOut,
+        MenuIconMonitorArrowsOutBorderless,
         MenuIconMonitorArrowsIn,
+        MenuIconMonitorYoutube,
+        MenuIconMonitorWindow,
         MenuIconPerformanceHot,
         MenuIconPerformanceCold,
 
@@ -2423,6 +2484,49 @@ namespace VikingEngine
         #endregion
 
         #region DSS WARS
+
+        DssMapTextureGeneral1,
+        DssMapTextureGeneral2,
+        DssMapTextureGeneralWithStones1,
+        DssMapTextureGeneralWithStones2,
+        DssMapTextureGeneralWithStones3,
+        DssMapTextureStructureGroundCirkular,
+        DssMapTextureStructureGround,
+        DssMapTextureGravelRoad1,
+        DssMapTextureGravelRoad2,
+        DssMapTextureCobbleRoad1,
+        DssMapTexturePavedRoad1,
+        DssMapTextureSand,
+        DssMapTextureHardPan,
+        DssMapTextureFertile,
+        DssMapTextureRubble1,
+        DssMapTextureRubble2,
+        DssMapTextureRootmat1,
+        DssMapTextureRootmat2,
+
+        DssMapTextureMadeSolid,
+        DssMapTextureMud,
+        DssMapTextureSwamp,
+        DssMapTextureFrozen,
+
+        DssMapTextureGrass1,
+        DssMapTextureGrass2,
+        DssMapTextureGrass3,
+
+        DssMapTextureRock1,
+        DssMapTextureRock2,
+        DssMapTextureRock3,
+
+        DssMapTextureRockFoil1,
+        DssMapTextureRockFoil2,
+        DssMapTextureRockFoil3,
+
+        DssMapTextureGrassFoil1,
+        DssMapTextureGrassFoil2,
+        DssMapTextureGrassFoil3,
+
+        DssMapTextureRockSide,
+
         WarsHudMessageBg,
         WarsHudScrollerBg,
         WarsHudScrollerSlider,
@@ -2430,6 +2534,7 @@ namespace VikingEngine
         WarsHudTabNotSelected,
         WarsHudSubTabSelected,
         WarsHudSubTabNotSelected,
+        WarsHudSuperPrimaryButton,
         WarsHudPrimaryButton,
         WarsHudPrimaryButtonDisabled,
         WarsHudSecondaryButton,
@@ -2443,6 +2548,16 @@ namespace VikingEngine
         
         WarsHudToggleNotSelected,
         WarsHudRoundButton,
+        WarsHudModuleButton,
+
+        WarsTechButtonEnabled, WarsTechButtonDisabled,
+        WarsTechOptionYes,
+        WarsTechOptionNo,
+        WarsTechChildArrow,
+        WarsTechNextArrow,
+        //addWithSizeDef(SpriteName.WarsHudOptionYes, currentIndex, WarsCheckSize, WarsCheckSize);
+        //addWithSizeDef(SpriteName.WarsHudOptionNo, currentIndex, WarsCheckSize, WarsCheckSize);
+
         WarsHudCheckYes,
         WarsHudCheckNo,
         WarsHudOptionYes,
@@ -2494,6 +2609,8 @@ namespace VikingEngine
         WarsHudFilterButtonSelected,
         WarsHudFilterButton,
 
+        WarsHudIconReset,
+        WarsHudIconWarning,
         WarsHudIconExit,
         WarsHudIconSettings,
         WarsHudIconNetwork,
@@ -2551,6 +2668,7 @@ namespace VikingEngine
         warsFoliageSquareShadow,
         warsFoliageRoundShadow,
         warsFoliageDirtRoad,
+        warsWorkerPromoMap2,
         warsWorkerPromoHammer,
         warsWorkerPromoBox,
         warsWorkerPromoCannon,
@@ -2748,7 +2866,7 @@ namespace VikingEngine
         WarsSoldierMan,
         WarsSoldierGroup,
         WarsNobelman,
-
+        WarsIconArmySupply,
         WarsGuardPostIcon,
         WarsHammer,
         WarsHammerAdd,
@@ -2986,7 +3104,7 @@ namespace VikingEngine
         WarsResource_MountFullPlateArmor,
         WarsResource_MountMithrilArmor,
 
-
+        WarsResource_FineWood,
         WarsResource_BucklerShield, WarsResource_RoundShield, WarsResource_HeaterShield, WarsResource_TowerShield,
 
         WarsResource_Sharpstick,
@@ -3021,6 +3139,7 @@ namespace VikingEngine
         WarsIcon_WorkQueueIdle,
         WarsIcon_WorkQueueActive,
         WarsResource_Wood,
+        WarsResource_WoodStock,
         WarsResource_Fuel,
         WarsResource_Wheat,
         WarsResource_Linen,

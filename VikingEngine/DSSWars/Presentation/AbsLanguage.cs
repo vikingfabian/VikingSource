@@ -1087,7 +1087,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string ArmyOption_Halt { get; }
         public abstract string ArmyOption_Disband { get; }
         public abstract string ArmyOption_Divide { get; }
-        public abstract string ArmyOption_RemoveX { get; }
+        public abstract string Edit_RemoveX { get; }
         public abstract string ArmyOption_DisbandAll { get; }
         public abstract string ArmyOption_XGroupsOfType { get; }
 

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 
@@ -265,7 +265,7 @@ namespace VikingEngine.DSSWars.Players
                                     cityAction = citySel;
                                     automationAction = AutomationAction.UpgradeLogistics;
                                    
-                                    CityStructure.AutomationInstance.NextEmptyLand(citySel, Ref.peRnd.Int(32), out subtilePos);//.EmptyLand.Last();
+                                    CityStructureProcess.AutomationInstance.NextEmptyLand(citySel, Ref.peRnd.Int(32), out subtilePos);//.EmptyLand.Last();
                                     return;
                                 }
                             }

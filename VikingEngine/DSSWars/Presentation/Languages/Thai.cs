@@ -1503,7 +1503,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Menu option to control an army. Remove soldiers.
         /// </summary>
-        public override string ArmyOption_RemoveX => TextLib.ThaiConv("นำ| {0} |ออก");
+        public override string Edit_RemoveX => TextLib.ThaiConv("นำ| {0} |ออก");
 
         /// <summary>
         /// Menu option to control an army. Remove soldiers.

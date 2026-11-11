@@ -9,7 +9,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.MoonFall;
 
@@ -380,7 +380,7 @@ namespace VikingEngine.DSSWars
                     break;
             }
 
-            if (!DssRef.difficulty.setting_allowPauseCommand)
+            if (DssRef.storage.ruleset_instance.module_noPauseCommand)
             { 
                 UnlockAchievement_onAny_50_100_150(AchievementIndex.no_pause_any, AchievementIndex.no_pause_50, AchievementIndex.no_pause_100, AchievementIndex.no_pause_150);
             }

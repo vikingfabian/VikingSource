@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Players;
 using static System.Collections.Specialized.BitVector32;
@@ -17,7 +19,7 @@ namespace VikingEngine.DSSWars.Players
     {
         public bool hasSelection = false;
         public IntVector2 subTilePos;
-        public SubTile subTile;
+        public MapTile1_1 subTile;
         Mesh model;
         public bool isNew = false;
         public SelectTileResult selectTileResult = SelectTileResult.None;
@@ -45,19 +47,19 @@ namespace VikingEngine.DSSWars.Players
             if (isHover)
             {
                 loadedMesh = LoadedMesh.SelectSquareDotted;
-                scale = WorldData.SubTileWidth * 1.1f;
+                scale = Map.MapData.MapTile1_1.ModelScale * 1.1f;
             }
             else
             {
                 loadedMesh = LoadedMesh.SelectSquareSolid;
-                scale = WorldData.SubTileWidth * 1.0f;
+                scale = Map.MapData.MapTile1_1.ModelScale * 1.0f;
             }
 
             var model = new Mesh(loadedMesh, Vector3.Zero, new Vector3(scale),
                 TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
 
             model.setVisibleCamera(player.playerData.localPlayerIndex);
-            model.AddToRender(DrawGame.UnitDetailLayer);
+            model.AddToRender(DrawGame.NearLayer);
             model.Visible = false;
 
             return model;
@@ -74,16 +76,16 @@ namespace VikingEngine.DSSWars.Players
                     this.subTilePos = subTilePos;
                     isNew = true;
                     tileOfInterest = false;
-                    if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
+                    if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(subTilePos), out var tile))
                     {
-                        city = tile.City();
+                        city = tile.pcity.City();
                     }
 
                     if (player.gameControls.InBuildOrdersMode())
                     {
                         selectTileResult = player.gameControls.build.buildMode;
                         hasSelection = true;
-                        model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+                        model.position = WP.MaptileToWorldPosXYZ(subTilePos);
                         //model.position.Y = subTile.groundY;
 
                         
@@ -104,48 +106,48 @@ namespace VikingEngine.DSSWars.Players
                                         tileOfInterest = true;
                                         switch ((TerrainBuildingType)subTile.subTerrain)
                                         {
-                                            case Map.TerrainBuildingType.CityHall_Tent:
-                                            case Map.TerrainBuildingType.CityHall_Village:
-                                            case Map.TerrainBuildingType.CityHall_Town:
-                                            case Map.TerrainBuildingType.CityHall_Capital:
+                                            case TerrainBuildingType.CityHall_Tent:
+                                            case TerrainBuildingType.CityHall_Village:
+                                            case TerrainBuildingType.CityHall_Town:
+                                            case TerrainBuildingType.CityHall_Capital:
                                                 selectTileResult = SelectTileResult.CityHall;
                                                 break;
-                                            case Map.TerrainBuildingType.Postal:
-                                            case Map.TerrainBuildingType.PostalLevel2:
-                                            case Map.TerrainBuildingType.PostalLevel3:
+                                            case TerrainBuildingType.Postal:
+                                            case TerrainBuildingType.PostalLevel2:
+                                            case TerrainBuildingType.PostalLevel3:
                                                 selectTileResult = SelectTileResult.Postal;
                                                 break;
-                                            case Map.TerrainBuildingType.Recruitment:
-                                            case Map.TerrainBuildingType.RecruitmentLevel2:
-                                            case Map.TerrainBuildingType.RecruitmentLevel3:
+                                            case TerrainBuildingType.Recruitment:
+                                            case TerrainBuildingType.RecruitmentLevel2:
+                                            case TerrainBuildingType.RecruitmentLevel3:
                                                 selectTileResult = SelectTileResult.Recruitment;
                                                 break;
-                                            case Map.TerrainBuildingType.GoldDeliveryLevel1:
-                                            case Map.TerrainBuildingType.GoldDeliveryLevel2:
-                                            case Map.TerrainBuildingType.GoldDeliveryLevel3:
+                                            case TerrainBuildingType.GoldDeliveryLevel1:
+                                            case TerrainBuildingType.GoldDeliveryLevel2:
+                                            case TerrainBuildingType.GoldDeliveryLevel3:
                                                 selectTileResult = SelectTileResult.GoldDeliver;
                                                 break;
 
-                                            case Map.TerrainBuildingType.SoldierBarracks:
-                                            case Map.TerrainBuildingType.ArcherBarracks:
-                                            case Map.TerrainBuildingType.WarmachineBarracks:
+                                            case TerrainBuildingType.SoldierBarracks:
+                                            case TerrainBuildingType.ArcherBarracks:
+                                            case TerrainBuildingType.WarmachineBarracks:
                                             //case Map.TerrainBuildingType.KnightsBarracks:
-                                            case Map.TerrainBuildingType.GunBarracks:
-                                            case Map.TerrainBuildingType.CannonBarracks:
+                                            case TerrainBuildingType.GunBarracks:
+                                            case TerrainBuildingType.CannonBarracks:
                                                 selectTileResult = SelectTileResult.Conscript;
                                                 break;
 
-                                            case Map.TerrainBuildingType.School:
+                                            case TerrainBuildingType.School:
                                                 selectTileResult = SelectTileResult.School;
                                                 break;
-                                            case Map.TerrainBuildingType.ResearchCenter:
+                                            case TerrainBuildingType.ResearchCenter:
                                                 selectTileResult = SelectTileResult.ResearchCenter;
                                                 break;
-                                            case Map.TerrainBuildingType.BookPress:
+                                            case TerrainBuildingType.BookPress:
                                                 selectTileResult = SelectTileResult.BookPress;
                                                 break;
 
-                                            case Map.TerrainBuildingType.Cesspit:
+                                            case TerrainBuildingType.Cesspit:
                                                 selectTileResult = SelectTileResult.CessPit;
                                                 break;
                                         }
@@ -197,39 +199,48 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public MayBuildResult mayBuild(LocalPlayer player, out bool upgrade)
+        public MayBuildResult mayBuild(LocalPlayer player, out GroundType? mustTerraform, out bool upgrade)
         {
-            return MayBuild(subTilePos, player, out upgrade, out _);
+            if (DssRef.state.GodPowers())
+            {
+                upgrade = false;
+                mustTerraform = null;
+                return MayBuildResult.Yes;
+            }
+            return MayBuild(subTilePos, player, out mustTerraform, out upgrade, out _);
         }
 
-        public static MayBuildResult MayBuild(IntVector2 subTilePos, LocalPlayer player, out bool upgrade, out City city)
+        public static MayBuildResult MayBuild(IntVector2 subTilePos, LocalPlayer player, out GroundType? mustTerraform, out bool upgrade, out City city)
         {
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
             { 
-                if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
+                if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(subTilePos), out var tile))
                 {
-                    if (tile.MayBuild())
+                    //if (tile.MayBuild())
                     {
-                        city = tile.City();
+                        city = tile.pcity.City();
 
-                        return MayBuild(city, subTile, player, out upgrade);
+                        return MayBuild(city, subTile, player, out mustTerraform, out upgrade);
                     }
                 }
             }
 
             city = null;
             upgrade = false;
+            mustTerraform = null;
             return MayBuildResult.ERR;
         }
 
-        public static MayBuildResult MayBuild(City city, SubTile subTile, LocalPlayer player, out bool upgrade)
+        public static MayBuildResult MayBuild(City city, MapTile1_1 subTile, LocalPlayer player, out GroundType? mustTerraform, out bool upgrade)
         {
+            mustTerraform = null;
             upgrade = false;
             if (city != null)
             {
-                if (city.pfaction.GetPlayer() == player || DssRef.difficulty.GodPowers())
+                if (city.pfaction.GetPlayer() == player || DssRef.state.GodPowers())
                 {
-                    if (subTile.MayBuild(player.gameControls.build.placeBuildingType, out upgrade))
+                    MayBuildResult tileMayBuild = subTile.MayBuild(player.gameControls.build.placeBuildingType, false, out mustTerraform, out upgrade);
+                    if (tileMayBuild == MayBuildResult.Yes)
                     {
                         if (player.gameControls.map.selection.obj == city)
                         {
@@ -238,7 +249,7 @@ namespace VikingEngine.DSSWars.Players
                         else
                         {
                             List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-                            BuildLib.AvailableBuildTypes(available, city, false);
+                            AvailableBuildTypes.Available(available, city, false);
                             if (!available.Contains(player.gameControls.build.placeBuildingType))
                             {
                                 return MayBuildResult.Yes_ChangeCity;
@@ -251,7 +262,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     { 
-                        return MayBuildResult.No_Occupied;
+                        return tileMayBuild;
                     }
                 }
             }
@@ -292,14 +303,14 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
             {
-                IntVector2 tilePos = WP.SubtileToTilePos(subTilePos);
-                if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
+                IntVector2 tilePos = WP.MaptileToSumTile(subTilePos);
+                if (DssRef.world.tileGrid.TryGet(tilePos, out var tile) && tile.pcity.HasValue())
                 {
-                    city = tile.City();
+                    city = tile.pcity.City();
                     
-                        if (city.pfaction.GetPlayer() == player || DssRef.difficulty.GodPowers())
+                        if (city.pfaction.GetPlayer() == player || DssRef.state.GodPowers())
                         {
-                            if (subTilePos != city.citySquareSubtilePos && subTilePos != city.cityHallSubtilePos) //center tile is protected
+                            if (subTilePos != city.citySquareSubtilePos && subTilePos != city.maptilePos) //center tile is protected
                             {
                                 var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
                                 if (buildingType != BuildAndExpandType.NUM_NONE)
@@ -366,10 +377,15 @@ namespace VikingEngine.DSSWars.Players
         Wall,
         CessPit,
         //Resources,
-        
+
         Build,
+        Terraform,
         ClearTerrain,
         Demolish,
+
+        EditorBuild,
+        EditorDemolish,
+
     }
 
     enum MayBuildResult
@@ -380,6 +396,8 @@ namespace VikingEngine.DSSWars.Players
         Yes_ChangeCity,
         No_OutsideRegion,
         No_Occupied,
+
+        No_BadGround,
 
     }
 }

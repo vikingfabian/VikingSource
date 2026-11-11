@@ -18,6 +18,7 @@ namespace VikingEngine.PJ.MiniGolf
         Rotation1D angle;
         double tweakTime = 0;
         Time tweakDelay = new Time(400);
+        
 
         public Club(Ball ball)
         {
@@ -69,6 +70,7 @@ namespace VikingEngine.PJ.MiniGolf
             {
                 if (powerBar.update() || button.DownEvent)
                 {
+                    //fireTimeStamp.setNow();
                     powerBar.fire(button);                   
                     return true;
                 }

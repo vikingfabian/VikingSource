@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapModels;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Data;
@@ -305,8 +305,6 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.drafthorse_red, false);
             loadVoxelModel(VoxelModelName.warhorse_brown, false);
             
-
-
             loadVoxelModel(VoxelModelName.wagon_light, false);
             loadVoxelModel(VoxelModelName.wagon_light4, false);
             loadVoxelModel(VoxelModelName.wagon_coach, false);
@@ -328,7 +326,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.godfire, false);
             loadVoxelModel(VoxelModelName.wars_borderstick, false);
 
-            foreach (var model in DetailMapTile.LoadModel())
+            foreach (var model in DetailModelTile.LoadModel())
             {
                 loadVoxelModel(model, false);
             }
@@ -512,7 +510,7 @@ namespace VikingEngine.DSSWars
                 {                    
                     if (!detailLayer)
                     {
-                        int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.MidLayer;
+                        int lay = detailLayer ? DrawGame.NearLayer : DrawGame.MidLayer;
 
                         if (async)
                         {

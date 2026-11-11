@@ -51,7 +51,7 @@ namespace VikingEngine.HUD.RichBox
         /// <param name="options">Positive values, low to high</param>
         public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, IntGetSetTag intValue, bool useSymbols, object tag = null)
         {
-            var dragButton = new RbDragButton(settings, intValue);
+            var dragButton = new RbDragButton(settings, intValue, null, tag);
             int value = intValue(tag, false, 0);
 
             for (int i = options.Count - 1; i >= 0; --i)
@@ -215,11 +215,22 @@ namespace VikingEngine.HUD.RichBox
 
                 if (hasChanged)
                 {
+#if DSS
                     (change > 0 ? DSSWars.SoundLib.scroll_forward : DSSWars.SoundLib.scroll_back).Play();
+#endif
+#if PJ
+                    (change > 0 ? PJ.SoundManager.scroll_forward : PJ.SoundManager.scroll_back).Play();
+#endif
                 }
                 else
-                { 
+                {
+#if DSS
                     DSSWars.SoundLib.soft_buzz_error.Play();
+#endif
+#if PJ
+                    PJ.SoundManager.soft_buzz_error.Play();
+#endif
+
                 }
             }
         }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using VikingEngine.Core.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -140,7 +141,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshGoal()
         {
-            currentGoalPos = WP.ToWorldPos(path.nodes[currentNode]);//warsRef.board.areaToWorldPos(path.nodes[currentNode]);
+            currentGoalPos = WP.ChunkToWorldPos(path.nodes[currentNode]);//warsRef.board.areaToWorldPos(path.nodes[currentNode]);
         }
     }
 

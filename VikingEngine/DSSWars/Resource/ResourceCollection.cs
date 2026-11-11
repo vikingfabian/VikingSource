@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Resource
 {
+    /*
     class ResourceCollection : List<ResourceChunk>
     {
         public void Add(ItemResource resource)
@@ -30,35 +31,6 @@ namespace VikingEngine.DSSWars.Resource
             AddRange(collection);
         }
 
-        public bool HasResources(ItemResourceType resourceType, int minQuality, int count)
-        {
-            int totalCount = 0;
-            foreach (var chunk in this)
-            {
-                totalCount += chunk.CountResources(resourceType, minQuality);
-                if (totalCount >= count)
-                    return true;
-            }
-            return false;
-        }
-
-        public bool SpendResources(ItemResourceType resourceType, int minQuality, int count)
-        {
-            if (!HasResources(resourceType, minQuality, count))
-                return false;
-
-            foreach (var chunk in this)
-            {
-                while (chunk.RemoveResource(resourceType, minQuality))
-                {
-                    if (--count <= 0)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            throw new Exception("SpendResources fail");
-        }
     }
+    */
 }

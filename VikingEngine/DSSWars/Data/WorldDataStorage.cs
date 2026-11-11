@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using VikingEngine.DSSWars.Map.MapLib;
 
 
 namespace VikingEngine.DSSWars
@@ -19,7 +20,7 @@ namespace VikingEngine.DSSWars
         virtual public void saveMap(WorldData data)
         {
             this.worldData = data;
-            var filePath = mapfilePath(data.metaData.mapSize, data.metaData.saveIndex, true);
+            var filePath = mapfilePath(data.metaData.mapScale, data.metaData.saveIndex, true);
             System.IO.Directory.CreateDirectory(filePath.CompleteDirectory);
             new DataStream.WriteBinaryIO(filePath, data.writeMapFile, null);
         }
@@ -29,11 +30,11 @@ namespace VikingEngine.DSSWars
             this.worldData = new WorldData();
             this.worldData.metaData = worldMeta;
             DssRef.world = this.worldData;
-            var filePath = mapfilePath(worldData.metaData.mapSize, worldData.metaData.saveIndex, false);
+            var filePath = mapfilePath(worldData.metaData.mapScale, worldData.metaData.saveIndex, false);
             readTask = new DataStream.ReadBinaryIO(filePath, worldData.readMapFile, this);
         }
 
-        public DataStream.FilePath mapfilePath(MapSize size, int mapIndex, bool save)
+        public DataStream.FilePath mapfilePath(MapScale size, int mapIndex, bool save)
         {
             string folder;
             if (save)
@@ -46,7 +47,7 @@ namespace VikingEngine.DSSWars
             }
 
             return new DataStream.FilePath(folder,
-                "map_sz" + ((int)size).ToString() + "_i" + mapIndex.ToString(), ".map", save, false);
+                "map_sz" + ((int)size.GetSizeCategory()).ToString() + "_i" + mapIndex.ToString(), ".map", save, false);
         }
 
         public void SaveComplete(bool save, int player, bool completed, byte[] value)

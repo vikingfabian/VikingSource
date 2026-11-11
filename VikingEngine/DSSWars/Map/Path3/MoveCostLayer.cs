@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.Xna.Framework;
+using VikingEngine.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars.Map.Path3
 {
@@ -22,6 +23,7 @@ namespace VikingEngine.DSSWars.Map.Path3
         public MoveCost[] cost_n_ne_e_se;
 
         public Vector3 tileToWp, tileToWpStart;
+        public float defaultMoveCost;
 
         public int layer;
         float toTileScale;
@@ -29,16 +31,20 @@ namespace VikingEngine.DSSWars.Map.Path3
 
         public MoveCostLayer(int layer, int tileWidth, IntVector2 size)
         {
+            this.layer = layer;
+
             MaxMoveCost = tileWidth * 10f;
             this.toTileScale = 1f / tileWidth;
             this.size = size;
             cost_n_ne_e_se = new MoveCost[size.Area() * StoredDirections];
 
-            tileToWpStart.X = tileWidth * 0.5f;
-            tileToWpStart.Z = tileWidth * 0.5f;
+            tileToWpStart.X = 0;//tileWidth * 0.5f;
+            tileToWpStart.Z = 0;//tileWidth * 0.5f;
 
-            tileToWp.X = tileWidth;
-            tileToWp.Z = tileWidth;
+            tileToWp.X = tileWidth * MapTile1_1.ModelScale;
+            tileToWp.Z = tileWidth * MapTile1_1.ModelScale;
+
+            defaultMoveCost = tileWidth;
 
         }
 
@@ -104,14 +110,14 @@ namespace VikingEngine.DSSWars.Map.Path3
         public static IntVector2 WpToLay4(Vector3 wp)
         { 
             return new IntVector2(
-                wp.X * WorldData.TileSubDivitions / MoveCostLayer.Layer4TileWidth, 
-                wp.Z * WorldData.TileSubDivitions / MoveCostLayer.Layer4TileWidth);
+                wp.X * Map.MapData.MapTile1_1.ModelScale_Inv / MoveCostLayer.Layer4TileWidth, 
+                wp.Z * Map.MapData.MapTile1_1.ModelScale_Inv / MoveCostLayer.Layer4TileWidth);
         }
         public static IntVector2 WpToLay2(Vector3 wp)
         {
             return new IntVector2(
-                wp.X * WorldData.TileSubDivitions / MoveCostLayer.Layer2TileWidth, 
-                wp.Z * WorldData.TileSubDivitions / MoveCostLayer.Layer2TileWidth);
+                wp.X * Map.MapData.MapTile1_1.ModelScale_Inv / MoveCostLayer.Layer2TileWidth, 
+                wp.Z * Map.MapData.MapTile1_1.ModelScale_Inv / MoveCostLayer.Layer2TileWidth);
         }
     }
 

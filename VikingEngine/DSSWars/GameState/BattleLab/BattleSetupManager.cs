@@ -17,6 +17,7 @@ using VikingEngine.DSSWars.Interface;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Timer;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.Core.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars.GameState.BattleLab
 {
@@ -36,7 +37,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         public void beginBattleSetup()
         {
             LocalPlayer player = DssRef.state.LocalHost();
-            beginBattleSetup(WP.ToTilePos(DssRef.state.culling.players[player.playerData.localPlayerIndex].MapCenter));
+            beginBattleSetup(WP.ToSumTilePos(DssRef.state.culling.players[player.playerData.localPlayerIndex].MapCenter));
         }
 
         public void beginBattleSetup(IntVector2 center)

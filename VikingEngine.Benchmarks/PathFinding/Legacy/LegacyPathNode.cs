@@ -1,6 +1,6 @@
 using System;
 using VikingEngine.DSSWars;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
 
 namespace VikingEngine.Benchmarks.Pathfinding.Legacy
 {
@@ -56,8 +56,8 @@ namespace VikingEngine.Benchmarks.Pathfinding.Legacy
                 moveCost -= 1f;
             }
 
-            Tile tile = world.tileGrid.Get(pos);
-            waterTile = tile.IsWater();
+            SumTile4_4 tile = world.tileGrid.Get(pos);
+            //waterTile = tile.IsWater();
 
             if (waterTile != parent.waterTile)
             {
@@ -72,7 +72,7 @@ namespace VikingEngine.Benchmarks.Pathfinding.Legacy
             }
             ship = this.waterTile;
 
-            moveCost *= tile.TroupWalkingDistance(ship);
+            //moveCost *= tile.TroupWalkingDistance(ship);
 
             moveCost += parent.moveCost;
 

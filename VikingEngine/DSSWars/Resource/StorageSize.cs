@@ -66,6 +66,6 @@ namespace VikingEngine.DSSWars.Resource
 
     enum StorageType
     {
-        MaterialStorage, FoodStorage, WeaponStorage, ArmorStorage, AnimalStorage, NUM_NONE
+        WaterStorage, MaterialStorage, FoodStorage, WeaponStorage, ArmorStorage, AnimalStorage, NUM_NONE
     }
 }

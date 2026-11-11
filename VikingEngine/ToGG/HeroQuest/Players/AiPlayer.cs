@@ -17,7 +17,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players
     {
         const bool DebugAsynchActions = true;
 
-        List2<Unit> activationOrder;
+        List2_old<Unit> activationOrder;
         UnitAiActions unitActions = new UnitAiActions(null);
         
         MoveLinesGroup movelines;
@@ -29,7 +29,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players
             : base(pData)
         {
             pData.name = "Dungeon Master";
-            activationOrder = new List2<Unit>(32);
+            activationOrder = new List2_old<Unit>(32);
             
         }
 

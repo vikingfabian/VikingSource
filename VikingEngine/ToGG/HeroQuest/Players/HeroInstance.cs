@@ -63,7 +63,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players
         }
     }
 
-    class HeroInstanceColl : List2<HeroInstance>
+    class HeroInstanceColl : List2_old<HeroInstance>
     {
         public HeroInstanceColl()
             : base(3)

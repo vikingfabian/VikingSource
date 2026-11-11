@@ -20,7 +20,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.PJ.CarBall;
 using VikingEngine.DSSWars.Defence;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -225,30 +225,45 @@ namespace VikingEngine.DSSWars.Interface
                         var bp = player.gameControls.build.placeBuildingOption().blueprint;
                         bp.toMenu(content, subTile.city);
 
-                        var mayBuild = player.gameControls.map.hover.subTile.mayBuild(player, out bool upgrade);
+                        var mayBuild = player.gameControls.map.hover.subTile.mayBuild(player, out GroundType? mustTerraform, out bool upgrade);
                          mayBuild = player.gameControls.build.adjustMayBuild(mayBuild);
                         switch (mayBuild)
                         {
                             case Players.MayBuildResult.Yes_ChangeCity:
-                                content.text(DssRef.lang.BuildHud_OutsideCity).overrideColor = HudLib.InfoYellow_Light;
+                                content.icontext(HudLib.AvailableIcon, DssRef.lang.BuildHud_OutsideCity, HudLib.InfoYellow_Light);
                                 break;
 
                             case Players.MayBuildResult.No_OutsideRegion:
                                 avaialableAction = false;
-                                content.text(DssRef.lang.BuildHud_OutsideFaction).overrideColor = HudLib.NotAvailableColor;
+                                content.icontext(HudLib.NotAvailableIcon, DssRef.lang.BuildHud_OutsideFaction, HudLib.NotAvailableColor);
                                 break;
 
                             case Players.MayBuildResult.No_Occupied:
                                 avaialableAction = false;
-                                content.text(DssRef.lang.BuildHud_OccupiedTile).overrideColor = HudLib.NotAvailableColor;
+                                content.icontext(HudLib.NotAvailableIcon, DssRef.lang.BuildHud_OccupiedTile, HudLib.NotAvailableColor);
+                                break;
+
+                            case Players.MayBuildResult.No_BadGround:
+                                avaialableAction = false;
+                                content.icontext(HudLib.NotAvailableIcon, ".Bad ground", HudLib.NotAvailableColor);
                                 break;
                         }
 
-                        //if (subTile.city.buildingStructure.buildingLevel_logistics < 2)
-                        //{
-                        //    content.text(string.Format(DssRef.lang.BuildHud_Queue, player.orders.buildQueue(subTile.city), subTile.city.MaxBuildQueue())).overrideColor = subTile.city.availableBuildQueue(player) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                        //}
                         buildOpt.blueprint.requirementToHud(content, subTile.city, out _);
+
+                        if (avaialableAction && mustTerraform.HasValue)
+                        {
+                            content.Add(new RbSeperationLine());
+                            content.newParagraph();
+                            content.icontext(SpriteName.MissingImage, ".Terraform ground type", HudLib.InfoYellow_Light);
+                            var groundFromProp = GroundPropertiesLib.Get(subTile.subTile.groundType);
+                            var groundToProp = GroundPropertiesLib.Get(mustTerraform.Value);
+                            HudLib.LabelAndText(content, SpriteName.WarsConstructBuildingIcon, DssRef.lang.BuildHud_BuildTime, string.Format(DssRef.lang.Hud_Time_XSeconds, TextLib.PlusMinus(groundFromProp.TerraformFromTimeSec)));
+                            if (groundToProp.TerraformToCost != null)
+                            {
+                                groundToProp.TerraformToCost.toMenu(content, subTile.city, false, true, true, false);
+                            }
+                        }
 
                         content.Add(new RbSeperationLine());
                         content.newParagraph();
@@ -364,18 +379,18 @@ namespace VikingEngine.DSSWars.Interface
                         }
                         break;
                 }
-                title.overrideColor = avaialableAction ? HudLib.TitleColor_Action : HudLib.NotAvailableColor;
 
+                if (title != null)
+                {
+                    title.overrideColor = avaialableAction ? HudLib.TitleColor_Action : HudLib.NotAvailableColor;
+                }
                 content.Add(new RbSeperationLine());
                 content.newParagraph();
 
             }
-            //else
-            //{
-            //    lib.DoNothing();
-            //}
-            content.h2(DssRef.lang.TerrainType, HudLib.TitleColor_Label);
-            content.newLine();
+            
+            HudLib.Label(content, DssRef.lang.TerrainType);
+            content.space();
             IconName.Terrain(subTile.subTile.mainTerrain, subTile.subTile.subTerrain, out SpriteName tileIcon, out string tileName);
             if (tileIcon != SpriteName.NO_IMAGE)
             {
@@ -383,6 +398,11 @@ namespace VikingEngine.DSSWars.Interface
                 content.hspace();
             }
             content.Add(new RbText(tileName));
+
+            HudLib.Label(content, ".Ground type");
+            content.space();
+            content.Add(new RbText(subTile.subTile.groundType.ToString()));
+
 
             if (BuildLib.BuildTypeFromTerrain(subTile.subTile.mainTerrain, subTile.subTile.subTerrain) != BuildAndExpandType.NUM_NONE)
             {
@@ -396,61 +416,69 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbText(DssRef.lang.Building_BuildAction));
             }
 
-            if (subTile.subTile.mainTerrain == TerrainMainType.Building)
+            switch (subTile.subTile.mainTerrain)
             {
-                switch ((TerrainBuildingType)subTile.subTile.subTerrain)
-                {
-                    case TerrainBuildingType.BoarHabitat:
-                    case TerrainBuildingType.FowlHabitat:
-                    case TerrainBuildingType.OxHabitat:
-                    case TerrainBuildingType.PonyHabitat:
-                    case TerrainBuildingType.WolfHabitat:
-                    case TerrainBuildingType.CatHabitat:
-                    case TerrainBuildingType.ElephantHabitat:
-                        content.Add(new RbSeperationLine());
-                        content.h2(DssRef.lang.Tutorial_ToCapture, HudLib.TitleColor_Head2);
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbText(string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, DssRef.lang.BuildingType_TrapperHut)));
+                case TerrainMainType.Building:
+                    switch ((TerrainBuildingType)subTile.subTile.subTerrain)
+                    {
+                        case TerrainBuildingType.Smoker:
+                            content.newParagraph();
+                            content.Add(new RbSeperationLine());
+                            Resource.CraftResourceLib.ConservedFood_Smoked.toMenu(content, subTile.city);
+                            break;
 
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
+                        case TerrainBuildingType.Dryer:
+                            content.newParagraph();
+                            content.Add(new RbSeperationLine());
+                            Resource.CraftResourceLib.ConservedFood_Dried.toMenu(content, subTile.city);
+                            break;
 
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbText(TextLib.LabelColon( DssRef.lang.Work_OrderPrioTitle)));
-                        content.space();
-                        content.Add(new RbImage(SpriteName.WarsWorkMove));
-                        content.hspace();
-                        content.Add(new RbText(DssRef.lang.Work_Move));
-                        break;
+                        case TerrainBuildingType.Work_CoalPit:
+                            content.newParagraph();
+                            content.Add(new RbSeperationLine());
+                            Resource.CraftResourceLib.Charcoal.toMenu(content, subTile.city);
+                            break;
 
-                    case TerrainBuildingType.Smoker:
-                        content.newParagraph();
-                        content.Add(new RbSeperationLine());
-                        Resource.CraftResourceLib.ConservedFood_Smoked.toMenu(content, subTile.city);
-                        break;
+                        case TerrainBuildingType.Brewery:
+                            content.newParagraph();
+                            content.Add(new RbSeperationLine());
+                            Resource.CraftResourceLib.Beer.toMenu(content, subTile.city);
+                            break;
 
-                    case TerrainBuildingType.Dryer:
-                        content.newParagraph();
-                        content.Add(new RbSeperationLine());
-                        Resource.CraftResourceLib.ConservedFood_Dried.toMenu(content, subTile.city);
-                        break;
+                    }
+                    break;
 
-                    case TerrainBuildingType.Work_CoalPit:
-                        content.newParagraph();
-                        content.Add(new RbSeperationLine());
-                        Resource.CraftResourceLib.Charcoal.toMenu(content, subTile.city);
-                        break;
+                case TerrainMainType.AnimalPen:
+                    switch ((TerrainSubAnimalPenType)subTile.subTile.subTerrain)
+                    {
+                        case TerrainSubAnimalPenType.BoarHabitat:
+                        case TerrainSubAnimalPenType.FowlHabitat:
+                        case TerrainSubAnimalPenType.OxHabitat:
+                        case TerrainSubAnimalPenType.PonyHabitat:
+                        case TerrainSubAnimalPenType.WolfHabitat:
+                        case TerrainSubAnimalPenType.CatHabitat:
+                        case TerrainSubAnimalPenType.ElephantHabitat:
+                            content.Add(new RbSeperationLine());
+                            content.h2(DssRef.lang.Tutorial_ToCapture, HudLib.TitleColor_Head2);
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RbText(string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, DssRef.lang.BuildingType_TrapperHut)));
 
-                    case TerrainBuildingType.Brewery:
-                        content.newParagraph();
-                        content.Add(new RbSeperationLine());
-                        Resource.CraftResourceLib.Beer.toMenu(content, subTile.city);
-                        break;
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
 
-                }
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RbText(TextLib.LabelColon(DssRef.lang.Work_OrderPrioTitle)));
+                            content.space();
+                            content.Add(new RbImage(SpriteName.WarsWorkMove));
+                            content.hspace();
+                            content.Add(new RbText(DssRef.lang.Work_Move));
+                            break;
+
+                    }
+                    break;
             }
 
             //content.text(subTile.subTile.TypeToString());
@@ -495,7 +523,7 @@ namespace VikingEngine.DSSWars.Interface
                     }
                 }
 
-                target.toTooltip(new ObjectHudArgs(content, player, false));
+                target.toTooltip(new ObjectHudArgs(null, content, player, false));
 
                 if (attackTarget)
                 {

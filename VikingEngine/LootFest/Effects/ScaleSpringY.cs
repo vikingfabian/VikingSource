@@ -52,7 +52,7 @@ namespace VikingEngine.LootFest.Effects
                 time += Ref.DeltaTimeMs * 0.001f;
 
                 image.scale.Y = scaleAdd * MathExt.Sinf(time * 17) + startScale;
-                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed33ms; ++i)//if (Ref.TimePassed16ms)
                 {
                     scaleAdd *= 0.98f;
                 }

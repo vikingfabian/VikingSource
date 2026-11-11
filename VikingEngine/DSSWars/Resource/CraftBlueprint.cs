@@ -36,6 +36,8 @@ namespace VikingEngine.DSSWars.Resource
 
         public int workTag = -1;
 
+        public TechNodeType techLock = TechNodeType.NUM_NONE;
+
         public CraftBlueprint(CraftResultType resultType, int resultSubType, int resultAmount, UseResource[] resources, XP.WorkExperienceType experienceType, ExperienceLevel levelRequirement = ExperienceLevel.Beginner_1, BuildAndExpandType requirement = BuildAndExpandType.NUM_NONE)
         {
             //this.icon = icon;
@@ -530,6 +532,11 @@ namespace VikingEngine.DSSWars.Resource
 
         public void listResources(RichBoxContent content, City city, CraftBlueprint optionalBp = null)
         {
+            if (city == null)
+            {
+                return;
+            }
+
             bool reachedBuffer = false;
             content.newLine();
             foreach (var r in resources)

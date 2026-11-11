@@ -7,7 +7,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Resource
@@ -101,14 +102,15 @@ namespace VikingEngine.DSSWars.Resource
 
                 ref var subtile = ref DssRef.world.subTileGrid.GetRef(loop.Position);
 
-                if (subtile.mainTerrain == TerrainMainType.Foil)
-                {
-                    terrainContent.asyncFoilGroth(loop.Position, ref subtile);
-                }
-                else if (subtile.mainTerrain == TerrainMainType.Building)
-                {
-                    terrainContent.asyncCityProduce(loop.Position, ref subtile);
-                }
+
+                //if (subtile.mainTerrain == TerrainMainType.Foil)
+                //{
+                    terrainContent.asyncTerrainGrowthAndProduce(loop.Position, ref subtile);
+                //}
+                //else if (subtile.mainTerrain == TerrainMainType.Building)
+                //{
+                //    terrainContent.asyncCityProduce(loop.Position, ref subtile);
+                //}
             }
         }
 

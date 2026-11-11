@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.Players.Command
                     soldiersC.sel.selectionFramePlacement(out var pos, out var scale);
                     var model = new Mesh( LoadedMesh.SelectCircleSolid, pos, scale,
                         TextureEffectType.Flat, SpriteName.WhiteArea, Color.Red, false);
-                    model.AddToRender(DrawGame.UnitDetailLayer);
+                    model.AddToRender(DrawGame.NearLayer);
                     model.setVisibleCamera(playerIndex);
                     models.Add(model);
                 }
@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.Players.Command
         public MoveHereAnimation(Vector3 wp)
             :base()
         {
-            startScale = WorldData.SubTileWidth * 2.5f;
+            startScale = Map.MapData.MapTile1_1.ModelScale * 2.5f;
             scaleDown = startScale / ScaleDownTimeMs;
 
             //wp.Y += WP.GroundY(wp) - 0.0001f;

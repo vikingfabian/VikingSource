@@ -251,7 +251,7 @@ namespace VikingEngine.DSSWars
 
         void refreshMouseInput()
         {
-
+#if DSS
             mousePan = new NoButtonMap();
             
             mouseCancel = new NoButtonMap();
@@ -356,11 +356,12 @@ namespace VikingEngine.DSSWars
                 mouseSelect_InMenuMode = InputLib.CombineButtons(mouseSelect, new MouseButtonMap(MouseButton.Left));
                 
             }
+#endif
         }
         public override void steamSetup()
         {
             int idx = inputSource.controllerIndex;
-
+#if DSS
             // --- Movement & Camera ---
             move = new SteamAnalogMap( SteamActionSet.InGameControls, false, SteamAnalogAction.PanCamera, idx);
             moveCursor = new SteamAnalogMap(SteamActionSet.InGameControls, true, SteamAnalogAction.MoveCursor, idx);
@@ -427,6 +428,7 @@ namespace VikingEngine.DSSWars
             VoiceChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.VoiceChat, idx);
 
             refreshMouseInput();
+#endif
         }
         public override void xboxSetup()
         {

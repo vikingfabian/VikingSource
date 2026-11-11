@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using VikingEngine.Engine;
 
 namespace VikingEngine.DSSWars.Data
@@ -33,19 +28,25 @@ namespace VikingEngine.DSSWars.Data
 
         public void write(System.IO.BinaryWriter w)
         {
-            StreamLib.WriteString(w, custom ? name : null);
+            StreamLib.WriteString2(w, custom ? name : null);
         }
 
         public void read(System.IO.BinaryReader r, int subversion)
         {
-            if (subversion >= 48)
+            string readname;
+
+            if (subversion < 139)
             {
-                string readname = StreamLib.ReadString(r);
-                if (readname != null)
-                {
-                    name = readname;
-                    custom = true;
-                }
+                readname = StreamLib.ReadString(r);                
+            }
+            else
+            {
+                readname = StreamLib.ReadString2(r);
+            }
+            if (readname != null)
+            {
+                name = readname;
+                custom = true;
             }
         }
 

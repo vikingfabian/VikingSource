@@ -1,0 +1,326 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace VikingEngine.DSSWars.Map.MapLib
+{
+    enum TerrainMainType : byte
+    {
+        DefaultLand,
+        DefaultSea,
+        Destroyed,
+
+        Foil,
+        Farm,
+        AnimalPen,
+        Mine,        
+        Building,
+        Decor,
+        Wall,
+        Road,
+
+        Resourses,
+        NUM
+    }
+
+    enum TerrainSubFoilType : byte
+    {
+        TreeHardSprout,
+        TreeSoftSprout,
+        TreeHard,
+        TreeSoft,
+        DryWood,
+        Bush,
+        Herbs,
+        TallGrass,
+        SmallStones,
+        LargeStones,
+
+        
+        //TreeAppleSprout,
+        //TreeBananaSprout,
+
+        
+       
+        NUM_NONE
+    }
+
+    enum TerrainSubFarmType : byte
+    {
+        WheatFarm,
+        WheatFarmUpgraded,
+        LinenFarm,
+        LinenFarmUpgraded,
+        HempFarm,
+        HempFarmUpgraded,
+        RapeSeedFarm,
+        RapeSeedFarmUpgraded,
+        TreeApple,
+        TreeBanana,
+
+        NUM_NONE
+    }
+
+    /// <summary>
+    /// Creates a stockpile of resources
+    /// </summary>
+    enum TerrainResourcesType : byte
+    {
+        Wood,
+        Rubble,
+        Storage,
+        NUM_NONE
+    }
+    enum TerrainSubAnimalPenType : byte
+    {
+        FowlPen,
+        HenPen,
+        BoarPen,
+        PigPen,
+        
+        OxenPen,
+        KineOxenPen,
+
+        DogCage,
+        HoundCage,
+
+        PonyPen,
+        HorsePen,
+        WarHorsePen,
+        DraftHorsePen,
+        WildPigPen,
+        WildHogPen,
+        WarHogPen,
+        StagHogPen,
+        WolfCage,
+        WargCage,
+        AlphaWargCage,
+        WildCatCage,
+        LionCage,
+        WarLionCage,
+        ElephantCage,
+        WarElephantCage,
+        OliphantCage,
+                
+
+        FowlHabitat,
+        BoarHabitat,
+        DogHabitat,
+        OxHabitat,
+        PonyHabitat,
+        WolfHabitat,
+        CatHabitat,
+        ElephantHabitat,
+
+        NUM_NONE
+    }
+    enum TerrainBuildingType : byte
+    {   
+        CityHall_Village,
+        CityHall_Town,
+        CityHall_Capital,
+
+        /// <summary>
+        /// Lords seat
+        /// </summary>
+        ExpansionHall_Lvl1,
+        ExpansionHall_Lvl2,
+        ExpansionHall_Lvl3,
+
+
+        WorkerHut,
+        WorkerHutLarge,
+
+        ServiceMenHouse_Small,
+        ServiceMenHouse_Large,
+
+        SoldiersQuarter_Small,
+        SoldiersQuarter_Large,
+
+
+        GuardHouse_Small,
+        GuardHouse_Large,
+
+        Brewery,
+        Work_Cook,
+        Work_Bench,
+        Work_CoalPit,
+        Work_Smith,
+        
+        Tavern,
+        
+        Postal,
+        PostalLevel2,
+        PostalLevel3,
+
+        Recruitment,
+        RecruitmentLevel2,
+        RecruitmentLevel3,
+
+        GoldDeliveryLevel1,
+        GoldDeliveryLevel2,
+        GoldDeliveryLevel3,
+
+        SoldierBarracks,
+        ArcherBarracks,
+        WarmachineBarracks,
+        GunBarracks,
+        CannonBarracks,
+        AnimalTrainer,
+        //KnightsBarracks,
+
+        Carpenter,
+        Nobelhouse,
+        Storehouse,
+        Bank,
+        CoinMinter,
+
+        Logistics,
+
+        Economics,
+
+        TingsHouse,
+        Smelter,
+        WoodCutter,
+        StoneCutter,
+        Embassy,
+        WaterWell,
+        WaterResovoir,
+
+        Foundry,
+        Armory,
+        Chemist,
+        Gunmaker,
+        School,
+        ResearchCenter,
+        BookPress,
+        ImmigrationTent,
+
+        WorkerTent,
+        CityHall_Unclaimed,
+        CityHall_Tent,
+        ManorLord,
+
+        //NEW
+        GreatHall,
+        Pottery,
+        DryingPan,
+        Butcher,
+        Smoker,
+        Dryer,
+        ShieldMaker,
+
+        MaterialStorage, FoodStorage, WeaponStorage, ArmorStorage, AnimalStorage,
+        Cesspit,
+
+        TrappersHut,
+
+        NUM_NONE
+    }
+
+    enum TerrainWallType : byte
+    {
+        DirtWall,
+        DirtTower,
+        WoodWall,
+        WoodTower,
+        StoneWall,
+        StoneTower,
+        StoneWallGreen,
+        StoneWallBlueRoof,
+        StoneWallWoodHouse,
+        StoneGate,
+        StoneHouse,
+        Palisade,
+        NUM_NONE
+    }
+
+    enum TerrainDecorType : byte
+    {
+        
+       // CobbleStones,
+
+       
+        Statue_ThePlayer,
+       
+        GardenFourBushes,
+        GardenLongTree,
+        GardenWalledBush,
+        GardenGrass,
+        GardenBird,
+        GardenMemoryStone,
+        Statue_Leader,
+        Statue_Lion,
+        Statue_Horse,
+        Statue_Pillar,
+
+        FlagPole_LongBanner,
+        FlagPole_Banner,
+        FlagPole_SlimBanner,
+
+        FlagPole_Flag,
+        FlagPole_FlagRound,
+        FlagPole_FlagLarge,
+        FlagPole_Streamer,
+        FlagPole_Triangle,
+
+        DiplomaticStatue_ThumbsUpWest,
+        DiplomaticStatue_ThumbsUpEast,
+        DiplomaticStatue_InsultWest,
+        DiplomaticStatue_InsultEast,
+        DiplomaticStatue_GoldenPoop,
+        NUM_NONE
+    }
+
+    enum TerrainRoadType : byte
+    {
+        DirtRoad,
+        GravelRoad,
+        CobblestoneRoad,
+        PavedRoad,
+
+        PavementStreet,
+        PavementFlower,
+        PavementLamp,
+        PavemenFountain,
+        PavementRectFlower,
+
+        Square,
+        NUM_NONE
+    }
+
+    enum TerrainMineType : byte
+    {
+        PointOfInterest,
+        WaterNaturalSpring,
+        BogIron,
+        ClayPit,
+        SaltPit,
+        Salt,
+        Sulfur,
+        Coal,
+        StoneBlock,
+        IronOre,
+        TinOre,
+        CopperOre,
+        SilverOre,
+        GoldOre,
+        LeadOre,
+        Mithril,
+        NUM_NONE
+    }
+
+    //enum TerrainSeaType : byte
+    //{       
+    //    Deep,
+    //    Low,
+    //}
+
+    enum TerrainDefaultLandType : byte
+    {
+        Flat,
+        Mountain,
+    }
+}

@@ -1,0 +1,126 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapModels;
+using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.Graphics;
+
+namespace VikingEngine.DSSWars.Map.MapLayer
+{
+    
+
+    class MapLayer2_Mid : AbsFarLayer
+    {
+        public Borders borders;
+        public UnitsOnMap_MidLayer unitsOnMap;
+
+        int state_Processing_Sych_Complete = 2;
+        MapLayer3_Far factionsMap;
+        public bool bRefreshTimer = false;
+        public bool bRefreshDataRecieved = false;
+
+        public MapLayer2_Mid(MapLayer3_Far factionsMap, CrossHeightMap crossHeightMap)
+            :base(DrawGame.MidLayer, crossHeightMap)
+        {
+            this.factionsMap = factionsMap;
+            
+            Ref.draw.CurrentRenderLayer = DrawGame.MidLayer;
+
+            //createModel(generateTerrain());
+            
+
+           // WaterModel(DrawGame.MidLayer);
+            
+            //waterBottom.Y = waterSurface.Y - 0.1f;
+
+            //if (DssRef.state.PlayType() != GameState.PlayStateType.BattleLab)
+            //{
+            //    borders = new Borders();
+            //}
+            Ref.draw.CurrentRenderLayer = 0;
+
+            unitsOnMap = new UnitsOnMap_MidLayer();
+        }
+        public void update()
+        {
+            updateWaterTexture();
+            //crossHeightMap.update(DssRef.state.LocalHost());
+        }
+
+        
+
+        public void refresh_async()
+        {
+            if (bRefreshTimer && bRefreshDataRecieved)
+            {
+                bRefreshTimer = false;
+                bRefreshDataRecieved = false;
+
+                var polygons = crossHeightMap.generateTerrain();
+                Ref.update.AddSyncAction(new SyncAction1Arg<List<Graphics.CrossPolygonColor>>(crossHeightMap.createModel, polygons));
+            }
+        }
+
+        //const float TileSideHeight = 1.5f;
+       
+        //Graphics.PolygonColor side(Vector3 v1, Vector3 v2, Sprite sideTex, Color col, float height)
+        //{
+            
+        //    Vector3 sw = v1;
+        //    sw.Y -= height;
+
+        //    Vector3 se = v2;
+        //    se.Y -= height;
+
+
+        //    return new Graphics.PolygonColor(
+        //        new Vector3[]
+        //        {
+        //            v1, v2,  sw,se,
+        //        },
+        //        sideTex, col);
+        //}
+
+        public void runAsyncTask()
+        {
+            if (state_Processing_Sych_Complete == 2 && DssRef.world.CrossMapTextureNeedsUpdate /*|| StartupSettings.AlwaysRefreshMap*/)
+            {
+                DssRef.world.CrossMapTextureNeedsUpdate = false;
+                state_Processing_Sych_Complete = 0;
+
+                borders?.quedEvent();
+                if (DssRef.state.PlayType() != GameState.PlayStateType.BattleLab)
+                {
+                    //factionsMap.asyncTask();
+                    foreach (var p in DssRef.state.localPlayers)
+                    {
+                        if (p.mapLayer() != MapDetailLayerType.Layer1_Near)
+                        {
+                            p.factionPixelTexture.refreshWorld();
+                        }
+                        p.minimapPixelTexture.refreshWorld();
+                    }
+                }
+                state_Processing_Sych_Complete = 1;
+            }
+        }
+        public void HalfSecondUpdate()
+        {
+            if (DssLib.UpdateBorders && 
+                state_Processing_Sych_Complete == 1)
+            {
+                borders?.SetNewModel();
+                state_Processing_Sych_Complete = 2;
+            }
+
+            unitsOnMap.update();
+        }
+        
+
+    }
+}

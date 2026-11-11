@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -25,8 +25,16 @@ namespace VikingEngine.Graphics
             :base(pos, size, addToRender)
         {
             Layer = layer;
-            renderTarget = new RenderTarget2D(Engine.Draw.graphicsDeviceManager.GraphicsDevice, drawSource.Width, drawSource.Height, false, 
-                SurfaceFormat.Color, DepthFormat.Depth24);
+            using (GpuResourceSync.Acquire())
+            {
+                renderTarget = GpuResourceSync.Track(new RenderTarget2D(
+                    Engine.Draw.graphicsDeviceManager.GraphicsDevice,
+                    drawSource.Width,
+                    drawSource.Height,
+                    false, 
+                    SurfaceFormat.Color,
+                    DepthFormat.Depth24));
+            }
         }
         
 
@@ -59,7 +67,7 @@ namespace VikingEngine.Graphics
         public override void DeleteMe()
         {
             base.DeleteMe();
-            renderTarget?.Dispose();
+            GpuResourceSync.Release(renderTarget);
             renderTarget = null;
         }
 

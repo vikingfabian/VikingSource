@@ -1124,7 +1124,7 @@ namespace VikingEngine.DSSWars.Conscript
             if (add)
             {
                 positive = skillBonus >= 0;
-                content.Add(new RbText(TextLib.PercentAddText(skillBonus)));
+                content.Add(new RbText(TextLib.PercentAddTextF(skillBonus)));
             }
             else
             {
@@ -1138,7 +1138,7 @@ namespace VikingEngine.DSSWars.Conscript
             content.hspace();
             if (add)
             {
-                content.Add(new RbText(TextLib.PercentAddText(skillBonus), HudLib.InfoYellow_Light));
+                content.Add(new RbText(TextLib.PercentAddTextF(skillBonus), HudLib.InfoYellow_Light));
             }
             else
             {
@@ -1151,7 +1151,7 @@ namespace VikingEngine.DSSWars.Conscript
             content.hspace();
             if (add)
             {
-                content.Add(new RbText(TextLib.PercentAddText(skillBonus), HudLib.InfoYellow_Light));
+                content.Add(new RbText(TextLib.PercentAddTextF(skillBonus), HudLib.InfoYellow_Light));
             }
             else
             {

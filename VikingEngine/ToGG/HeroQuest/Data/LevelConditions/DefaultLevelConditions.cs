@@ -14,7 +14,7 @@ namespace VikingEngine.ToGG.HeroQuest.Data
     class DefaultLevelConditions
     {
         protected static readonly Color FlavorTextColor = new Color(205, 193, 175);
-        protected List2<AbsUnit> taggedUnits = new List2<AbsUnit>();
+        protected List2_old<AbsUnit> taggedUnits = new List2_old<AbsUnit>();
         protected List<int> gotEvent = new List<int>();
         public DoomData doom = new DoomData(8);
         public List<IntVector2> objectiveAttackTargets = null;

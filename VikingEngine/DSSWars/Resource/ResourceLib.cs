@@ -41,14 +41,16 @@ namespace VikingEngine.DSSWars.Resource
     {
         public static readonly ItemResourceType[] MovableCityResource_Misc =
         {
-            ItemResourceType.Wood_Group,
+            ItemResourceType.Wood_G,
+            ItemResourceType.FineWood_G,
             ItemResourceType.Fuel_G,
             ItemResourceType.Stone_G,
         ItemResourceType.Clay,
         ItemResourceType.Brick,
 
-            ItemResourceType.SkinLinen_Group,
-            ItemResourceType.RawFood_Group,
+            ItemResourceType.SkinLinen_G,
+             ItemResourceType.Meat,
+            ItemResourceType.RawFood_G,
         ItemResourceType.Salt,
 
             ItemResourceType.Food_G,
@@ -254,7 +256,7 @@ namespace VikingEngine.DSSWars.Resource
                         RichBoxContent buttonContent = new RichBoxContent();
 
                         buttonContent.Add(new RbImage(SpriteName.WarsCityHall));
-                        city.tagToHud(buttonContent);
+                        city.Tag.tagToHud(buttonContent);
                         buttonContent.hspace();
                         buttonContent.Add(new RbText(city.myIndex.ToString(), HudLib.SecondaryTextColor));
                         buttonContent.space();

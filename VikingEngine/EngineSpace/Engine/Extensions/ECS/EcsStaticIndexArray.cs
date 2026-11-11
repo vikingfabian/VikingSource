@@ -52,6 +52,21 @@ namespace VikingEngine
             value = default;
             return false;
         }
+
+        public bool Next<T>(SpottedArray<T> list, out T value)
+        {
+
+            if (index < end)
+            {
+                int idx = array.array[index];
+                index++;
+                value = list.Array[idx];
+                return true;
+            }
+
+            value = default;
+            return false;
+        }
     }
     struct EcsStaticIndexArray
     {
@@ -63,6 +78,12 @@ namespace VikingEngine
         {
             this.arrayLength = arrayLength;
             array = new int[arrayLength * entityCount];
+        }
+
+        public void Resize(int arrayLength, int entityCount)
+        {
+            this.arrayLength = arrayLength;
+            Array.Resize(ref array, arrayLength * entityCount);
         }
 
         /// <summary>

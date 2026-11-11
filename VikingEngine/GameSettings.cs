@@ -697,6 +697,50 @@ namespace VikingEngine
             }
         }
 
+        public void pjVolumeOptions(RichBoxContent content)
+        {
+            if (VikingEngine.Sound.SoundManager.SoundInitializeSuccess)
+            {
+
+                content.newLine();
+                content.Add(new RbImage(SpriteName.MenuIconMasterVol));
+               
+                content.space();
+                content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), masterVolProperty, true));
+
+                if (Ref.music != null)
+                {
+                    content.newLine();
+                    content.space(2);
+
+                    //content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
+                    content.Add(new RbImage(SpriteName.MenuIconMusicVol));
+                   
+                    content.space();
+                    content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), musicVolProperty, true));
+                }
+
+                content.newLine();
+                content.space(2);
+                //content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
+                content.Add(new RbImage(SpriteName.MenuIconSoundVol));
+                content.space();
+               
+                content.Add(new RbDragButton(new DragButtonSettings(0, 4, 0.1f), soundVolProperty, true));
+            }
+            else
+            {
+                content.newLine();
+                content.Add(new RbImage(SpriteName.cmdWarningTriangle));
+                content.space();
+                content.Add(new RbText(DssRef.lang.Error_SoundInitFailure, HudLib.InfoYellow_Light));
+                content.space();
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("!") },
+                        new RbAction(() => { BlueScreen.ThreadException = VikingEngine.Sound.SoundManager.SoundInitializeException; }),
+                        new RbTooltip_Text(VikingEngine.Sound.SoundManager.SoundInitializeException.Message)));
+            }
+        }
+
         public void monitorOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
             if (Screen.PcDisplayMode == WindowDisplayMode.Windowed)
@@ -873,6 +917,85 @@ namespace VikingEngine
                 })));
         }
 
+        public void pjMonitorOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
+        {
+            if (Screen.PcDisplayMode == WindowDisplayMode.Windowed)
+            {
+                var resoutionPercOptions = Engine.Screen.ResoutionPercOptions();
+                DropDownBuilder dropdown = new DropDownBuilder("resolution%");
+                {
+                    foreach (var m in resoutionPercOptions)
+                    {
+                        dropdown.AddOption(SpriteName.MenuIconScreenResolution, m + "%",
+                            Engine.Screen.UseRecordingPreset == RecordingPresets.NumNon &&
+                            m == Engine.Screen.WindowScalePerc,
+                            m == 100,
+                            new RbAction1Arg<int>(setResolutionPercProperty, m), null);
+                    }
+
+                    dropdown.Build(content, SpriteName.MenuIconScreenResolution, string.Empty, menu);
+                }
+            }
+
+           
+
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GraphicsOption_Fullscreen) }, Ref.gamesett.fullscreenProperty));
+
+
+            //new GuiTextButton(Ref.langOpt.GraphicsOption_RecordingPresets, null, new GuiAction1Arg<Gui>(recordingResolutionOptions, layout.gui), true, layout);
+
+            DropDownBuilder RecordPreset = new DropDownBuilder("RecordPreset");
+            {
+                var monitor = Microsoft.Xna.Framework.Graphics.GraphicsAdapter.DefaultAdapter;
+                for (RecordingPresets rp = 0; rp < RecordingPresets.NumNon; ++rp)
+                {
+                    IntVector2 sz = Engine.Screen.RecordingPresetsResolution(rp);
+                    if (sz.Y > monitor.CurrentDisplayMode.Height)
+                    {
+                        //Too large for the screen
+                        break;
+                    }
+                    else
+                    {
+                        string name = sz.Y.ToString() + "p";
+                        RecordPreset.AddOption( SpriteName.pjYoutubeIcon,name, rp == Engine.Screen.UseRecordingPreset, rp == RecordingPresets.YouTube1080p,
+                            new RbAction1Arg<RecordingPresets>(setRecordingPreset, rp), null);
+                    }
+                }
+                RecordPreset.Build(content, SpriteName.MenuIconMonitorYoutube, string.Empty, menu);
+            }
+
+            content.newLine();
+            DropDownBuilder winmodeDropdown = new DropDownBuilder("windowMode");
+            {
+                addMode(WindowDisplayMode.Windowed, SpriteName.MenuIconMonitorArrowsIn);
+                addMode(WindowDisplayMode.BorderlessFullscreen, SpriteName.MenuIconMonitorArrowsOutBorderless);
+                addMode(WindowDisplayMode.HardwareFullscreen, SpriteName.MenuIconMonitorArrowsOut);
+
+                void addMode(WindowDisplayMode mode, SpriteName icon)
+                {
+                    winmodeDropdown.AddOption(icon, string.Empty, mode == Screen.PcDisplayMode, mode == WindowDisplayMode.BorderlessFullscreen,
+                        new RbAction1Arg<WindowDisplayMode>(SetDisplayMode, mode), null);
+                }
+
+                winmodeDropdown.Build(content, SpriteName.MenuIconMonitorWindow, string.Empty, menu);
+            }
+            //if (Engine.Screen.UseRecordingPreset != RecordingPresets.NumNon)
+            //{
+            //    content.newLine();
+            //    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+            //        new RbText(Ref.langOpt.GraphicsOption_RecordingPresets + ":", HudLib.TitleColor_Label_Dark),
+            //        new RbSpace(0.5f),
+            //        new RbText(string.Format( Ref.langOpt.GraphicsOption_RecordingPresets_AddXPixels, Screen.RecordingPresetAddPixelsCount))
+            //        }, AddSomePixelsProperty));
+            //}
+
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdTutVideo_Pointer) },
+                CustomCursorProperty));
+
+        }
+
         public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
             content.newLine();
@@ -1004,7 +1127,7 @@ namespace VikingEngine
                             settingsHasChanged = true;
                             menu.CloseDropDown();
 
-                            DssRef.state?.detailMap?.refreshLoadSpeed();
+                            DssRef.state?.mapLayerNear?.refreshLoadSpeed();
                         }, opt), null);
 
                     switch (opt)
@@ -1373,7 +1496,7 @@ namespace VikingEngine
                 lowLatencyGarbageCollecting = value;
                 settingsHasChanged = true;
 
-                Ref.gamestate.refreshGcLatency();
+                Ref.gamestate.RefreshGcLatency();
             }
             return lowLatencyGarbageCollecting;
         }

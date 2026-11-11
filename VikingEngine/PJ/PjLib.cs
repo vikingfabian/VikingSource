@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.PJ
 {
     static class PjLib
     {
+        public const bool ViewBetaModes = true;
+
         public static readonly PartyGameMode[] ModeViewOrder = 
         {
             PartyGameMode.Jousting,
@@ -18,6 +21,7 @@ namespace VikingEngine.PJ
             PartyGameMode.CarBall,
             
             PartyGameMode.Match3,
+            PartyGameMode.StupidHorse,
 
             PartyGameMode.SuperSmashBirds,
             PartyGameMode.Tank,
@@ -42,6 +46,20 @@ namespace VikingEngine.PJ
                 Buttons.LeftTrigger,
                 Buttons.RightTrigger,
             };
+
+        public const SteamDigitalAction FirstSteamJoinButton =
+#if PJ
+            SteamDigitalAction.Action_01;
+#else
+            0;
+#endif
+        public const SteamDigitalAction LastSteamJoinButton = 
+#if PJ
+            SteamDigitalAction.Action_08;
+#else
+            0;
+#endif
+        
 
         public static readonly PartyGameMode? DebugAutoStartMode = null;//PartyGameMode.SuperSmashBirds;
 
@@ -197,25 +215,41 @@ namespace VikingEngine.PJ
 
         public static void UpdateManagerInput(out bool startInput, out bool menuInput, out Input.InputSource user)
         {
+
             startInput = Input.Keyboard.KeyDownEvent(Keys.Enter);
             menuInput = Input.Keyboard.KeyDownEvent(Keys.Escape);
             user = Input.InputSource.DefaultPC;
-
-            foreach (var m in Input.XInput.controllers)
+#if PJ
+            if (Ref.steam.isInitialized)
             {
-                if (m.KeyDownEvent(Buttons.Start))
+                if ( Ref.steam.input.AnyKeyDownEvent(SteamDigitalAction.Action_Start))
                 {
                     startInput = true;
-                    user = new Input.InputSource(Input.InputSourceType.XController, m.Index);
                 }
-
-                if (m.BackButtonDownEvent())
+                if (Ref.steam.input.AnyKeyDownEvent(SteamDigitalAction.Action_Back))
                 {
-                    bool bdown = m.KeyDownEvent(Buttons.B);
                     menuInput = true;
-                    user = new Input.InputSource(Input.InputSourceType.XController, m.Index);
                 }
             }
+            else
+            {
+                foreach (var m in Input.XInput.controllers)
+                {
+                    if (m.KeyDownEvent(Buttons.Start))
+                    {
+                        startInput = true;
+                        user = new Input.InputSource(Input.InputSourceType.XController, m.Index);
+                    }
+
+                    if (m.BackButtonDownEvent())
+                    {
+                        bool bdown = m.KeyDownEvent(Buttons.B);
+                        menuInput = true;
+                        user = new Input.InputSource(Input.InputSourceType.XController, m.Index);
+                    }
+                }
+            }
+#endif
         }
     }    
 
@@ -232,6 +266,8 @@ namespace VikingEngine.PJ
         Match3,
         MoneyRoll,
         MeatPie,
+
+        StupidHorse,
         NUM
     }
 
@@ -240,8 +276,8 @@ namespace VikingEngine.PJ
         DevOnly_1,
         DevAndDemo_2,
         Beta_3,
-        Paid_4,
-        Free_5,
+        //Paid_4,
+        FullGame_5,
         NUM
     }
 

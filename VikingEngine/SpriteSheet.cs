@@ -42,6 +42,8 @@ namespace VikingEngine
         public const int CmdLetterSz = 18;
         const int NineSplitSz = 30;
 
+        const int WarsCheckSize = 20;
+
         public SpriteSheet()
         {
             addTexture(SpriteName.WaterEdgeMask_coast, 32, 32, LoadedTexture.waterEdge);
@@ -167,6 +169,7 @@ namespace VikingEngine
                 add(SpriteName.EditorToolPencil);
                 add(SpriteName.EditorToolReColorPencil);
 
+
                 add(SpriteName.MenuPixelIconMusicVol);
                 add(SpriteName.MenuPixelIconSoundVol);
                 add(SpriteName.AutomationGearIcon);
@@ -178,6 +181,7 @@ namespace VikingEngine
                 add(SpriteName.PixController4);
                 add(SpriteName.PixController5);
                 add(SpriteName.PixController6);
+                
             }
 
             currentIndex = numTilesWidth * 1;
@@ -498,7 +502,7 @@ namespace VikingEngine
             add(SpriteName.DeckTouchR, 2, 2);
             add(SpriteName.ButtonRZ, 2, 2);
             add(SpriteName.ButtonLZ, 2, 2);
-                        
+
             currentIndex = numTilesWidth * 19;
             {
                 add(SpriteName.EditorToolOptionAdd);
@@ -527,6 +531,12 @@ namespace VikingEngine
                 add(SpriteName.bb_resicon_chickenegg);
                 add(SpriteName.bb_resicon_oldshoe);
             }
+
+            //More input icons
+            currentIndex = numTilesWidth * 20;
+            add(SpriteName.PixController7);
+            add(SpriteName.PixController8);
+            add(SpriteName.DoConnectDevice);
 
             //BIRD TILES
             currentIndex = numTilesWidth * 24;
@@ -659,7 +669,7 @@ namespace VikingEngine
             currentIndex++;
             add(SpriteName.PjJumpCurve, 2, 1);
 
-            currentIndex += 3;
+            currentIndex += 1;
 
             addFullQtile(SpriteName.spaceWarAstreoidParticleRed1, SpriteName.spaceWarAstreoidParticleRed2,
                 SpriteName.spaceWarAstreoidParticleRed3, SpriteName.spaceWarAstreoidParticleRed4);
@@ -671,6 +681,17 @@ namespace VikingEngine
             addFullQtile(SpriteName.spaceWarStarWhite, SpriteName.golfChickenFlagFeather,
                  SpriteName.m3GameSpeedArrow, SpriteName.m3GameSpeedArrowGray);
 
+            add(SpriteName.DKbarrel);
+            add(SpriteName.DKbarrel_full);
+            add(SpriteName.pjFPSIcon);
+            add(SpriteName.pjRichCheckOn);
+            add(SpriteName.pjRichCheckOff);
+            add(SpriteName.pjRichButton);
+            add(SpriteName.pjRichButton_Round);
+            add(SpriteName.pjRichMenuBg);
+
+            
+            
             //--
 
 
@@ -821,6 +842,8 @@ namespace VikingEngine
 
                 add(SpriteName.golfChickenFlag, currentIndex, 2, 2);
                 addWithSizeDef(SpriteName.DisconnectSquare, currentIndex, 44, 44);
+
+                add(SpriteName.pjScreenFPSIcon, 2, 2);
             }
 
             currentIndex = numTilesWidth * 29;
@@ -869,7 +892,7 @@ namespace VikingEngine
                 add(SpriteName.MenuIconSoundVol, currentIndex, 2, 2);
                 add(SpriteName.MenuIconCredits, currentIndex, 2, 2);
                 add(SpriteName.MenuIconSettings, currentIndex, 2, 2);
-                currentIndex += 2;
+                add(SpriteName.MenuIconMasterVol, 2, 2);
                 //add(SpriteName.MenuIconFullScreen, currentIndex, 2, 2);
                 add(SpriteName.birdLobbyExitButton, currentIndex, 2, 2);
                 add(SpriteName.MenuIconScreenResolution, currentIndex, 2, 2);
@@ -1214,6 +1237,9 @@ namespace VikingEngine
                 add(SpriteName.meatpie5, 2, 2);
                 add(SpriteName.meatpie6, 2, 2);
 
+                add(SpriteName.MenuIconMonitorArrowsOutBorderless, 2, 2);
+                add(SpriteName.MenuIconMonitorYoutube, 2, 2);
+                add(SpriteName.MenuIconMonitorWindow, 2, 2);
             }
 
             currentIndex = numTilesWidth * 39;
@@ -1264,6 +1290,18 @@ namespace VikingEngine
                 add(SpriteName.PjHeartBroken);
                 add(SpriteName.PjDeathSpeechBobble);
                 add(SpriteName.PjSmackIcon);
+
+                add(SpriteName.pjYoutubeIcon);
+                add(SpriteName.stupidHorseWingLarge);
+                add(SpriteName.stupidHorseWingSmall);
+                add(SpriteName.stupidHorseWhip);
+                add(SpriteName.pjRichDragButton, 2, 1);
+
+                add(SpriteName.pjRichDropDownArrow);
+                add(SpriteName.pjRichListArrowSelected);
+                add(SpriteName.pjRichListArrowDefault);
+                add(SpriteName.pjRichListArrowNotSelected);
+                add(SpriteName.pjRichButton_RoundNotSelected);
             }
 
             currentIndex = numTilesWidth * 40;
@@ -1364,11 +1402,18 @@ namespace VikingEngine
                 add(SpriteName.golfBugHideN2, 2, 2);
                 add(SpriteName.golfBugDead, 2, 2);
 
+                
+
                 const int WingSz = 47;
                 addWithSizeDef(SpriteName.pjCoinWings1, currentIndex, WingSz, WingSz);
                 addWithSizeDef(SpriteName.pjCoinWings2, currentIndex, WingSz, WingSz);
                 addWithSizeDef(SpriteName.pjCoinWings3, currentIndex, WingSz, WingSz);
                 addWithSizeDef(SpriteName.pjCoinWings4, currentIndex, WingSz, WingSz);
+
+                add(SpriteName.stupidHorse, 2, 2);
+                add(SpriteName.stupidHorseBlink, 2, 2);
+                add(SpriteName.stupidHorseJump, 2, 2);
+                add(SpriteName.stupidHorseShadow, 2, 2);
             }
 
             currentIndex = numTilesWidth * 46;
@@ -2179,6 +2224,45 @@ namespace VikingEngine
                 add(SpriteName.WarsRelationMobilizing);
                 add(SpriteName.WarsHudIconMultiplayerJoin, 2, 1);
 
+                add(SpriteName.WarsTechButtonDisabled);
+                add(SpriteName.WarsTechButtonEnabled);
+                addWithSizeDef(SpriteName.WarsTechOptionYes, currentIndex, WarsCheckSize, WarsCheckSize);
+                addWithSizeDef(SpriteName.WarsTechOptionNo, currentIndex, WarsCheckSize, WarsCheckSize);
+                add(SpriteName.WarsTechChildArrow);
+                add(SpriteName.WarsTechNextArrow);
+       
+               
+                add(SpriteName.DssMapTextureSand);
+                add(SpriteName.DssMapTextureHardPan);
+                add(SpriteName.DssMapTextureFertile);
+                
+                add(SpriteName.DssMapTextureGrass1);
+                add(SpriteName.DssMapTextureGrass2);
+                add(SpriteName.DssMapTextureGrass3);
+                add(SpriteName.DssMapTextureRock1);
+                add(SpriteName.DssMapTextureRock2);
+                add(SpriteName.DssMapTextureRock3);
+                add(SpriteName.DssMapTextureRockFoil1);
+                add(SpriteName.DssMapTextureRockFoil2);
+                add(SpriteName.DssMapTextureRockFoil3);
+                add(SpriteName.DssMapTextureGrassFoil1);
+                add(SpriteName.DssMapTextureGrassFoil2);
+                add(SpriteName.DssMapTextureGrassFoil3);
+
+                add(SpriteName.DssMapTextureRubble1);
+                add(SpriteName.DssMapTextureRootmat1);
+
+                add(SpriteName.DssMapTextureMadeSolid);
+                add(SpriteName.DssMapTextureMud);
+                add(SpriteName.DssMapTextureSwamp);
+                add(SpriteName.DssMapTextureFrozen);
+
+                add(SpriteName.WarsResource_FineWood);
+                add(SpriteName.WarsIconArmySupply);
+                add(SpriteName.WarsHudSuperPrimaryButton);
+                add(SpriteName.WarsHudIconReset);
+                add(SpriteName.WarsHudIconWarning);
+                add(SpriteName.WarsHudModuleButton);
             }
 
 
@@ -2640,7 +2724,8 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Copper);
                     add(SpriteName.WarsResource_Gold);
                     add(SpriteName.WarsResource_Mithril);
-                    currentIndex += 5;
+                    add(SpriteName.WarsResource_WoodStock);
+                    currentIndex += 4;
                     add(SpriteName.WarsResource_SkinAndLinen);
                     currentIndex += 5;
                     add(SpriteName.WarsResource_Stone);
@@ -2864,7 +2949,7 @@ namespace VikingEngine
                     add(SpriteName.WarsHudOptionSelected);
                     add(SpriteName.WarsHudOptionNotSelected);
                     add(SpriteName.WarsHudRoundButton);
-                    const int WarsCheckSize = 20;
+                    
                     addWithSizeDef(SpriteName.WarsHudCheckYes, currentIndex, WarsCheckSize, WarsCheckSize);
                     addWithSizeDef(SpriteName.WarsHudCheckNo, currentIndex, WarsCheckSize, WarsCheckSize);
                     addWithSizeDef(SpriteName.WarsHudOptionYes, currentIndex, WarsCheckSize, WarsCheckSize);
@@ -2972,9 +3057,28 @@ namespace VikingEngine
                     add(SpriteName.LangButton_Polish, 8, 2);
                     add(SpriteName.LangButton_Thai, 8, 2);
                     add(SpriteName.WarsClayPit, 2, 2);
+                    add(SpriteName.warsWorkerPromoMap2, 4, 2);
+
                     //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 
+                currentIndex = numTilesWidth * 103;
+                {
+                    add(SpriteName.DssMapTextureGravelRoad1);
+                    add(SpriteName.DssMapTextureGravelRoad2);
+                    add(SpriteName.DssMapTextureRootmat2);
+                    add(SpriteName.DssMapTextureRubble2);
+                    add(SpriteName.DssMapTextureGeneral1);
+                    add(SpriteName.DssMapTextureGeneral2);
+                    add(SpriteName.DssMapTextureGeneralWithStones1);
+                    add(SpriteName.DssMapTextureGeneralWithStones2);
+                    add(SpriteName.DssMapTextureGeneralWithStones3);
+                    add(SpriteName.DssMapTextureStructureGroundCirkular);
+                    add(SpriteName.DssMapTextureStructureGround);
+                    add(SpriteName.DssMapTextureCobbleRoad1);
+                    add(SpriteName.DssMapTexturePavedRoad1);
+
+                }
                 currentIndex = numTilesWidth * 106;
                 {
                     //currentIndex += 2;
@@ -3116,8 +3220,9 @@ namespace VikingEngine
                 add(SpriteName.cmdDieTexRetreat);
                 add(SpriteName.cmdDieTexHit);
                 add(SpriteName.cmdDieTexMiss);
-
-                currentIndex += 2;
+                currentIndex++;
+                add(SpriteName.DssMapTextureRockSide);
+                //addWithSizeDef(SpriteName.hqRegularDoorEdge, currentIndex, 32, 8);
                 addFullQtile(SpriteName.bb_floor1, SpriteName.bb_floor2, SpriteName.bb_floor3, SpriteName.bb_floor4, currentIndex);
                 addFullQtile(SpriteName.bb_spawnwarning_texture, SpriteName.bb_noBuildZone1, SpriteName.bb_reservedQ1, SpriteName.bb_noBuildZone2, currentIndex);
 
@@ -3135,7 +3240,7 @@ namespace VikingEngine
                 add(SpriteName.LfAchievementAllCards_lock, currentIndex, 2, 2);
                 add(SpriteName.cgSacrificeForCards, currentIndex, 4, 2);
                 add(SpriteName.cgSacrificeForMana, currentIndex, 4, 2);
-                currentIndex += 2;
+                //currentIndex += 2;
                 add(SpriteName.birdSkyTex, currentIndex, 2, 2);
                 currentIndex += 14;
                 add(SpriteName.EditorPencilCube, 2, 2);

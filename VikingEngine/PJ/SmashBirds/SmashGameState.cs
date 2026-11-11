@@ -8,7 +8,7 @@ namespace VikingEngine.PJ.SmashBirds
     class SmashGameState : AbsPJGameState
     {       
 
-        public SmashGameState(List2<GamerData> joinedGamers)
+        public SmashGameState(List2_old<GamerData> joinedGamers)
             : base(true)
         {
             this.joinedLocalGamers = joinedGamers;
@@ -17,7 +17,7 @@ namespace VikingEngine.PJ.SmashBirds
 
             new Map();
 
-            SmashRef.gamers = new List2<Gamer>(joinedGamers.Count);
+            SmashRef.gamers = new List2_old<Gamer>(joinedGamers.Count);
             for (int i = 0; i < joinedGamers.Count; ++i)
             {
                 var data = joinedGamers[i];

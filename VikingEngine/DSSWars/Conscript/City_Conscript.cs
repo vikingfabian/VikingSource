@@ -5,12 +5,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Interface.Component;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
@@ -360,7 +362,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                startPos = WP.ToWorldPos(tilePos);
+                startPos = WP.ChunkToWorldPos(maptilePos);
             }
 
             return startPos;
@@ -374,7 +376,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                return cityHallSubtilePos;
+                return maptilePos;
             }
         }
 
@@ -417,7 +419,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (settleArea != null)
                 {
-                    army.Ai_Order_MoveTo(settleArea.tilePos);
+                    army.Order_MoveTo(settleArea.maptilePos);
                 }
             }
 
@@ -534,7 +536,7 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = 1,
             };
 
-            Vector3 startPos = WP.ToWorldPos(tilePos);
+            Vector3 startPos = WP.ChunkToWorldPos(maptilePos);
             for (int i = 0; i < 5; i++)
             {
                 new SoldierGroup(army, soldierProfile, startPos);
@@ -549,8 +551,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             foreach (IntVector2 dir in IntVector2.Dir4Array)
             {
-                IntVector2 pos = tilePos + dir * 2;
-                Tile t = DssRef.world.tileGrid.Get(pos);
+                IntVector2 pos = maptilePos + dir * 2;
+                MapTile1_1 t = DssRef.world.subTileGrid.Get(pos);
                 if (t.IsLand())
                 {
                     recruitToTile = pos;
@@ -558,11 +560,11 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, 2));
+            ForXYEdgeLoop edgeLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(maptilePos, 2));
 
             while (edgeLoop.Next())
             {
-                Tile t = DssRef.world.tileGrid.Get(edgeLoop.Position);
+                MapTile1_1 t = DssRef.world.subTileGrid.Get(edgeLoop.Position);
                 if (t.IsLand())
                 {
                     recruitToTile = edgeLoop.Position;
@@ -571,16 +573,16 @@ namespace VikingEngine.DSSWars.GameObject
             }
             foreach (IntVector2 dir in IntVector2.Dir4Array)
             {
-                IntVector2 pos = tilePos + dir;
-                Tile t = DssRef.world.tileGrid.Get(pos);
+                IntVector2 pos = maptilePos + dir;
+                MapTile1_1 t = DssRef.world.subTileGrid.Get(pos);
                 if (t.IsLand())
                 {
                     recruitToTile = pos;
                     return;
                 }
             }
-            Debug.LogError("GetFreeTile" + tilePos.ToString());
-            recruitToTile = tilePos;
+            Debug.LogError("GetFreeTile" + maptilePos.ToString());
+            recruitToTile = maptilePos;
         }
 
         public void createStartupBarracks()

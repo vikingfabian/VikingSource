@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
-using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Map.MapProcess;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
@@ -61,9 +63,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_workUpdate(int updateSpeed)
         {
-            if (pfaction.IsEmpty() || cityType == CityType.UnClaimed)
+            if (pfaction.IsEmpty() /*|| cityType == CityType.UnClaimed*/)
             {
-                CityStructure.WorkInstance.update(DssRef.world, this, 0);
+                CityStructureProcess.WorkInstance.update(DssRef.world, this, 0);
                 return; 
             }
 
@@ -77,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 bool hostUpdate = DssRef.state.host || faction.player.IsLocalPlayer();
 
-                CityStructure.WorkInstance.newCity = true;
+                CityStructureProcess.WorkInstance.newCity = true;
                
                 async_blackMarketUpdate();
                 Array.Clear(CurrentWorkerCount);
@@ -208,7 +210,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (idleCount > 0 && IsNetHosted && previousWorkQueUpdate.secPassed(10))
                 {
-                    CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
+                    CityStructureProcess.WorkInstance.updateIfNew(this, workerStatuses.Count);
                     buildWorkQue2();
                     //Last position = highest priority
                     if (Ref.peRnd.ChanceF(0.05f))
@@ -233,21 +235,25 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (status.work == WorkType.Idle)
                     {
+                        if (!DssRef.storage.ruleset_instance.module_foodAndWater)
+                        {
+                            status.energy = DssConst.Worker_MaxEnergy;
+                        }
+
                         if (exitCount > 0 &&
                             (status.GetXpScore() < DssConst.WorkXpToLevel_Squared ||
                             markedForExit.Contains(i) || 
                             exitCount >= 4)
                             )
-                        {
-                            
+                        {                            
                             exitCount--;
                             mayExitCount++;
                             status.createWorkOrder(WorkType.Exit, -1, 0, WorkExperienceType.NUM_NONE,  WorkPriorityType.NUM_NONE, -1, citySquareSubtilePos/*WP.ToSubTilePos_Centered(tilePos)*/, this);
                         }
                         else if (status.carry.amount > 0)
                         {
-                            CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
-                            status.createWorkOrder(WorkType.DropOff, -1, 0, WorkExperienceType.Transport, WorkPriorityType.NUM_NONE, -1, CityStructure.WorkInstance.storePosition(status.subTileEnd), this);
+                            CityStructureProcess.WorkInstance.updateIfNew(this, workerStatuses.Count);
+                            status.createWorkOrder(WorkType.DropOff, -1, 0, WorkExperienceType.Transport, WorkPriorityType.NUM_NONE, -1, CityStructureProcess.WorkInstance.storePosition(status.subTileEnd), this);
                         }
                         else if (status.energy < 0 && workTeamsTotalCount <= 1)
                         {
@@ -255,8 +261,8 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         else if (status.energy < 0 && (resourceAmount(CityResourceIndex.food) > 0 || faction.hasGold(1, this)))
                         {
-                            CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
-                            status.createWorkOrder(WorkType.Eat, -1, 0, WorkExperienceType.NUM_NONE, WorkPriorityType.NUM_NONE, -1, CityStructure.WorkInstance.eatPosition(status.subTileEnd), this);
+                            CityStructureProcess.WorkInstance.updateIfNew(this, workerStatuses.Count);
+                            status.createWorkOrder(WorkType.Eat, -1, 0, WorkExperienceType.NUM_NONE, WorkPriorityType.NUM_NONE, -1, CityStructureProcess.WorkInstance.eatPosition(status.subTileEnd), this);
                         }
                         else if (status.energy <= DssConst.Worker_Starvation)
                         {
@@ -431,12 +437,14 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
+
+
                     //PICK UP
                     if (hostUpdate)
                     {
                         if (workTemplate.Get(WorkPriorityType.move).HasPrio())
                         {
-                            foreach (var pos in CityStructure.WorkInstance.ResourceOnGround)
+                            foreach (var pos in CityStructureProcess.WorkInstance.ResourceOnGround)
                             {
                                 var subTile = DssRef.world.subTileGrid.Get(pos);
 
@@ -458,14 +466,14 @@ namespace VikingEngine.DSSWars.GameObject
                     //WOOD
                     if (workTemplate.Get(WorkPriorityType.wood).HasPrio() && needMore(CityResourceIndex.wood))
                     {
-                        foreach (var pos in CityStructure.WorkInstance.Trees)
+                        foreach (var pos in CityStructureProcess.WorkInstance.Trees)
                         {
                             if (work_isFreeTile(pos))
                             {
                                 int distanceValue = -center.SideLength(pos);
 
                                 byte bonus = 0;
-                                if (CityStructure.WorkInstance.inBonusRadius(pos, CityStructure.WorkInstance.WoodCutter, DssConst.WoodCutter_BonusRadius))
+                                if (CityStructureProcess.WorkInstance.inBonusRadius(pos, CityStructureProcess.WorkInstance.WoodCutter, DssConst.WoodCutter_BonusRadius))
                                 {
                                     bonus = DssConst.WoodCutter_WoodBonus;
                                 }
@@ -478,13 +486,13 @@ namespace VikingEngine.DSSWars.GameObject
                     if (workTemplate.Get(WorkPriorityType.stone).HasPrio() &&
                         needMore(CityResourceIndex.stone)/*res_stone.needMore()*/)
                     {
-                        foreach (var pos in CityStructure.WorkInstance.Stones)
+                        foreach (var pos in CityStructureProcess.WorkInstance.Stones)
                         {
                             if (work_isFreeTile(pos))
                             {
                                 int distanceValue = -center.SideLength(pos);
                                 byte bonus = 0;
-                                if (CityStructure.WorkInstance.inBonusRadius(pos, CityStructure.WorkInstance.StoneCutter, DssConst.StoneCutter_BonusRadius))
+                                if (CityStructureProcess.WorkInstance.inBonusRadius(pos, CityStructureProcess.WorkInstance.StoneCutter, DssConst.StoneCutter_BonusRadius))
                                 {
                                     bonus = DssConst.StoneCutter_StoneBonus;
                                 }
@@ -493,8 +501,22 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
+                    bool bNeedMoreWater = needMore(CityResourceIndex.water);
+                    int waterprio = workTemplate.Get(WorkPriorityType.collectWater).value;
+                    if (bNeedMoreWater && waterprio > WorkTemplate.NoPrio)
+                    {
+                        foreach (var waterPool in CityStructureProcess.WorkInstance.WaterCollect)
+                        {
+                            if (work_isFreeTile(waterPool))
+                            {
+                                int distanceValue = -center.SideLength(waterPool);
+                                workQue.Add(new WorkQueMember( WorkType.Mine, NoSubWork, 0,  WorkPriorityType.collectWater, waterPool, waterprio, 0, distanceValue));
+                            }
+                        }
+                    }
+
                     //FARMS
-                    foreach (var tilework in CityStructure.WorkInstance.Farms)
+                    foreach (var tilework in CityStructureProcess.WorkInstance.Farms)
                     {
                         bool bNeedMore = false;
                         //bool safeGuard = false;
@@ -502,60 +524,60 @@ namespace VikingEngine.DSSWars.GameObject
                         //int prio = 0;
                         WorkPriorityType prioType = WorkPriorityType.NUM_NONE, prioType2 = WorkPriorityType.NUM_NONE;
                         byte bonus = 0;
-                        switch (subTile.GetFoilType())
+                        switch (subTile.GetFarmType())
                         {
-                            case TerrainSubFoilType.TreeApple:
-                            case TerrainSubFoilType.TreeBanana:
+                            case TerrainSubFarmType.TreeApple:
+                            case TerrainSubFarmType.TreeBanana:
                                 //safeGuard = rawFoodSafeGuard;
                                 bNeedMore = needMore(CityResourceIndex.food);
                                 prioType = WorkPriorityType.farmFood;
                                 //prio = workTemplate.Get(WorkPriorityType.farmFood).value;
                                 break;
 
-                            case TerrainSubFoilType.LinenFarm:
+                            case TerrainSubFarmType.LinenFarm:
                                 bNeedMore = needMore(CityResourceIndex.skinLinnen);//res_skinLinnen.needMore();
                                 prioType = WorkPriorityType.farmlinen;
                                 //prio = workTemplate.Get(WorkPriorityType.farmlinen).value;
                                 break;
-                            case TerrainSubFoilType.LinenFarmUpgraded:
+                            case TerrainSubFarmType.LinenFarmUpgraded:
                                 bNeedMore = needMore(CityResourceIndex.skinLinnen);//res_skinLinnen.needMore();
                                 prioType = WorkPriorityType.farmlinen;
                                 //prio = workTemplate.Get(WorkPriorityType.farmlinen).value;
                                 bonus = 1;
                                 break;
-                            case TerrainSubFoilType.WheatFarm:
+                            case TerrainSubFarmType.WheatFarm:
                                 //safeGuard = rawFoodSafeGuard;
                                 bNeedMore = needMore(CityResourceIndex.rawFood);
                                 prioType = WorkPriorityType.farmRawFood;
                                 //prio = workTemplate.Get(WorkPriorityType.farmRawFood).value;
                                 break;
-                            case TerrainSubFoilType.WheatFarmUpgraded:
+                            case TerrainSubFarmType.WheatFarmUpgraded:
                                 //safeGuard = rawFoodSafeGuard;
                                 bNeedMore = needMore(CityResourceIndex.rawFood);//res_rawFood.needMore();
                                 prioType = WorkPriorityType.farmRawFood;
                                 //prio = workTemplate.Get(WorkPriorityType.farmRawFood).value;
                                 bonus = 1;
                                 break;
-                            case TerrainSubFoilType.RapeSeedFarm:
+                            case TerrainSubFarmType.RapeSeedFarm:
                                 //safeGuard = fuelSafeGuard;
                                 bNeedMore = needMore(CityResourceIndex.fuel);//res_fuel.needMore();
                                 prioType = WorkPriorityType.farmfuel;
                                 //prio = workTemplate.Get(WorkPriorityType.farmfuel).value;
                                 break;
-                            case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                            case TerrainSubFarmType.RapeSeedFarmUpgraded:
                                 //safeGuard = fuelSafeGuard;
                                 bNeedMore = needMore(CityResourceIndex.fuel);////res_fuel.needMore();
                                 prioType = WorkPriorityType.farmfuel;
                                 //prio = workTemplate.Get(WorkPriorityType.farmfuel).value;
                                 break;
-                            case TerrainSubFoilType.HempFarm:
+                            case TerrainSubFarmType.HempFarm:
                                 //safeGuard = fuelSafeGuard;
                                 bNeedMore = needMore(CityResourceIndex.fuel);////res_fuel.needMore() || res_skinLinnen.needMore() || fuelSafeGuard;
                                 prioType = WorkPriorityType.farmlinen;
                                 prioType2 = WorkPriorityType.farmfuel;
                                 //prio = Math.Max(workTemplate.Get(WorkPriorityType.farmlinen).value, workTemplate.Get(WorkPriorityType.farmfuel).value);
                                 break;
-                            case TerrainSubFoilType.HempFarmUpgraded:
+                            case TerrainSubFarmType.HempFarmUpgraded:
                                 //safeGuard = fuelSafeGuard;
                                 bNeedMore = needMore(CityResourceIndex.fuel) || needMore(CityResourceIndex.skinLinnen)/*res_fuel.needMore() || res_skinLinnen.needMore()*/ ;
                                 prioType = WorkPriorityType.farmlinen;
@@ -586,7 +608,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (workTemplate.Get(WorkPriorityType.bogiron).HasPrio() &&
                         needMore(CityResourceIndex.ironore))
                     {
-                        foreach (var pos in CityStructure.WorkInstance.BogIron)
+                        foreach (var pos in CityStructureProcess.WorkInstance.BogIron)
                         {
                             if (work_isFreeTile(pos))
                             {
@@ -598,7 +620,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (workTemplate.Get(WorkPriorityType.collectClay).HasPrio() &&
                         needMore(CityResourceIndex.Clay))
                     {
-                        foreach (var pos in CityStructure.WorkInstance.ClayPit)
+                        foreach (var pos in CityStructureProcess.WorkInstance.ClayPit)
                         {
                             if (work_isFreeTile(pos))
                             {
@@ -610,7 +632,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     //if (fuelSafeGuard)
                     //{
-                    foreach (var pos in CityStructure.WorkInstance.Mines)
+                    foreach (var pos in CityStructureProcess.WorkInstance.Mines)
                     {
                         bool bNeedMore = true;
                         //bool safeGuard = false;
@@ -690,108 +712,108 @@ namespace VikingEngine.DSSWars.GameObject
                     //ANIMALS
                     if (workTemplate.Get(WorkPriorityType.move).HasPrio())
                     {
-                        foreach (var pos in CityStructure.WorkInstance.AnimalPens)
+                        foreach (var pos in CityStructureProcess.WorkInstance.AnimalPens)
                         {
                             bool bNeedMore = true;
 
                             var subTile = DssRef.world.subTileGrid.Get(pos);
-                            switch (subTile.GetBuildingType())
+                            switch ((TerrainSubAnimalPenType)subTile.subTerrain)
                             {
-                                case TerrainBuildingType.FowlHabitat:
-                                case TerrainBuildingType.FowlPen:
+                                case TerrainSubAnimalPenType.FowlHabitat:
+                                case TerrainSubAnimalPenType.FowlPen:
                                     bNeedMore = needMore(CityResourceIndex.Fowl);
                                     break;
-                                case TerrainBuildingType.HenPen:
+                                case TerrainSubAnimalPenType.HenPen:
                                     bNeedMore = needMore(CityResourceIndex.Hen);
                                     break;
-                                case TerrainBuildingType.PigPen:
+                                case TerrainSubAnimalPenType.PigPen:
                                     bNeedMore = needMore(CityResourceIndex.Pig);
                                     break;
 
                                 // Oxen
-                                case TerrainBuildingType.OxHabitat:
-                                case TerrainBuildingType.OxenPen:
+                                case TerrainSubAnimalPenType.OxHabitat:
+                                case TerrainSubAnimalPenType.OxenPen:
                                     bNeedMore = needMore(CityResourceIndex.Oxen);
                                     break;
-                                case TerrainBuildingType.KineOxenPen:
+                                case TerrainSubAnimalPenType.KineOxenPen:
                                     bNeedMore = needMore(CityResourceIndex.KineOxen);
                                     break;
 
                                 // Dogs
-                                case TerrainBuildingType.DogHabitat:
-                                case TerrainBuildingType.DogCage:
+                                case TerrainSubAnimalPenType.DogHabitat:
+                                case TerrainSubAnimalPenType.DogCage:
                                     bNeedMore = needMore(CityResourceIndex.Dog);
                                     break;
-                                case TerrainBuildingType.HoundCage:
+                                case TerrainSubAnimalPenType.HoundCage:
                                     bNeedMore = needMore(CityResourceIndex.Hound);
                                     break;
 
                                 // Horses
-                                case TerrainBuildingType.PonyHabitat:
-                                case TerrainBuildingType.PonyPen:
+                                case TerrainSubAnimalPenType.PonyHabitat:
+                                case TerrainSubAnimalPenType.PonyPen:
                                     bNeedMore = needMore(CityResourceIndex.Pony);
                                     break;
-                                case TerrainBuildingType.HorsePen:
+                                case TerrainSubAnimalPenType.HorsePen:
                                     bNeedMore = needMore(CityResourceIndex.Horse);
                                     break;
-                                case TerrainBuildingType.WarHorsePen:
+                                case TerrainSubAnimalPenType.WarHorsePen:
                                     bNeedMore = needMore(CityResourceIndex.WarHorse);
                                     break;
-                                case TerrainBuildingType.DraftHorsePen:
+                                case TerrainSubAnimalPenType.DraftHorsePen:
                                     bNeedMore = needMore(CityResourceIndex.DraftHorse);
                                     break;
 
                                 // Wild Pigs/Hogs
-                                case TerrainBuildingType.BoarHabitat:
-                                case TerrainBuildingType.BoarPen:
+                                case TerrainSubAnimalPenType.BoarHabitat:
+                                case TerrainSubAnimalPenType.BoarPen:
                                     bNeedMore = needMore(CityResourceIndex.Boar);
                                     break;
-                                case TerrainBuildingType.WildPigPen:
+                                case TerrainSubAnimalPenType.WildPigPen:
                                     bNeedMore = needMore(CityResourceIndex.WildPig);
                                     break;
-                                case TerrainBuildingType.WildHogPen:
+                                case TerrainSubAnimalPenType.WildHogPen:
                                     bNeedMore = needMore(CityResourceIndex.WildHog);
                                     break;
-                                case TerrainBuildingType.WarHogPen:
+                                case TerrainSubAnimalPenType.WarHogPen:
                                     bNeedMore = needMore(CityResourceIndex.WarHog);
                                     break;
-                                case TerrainBuildingType.StagHogPen:
+                                case TerrainSubAnimalPenType.StagHogPen:
                                     bNeedMore = needMore(CityResourceIndex.StagHog);
                                     break;
 
                                 // Wolves
-                                case TerrainBuildingType.WolfHabitat:
-                                case TerrainBuildingType.WolfCage:
+                                case TerrainSubAnimalPenType.WolfHabitat:
+                                case TerrainSubAnimalPenType.WolfCage:
                                     bNeedMore = needMore(CityResourceIndex.Wolf);
                                     break;
-                                case TerrainBuildingType.WargCage:
+                                case TerrainSubAnimalPenType.WargCage:
                                     bNeedMore = needMore(CityResourceIndex.Warg);
                                     break;
-                                case TerrainBuildingType.AlphaWargCage:
+                                case TerrainSubAnimalPenType.AlphaWargCage:
                                     bNeedMore = needMore(CityResourceIndex.AlphaWarg);
                                     break;
 
                                 // Cats
-                                case TerrainBuildingType.CatHabitat:
-                                case TerrainBuildingType.WildCatCage:
+                                case TerrainSubAnimalPenType.CatHabitat:
+                                case TerrainSubAnimalPenType.WildCatCage:
                                     bNeedMore = needMore(CityResourceIndex.WildCat);
                                     break;
-                                case TerrainBuildingType.LionCage:
+                                case TerrainSubAnimalPenType.LionCage:
                                     bNeedMore = needMore(CityResourceIndex.Lion);
                                     break;
-                                case TerrainBuildingType.WarLionCage:
+                                case TerrainSubAnimalPenType.WarLionCage:
                                     bNeedMore = needMore(CityResourceIndex.WarLion);
                                     break;
 
                                 // Elephants
-                                case TerrainBuildingType.ElephantHabitat:
-                                case TerrainBuildingType.ElephantCage:
+                                case TerrainSubAnimalPenType.ElephantHabitat:
+                                case TerrainSubAnimalPenType.ElephantCage:
                                     bNeedMore = needMore(CityResourceIndex.Elephant);
                                     break;
-                                case TerrainBuildingType.WarElephantCage:
+                                case TerrainSubAnimalPenType.WarElephantCage:
                                     bNeedMore = needMore(CityResourceIndex.WarElephant);
                                     break;
-                                case TerrainBuildingType.OliphantCage:
+                                case TerrainSubAnimalPenType.OliphantCage:
                                     bNeedMore = needMore(CityResourceIndex.Oliphant);
                                     break;
                             }
@@ -807,7 +829,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         //CRAFT
                         byte prio;
-                        foreach (var pos in CityStructure.WorkInstance.CraftStation)
+                        foreach (var pos in CityStructureProcess.WorkInstance.CraftStation)
                         {
                             int distanceValue = -center.SideLength(pos);
                             var subTile = DssRef.world.subTileGrid.Get(pos);
@@ -930,7 +952,7 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
                     //COINS
-                    if (CityStructure.WorkInstance.CoinMinting.Count > 0)//foreach (var pos in CityStructure.WorkInstance.CoinMinting)
+                    if (CityStructureProcess.WorkInstance.CoinMinting.Count > 0)//foreach (var pos in CityStructure.WorkInstance.CoinMinting)
                     {
                         ItemResourceType topItem = ItemResourceType.NONE;
                         int topPrio = 0;
@@ -954,7 +976,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (topPrio > 0)
                         {
-                            foreach (var pos in CityStructure.WorkInstance.CoinMinting)
+                            foreach (var pos in CityStructureProcess.WorkInstance.CoinMinting)
                             {
                                 int distanceValue = -center.SideLength(pos);
                                 workQue.Add(new WorkQueMember(WorkType.Craft, (int)topItem, 0, topPrioType, pos, topPrio, 0, distanceValue));
@@ -1228,9 +1250,9 @@ namespace VikingEngine.DSSWars.GameObject
         public void checkPlayerFuelAccess_OnGamestart_async()
         {
             const int FuelFarmCount = 10;
-            int fuelType = (int)TerrainSubFoilType.RapeSeedFarm;
+            int fuelType = (int)TerrainSubFarmType.RapeSeedFarm;
 
-            CityStructure structure = new CityStructure();
+            CityStructureProcess structure = new CityStructureProcess();
             structure.update(DssRef.world, this, 32, FuelFarmCount);
             if (structure.fuelSpots <= 8)
             {
@@ -1353,7 +1375,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (work)
             {
                 case WorkType.Plant:
-                    return res_water.amount >= DssConst.PlantWaterCost;
+                    return resourceAmount(CityResourceIndex.water) >= DssConst.PlantWaterCost;
 
                 case WorkType.Craft:
                     {
@@ -1432,7 +1454,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void refreshItemReserve()
         {
-            res_water.reservedUseCount = 0;
+            //res_water.reservedUseCount = 0;
             DssRef.world.flushCityReserves(this);
 
             for (int i = 0; i < workerStatuses.Count; i++)
