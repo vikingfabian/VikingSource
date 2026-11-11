@@ -17,7 +17,7 @@ namespace VikingEngine.Core.Wand.Map
         public Grid2D_L<Tile> tileGrid;
         public List<BSPNode> leaves = new List<BSPNode>();
         
-        public bool CanMove(IntVector2 from, IntVector2 to, out ThinWallData door)
+        public bool CanMove_WallCheck(IntVector2 from, IntVector2 to, out ThinWallData door)
         {   
             if (tileGrid.Get(to).tileType == TileType.Floor)
             {
@@ -26,6 +26,12 @@ namespace VikingEngine.Core.Wand.Map
             }
             door = ThinWallData.None;
             return false;
+        }
+
+        public bool CanMove_CreatureCheck(IntVector2 to, out CreaturePointer pcreature)
+        {
+            pcreature = tileGrid.Get(to).creature;
+            return !pcreature.HasGameObject();
         }
 
         public ThinWallData GetWall(IntVector2 from, IntVector2 to)

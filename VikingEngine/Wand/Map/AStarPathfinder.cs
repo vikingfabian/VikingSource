@@ -109,10 +109,17 @@ namespace VikingEngine.Core.Wand.Map
                         continue;
 
                     ThinWallData door;
-                    if (!map.CanMove(current.pos, neighborPos, out door))
+                    if (!map.CanMove_WallCheck(current.pos, neighborPos, out door))
                         continue;
 
                     int moveCost = current.gCost + 10;
+
+                    if (map.tileGrid.Get(neighborPos).creature.HasGameObject())
+                    {
+                        //Another creature in the path
+                        moveCost += 4;
+                    }
+
                     int visitedVal = visitedGrid.Get(neighborPos);
 
                     if (visitedVal == 0) // Not visited yet

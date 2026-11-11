@@ -702,17 +702,17 @@ namespace VikingEngine.DSSWars.Event
 
                         var army = enemyFac.NewArmy(VectorExt.AddY(spawn, 0));
                         army.rotation = enemyRot;
-                        int count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
+                        int count = soldierCount.GetRandom_Inc() / DssRef.state.localPlayers.Count;
                         for (int i = 0; i < count; ++i)
                         {
                             new SoldierGroup(army, DssLib.SoldierProfile_Pikeman, army.position);
                         }
-                        count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
+                        count = soldierCount.GetRandom_Inc() / DssRef.state.localPlayers.Count;
                         for (int i = 0; i < count; ++i)
                         {
                             new SoldierGroup(army, DssLib.SoldierProfile_Sailor, army.position);
                         }
-                        count = soldierCount.GetRandom() / DssRef.state.localPlayers.Count;
+                        count = soldierCount.GetRandom_Inc() / DssRef.state.localPlayers.Count;
                         for (int i = 0; i < count; ++i)
                         {
                             new SoldierGroup(army, DssLib.SoldierProfile_CrossbowMan, army.position);
@@ -850,7 +850,7 @@ namespace VikingEngine.DSSWars.Event
             {
                 if (p.pfaction.GetFaction().cities.Count >= p.nextDominationSize)
                 {
-                    p.nextDominationSize = p.pfaction.GetFaction().cities.Count + DssConst.DominationSizeIncrease.GetRandom();
+                    p.nextDominationSize = p.pfaction.GetFaction().cities.Count + DssConst.DominationSizeIncrease.GetRandom_Inc();
                 }
             }
         }

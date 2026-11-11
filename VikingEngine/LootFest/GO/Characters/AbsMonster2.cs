@@ -161,13 +161,13 @@ namespace VikingEngine.LootFest.GO.Characters
         {
             if (aiStateTimer.MilliSeconds <= 0)
             {
-                aiStateTimer.MilliSeconds = standardStateTime.GetRandom();
+                aiStateTimer.MilliSeconds = standardStateTime.GetRandom_Inc();
                 target = getClosestCharacter(92, args.allMembersCounter, this.WeaponTargetType);
                 if (aiState == AiState.PreAttack)
                 {
                     aiState = AiState.Attacking;
                     moveTowardsObject(target, 2, runningSpeed);
-                    aiStateTimer.MilliSeconds = attackTime.GetRandom();
+                    aiStateTimer.MilliSeconds = attackTime.GetRandom_Inc();
                     setImageDirFromSpeed();
                 }
                 else if (target == null)
@@ -191,14 +191,14 @@ namespace VikingEngine.LootFest.GO.Characters
                     {
 
                         aiState = AiState.Waiting;
-                        aiStateTimer.MilliSeconds = waitingTime.GetRandom();
+                        aiStateTimer.MilliSeconds = waitingTime.GetRandom_Inc();
                     }
                     Velocity.SetZeroPlaneSpeed();
                 }
 
                 if (turningTime.CountDown(args.time))
                 {
-                    turningTime.MilliSeconds = turningStateTime.GetRandom();
+                    turningTime.MilliSeconds = turningStateTime.GetRandom_Inc();
                     turning = !turning;
                 }
             }

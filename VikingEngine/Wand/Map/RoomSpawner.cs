@@ -63,7 +63,7 @@ namespace VikingEngine.Core.Wand.Map
                 switch (sp.objectCategory)
                 {
                     case GameObjectCategory.Creature:
-                        WandRef.world.newCreature( new Goblin(new MapPlacement(sp.pos, (WandRef.world.hero.currentPos.tilePos - sp.pos).ToDir4)));
+                        new Goblin(new MapPlacement(sp.pos, (WandRef.world.hero.currentPos.tilePos - sp.pos).ToDir4));
                         break;
                 }
             }

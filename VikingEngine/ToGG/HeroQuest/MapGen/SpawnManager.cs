@@ -233,7 +233,7 @@ namespace VikingEngine.ToGG.HeroQuest.MapGen
                 Bound.Min((int)(areas / 4f), 1),
                 Bound.Min((int)(areas / 1f), 1));
 
-            int monsterGroupCount = groupCountInterval.GetRandom(rnd);
+            int monsterGroupCount = groupCountInterval.GetRandom_Inc(rnd);
             groups.Clear();
             flag.settings.getSpawnGroups(rnd, monsterGroupCount, ref previousMonsterGroup, groups);
 

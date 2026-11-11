@@ -654,7 +654,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         {
             radius = lib.SmallestValue(generateSettings.startRadiusRange.GetRandom(world.rnd), generateSettings.startRadiusRange.GetRandom(world.rnd));
             growDir = Rotation1D.Random(world.rnd);
-            chainLength = generateSettings.chainLengthRange.GetRandom(world.rnd);
+            chainLength = generateSettings.chainLengthRange.GetRandom_Inc(world.rnd);
 
             heightCenter = Rotation1D.Random(world.rnd);
             heightCenterLength = world.rnd.Float(0.7f);

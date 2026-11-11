@@ -30,6 +30,11 @@ namespace VikingEngine.Core.Wand.Scene
             player.update();
             WandRef.world.turnOrderManager.update();
             mapmodel.update();
+            var creaturesC = WandRef.world.creatures.counter();
+            while (creaturesC.Next())
+            {
+                creaturesC.sel.updateUi();
+            }
 
             if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape))
             {

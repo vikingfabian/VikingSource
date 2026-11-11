@@ -30,9 +30,10 @@ namespace VikingEngine.Core.Wand.Map
             
         }
 
-        public void newCreature(AbsCreature creature)
+        public int newCreature(AbsCreature creature)
         {
-            creatures.Add(creature);
+            int ix = creatures.Add(creature);
+            return ix;
         }
     }
 }

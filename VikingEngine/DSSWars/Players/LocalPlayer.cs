@@ -1929,7 +1929,7 @@ namespace VikingEngine.DSSWars.Players
                 gameControls.map.setCameraPos(DssRef.world.Size / 2);
             }
 
-            nextDominationSize = pfaction.GetFaction().cities.Count + DssConst.DominationSizeIncrease.GetRandom();
+            nextDominationSize = pfaction.GetFaction().cities.Count + DssConst.DominationSizeIncrease.GetRandom_Inc();
 
             if (DssRef.state.host)
             {

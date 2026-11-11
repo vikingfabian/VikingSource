@@ -985,7 +985,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             for (int connectedIx = 0; connectedIx < connectedChains; ++connectedIx)
             {
-                int chainLength = chainLengthRange2.GetRandom(iconWorld.rnd);
+                int chainLength = chainLengthRange2.GetRandom_Inc(iconWorld.rnd);
 
                 //connectPoints.Add(center);
                 for (int link = 0; link < chainLength; ++link)
@@ -1222,7 +1222,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             for (int connectedIx = 0; connectedIx < connectedChains; ++connectedIx)
             {
-                int chainLength = chainLengthRange2.GetRandom(iconWorld.rnd);
+                int chainLength = chainLengthRange2.GetRandom_Inc(iconWorld.rnd);
                 //connectPoints.Add(center);
                 for (int link = 0; link < chainLength; ++link)
                 {
@@ -1599,7 +1599,7 @@ namespace VikingEngine.DSSWars.Map.Map2
 
             for (int connectedIx = 0; connectedIx < connectedChains; ++connectedIx)
             {
-                int chainLength = chainLengthRange.GetRandom(iconWorld.rnd);
+                int chainLength = chainLengthRange.GetRandom_Inc(iconWorld.rnd);
 
                 for (int link = 0; link < chainLength; ++link)
                 {

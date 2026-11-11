@@ -105,7 +105,7 @@ namespace VikingEngine.ToGG.HeroQuest.Data
             {
                 if (random.Chance(chance))
                 {
-                    toList.Add(new Coins(coinCount.GetRandom(random)));
+                    toList.Add(new Coins(coinCount.GetRandom_Inc(random)));
                 }
             }
         }

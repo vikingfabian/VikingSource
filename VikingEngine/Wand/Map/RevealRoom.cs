@@ -71,10 +71,12 @@ namespace VikingEngine.Core.Wand.Map
                 if (tile.item.itemType == TileItemType.SpawnPos)
                 {
                     roomSpawner.Add(tile.item, pos);
+                    tile.item.itemType = TileItemType.NONE;
                 }
                 if (tile.creature.creatureType == CreatureType.SpawnPos)
                 {
                     roomSpawner.Add(tile.creature, pos);
+                    tile.creature.creatureType = CreatureType.NONE;
                 }
             }
         }

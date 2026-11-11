@@ -12,6 +12,7 @@ namespace VikingEngine.Core.Wand.Laws
 {
     class TurnOrderManager
     {
+        Queue<AttackData> queuedAttacks = new Queue<AttackData>(8);
         StructList<IntVector2> pathResult = new StructList<IntVector2>(128);
         public AStarPathfinder pathfinder = new AStarPathfinder();
         Time waitTime = Time.Zero;
@@ -29,14 +30,25 @@ namespace VikingEngine.Core.Wand.Laws
                 }
 
                 var toPos = WandRef.world.hero.currentPos.MovePos(move);
-                if (WandRef.world.map.CanMove(WandRef.world.hero.currentPos.tilePos, toPos.tilePos, out var door))
+                if (WandRef.world.map.CanMove_WallCheck(WandRef.world.hero.currentPos.tilePos, toPos.tilePos, out var door))
                 {
                     turnState = TurnState.BeginTurn;
-                    WandRef.world.hero.SetPos(toPos);
 
-                    if (door.wallType == Map.ThinWall.Door)
+                    if (WandRef.world.map.CanMove_CreatureCheck(toPos.tilePos, out var pcreature))
                     {
-                        door.wallPos.RemoveWall();
+                        //MOVE
+                        WandRef.world.hero.SetPos(toPos);
+
+                        if (door.wallType == Map.ThinWall.Door)
+                        {
+                            door.wallPos.RemoveWall();
+                        }
+                    }
+                    else
+                    { 
+                        //ATTACK
+                         WandRef.world.hero.TurnTowards(toPos.tilePos);
+                        queuedAttacks.Enqueue(new AttackData(WandRef.world.hero, pcreature.Get()));
                     }
                 }
             }
@@ -56,12 +68,18 @@ namespace VikingEngine.Core.Wand.Laws
                     switch (turnState)
                     {
                         case TurnState.BeginTurn:
-                            waitTime = new Time(0.3f, TimeUnit.Seconds);
+                            waitTime = new Time(0.2f, TimeUnit.Seconds);
                             turnState = TurnState.AnimatingEnemies;
                             break;
-                        case TurnState.AnimatingEnemies:
-                           
+                        case TurnState.AnimatingEnemies:                           
                             MoveEnemies();
+                            turnState++;
+                            break;
+                        case TurnState.Attacks:
+                            while (queuedAttacks.TryDequeue(out var attack))
+                            {
+                                BattleManager.Attack(attack);
+                            }
                             turnState++;
                             break;
                         case TurnState.NUM:
@@ -83,10 +101,26 @@ namespace VikingEngine.Core.Wand.Laws
                     var creaturesC = WandRef.world.creatures.counter();
                     while (creaturesC.Next())
                     {
-                        if (pathfinder.FindPath(WandRef.world.map,
+                        if (creaturesC.sel.ChaseHero() &&
+                            pathfinder.FindPath(WandRef.world.map,
                              creaturesC.sel.currentPos.tilePos, WandRef.world.hero.currentPos.tilePos, ref pathResult) && pathResult.Count > 1)
                         {
-                            creaturesC.sel.SetPos(creaturesC.sel.currentPos.MoveTo(pathResult.Array[1]));
+                            IntVector2 toPos = pathResult.Array[1];
+                            if (WandRef.world.map.CanMove_CreatureCheck(toPos, out var pcreature))
+                            {
+                                //MOVE
+                                creaturesC.sel.SetPos(creaturesC.sel.currentPos.MoveTo(toPos));
+                            }
+                            else 
+                            {
+                                creaturesC.sel.TurnTowards(toPos);
+                                if (pcreature.creatureType == GO.ObjectPointer.CreatureType.Hero)
+                                {
+                                    //ATTACK
+                                    queuedAttacks.Enqueue(new AttackData(creaturesC.sel, pcreature.Get()));
+                                    //BattleManager.Attack(creaturesC.sel, pcreature.Get()); 
+                                }
+                            }
                         }
                     }
                     waitForAsyncProcess = false;
@@ -106,6 +140,7 @@ namespace VikingEngine.Core.Wand.Laws
         BeginTurn,
         AnimatingPlayer,
         AnimatingEnemies,
+        Attacks,
         NUM
     }
 }

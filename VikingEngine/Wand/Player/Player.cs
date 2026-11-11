@@ -1,5 +1,7 @@
 ﻿using System;
+using VikingEngine.Core.Wand.Display.HeadDisplay;
 using VikingEngine.Core.Wand.Laws;
+using VikingEngine.ToGG;
 
 
 namespace VikingEngine.Core.Wand.Player
@@ -8,16 +10,21 @@ namespace VikingEngine.Core.Wand.Player
     {
         CameraControl cameraControl;
         public InputMap inputMap;
-
+        public EquipmentSetup equipment = new EquipmentSetup();
+        EquipmentDisplay equipmentDisplay;
         public Player()
         {
             cameraControl = new CameraControl();
             inputMap = new InputMap(0);
+
+            equipmentDisplay = new EquipmentDisplay(equipment);
         }
 
         public void update()
         {
             bool mouseOverHud = false;
+
+            equipmentDisplay.update(ref mouseOverHud);
 
             //cameraControl.update_debugmode(this, mouseOverHud);
             if (WandRef.world.turnOrderManager.turnState == TurnState.WaitingForInput)
