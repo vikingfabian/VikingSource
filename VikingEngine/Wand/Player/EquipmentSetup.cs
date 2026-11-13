@@ -14,10 +14,10 @@ namespace VikingEngine.Core.Wand.Player
         public int? selectedWand = null;
         public EquipmentSetup()
         {
-            wands.Add(new MagicWand(1));
-            wands.Add(new MagicWand(1));
-            wands.Add(new MagicWand(1));
-
+            for (int i = 0; i < 4; ++i)
+            {
+                wands.Add(new MagicWand(3));
+            }
         }
     }
 }

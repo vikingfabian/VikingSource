@@ -18,17 +18,31 @@ namespace VikingEngine.Core.Wand.Equipment
             magicEffects = WandRef.world.magicFormulas.CreateMagicEffectList(capacity);
         }
 
-        public void ToHud(RichBoxContent content, int index)
+        public void recharge()
         {
-            content.Add(new RbText($"Wand {index + 1}"));
+            charges = 1;
+        }
+
+        public void ToHud(RichBoxContent content, int index, bool selected, bool altar)
+        {
+            if (selected)
+            {
+                HudLib.BulletPoint(content);
+            }
+            content.Add(new RbText($"Wand {index + 1}", charges > 0? HudLib.TitleColor_Name : HudLib.SecondaryTextColor));
             content.space();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Select") },
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(selected? "Cancel" : "Select") },
                 new RbAction1Arg<int>(WandRef.PlayScene.player.selectWand, index), null, charges > 0));
+            //if (altar)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(altar? "Sacrifice" : "Drop") },
+                    new RbAction1Arg<int>(WandRef.PlayScene.player.dropWand, index), new RbTooltip_Text(altar ? "Recharge all other wands" : "Put on floor")));
+            }
             content.newLine();
             for (int i = 0; i < magicEffects.Count; ++i)
             {
                 var form = magicEffects[i];
-                content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> { new RbText(form.effect.ToString()) }, null,
+                content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> { new RbText(form.FullName()) }, null,
                     new RbTooltip(formulaTooltip, i)));
             }
         }
@@ -38,26 +52,60 @@ namespace VikingEngine.Core.Wand.Equipment
             int index = (int)tag;
             MagicFormula form = magicEffects[index];
 
-            content.Add(new RbText("Trigger:", HudLib.TitleColor_Label));
-            content.hspace();
-            content.Add(new RbText(form.trigger.ToString()));
+            bool show = form.isFound;
+#if DEBUG
+            show = true;
+#endif
 
-            content.newLine();
-            content.Add(new RbText("Trigger Object:", HudLib.TitleColor_Label));
-            content.hspace();
-            content.Add(new RbText(form.triggerObject.ToString()));
-
-            content.newLine();
-            content.Add(new RbText("Effect", HudLib.TitleColor_Label));
-            content.hspace();
-            content.Add(new RbText(form.effect.ToString()));
-
-            if (form.triggerTier != MagicFormula.NoTier)
+            if (show)
             {
-                content.newLine();
-                content.Add(new RbText("Magic tier", HudLib.TitleColor_Label));
+                content.Add(new RbText("Trigger:", HudLib.TitleColor_Label));
                 content.hspace();
-                content.Add(new RbText(form.triggerTier.ToString()));
+                content.Add(new RbText(form.trigger.ToString()));
+
+                content.newLine();
+                content.Add(new RbText("Trigger Object:", HudLib.TitleColor_Label));
+                content.hspace();
+                content.Add(new RbText(form.triggerObject.ToString()));
+
+                content.newLine();
+                content.Add(new RbText("Effect", HudLib.TitleColor_Label));
+                content.hspace();
+                content.Add(new RbText(form.effect.ToString()));
+
+                if (form.triggerTier != MagicFormula.NoTier)
+                {
+                    content.newLine();
+                    content.Add(new RbText("Magic tier", HudLib.TitleColor_Label));
+                    content.hspace();
+                    content.Add(new RbText(form.triggerTier.ToString()));
+                }
+            }
+            else
+            {
+                content.Add(new RbText("???", HudLib.TitleColor_Label));
+            }
+        }
+
+        public void LevelUp(int tier)
+        {
+            for (int tierIx = 0; tierIx < tier; ++tierIx)
+            {
+                if (Ref.rnd.Chance(0.6) && magicEffects.Count < 6)
+                {
+                    WandRef.world.magicFormulas.AddToEffectList(ref magicEffects);
+                }
+                else
+                {
+                    for (int i = 0; i < magicEffects.Count; ++i)
+                    {
+                        var form = magicEffects[i];
+                        if (form.triggerTier != MagicFormula.NoTier)
+                        {
+                            form.triggerTier++;
+                        }
+                    }
+                }
             }
         }
     }

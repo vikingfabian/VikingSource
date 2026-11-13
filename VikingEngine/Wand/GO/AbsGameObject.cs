@@ -14,18 +14,31 @@ namespace VikingEngine.Core.Wand.GO
         public MapPlacement currentPos;
         public VoxelModelInstance model;
 
-        virtual public void TakeDamage(int damage)
+        virtual public bool TakeDamage(int damage)
         {
-            health.add(-damage);
-            new DamageDisplay(this, damage);
-
-            if (health.IsZero)
+            if (health.HasValue)
             {
-                DeleteMe();
+                health.add(-damage);
+                new DamageDisplay(this, damage);
+
+                if (health.IsZero)
+                {
+                    DeleteMe();
+                }
+                return true;
             }
+            return false;
+        }
+
+        virtual public void Heal(int addHealth)
+        {
+            health.add(addHealth);
+            new HealDisplay(this, addHealth);
         }
 
         virtual public void DeleteMe() { model.DeleteMe(); }
+
+        abstract public GameObjectCategory ObjectCategory { get; }
     }
 }
 

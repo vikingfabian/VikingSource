@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Graphics;
@@ -142,6 +143,16 @@ namespace VikingEngine.Core.Wand.Player
         public void update(Player player, bool overHud)
         {
             camera.GoalLookTarget = WP.TileToWp(WandRef.world.hero.currentPos.tilePos);
+
+            if (WandRef.world.turnOrderManager.magicCasts.Count > 0)
+            {
+                var cast = WandRef.world.turnOrderManager.magicCasts.First();
+                if ((cast.currentPos.tilePos - WandRef.world.hero.currentPos.tilePos).SideLength() > 2)
+                {
+                    camera.GoalLookTarget = cast.WorldPosition();
+                }
+            }
+
             if (!overHud)
             {
                 Vector3 mapPos = Ref.draw.Camera.ScreenPosTo3D(Input.Mouse.Position, out bool foundScreenPos);               

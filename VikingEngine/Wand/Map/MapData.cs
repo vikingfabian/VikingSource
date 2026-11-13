@@ -9,20 +9,50 @@ namespace VikingEngine.Core.Wand.Map
     using System.Collections.Generic;
     using System.Linq;
     using VikingEngine.Core.BlackBolts.Map;
+    using VikingEngine.Core.Wand.GO;
     using VikingEngine.Core.Wand.GO.ObjectPointer;
 
     class MapData
     {
+        public ForXYEdgeLoopRandomPicker randomPicker = new ForXYEdgeLoopRandomPicker();
         public IntVector2 playerEnterPos;
         public Grid2D_L<Tile> tileGrid;
         public List<BSPNode> leaves = new List<BSPNode>();
-        
-        public bool CanMove_WallCheck(IntVector2 from, IntVector2 to, out ThinWallData door)
+
+        public bool CanMove_WallCheck_Diagonal(IntVector2 from, IntVector2 to)
+        {
+            if (tileGrid.Get(to).tileType == TileType.Floor)
+            {
+                IntVector2 hori = to;
+                hori.X = from.X;
+                if (GetWall(from, hori).wallType == ThinWall.None)
+                {
+                    return true;
+                }
+
+                IntVector2 verti = to;
+                verti.Y = from.Y;
+                if (GetWall(from, hori).wallType == ThinWall.None)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool CanMove_WallCheck(IntVector2 from, IntVector2 to, bool isHero, out ThinWallData door)
         {   
             if (tileGrid.Get(to).tileType == TileType.Floor)
             {
                 door = GetWall(from, to);
-                return door.wallType != ThinWall.Wall;
+                if (isHero)
+                {
+                    return door.wallType != ThinWall.Wall;
+                }
+                else
+                {
+                    return door.wallType == ThinWall.None;
+                }
             }
             door = ThinWallData.None;
             return false;
@@ -63,6 +93,8 @@ namespace VikingEngine.Core.Wand.Map
         public ThinWall northWall, eastWall;
         public ItemPointer item;
         public CreaturePointer creature;
+
+        public Fluid fluid;
     }
 
     struct ThinWallData

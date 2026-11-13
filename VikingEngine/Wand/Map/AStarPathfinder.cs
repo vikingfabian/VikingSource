@@ -109,7 +109,7 @@ namespace VikingEngine.Core.Wand.Map
                         continue;
 
                     ThinWallData door;
-                    if (!map.CanMove_WallCheck(current.pos, neighborPos, out door))
+                    if (!map.CanMove_WallCheck(current.pos, neighborPos, false, out door))
                         continue;
 
                     int moveCost = current.gCost + 10;

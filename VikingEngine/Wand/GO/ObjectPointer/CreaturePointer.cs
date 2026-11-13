@@ -18,6 +18,10 @@ namespace VikingEngine.Core.Wand.GO.ObjectPointer
 
         public AbsCreature Get()
         {
+            if (creatureType == CreatureType.NONE)
+            {
+                return null;
+            }
             return WandRef.world.creatures.GetIndex_Safe(index);
         }
     }
@@ -33,6 +37,7 @@ namespace VikingEngine.Core.Wand.GO.ObjectPointer
         Hen,
         Goblin,
         Orc,
+        BlackKnight,
         Spider,
     }
 }

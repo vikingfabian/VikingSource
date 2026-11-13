@@ -6,6 +6,7 @@ namespace VikingEngine.Core.Wand.Laws
 {
     static class MagicLaws
     {
+
     }
 
     

@@ -144,22 +144,22 @@ namespace VikingEngine.Core.Wand.Map
             
             IntVector2 pos = IntVector2.Zero;
             List<PolygonColor> polygons = new List<PolygonColor>();
-            /*
+
             //Tiles
-            for (pos.Y = 0; pos.Y < WandRef.mapData.Size.Y; ++pos.Y)
+            for (pos.Y = 0; pos.Y < WandRef.world.map.tileGrid.Size.Y; ++pos.Y)
             {
-                for (pos.X = 0; pos.X < WandRef.mapData.Size.X; ++pos.X)
+                for (pos.X = 0; pos.X < WandRef.world.map.tileGrid.Size.X; ++pos.X)
                 {
-                    var tile = WandRef.mapData.tileGrid.Get(pos);
+                    var tile = WandRef.world.map.tileGrid.Get(pos);
                     if (tile.fluid.HasValue)
                     {
                         SpriteName sprite = SpriteName.MissingImage;
-                        switch (tile.fluid.resourceType)
+                        switch (tile.fluid.fluidType)
                         {
-                            case Data.ResourceType.FluidPoopStain:
-                                sprite = SpriteName.bb_stain_shit;
-                                break;
-                            case Data.ResourceType.FluidBlood:
+                            //case Data.ResourceType.FluidPoopStain:
+                            //    sprite = SpriteName.bb_stain_shit;
+                            //    break;
+                            case GO.FluidType.Blood:
                                 sprite = SpriteName.bb_stain_blood;
                                 break;
 
@@ -169,7 +169,7 @@ namespace VikingEngine.Core.Wand.Map
                     }
                 }
             }
-            */
+
             newdecalsModel = new Graphics.GeneratedObjColor(
                 new Graphics.PolygonsAndTrianglesColor(polygons, null),
                 LoadedTexture.SpriteSheet, false);

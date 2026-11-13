@@ -3,6 +3,7 @@ using System;
 using System.Reflection;
 using VikingEngine.Core.Wand.Display.GameDisplay;
 using VikingEngine.Core.Wand.GO.ObjectPointer;
+using VikingEngine.Core.Wand.Laws;
 using VikingEngine.Core.Wand.Map;
 using VikingEngine.Graphics;
 
@@ -12,6 +13,7 @@ namespace VikingEngine.Core.Wand.GO.Creature
     {
         StatusDisplay statusDisplay;
         public CreaturePointer pointer;
+        public bool summoningSickness = false;
 
         public AbsCreature(CreatureType creatureType, MapPlacement placementData, int baseHealth)
         {
@@ -26,6 +28,14 @@ namespace VikingEngine.Core.Wand.GO.Creature
             statusDisplay = new StatusDisplay();
             statusDisplay.refresh(this);
         }
+
+        public void CloneStatusFrom(AbsCreature original)
+        {
+            this.currentPos.direction = original.currentPos.direction;
+            health.ValueRemoved = original.health.ValueRemoved;
+            refreshPos();
+        }
+
         public void SetPos(MapPlacement placementData)
         {
             WandRef.world.map.tileGrid.Get(currentPos.tilePos).creature = CreaturePointer.Empty;
@@ -57,13 +67,23 @@ namespace VikingEngine.Core.Wand.GO.Creature
         {
             return true;
         }
-        public override void TakeDamage(int damage)
+        public override bool TakeDamage(int damage)
         {
-            base.TakeDamage(damage);
-            if (health.HasValue)
+            bool bDamage = base.TakeDamage(damage);
+            if (bDamage)
             {
-                statusDisplay.refresh(this);
+                PhysicsManager.Bleed(currentPos.tilePos);
+                if (health.HasValue)
+                {
+                    statusDisplay.refresh(this);
+                }
             }
+            return bDamage;
+        }
+        public override void Heal(int addHealth)
+        {
+            base.Heal(addHealth);
+            statusDisplay.refresh(this);
         }
         public override void DeleteMe()
         {
@@ -72,5 +92,7 @@ namespace VikingEngine.Core.Wand.GO.Creature
             WandRef.world.map.tileGrid.Get(currentPos.tilePos).creature = CreaturePointer.Empty;
             WandRef.world.creatures.RemoveAt(pointer.index);
         }
+
+        public override GameObjectCategory ObjectCategory => GameObjectCategory.Creature;
     }
 }

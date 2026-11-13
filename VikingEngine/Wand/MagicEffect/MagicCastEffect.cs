@@ -11,7 +11,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.Core.Wand.MagicEffect
 {
-    class MagicWandZap
+    class MagicCastEffect
     {
         Mesh model;
         Vector3 fromPosV3;
@@ -20,8 +20,14 @@ namespace VikingEngine.Core.Wand.MagicEffect
         public MapPlacement currentPos, nextPos;
         public MagicWand magic;
 
-        public MagicWandZap(MagicWand magic, MapPlacement placementData)
+        public bool activated = true;
+
+        public MagicCastEffect(MagicWand magic, MapPlacement placementData)
         {
+            if (magic.magicEffects.Array[0].effect == Data.MagicEffect.Activate)
+            {
+                activated = false;
+            }
             for (int effectIx = 0; effectIx < magic.magicEffects.Count; effectIx++)
             {
                 magic.magicEffects.Array[effectIx].Recharge();
@@ -50,6 +56,11 @@ namespace VikingEngine.Core.Wand.MagicEffect
         public void TweenUpdate(float tween)
         {
             model.position = fromPosV3 * (1 - tween) + toPosV3 * tween;
+        }
+
+        public Vector3 WorldPosition()
+        {
+            return model.position;
         }
 
         public void DeleteMe()

@@ -23,6 +23,13 @@ namespace VikingEngine
             Array = new T[capacity];
         }
 
+        public T PullIndex(int index)
+        {
+            T result = Array[index];
+            RemoveAt(index);
+            return result;
+        }
+
         // 1. Classic RemoveAt: Shifts all subsequent elements left
         public void RemoveAt(int index)
         {

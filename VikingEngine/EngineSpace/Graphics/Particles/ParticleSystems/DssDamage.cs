@@ -49,7 +49,7 @@ namespace VikingEngine.Graphics
 
             settings.MinEndSize = MinSize;
             settings.MaxEndSize = MaxSize;
-#if BLACK
+#if WAND
             const float ScaleUp = 16f;
             settings.MinStartSize *= ScaleUp;
             settings.MaxStartSize *= ScaleUp;

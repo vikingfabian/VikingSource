@@ -43,7 +43,7 @@ namespace VikingEngine.Graphics
                 settings.MaxEndSize = 0.022f;//0.6f;
                 Speed = 0.01f;
                 settings.EndVelocity = 0.05f; //n
-#if BLACK
+#if WAND
                 const float ScaleUp = 16f;
                 settings.MinStartSize *= ScaleUp;
                 settings.MaxStartSize *= ScaleUp;

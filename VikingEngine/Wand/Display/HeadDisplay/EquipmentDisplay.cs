@@ -64,19 +64,23 @@ namespace VikingEngine.Core.Wand.Display.HeadDisplay
             content.h2("Wands", HudLib.TitleColor_Label);
             content.newLine();
 
+
+            bool altar = WandRef.world.map.tileGrid.Get(WandRef.world.hero.currentPos.tilePos).item.itemType == GO.ObjectPointer.TileItemType.Altar;
             for (int i = 0; i < EquipmentSetup.MaxWandCount; ++i)
             {
                 if (i < equipmentSetup.wands.Count)
                 {
-                    if (equipmentSetup.selectedWand.HasValue && equipmentSetup.selectedWand.Value == i)
-                    {
-                        HudLib.BulletPoint(content);
-                    }
-                    equipmentSetup.wands.Array[i].ToHud(content, i);
+                    bool selected = equipmentSetup.selectedWand.HasValue && equipmentSetup.selectedWand.Value == i;
+                    
+                    equipmentSetup.wands.Array[i].ToHud(content, i, selected, altar);
                 }
                 content.Add(new RbSeperationLine());
                 content.newParagraph();
             }
+            content.newParagraph();
+#if DEBUG
+            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText( "Recharge") }, new RbAction(WandRef.PlayScene.player.rechargeWands)));
+#endif
 
             menu.Refresh(content);
         }

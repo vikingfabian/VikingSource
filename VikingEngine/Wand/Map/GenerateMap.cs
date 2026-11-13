@@ -330,7 +330,7 @@ namespace VikingEngine.Core.Wand.Map
             if (!isEnterRoom)
             {
                 // 1. Place items and creatures anywhere in the room (including edge tiles)
-                int numItems = Ref.rnd.Int(1, 3);
+                int numItems = Ref.rnd.Int(3, 5);
                 int numCreatures = Ref.rnd.Int(2, 5);
 
                 int maxLoops = 1000;

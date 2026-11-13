@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using VikingEngine.Core.Wand.Laws;
 using VikingEngine.Core.Wand.Map;
 using VikingEngine.Core.Wand.Scene;
 using VikingEngine.Graphics;
@@ -33,7 +34,7 @@ namespace VikingEngine.Core.Wand.GO.Creature
         public override void DeleteMe()
         {
             base.DeleteMe();
-            new WandPlayScene();
+            WandRef.world.turnOrderManager.OnPlayerDeath();
         }
     }
 }
