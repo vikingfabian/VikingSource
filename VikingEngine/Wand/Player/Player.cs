@@ -1,6 +1,7 @@
 ﻿using Steamworks;
 using System;
 using System.Collections.Generic;
+using VikingEngine.Core.Wand.Display.GameDisplay;
 using VikingEngine.Core.Wand.Display.HeadDisplay;
 using VikingEngine.Core.Wand.GO.Item;
 using VikingEngine.Core.Wand.Laws;
@@ -16,13 +17,15 @@ namespace VikingEngine.Core.Wand.Player
         public EquipmentSetup equipment = new EquipmentSetup();
         EquipmentDisplay equipmentDisplay;
 
-        
+        MapTooltip mapTooltip;
         public Player()
         {
             cameraControl = new CameraControl();
             inputMap = new InputMap(0);
 
             equipmentDisplay = new EquipmentDisplay(equipment);
+
+            mapTooltip = new MapTooltip();
         }
 
         public void update()
@@ -57,6 +60,13 @@ namespace VikingEngine.Core.Wand.Player
                 }
             }
             cameraControl.update(this, mouseOverHud);
+            mapTooltip.update(mouseOverHud);
+        }
+
+
+        public void hoverNewTile(IntVector2 tilePos)
+        {
+            mapTooltip.updateMapTip(tilePos);
         }
 
         public void MenuNeedRefresh()

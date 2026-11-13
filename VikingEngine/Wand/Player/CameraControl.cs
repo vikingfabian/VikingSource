@@ -27,7 +27,7 @@ namespace VikingEngine.Core.Wand.Player
 
         public bool mouseDownOnMapPan = false;
 
-        
+        //bool exploreMode = false;
 
         public CameraControl()
         {
@@ -119,46 +119,61 @@ namespace VikingEngine.Core.Wand.Player
                 zoom(scrollValue);
 
                 Vector3 mapPos = Ref.draw.Camera.ScreenPosTo3D(Input.Mouse.Position, out bool foundScreenPos);
-                if (Input.Mouse.ButtonDownEvent(MouseButton.Right))
-                {
-                    mouseDownOnMapPan = true;
-                }
-                if (Input.Mouse.IsButtonDown(MouseButton.Right) && mouseDownOnMapPan)
-                {
-                    //unlockEdgePush = false;
-                    Vector3 diff = mapPos - pointerPos3D;
-
-                    panCamera(diff);
-                }
-                else
-                {
-                    mouseDownOnMapPan = false;
-                    setSelectionPos(player, toggLib.ToV2(mapPos));
-                }
+                mousePan(player, mapPos);
 
             }
             camera.Time_Update(Ref.DeltaTimeMs);
         }
 
-        public void update(Player player, bool overHud)
+        private void mousePan(Player player, Vector3 mapPos)
         {
-            camera.GoalLookTarget = WP.TileToWp(WandRef.world.hero.currentPos.tilePos);
-
-            if (WandRef.world.turnOrderManager.magicCasts.Count > 0)
+            if (Input.Mouse.ButtonDownEvent(MouseButton.Right))
             {
-                var cast = WandRef.world.turnOrderManager.magicCasts.First();
-                if ((cast.currentPos.tilePos - WandRef.world.hero.currentPos.tilePos).SideLength() > 2)
-                {
-                    camera.GoalLookTarget = cast.WorldPosition();
-                }
+                mouseDownOnMapPan = true;
             }
-
-            if (!overHud)
+            if (Input.Mouse.IsButtonDown(MouseButton.Right) && mouseDownOnMapPan)
             {
-                Vector3 mapPos = Ref.draw.Camera.ScreenPosTo3D(Input.Mouse.Position, out bool foundScreenPos);               
+                //unlockEdgePush = false;
+                Vector3 diff = mapPos - pointerPos3D;
+
+                panCamera(diff);
+            }
+            else
+            {
+                mouseDownOnMapPan = false;
                 setSelectionPos(player, toggLib.ToV2(mapPos));
             }
-            camera.Time_Update(Ref.DeltaTimeMs);
+        }
+
+        public void update(Player player, bool overHud)
+        {
+            Vector3 mapPos = Ref.draw.Camera.ScreenPosTo3D(Input.Mouse.Position, out bool foundScreenPos);
+
+            if (Input.Mouse.IsButtonDown(MouseButton.Right))
+            {                
+                mousePan(player, mapPos);
+            }
+            else
+            {
+
+                camera.GoalLookTarget = WP.TileToWp(WandRef.world.hero.currentPos.tilePos);
+
+                if (WandRef.world.turnOrderManager.magicCasts.Count > 0)
+                {
+                    var cast = WandRef.world.turnOrderManager.magicCasts.First();
+                    if ((cast.currentPos.tilePos - WandRef.world.hero.currentPos.tilePos).SideLength() > 2)
+                    {
+                        camera.GoalLookTarget = cast.WorldPosition();
+                    }
+                }
+
+                if (!overHud)
+                {
+                    //Vector3 mapPos = Ref.draw.Camera.ScreenPosTo3D(Input.Mouse.Position, out bool foundScreenPos);
+                    setSelectionPos(player, toggLib.ToV2(mapPos));
+                }
+                camera.Time_Update(Ref.DeltaTimeMs);
+            }
         }
 
         void setSelectionPos(Player player, Vector2 newSelPos)
@@ -170,7 +185,7 @@ namespace VikingEngine.Core.Wand.Player
             if (tile != tilePos)
             {
                 tilePos = tile;
-                //player.onNewTile(tile);
+                player.hoverNewTile(tile);
             }
             
         }

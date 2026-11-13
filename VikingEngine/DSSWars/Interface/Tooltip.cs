@@ -21,19 +21,21 @@ using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.PJ.CarBall;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.HUD.RichMenu;
 
 namespace VikingEngine.DSSWars.Interface
 {
-    class Tooltip
+    
+    
+    class Tooltip : RichGuiTooltip
     {
         public const int Food_BlueprintId = 1;
 
-        Graphics.ImageGroup images = new Graphics.ImageGroup(128);
-        bool current_menuToolTip;
-        public bool refresh = false;
-        Vector2 size;
-        public static int tooltip_id = int.MinValue;
-        public static float tooltip_id_timestampsec;
+
+        //public Tooltip()
+        //    : base()
+        //{ }
+        
         public void updateMapTip(Players.LocalPlayer player, bool refreshTime, bool aboveMouse)
         {
             if (player.gameControls.input.mousePan.IsDown)
@@ -119,65 +121,10 @@ namespace VikingEngine.DSSWars.Interface
                     images.DeleteAll();
                 }
             }
-            baseUpdate(player, false, aboveMouse);
+            baseUpdate(player.gameControls.input.mouse.Position, false, aboveMouse);
         }
 
-        void baseUpdate(Players.LocalPlayer player, bool menuToolTip, bool aboveMouse)
-        {
-            if (images.HasMembers)
-            {
-                //if (player.gameControls.input.inputSource.IsXnaController)
-                //{
-                //    if (!images.HasOffset())
-                //    {
-                //        if (menuToolTip)
-                //        {
-                //            //images.SetOffset(new Vector2(
-                //            //    player.hud.displays.headDisplay.area.Right + 10,
-                //            //    player.hud.displays.controllerSelectionPos().Y)
-                //            //    );
-                //        }
-                //        else
-                //        {
-                //            images.SetOffset(player.playerData.view.DrawAreaF.Center + Engine.Screen.SmallIconSizeV2);
-                //        }
-                //    }
-                //}
-                //else
-                {
-                    Vector2 offset = player.gameControls.input.mouse.Position;// + Engine.Screen.SmallIconSizeV2;
-                    offset.X += Engine.Screen.IconSize;
-                    if (aboveMouse)
-                    {
-                        offset.Y -= 5 + size.Y;
-                    }
-                    else
-                    {
-                        offset.Y += Engine.Screen.SmallIconSize;
-                    }
-                    
-
-                    Vector2 maxPos = offset + size;
-
-                    if (maxPos.X > Engine.Screen.SafeArea.Right)
-                    { 
-                        offset.X = player.gameControls.input.mouse.Position.X - (Engine.Screen.IconSize + size.X);
-                    }
-
-                    if (offset.Y < Engine.Screen.SafeArea.Y)
-                    {
-                        offset.Y = Engine.Screen.SafeArea.Y;
-                    }
-                    else if (maxPos.Y > Engine.Screen.SafeArea.Bottom)
-                    {
-                        offset.Y = Engine.Screen.SafeArea.Bottom - size.Y;
-                    }
-                    
-
-                    images.SetOffset(offset);
-                }                
-            }
-        }
+        
 
         public void updateDiplayTip(Players.LocalPlayer player, bool hoversButton)
         {
@@ -187,7 +134,7 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                baseUpdate(player, hoversButton, false);
+                baseUpdate(player.gameControls.input.mouse.Position, hoversButton, false);
             }
         }
 
@@ -583,48 +530,47 @@ namespace VikingEngine.DSSWars.Interface
             
         }
 
-        public void clear()
-        { 
-            images.DeleteAll();
-        }
+        
 
         public void create(Players.LocalPlayer player, List<AbsRichBoxMember> content, bool menuToolTip, int tooltip_id = -1)
         {
-            images.DeleteAll();
+            //images.DeleteAll();
 
+            //if (content.Count > 0)
+            //{
+
+            //    current_menuToolTip = menuToolTip;
+
+            //    float edge = 8;
+            //    float width = Engine.Screen.IconSize * 8;
+
+            //    RichBoxGroup richBox = new RichBoxGroup(new Vector2(edge),
+            //        width, HudLib.MapToolTipLayer, HudLib.RbSettings, content);
+
+            //    var area = richBox.maxArea;
+            //    area.AddRadius(edge);
+            //    var backgroundTextures = new NineSplitAreaTexture(HudLib.TooltipSettings.windowBackground, area, HudLib.MapToolTipLayer + 2);
+            //    images.Add(backgroundTextures.images);
+
+            //    size = area.Size;
+
+            //    images.Add(richBox);
+
+            //    baseUpdate(player, menuToolTip, false);
+
+            //}
+
+            basecreate(content, HudLib.MapToolTipLayer, menuToolTip, tooltip_id);
             if (content.Count > 0)
             {
-
-                current_menuToolTip = menuToolTip;
-
-                float edge = 8;
-                float width = Engine.Screen.IconSize * 8;
-
-                RichBoxGroup richBox = new RichBoxGroup(new Vector2(edge),
-                    width, HudLib.MapToolTipLayer, HudLib.RbSettings, content);
-
-                var area = richBox.maxArea;
-                area.AddRadius(edge);
-                var backgroundTextures = new NineSplitAreaTexture(HudLib.TooltipSettings.windowBackground, area, HudLib.MapToolTipLayer + 2);
-                images.Add(backgroundTextures.images);
-                //Graphics.Image bg = new Graphics.Image(SpriteName.WhiteArea, area.Position, area.Size,
-                //    ImageLayers.Lay4);
-                //bg.ColorAndAlpha(Color.Black, 0.95f);
-                size = area.Size;
-
-                //images.Add(bg);
-
-                images.Add(richBox);
-
-                baseUpdate(player, menuToolTip, false);
-
-                //++tooltip_id_timesec;
-                //if (this.tooltip_id != tooltip_id)
-                //{ 
-                //    this.tooltip_id = tooltip_id;
-                //    tooltip_id_timesec = 0;
-                //}
+                baseUpdate(player.gameControls.input.mouse.Position, menuToolTip, false);
             }
+        }
+
+        protected override void createBackground(VectorRect area, ImageLayers layer)
+        {
+            var backgroundTextures = new NineSplitAreaTexture(HudLib.TooltipSettings.windowBackground, area, layer + 2);
+            images.Add(backgroundTextures.images);
         }
     }
 }

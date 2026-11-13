@@ -78,7 +78,14 @@ namespace VikingEngine.Core.Wand.Display.HeadDisplay
                 content.newParagraph();
             }
             content.newParagraph();
-#if DEBUG
+            content.h1("Tutorial", HudLib.TitleColor_Label);
+            content.text("Use arrows to move and attack.");
+            content.text("Select wand and press arrow to use magic.");
+            content.text("All spells are hidden until they are triggered.");
+            content.text("Wands must be recharged on altars.");
+            content.text("ESC: quick reboot");
+#if DEBUG 
+            content.newParagraph();
             content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText( "Recharge") }, new RbAction(WandRef.PlayScene.player.rechargeWands)));
 #endif
 
