@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Core.Wand.Data;
+using VikingEngine.Core.Wand.Display.HeadDisplay;
 using VikingEngine.Core.Wand.Equipment;
 using VikingEngine.Core.Wand.GO;
 using VikingEngine.Core.Wand.GO.Item;
-using VikingEngine.Core.Wand.MagicEffect;
+using VikingEngine.Core.Wand.weaponEffect;
 using VikingEngine.Core.Wand.Map;
 using VikingEngine.Core.Wand.Scene;
 using VikingEngine.DebugExtensions;
@@ -63,17 +64,19 @@ namespace VikingEngine.Core.Wand.Laws
                         {
                             switch (tile.item.itemType)
                             {
-                                case GO.ObjectPointer.TileItemType.MagicWand:
+                                case GO.ObjectPointer.TileItemType.Magic_wand:
                                     if (WandRef.PlayScene.player.equipment.wands.Count < Player.EquipmentSetup.MaxWandCount)
                                     {
                                         var wand = ((MagicWandItem)ObjectLifeTime.DestroyItem(toPos.tilePos)).wand;
                                         WandRef.PlayScene.player.equipment.wands.Add(wand);
                                     }
                                     break;
-                                case GO.ObjectPointer.TileItemType.HealthPotion:
+                                case GO.ObjectPointer.TileItemType.Health_potion:
                                     {
                                         var tier = ObjectLifeTime.DestroyItem(toPos.tilePos).itemTier;
-                                        WandRef.world.hero.Heal(2 * tier);
+                                        WandRef.PlayScene.player.quickBeltDisplay.Add(new Display.HeadDisplay.QuickBeltItem(GO.ObjectPointer.TileItemType.Health_potion, tier));
+                                        //WandRef.world.hero.Heal(2 * tier);
+
                                     }
                                     break;
                                 case GO.ObjectPointer.TileItemType.Book:
@@ -102,6 +105,21 @@ namespace VikingEngine.Core.Wand.Laws
         {
             waitTime = new Time(1, TimeUnit.Seconds);
             //turnState = TurnState.PlayerDeath;
+        }
+
+        public bool UseRangedWeapon(QuickBeltItem quickBeltItem, IntVector2 dir)
+        {
+            if (checkMoveInput(ref dir))
+            {
+                var toPos = WandRef.world.hero.currentPos.MovePos(dir);
+                if (WandRef.world.map.CanMove_WallCheck(WandRef.world.hero.currentPos.tilePos, toPos.tilePos, false, out var door))
+                {
+                    WandRef.world.hero.TurnTowards(toPos.tilePos);
+
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool UseMagicWeapon(MagicWand weapon, IntVector2 dir)

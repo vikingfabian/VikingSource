@@ -30,7 +30,10 @@ namespace VikingEngine.Core.Wand.Map
 
         const int ThickWallLayers = 3;
         MapData mapData;
-        
+
+        const double ThinWallChance = 0.16;
+        const double SecondThinWallChance = 0.7;
+
 
         public GenerateMap(MapData mapData)
         {
@@ -98,11 +101,6 @@ namespace VikingEngine.Core.Wand.Map
                 int h = leaf.space.Height;
 
                 // Enforce forced size on the enter room if supplied
-                //if (leaf == enterNode && enterRoomSize.HasValue)
-                //{
-                //    w = Math.Min(w, enterRoomSize.Value.X);
-                //    h = Math.Min(h, enterRoomSize.Value.Y);
-                //}
 
                 for (int y = leaf.space.Y; y < leaf.space.Y + h; y++)
                 {
@@ -371,6 +369,8 @@ namespace VikingEngine.Core.Wand.Map
 
         void nodeLabyrinth(BSPNode node)
         {
+            
+
             // 2. Generate labyrinth thin walls with linked probability
             // We only place walls strictly inside the room to prevent blocking external doors on the boundary.
             List<(IntVector2 pos, bool isNorth)> placedWalls = new List<(IntVector2, bool)>();
@@ -384,9 +384,9 @@ namespace VikingEngine.Core.Wand.Map
                     // Internal North Wall
                     if (y > node.space.Y && t.northWall == ThinWall.None)
                     {
-                        double chance = 0.25; // Base chance
+                        double chance = ThinWallChance; // Base chance
                                               // Higher probability if linked to the previous wall on this axis
-                        if (x > node.space.X && mapData.tileGrid.Get(x - 1, y).northWall == ThinWall.Wall) chance = 0.70;
+                        if (x > node.space.X && mapData.tileGrid.Get(x - 1, y).northWall == ThinWall.Wall) chance = SecondThinWallChance;
 
                         if (Ref.rnd.Chance(chance))
                         {
@@ -398,9 +398,9 @@ namespace VikingEngine.Core.Wand.Map
                     // Internal East Wall
                     if (x < node.space.X + node.space.Width - 1 && t.eastWall == ThinWall.None)
                     {
-                        double chance = 0.25;
+                        double chance = ThinWallChance;
                         // Higher probability if linked to the previous wall on this axis
-                        if (y > node.space.Y && mapData.tileGrid.Get(x, y - 1).eastWall == ThinWall.Wall) chance = 0.70;
+                        if (y > node.space.Y && mapData.tileGrid.Get(x, y - 1).eastWall == ThinWall.Wall) chance = SecondThinWallChance;
 
                         if (Ref.rnd.Chance(chance))
                         {

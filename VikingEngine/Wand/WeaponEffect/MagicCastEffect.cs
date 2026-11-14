@@ -9,7 +9,7 @@ using VikingEngine.Core.Wand.Equipment;
 using VikingEngine.Core.Wand.Map;
 using VikingEngine.Graphics;
 
-namespace VikingEngine.Core.Wand.MagicEffect
+namespace VikingEngine.Core.Wand.weaponEffect
 {
     class MagicCastEffect
     {

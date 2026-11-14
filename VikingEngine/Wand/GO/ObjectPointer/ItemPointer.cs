@@ -27,11 +27,13 @@ namespace VikingEngine.Core.Wand.GO.ObjectPointer
         NONE,
         SpawnPos,
 
-        HealthPotion,
+        Health_potion,
         Book,
-        MagicWand,
+        Magic_wand,
         Altar,
         DeadBody,
+
+        Throwing_knife,
     }
 
 }

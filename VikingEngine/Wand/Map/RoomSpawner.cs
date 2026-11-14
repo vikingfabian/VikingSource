@@ -96,11 +96,11 @@ namespace VikingEngine.Core.Wand.Map
             }
             if (itemSpawns.Count > 0 && Ref.rnd.Chance(0.8))
             {
-                ObjectLifeTime.SpawnItem(arraylib.RandomListMemberPop(itemSpawns), TileItemType.MagicWand, false);
+                ObjectLifeTime.SpawnItem(arraylib.RandomListMemberPop(itemSpawns), TileItemType.Magic_wand, false);
             }
             if (itemSpawns.Count > 0 && Ref.rnd.Chance(0.7))
             {
-                ObjectLifeTime.SpawnItem(arraylib.RandomListMemberPop(itemSpawns), TileItemType.HealthPotion, false);
+                ObjectLifeTime.SpawnItem(arraylib.RandomListMemberPop(itemSpawns), TileItemType.Health_potion, false);
             }
             if (itemSpawns.Count > 0 && Ref.rnd.Chance(0.7))
             {
@@ -108,7 +108,7 @@ namespace VikingEngine.Core.Wand.Map
             }
             if (itemSpawns.Count > 0 && Ref.rnd.Chance(0.7))
             {
-                ObjectLifeTime.SpawnItem(arraylib.RandomListMemberPop(itemSpawns), TileItemType.MagicWand, false);
+                ObjectLifeTime.SpawnItem(arraylib.RandomListMemberPop(itemSpawns), TileItemType.Magic_wand, false);
             }
         }
 

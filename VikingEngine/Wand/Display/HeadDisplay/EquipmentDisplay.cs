@@ -27,6 +27,12 @@ namespace VikingEngine.Core.Wand.Display.HeadDisplay
             menu.needRefresh = true;
             //refreshMenu();
         }
+
+        public float Right()
+        {
+            return menu.backgroundArea.Right;
+        }
+
         public void update(ref bool mouseOver)
         {
             menu.updateMouseInput(ref mouseOver);

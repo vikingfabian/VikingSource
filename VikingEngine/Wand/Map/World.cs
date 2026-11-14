@@ -10,7 +10,7 @@ namespace VikingEngine.Core.Wand.Map
 {
     class World
     {
-        public MagicFormulaCollection magicFormulas = new MagicFormulaCollection();
+        public MagicFormulaLib magicFormulas = new MagicFormulaLib();
         public PlayerCharacter hero;
         public MapData map;
         public TurnOrderManager turnOrderManager = new TurnOrderManager();

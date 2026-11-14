@@ -13,9 +13,9 @@ namespace VikingEngine.Core.Wand.GO.Item
         public Equipment.MagicWand wand;
 
         public MagicWandItem(MapPlacement placementData)
-            : base(ObjectPointer.TileItemType.MagicWand, placementData)
+            : base(ObjectPointer.TileItemType.Magic_wand, placementData)
         {
-            wand = new Equipment.MagicWand(3);
+            wand = new Equipment.MagicWand( Equipment.MagicWandType.Default);
 
             model = new VoxelModelInstance(WandRef.models.voxelModels[LootFest.VoxelModelName.ErrorCube], true);
             model.scale = new Vector3(0.1f * model.SizeToScale);

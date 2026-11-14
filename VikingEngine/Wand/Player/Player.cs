@@ -5,6 +5,7 @@ using VikingEngine.Core.Wand.Display.GameDisplay;
 using VikingEngine.Core.Wand.Display.HeadDisplay;
 using VikingEngine.Core.Wand.GO.Item;
 using VikingEngine.Core.Wand.Laws;
+using VikingEngine.Engine;
 using VikingEngine.ToGG;
 
 
@@ -16,6 +17,7 @@ namespace VikingEngine.Core.Wand.Player
         public InputMap inputMap;
         public EquipmentSetup equipment = new EquipmentSetup();
         EquipmentDisplay equipmentDisplay;
+        public QuickBeltDisplay quickBeltDisplay;
 
         MapTooltip mapTooltip;
         public Player()
@@ -24,6 +26,10 @@ namespace VikingEngine.Core.Wand.Player
             inputMap = new InputMap(0);
 
             equipmentDisplay = new EquipmentDisplay(equipment);
+            quickBeltDisplay = new QuickBeltDisplay(equipmentDisplay.Right() + Screen.BorderWidth * 2f);
+            quickBeltDisplay.Add(new QuickBeltItem(GO.ObjectPointer.TileItemType.Throwing_knife, 3));
+            quickBeltDisplay.Add(new QuickBeltItem(GO.ObjectPointer.TileItemType.Health_potion, 1));
+
 
             mapTooltip = new MapTooltip();
         }
@@ -33,6 +39,7 @@ namespace VikingEngine.Core.Wand.Player
             bool mouseOverHud = false;
 
             equipmentDisplay.update(ref mouseOverHud);
+            quickBeltDisplay.update(ref mouseOverHud);
 
             for (int i = 0; i < equipment.wands.Count; i++)
             {
@@ -47,7 +54,11 @@ namespace VikingEngine.Core.Wand.Player
             {
                 IntVector2 move = inputMap.movement.stepping.Normal_Safe();
 
-                if (equipment.selectedWand.HasValue)
+                if (quickBeltDisplay.Selected().HasValue)
+                { 
+                
+                }
+                else if (equipment.selectedWand.HasValue)
                 {
                     if (WandRef.world.turnOrderManager.UseMagicWeapon(equipment.wands.Array[equipment.selectedWand.Value], move))
                     {
@@ -86,7 +97,7 @@ namespace VikingEngine.Core.Wand.Player
             }
             else
             {
-                var item = (MagicWandItem)ObjectLifeTime.SpawnItem(WandRef.world.hero.currentPos.tilePos, GO.ObjectPointer.TileItemType.MagicWand, true);
+                var item = (MagicWandItem)ObjectLifeTime.SpawnItem(WandRef.world.hero.currentPos.tilePos, GO.ObjectPointer.TileItemType.Magic_wand, true);
                 item.wand = wand;
             }
         }

@@ -48,10 +48,10 @@ namespace VikingEngine.Core.Wand.Laws
                 case TileItemType.Book:
                     result = new Book(new MapPlacement(pos, Dir4.S));
                     break;
-                case TileItemType.HealthPotion:
+                case TileItemType.Health_potion:
                     result = new HealthPotion(new MapPlacement(pos, Dir4.S));
                     break;
-                case TileItemType.MagicWand:
+                case TileItemType.Magic_wand:
                     result = new MagicWandItem(new MapPlacement(pos, Dir4.S));
                     break;
                 case TileItemType.Altar:

@@ -8,14 +8,22 @@ using VikingEngine.HUD.RichBox.Artistic;
 
 namespace VikingEngine.Core.Wand.Equipment
 {
+    enum MagicWandType
+    {
+        Friendly1,
+        Friendly2,
+
+        Default,
+    }
+
     class MagicWand
     {
         public int charges = 1;
         public List2<MagicFormula> magicEffects;
 
-        public MagicWand(int capacity)
+        public MagicWand(MagicWandType wandType/*int capacity*/)
         {
-            magicEffects = WandRef.world.magicFormulas.CreateMagicEffectList(capacity);
+            magicEffects = WandRef.world.magicFormulas.CreateMagicEffectList( wandType);
         }
 
         public void recharge()
@@ -91,9 +99,9 @@ namespace VikingEngine.Core.Wand.Equipment
         {
             for (int tierIx = 0; tierIx < tier; ++tierIx)
             {
-                if (Ref.rnd.Chance(0.6) && magicEffects.Count < 6)
+                if (Ref.rnd.Chance(0.6) && magicEffects.Count < MagicFormulaLib.MaxSpells)
                 {
-                    WandRef.world.magicFormulas.AddToEffectList(ref magicEffects);
+                    WandRef.world.magicFormulas.AddToFormulas(1, FormulaCollectionType.All, ref magicEffects);
                 }
                 else
                 {
