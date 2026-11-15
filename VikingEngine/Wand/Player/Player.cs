@@ -55,8 +55,11 @@ namespace VikingEngine.Core.Wand.Player
                 IntVector2 move = inputMap.movement.stepping.Normal_Safe();
 
                 if (quickBeltDisplay.Selected().HasValue)
-                { 
-                
+                {
+                    if (WandRef.world.turnOrderManager.UseRangedWeapon(quickBeltDisplay.Selected().Value, move))
+                    {
+                        quickBeltDisplay.SpendSelected();
+                    }
                 }
                 else if (equipment.selectedWand.HasValue)
                 {

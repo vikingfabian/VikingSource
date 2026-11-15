@@ -9,9 +9,10 @@ using VikingEngine.Core.Wand.Display.HeadDisplay;
 using VikingEngine.Core.Wand.Equipment;
 using VikingEngine.Core.Wand.GO;
 using VikingEngine.Core.Wand.GO.Item;
-using VikingEngine.Core.Wand.weaponEffect;
 using VikingEngine.Core.Wand.Map;
 using VikingEngine.Core.Wand.Scene;
+using VikingEngine.Core.Wand.weaponEffect;
+using VikingEngine.Core.Wand.WeaponEffect;
 using VikingEngine.DebugExtensions;
 using VikingEngine.EngineSpace;
 using VikingEngine.LootFest.Map;
@@ -33,7 +34,7 @@ namespace VikingEngine.Core.Wand.Laws
         Queue<AbsGameObject> magicTargetObjects = new Queue<AbsGameObject>();
 
         float moveTween = 0;
-        public const float MoveTime = 220;
+        public const float MoveTime = 180;
         float time = 0;
 
         bool waitForAsyncProcess = false;
@@ -115,7 +116,7 @@ namespace VikingEngine.Core.Wand.Laws
                 if (WandRef.world.map.CanMove_WallCheck(WandRef.world.hero.currentPos.tilePos, toPos.tilePos, false, out var door))
                 {
                     WandRef.world.hero.TurnTowards(toPos.tilePos);
-
+                    new ThrowingWeaponEffect(WandRef.world.hero.currentPos);
                     return true;
                 }
             }
@@ -354,7 +355,7 @@ namespace VikingEngine.Core.Wand.Laws
                                 int damage = cast.magic.magicEffects[effectIx].PowerAndBoost;
                                 while (magicTargetObjects.TryDequeue(out var target))
                                 {
-                                    hasTriggered =target.TakeDamage(damage);
+                                    hasTriggered |= target.TakeDamage(damage);
                                 }
                             }
                             break;

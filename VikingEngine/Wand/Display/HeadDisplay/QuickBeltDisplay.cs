@@ -99,6 +99,12 @@ namespace VikingEngine.Core.Wand.Display.HeadDisplay
             return null;
         }
 
+        public void SpendSelected()
+        {
+            members.Sel().SpendItem();
+            members.UnSelect();
+        }
+
         public bool Add(QuickBeltItem item)
         {
             int? freeSlot = null;

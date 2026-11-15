@@ -29,7 +29,7 @@ namespace VikingEngine.Core.Wand.Map
             map = new MapData();
             new GenerateMap(map).Generate(/*new IntVector2(5, 4)*/);
             RevealRoom.Reveal(map.playerEnterPos);
-
+            new RoomSpawner().EnterRoomSetup();
             hero = new PlayerCharacter(new MapPlacement(map.playerEnterPos, Dir4.S));
             
         }

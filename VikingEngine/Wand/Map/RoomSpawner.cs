@@ -20,6 +20,11 @@ namespace VikingEngine.Core.Wand.Map
     {
         public Dictionary<int, RoomSpawnerInstance> rooms_index_insance = new Dictionary<int, RoomSpawnerInstance>(2);
 
+        public void EnterRoomSetup()
+        {
+            ObjectLifeTime.SpawnItem(VectorExt.AddY(WandRef.world.map.playerEnterPos, -1), TileItemType.Altar, false);
+        }
+
         public void Add(ItemPointer item, IntVector2 pos)
         {
             add(item.index, pos, GameObjectCategory.Item);

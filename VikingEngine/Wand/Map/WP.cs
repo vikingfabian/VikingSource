@@ -19,7 +19,7 @@ namespace VikingEngine.Core.Wand.Map
                 mesh.Rotation.RotateWorldX(MathHelper.Pi - rotation);
             }
         }
-        public static void DirToQuaterion(Graphics.AbsVoxelObj mesh, Dir4 dir)
+        public static void DirToQuaterion(Graphics.Abs3DModel mesh, Dir4 dir)
         {
             if (mesh != null)
             {

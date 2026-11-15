@@ -86,7 +86,7 @@ namespace VikingEngine.Core.Wand.Display.HeadDisplay
             content.newParagraph();
             content.h1("Tutorial", HudLib.TitleColor_Label);
             content.text("Use arrows to move and attack.");
-            content.text("Select wand and press arrow to use magic.");
+            content.text("Select wand and press arrow to use magic (or throwing knife).");
             content.text("All spells are hidden until they are triggered.");
             content.text("Wands must be recharged on altars.");
             content.text("ESC: quick reboot");
