@@ -167,28 +167,29 @@ namespace VikingEngine.DSSWars.GameObject
 
             void placeBuilding(BuildAndExpandType build)
             {
-                var buildData = BuildLib.BuildOptions[(int)build];
-                IntVector2 buildPos = IntVector2.NegativeOne;
+                var buildOpt = BuildLib.BuildOptions[(int)build];
+                AutoBuildPos buildPos = AutoBuildPos.Empty;
 
-                if (CityStructureProcess.Find(this, buildData.terrainType.mainTerrain, buildData.terrainType.subTerrain, out IntVector2 sameBuilding))
+                if (CityStructureProcess.Find(this, buildOpt.terrainType.mainTerrain, buildOpt.terrainType.subTerrain, out IntVector2 sameBuilding))
                 {
-                    findAdjacentFreeSpot(Casual_EdgeRandomizer, sameBuilding, ref buildPos);
+                    findAdjacentFreeSpot(Casual_EdgeRandomizer, buildOpt.groundRequirement, sameBuilding, ref buildPos);
                 }
 
-                if (buildPos.X < 0)
+                if (!buildPos.HasValue())
                 {
-                    if (!CityStructureProcess.FindEmpty(this, out buildPos))
+                    if (!CityStructureProcess.FindEmpty(this, Map.MapLib.BuildingGroundRequirement.None, out var _buildPos))
                     {
+                        buildPos.pos = _buildPos;
                         return;
                     }
                 }
 
-                var subTile = DssRef.world.subTileGrid.Get(buildPos);
+                var subTile = DssRef.world.subTileGrid.Get(buildPos.pos);
                 bool upgrade = false;
 
-                if (buildData.execute_async(this, buildPos, ref subTile, upgrade))
+                if (buildOpt.execute_async(this, buildPos.pos, ref subTile, out bool bTerraform, upgrade))
                 {
-                    EditSubTile edit = new EditSubTile(true, true, buildPos, subTile, true, false, true, false) { netShare = true };
+                    EditSubTile edit = new EditSubTile(true, true, buildPos.pos, subTile, true, bTerraform, true, false) { netShare = true };
                     edit.ExecuteEdit();
                 }
             }

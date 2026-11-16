@@ -294,7 +294,9 @@ namespace VikingEngine.DSSWars.Map.MapData
                 lib.DoNothing();
             }
             var req = BuildLib.Get(build).groundRequirement;
-            var prop = GroundPropertiesLib.Get(groundType);
+            return GroundPropertiesLib.MayBuild_GroundCheck(groundType, req, out mustTerraform);
+            //var prop = GroundPropertiesLib.Get(groundType);
+            /*
             mustTerraform = null;
 
             switch (req)
@@ -342,6 +344,7 @@ namespace VikingEngine.DSSWars.Map.MapData
                 case BuildingGroundRequirement.None:
                     return true;
             }
+            */
         }
 
         public bool MayBuild_TerrainCheck(BuildAndExpandType build, bool autoPlace, out bool upgrade)

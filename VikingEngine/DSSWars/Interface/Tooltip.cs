@@ -4,12 +4,14 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
+using System.Reflection.Metadata;
 using System.Text;
-
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Presentation;
@@ -19,8 +21,6 @@ using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.PJ.CarBall;
-using VikingEngine.DSSWars.Defence;
-using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -253,16 +253,17 @@ namespace VikingEngine.DSSWars.Interface
 
                         if (avaialableAction && mustTerraform.HasValue)
                         {
-                            content.Add(new RbSeperationLine());
-                            content.newParagraph();
-                            content.icontext(SpriteName.MissingImage, ".Terraform ground type", HudLib.InfoYellow_Light);
-                            var groundFromProp = GroundPropertiesLib.Get(subTile.subTile.groundType);
-                            var groundToProp = GroundPropertiesLib.Get(mustTerraform.Value);
-                            HudLib.LabelAndText(content, SpriteName.WarsConstructBuildingIcon, DssRef.lang.BuildHud_BuildTime, string.Format(DssRef.lang.Hud_Time_XSeconds, TextLib.PlusMinus(groundFromProp.TerraformFromTimeSec)));
-                            if (groundToProp.TerraformToCost != null)
-                            {
-                                groundToProp.TerraformToCost.toMenu(content, subTile.city, false, true, true, false);
-                            }
+                            //content.Add(new RbSeperationLine());
+                            //content.newParagraph();
+                            //content.icontext(SpriteName.MissingImage, ".Terraform ground type", HudLib.InfoYellow_Light);
+                            //var groundFromProp = GroundPropertiesLib.Get(subTile.subTile.groundType);
+                            //var groundToProp = GroundPropertiesLib.Get(mustTerraform.Value);
+                            //HudLib.LabelAndText(content, SpriteName.WarsConstructBuildingIcon, DssRef.lang.BuildHud_BuildTime, string.Format(DssRef.lang.Hud_Time_XSeconds, TextLib.PlusMinus(groundFromProp.TerraformFromTimeSec)));
+                            //if (groundToProp.TerraformToCost != null)
+                            //{
+                            //    groundToProp.TerraformToCost.toMenu(content, subTile.city, false, true, true, false);
+                            //}
+                            TerraformToHud(content, subTile.city, subTile.subTile.groundType, mustTerraform.Value);
                         }
 
                         content.Add(new RbSeperationLine());
@@ -624,6 +625,20 @@ namespace VikingEngine.DSSWars.Interface
                 //    this.tooltip_id = tooltip_id;
                 //    tooltip_id_timesec = 0;
                 //}
+            }
+        }
+
+        public static void TerraformToHud(RichBoxContent content, City city, GroundType currentGroundType, GroundType terraform)
+        {
+            content.Add(new RbSeperationLine());
+            content.newParagraph();
+            content.icontext(SpriteName.MissingImage, ".Terraform ground type", HudLib.InfoYellow_Light);
+            var groundFromProp = GroundPropertiesLib.Get(currentGroundType);
+            var groundToProp = GroundPropertiesLib.Get(terraform);
+            HudLib.LabelAndText(content, SpriteName.WarsConstructBuildingIcon, DssRef.lang.BuildHud_BuildTime, string.Format(DssRef.lang.Hud_Time_XSeconds, TextLib.PlusMinus(groundFromProp.TerraformFromTimeSec)));
+            if (groundToProp.TerraformToCost != null)
+            {
+                groundToProp.TerraformToCost.toMenu(content, city, false, true, true, false);
             }
         }
     }

@@ -120,10 +120,13 @@ namespace VikingEngine.DSSWars.Build
 
         }
 
-        public bool execute_async(City city, IntVector2 subPos, ref MapTile1_1 subTile, bool upgrade, bool payResources = true)
-        {            
+        public bool execute_async(City city, IntVector2 subPos, ref MapTile1_1 subTile, out bool bTerraform, bool upgrade, bool payResources = true)
+        {
+            bTerraform = false;
             if (city.executeBuildEffectsOnCity(true, subPos, ref subTile, terrainType.mainTerrain, terrainType.subTerrain))
             {
+                var ground = DssRef.world.subTileGrid.Get(subPos).groundType;
+                GroundPropertiesLib.MayBuild_GroundCheck(ground, groundRequirement, out var mustTerraform);
                 if (payResources)
                 {
                     CraftBlueprint bp;
@@ -145,8 +148,23 @@ namespace VikingEngine.DSSWars.Build
                         bp.payResources_BuildAndUpgrade(city);
                         city.unreserveItems(bp);
                     }
+
+                    if (mustTerraform.HasValue)
+                    {
+                        var terraformBp = GroundPropertiesLib.Get(mustTerraform.Value).TerraformToCost;
+                        if (terraformBp != null)
+                        {
+                            terraformBp.payResources_BuildAndUpgrade(city);
+                            city.unreserveItems(terraformBp);
+                        }
+                    }
                 }
                 subTile.SetType(terrainType.mainTerrain, terrainType.subTerrain, 1);
+                if (mustTerraform.HasValue)
+                {
+                    subTile.groundType = mustTerraform.Value;
+                    bTerraform = true;
+                }
                 return true;
 
             }

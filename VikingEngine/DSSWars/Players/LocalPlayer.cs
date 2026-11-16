@@ -1198,11 +1198,21 @@ namespace VikingEngine.DSSWars.Players
                     var buildOrder = orders.orders[i].GetBuild();
                     if (buildOrder != null)
                     {
-                        if (!Build.BuildLib.BuildOptions[(int)buildOrder.buildingType].blueprint.hasResources_buildAndUpgrade(buildOrder.pcity.GetCity()))
+                        if (buildOrder.buildingType == BuildAndExpandType.TERRAFORM)
                         {
-                            buildOrder.pcity.GetCity().WorkerStats_StuckBuildings_Process++;
+                            if (!buildOrder.pcity.GetCity().terraformBlueprintAvailable(buildOrder.terraform))
+                            {
+                                buildOrder.pcity.GetCity().WorkerStats_StuckBuildings_Process++;
+                            }
                         }
-
+                        else
+                        {
+                            if (!Build.BuildLib.BuildOptions[(int)buildOrder.buildingType].blueprint.hasResources_buildAndUpgrade(buildOrder.pcity.GetCity()) ||
+                                !buildOrder.pcity.GetCity().terraformBlueprintAvailable(buildOrder.terraform))
+                            {
+                                buildOrder.pcity.GetCity().WorkerStats_StuckBuildings_Process++;
+                            }
+                        }
                         differentPrio |= buildOrder.priority != prio;
                     }
                 }

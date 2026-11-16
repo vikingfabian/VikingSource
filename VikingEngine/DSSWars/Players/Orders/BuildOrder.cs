@@ -9,11 +9,14 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players.Orders
@@ -64,19 +67,20 @@ namespace VikingEngine.DSSWars.Players.Orders
 
     class BuildOrder : AbsBuildOrder
     {
-        
+        public GroundType? terraform;
         public BuildAndExpandType buildingType;
         Mesh icon;
         public bool upgrade;
 
         public BuildOrder()
         { }
-        public BuildOrder(int priority, bool bLocalPlayer, City city, IntVector2 subTile, BuildAndExpandType buildingType, bool upgrade)
+        public BuildOrder(int priority, bool bLocalPlayer, City city, IntVector2 subTile, GroundType? terraForm, BuildAndExpandType buildingType, bool upgrade)
         {
             this.upgrade = upgrade;
             baseInit(priority);
             this.pcity = city.mapObjPointer();
             this.subTile = subTile;
+            this.terraform = terraForm;
             this.buildingType = buildingType;
             this.upgrade = upgrade;
         }
@@ -84,8 +88,18 @@ namespace VikingEngine.DSSWars.Players.Orders
         public override void onAdd(int playerIx)
         {
             createModel(0, playerIx);
-            
-            icon = new Mesh(LoadedMesh.plane, Vector3.Zero, model.scale * 9.6f, TextureEffectType.Flat, Build.BuildLib.BuildOptions[(int)buildingType].icon, Color.White, false);
+
+            SpriteName sprite;
+            if (buildingType == BuildAndExpandType.TERRAFORM)
+            {
+                IconName.GroundType(terraform.Value, out sprite, out var name);
+            }
+            else
+            {
+                sprite = Build.BuildLib.BuildOptions[(int)buildingType].icon;
+            }
+
+            icon = new Mesh(LoadedMesh.plane, Vector3.Zero, model.scale * 9.6f, TextureEffectType.Flat, sprite, Color.White, false);
 #if DEBUG
             icon.DebugName = "BuildOrder icon";
 #endif
@@ -107,15 +121,23 @@ namespace VikingEngine.DSSWars.Players.Orders
         public override RichBoxContent ToHud()
         {           
             RichBoxContent content = new RichBoxContent();
-            content.h2(SpriteName.WarsConstructBuildingIcon, upgrade ? DssRef.lang.Upgrade_Order : DssRef.lang.Build_Order, HudLib.TitleColor_Head);
-            BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, pcity.GetCity(), upgrade);
+            if (buildingType != BuildAndExpandType.TERRAFORM)
+            {
+                content.h2(SpriteName.WarsConstructBuildingIcon, upgrade ? DssRef.lang.Upgrade_Order : DssRef.lang.Build_Order, HudLib.TitleColor_Head);
+                BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, pcity.GetCity(), upgrade);
 
-            content.newLine();
+                content.newLine();
+            }
             HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
             content.space();
             content.Add(new RbText(priority.ToString()));
 
-            BuildControls.buildTooltip_YouOwn(pcity.GetCity(), content, buildingType);
+            if (terraform.HasValue)
+            {
+                Tooltip.TerraformToHud(content, pcity.GetCity(), DssRef.world.subTileGrid.Get(subTile).groundType, terraform.Value);
+            }
+            BuildControls.buildTooltip_YouOwn(pcity.GetCity(), content, terraform, buildingType);
+            
 
             return content;
         }
@@ -123,7 +145,6 @@ namespace VikingEngine.DSSWars.Players.Orders
         override public void writeGameState(System.IO.BinaryWriter w)
         {
             base.writeGameState(w);
-
             
             pcity.writeCity(w);
             WP.writeSubTilePos(w, subTile);
@@ -168,12 +189,24 @@ namespace VikingEngine.DSSWars.Players.Orders
             return false;
         }
 
-        public WorkQueMember createWorkQue(out CraftBlueprint blueprint)
+        public WorkQueMember createWorkQue(/*out CraftBlueprint blueprint*/)
         {
-            int type = (int)buildingType;
-            blueprint = BuildLib.BuildOptions[type].blueprint;
-            var result = new WorkQueMember(upgrade? WorkType.Upgrade : WorkType.Build, type, 0, WorkPriorityType.buildOrders, subTile, priority, 0, 0);
-            result.orderId = id;
+            WorkQueMember result;
+            if (buildingType == BuildAndExpandType.TERRAFORM)
+            {
+                //blueprint = GroundPropertiesLib.Get(terraform.Value).TerraformToCost;
+                result = new WorkQueMember( WorkType.Terraform, (int)terraform.Value, 0, WorkPriorityType.buildOrders, subTile,
+                    priority, 0, 0)
+                { orderId = id };
+            }
+            else
+            {
+                int type = (int)buildingType;
+                //blueprint = BuildLib.BuildOptions[type].blueprint;
+                result = new WorkQueMember(upgrade ? WorkType.Upgrade : WorkType.Build, type, 0, WorkPriorityType.buildOrders, subTile,
+                    priority, 0, 0)
+                { orderId = id };
+            }
             return result;
         }
 

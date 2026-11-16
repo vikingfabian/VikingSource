@@ -307,7 +307,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     var work = arraylib.PullLastMember(workQue);
 
-                    if (checkAvailable(work.work, work.subWork) &&
+                    if (checkAvailable(work.work, work.subWork, work.subTile) &&
                         checkMaxWorkerCount(work.workPriority) &&
                         work_isFreeTile(work.subTile))
                     {
@@ -412,7 +412,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     case OrderType.Build:
                                         var workOrder = order.GetBuild();
-                                        workQue.Add(workOrder.createWorkQue(out CraftBlueprint orderBluePrint));
+                                        workQue.Add(workOrder.createWorkQue(/*out _*/));
                                         break;
                                     case OrderType.Demolish:
                                         var demolishOrder = order.GetDemolish();
@@ -1259,9 +1259,9 @@ namespace VikingEngine.DSSWars.GameObject
                 //int count = Math.Min(structure.EmptyLand.Count, FuelFarmCount);
                 for (int i = 0; i < FuelFarmCount; ++i)
                 {
-                    if (structure.NextEmptyLand(this, Ref.peRnd.Int(64), out var freeSubTilePos))
+                    if (structure.NextEmptyLand(this, Ref.peRnd.Int(64), BuildingGroundRequirement.None, out var freeSubTilePos))
                     {
-                        BuildLib.TryAutoBuild(pfaction, freeSubTilePos, TerrainMainType.Foil, fuelType, Ref.peRnd.Int(1, TerrainContent.FarmCulture_MaxSize));
+                        BuildLib.TryAutoBuild(pfaction, freeSubTilePos.pos, TerrainMainType.Foil, fuelType, Ref.peRnd.Int(1, TerrainContent.FarmCulture_MaxSize));
                     }
                 }
             }
@@ -1370,7 +1370,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        bool checkAvailable(WorkType work, int subWork)
+        bool checkAvailable(WorkType work, int subWork, IntVector2 mapTile)
         {
             switch (work)
             {
@@ -1396,15 +1396,33 @@ namespace VikingEngine.DSSWars.GameObject
                             return false;
                         }
                     }
+                case WorkType.Terraform:
+                    {
+                        var bp = GroundPropertiesLib.Get((GroundType)subWork).TerraformToCost;
+                        if (bp != null)
+                        {
+                            return bp.available(this);
+                        }
+                    }
+                    return true;
 
                 case WorkType.Upgrade:
+                    return BuildLib.BuildOptions[subWork].availableBlueprintResources(this);
+                    
                 case WorkType.Build:
                     {
-                        //if (work == WorkType.Upgrade)
-                        //{
-                        //    lib.DoNothing();
-                        //}
-                        return BuildLib.BuildOptions[subWork].availableBlueprintResources(this);
+                        var buildOpt = BuildLib.BuildOptions[subWork];
+                        var ground = DssRef.world.subTileGrid.Get(mapTile).groundType;
+                        GroundPropertiesLib.MayBuild_GroundCheck(ground, buildOpt.groundRequirement, out var mustTerraform);
+                        if (mustTerraform.HasValue)
+                        {
+                            var bp = GroundPropertiesLib.Get(ground).TerraformToCost;
+                            if (bp != null && !bp.available(this))
+                            {
+                                return false;
+                            }
+                        }
+                        return buildOpt.availableBlueprintResources(this);
                     }
 
                 default:

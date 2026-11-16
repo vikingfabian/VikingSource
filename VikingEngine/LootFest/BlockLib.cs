@@ -15,12 +15,12 @@ namespace VikingEngine.LootFest
         public const int VertexCornerLowLeftIndex = 2;
         public const int VertexCornerLowRightIndex = 3;
 
-        static readonly Dictionary<GroundType, SpriteName> BlockTextures = new Dictionary<GroundType, SpriteName>
+        static readonly Dictionary<GroundTypeLf, SpriteName> BlockTextures = new Dictionary<GroundTypeLf, SpriteName>
         {
-            { GroundType.Bricks, SpriteName.NO_IMAGE },
-            { GroundType.Desert, SpriteName.NO_IMAGE },
-            { GroundType.Grass, SpriteName.NO_IMAGE },
-            { GroundType.Mountain, SpriteName.NO_IMAGE }
+            { GroundTypeLf.Bricks, SpriteName.NO_IMAGE },
+            { GroundTypeLf.Desert, SpriteName.NO_IMAGE },
+            { GroundTypeLf.Grass, SpriteName.NO_IMAGE },
+            { GroundTypeLf.Mountain, SpriteName.NO_IMAGE }
 
         };
         public static Graphics.PolygonsAndTrianglesNormal[] BlockPolys;
@@ -29,7 +29,7 @@ namespace VikingEngine.LootFest
         public static void Init()
         {
             //Skapa en mall för alla blocken, för kopiering
-            BlockPolys = new Graphics.PolygonsAndTrianglesNormal[(int)GroundType.NUM];
+            BlockPolys = new Graphics.PolygonsAndTrianglesNormal[(int)GroundTypeLf.NUM];
 
             
             Vector3[] topCorners = new Vector3[PolygonNormal.NumCorners];
@@ -70,15 +70,15 @@ namespace VikingEngine.LootFest
             bottomCorners[PolygonNormal.CornerLowRight].Z = BlockRadius;
 
 
-            List<GroundType> createBlocks = new List<GroundType>
+            List<GroundTypeLf> createBlocks = new List<GroundTypeLf>
             {
-                GroundType.Bricks,
-                GroundType.Desert,
-                GroundType.Grass,
-                GroundType.Mountain
+                GroundTypeLf.Bricks,
+                GroundTypeLf.Desert,
+                GroundTypeLf.Grass,
+                GroundTypeLf.Mountain
             };
 
-            foreach (GroundType type in createBlocks)
+            foreach (GroundTypeLf type in createBlocks)
             {
                 PolygonsAndTrianglesNormal polygons = PolygonsAndTrianglesNormal.Empty;
                 ////TOP
@@ -107,7 +107,7 @@ namespace VikingEngine.LootFest
 
         
     }
-    enum GroundType : byte
+    enum GroundTypeLf : byte
     {
         NOTHING = 0,
         Bricks,

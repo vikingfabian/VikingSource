@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Schema;
+using VikingEngine.DataLib;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.Map.MapLib
 {
@@ -81,6 +84,58 @@ namespace VikingEngine.DSSWars.Map.MapLib
             return GroundProperties[(int)type];
         }
 
+        public static bool MayBuild_GroundCheck(GroundType groundType, BuildingGroundRequirement req, out GroundType? mustTerraform)
+        {
+            var prop = Get(groundType);
+            mustTerraform = null;
+
+            switch (req)
+            {
+                case BuildingGroundRequirement.Plant:
+                    if (prop.canPlant)
+                    {
+                        return true;
+                    }
+                    else if (prop.canTerraform)
+                    {
+                        mustTerraform = GroundType.MadeField;
+                        return true;
+                    }
+                    return false;
+
+                case BuildingGroundRequirement.BuildLight:
+                    if (prop.canBuildLight)
+                    {
+                        return true;
+                    }
+                    else if (prop.canTerraform)
+                    {
+                        mustTerraform = GroundType.MadeSolid;
+                        return true;
+                    }
+                    return false;
+
+                case BuildingGroundRequirement.BuildMedium:
+                    if (prop.canBuild)
+                    {
+                        return true;
+                    }
+                    else if (prop.canTerraform)
+                    {
+                        mustTerraform = GroundType.MadeSolid;
+                        return true;
+                    }
+                    return false;
+
+                case BuildingGroundRequirement.BuildHeavy:
+                    return prop.canBuildHeavy;
+
+                default:
+                case BuildingGroundRequirement.None:
+                    return true;
+            }
+        }
+
         public static void Init()
         {
             GroundProperties = new GroundTypeProperties[(int)GroundType.NUM];
@@ -96,6 +151,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 texture = new SpriteVariantCount(SpriteName.DssMapTextureGrass1, 3),
                 sidetexture = new SpriteVariantCount(SpriteName.WhiteArea_LFtiles),
                 TerraformFromTimeSec = 10,
+                TerraformToXp = XP.WorkExperienceType.HouseBuilding,
             };
 
             GroundProperties[(int)GroundType.Fertile] = new GroundTypeProperties()
@@ -141,7 +197,8 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 TerraformToCost = new CraftBlueprint(CraftResultType.NoSet, 0, 0,
                     new UseResource[] {
                         new UseResource( ItemResourceType.Brick, 5)
-                    }, XP.WorkExperienceType.NUM_NONE)
+                    }, XP.WorkExperienceType.NUM_NONE),
+                TerraformToXp = XP.WorkExperienceType.StoneCutter,
             };
 
             GroundProperties[(int)GroundType.MadeField] = new GroundTypeProperties()
@@ -156,6 +213,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 texture = new SpriteVariantCount(SpriteName.DssMapTextureGrass1, 3),
                 sidetexture = new SpriteVariantCount(SpriteName.WhiteArea_LFtiles),
                 TerraformFromTimeSec = 60,
+                TerraformToXp = XP.WorkExperienceType.Farm,
             };
 
             GroundProperties[(int)GroundType.Rubble] = new GroundTypeProperties()
@@ -249,7 +307,8 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 TerraformToCost = new CraftBlueprint(CraftResultType.NoSet, 0, 0,
                     new UseResource[] {
                         new UseResource( ItemResourceType.Salt, 5)
-                    }, XP.WorkExperienceType.NUM_NONE)
+                    }, XP.WorkExperienceType.NUM_NONE),
+                TerraformToXp = XP.WorkExperienceType.CraftFuel,
             };
 
             GroundProperties[(int)GroundType.Hardpan] = new GroundTypeProperties()
@@ -299,6 +358,8 @@ namespace VikingEngine.DSSWars.Map.MapLib
         public float TerraformFromTimeSec;
         public ItemResource TerraformFromRest;
         public CraftBlueprint TerraformToCost;
+
+        public XP.WorkExperienceType TerraformToXp;
     }
 
     enum GroundCanBuildType

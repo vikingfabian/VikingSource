@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
+using VikingEngine.Core.BlackBolts.Player;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
@@ -197,6 +198,33 @@ namespace VikingEngine.DSSWars.Players
                 selectTileResult = SelectTileResult.None;
                 hasSelection = false;
             }
+        }
+
+        public static MayBuildResult mayTerraform(IntVector2 subTilePos, LocalPlayer player, GroundType toGround, out City city)
+        {
+            city = null;
+
+            if (DssRef.state.GodPowers())
+            {
+                return MayBuildResult.Yes;
+            }
+            if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
+            {
+                if (subTile.groundType != toGround && GroundPropertiesLib.Get(subTile.groundType).canTerraform)
+                {
+                    city = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(subTilePos)).pcity.City();
+                    if (city.pfaction == player.pfaction)
+                    {
+                        return MayBuildResult.Yes;
+                    }
+                    else
+                    {
+                        return MayBuildResult.No_OutsideRegion;
+                    }
+                }
+            }
+
+            return MayBuildResult.No_BadGround;
         }
 
         public MayBuildResult mayBuild(LocalPlayer player, out GroundType? mustTerraform, out bool upgrade)

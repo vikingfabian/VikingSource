@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.EntityComponent;
+using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Resource;
@@ -175,14 +176,14 @@ namespace VikingEngine.DSSWars.GameObject
                             towerType = BuildAndExpandType.StoneTower;
                             break;
                     }
-
-                    if (BuildLib.BuildOptions[(int)wallType].availableBlueprintResources(this))
+                    var buildOpt = BuildLib.BuildOptions[(int)wallType];
+                    if (buildOpt.availableBlueprintResources(this))
                     {
                         ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(maptilePos, currentWallRadius));
                         while (loop.Next())
                         {
                             if (!(loop.AtBottom && loop.AtCenterX) && //place for opening
-                                MayAutoBuildHere(loop.Position) && work_isFreeTile(loop.Position))
+                                MayAutoBuildHere(loop.Position, buildOpt.groundRequirement, out var mustTerraform) && work_isFreeTile(loop.Position))
                             {
                                 workQue.Add(new WorkQueMember(WorkType.Build, (int)(loop.AtCorner ? towerType : wallType), 0, WorkPriorityType.autoBuild, loop.Position, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
                                 addCount--;
@@ -203,7 +204,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //TRAPPER
                 if (buildingStructure.SuggestedTrapperPos.X > 0)
                 {
-                    if (MayAutoBuildHere(buildingStructure.SuggestedTrapperPos) &&
+                    if (MayAutoBuildHere(buildingStructure.SuggestedTrapperPos, Map.MapLib.BuildingGroundRequirement.BuildLight, out _) &&
                         work_isFreeTile(buildingStructure.SuggestedTrapperPos))
                     {
                         workQue.Add(new WorkQueMember(WorkType.Build, (int)BuildAndExpandType.TrapperHut, 0, WorkPriorityType.autoBuild, buildingStructure.SuggestedTrapperPos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
@@ -220,39 +221,40 @@ namespace VikingEngine.DSSWars.GameObject
             for (int i = 0; i < AutoBuildList.Count; ++i)
             {
                 var buildType = AutoBuildList[i];
+                var buildOpt = BuildLib.BuildOptions[(int)buildType];
+//#if DEBUG
+//                if (buildType == BuildAndExpandType.WorkerTent)
+//                {
+//                    lib.DoNothing();
 
-#if DEBUG
-                if (buildType == BuildAndExpandType.WorkerTent)
-                {
-                    lib.DoNothing();
-
-                }
-#endif
+//                }
+//#endif
 
                 bool foundPos = false;
-                IntVector2 pos = IntVector2.Zero;
+                AutoBuildPos pos = new AutoBuildPos();
 
                 if (this.buildingStructure.getCount(buildType) > 0)
                 {
                     var prevPos = CityStructureProcess.WorkInstance.buildingPosition.getPos(buildType);
                     if (prevPos.X > 0)
                     {
-                        foundPos = findAdjacentFreeSpot(Auto_EdgeRandomizer, prevPos, ref pos);
+                        foundPos = findAdjacentFreeSpot(Auto_EdgeRandomizer, buildOpt.groundRequirement, prevPos, ref pos);
                     }
                 }
 
-                if (!foundPos && CityStructureProcess.WorkInstance.NextEmptyLand(this, Ref.peRnd.Int(32), out pos))
+                if (!foundPos && CityStructureProcess.WorkInstance.NextEmptyLand(this, Ref.peRnd.Int(32), buildOpt.groundRequirement, out pos))
                 {
                     foundPos = true;
                 }
 
                 if (foundPos)
                 {
-                    if (BuildLib.BuildOptions[(int)buildType].availableBlueprintResources_ignorewater(this) &&
-                        work_isFreeTile(pos))
+                    if (buildOpt.availableBlueprintResources_ignorewater(this) &&
+                        terraformBlueprintAvailable(pos.terraform) &&
+                        work_isFreeTile(pos.pos))
                     {
                         byte prio = buildType == safeGuardBuild ? WorkTemplate.MaxPrio : workTemplate.Get(WorkPriorityType.autoBuild).value;
-                        workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, WorkPriorityType.autoBuild, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
+                        workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, WorkPriorityType.autoBuild, pos.pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
                     }
                 }
                 else
@@ -260,6 +262,19 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 }
             }
+        }
+
+        public bool terraformBlueprintAvailable(GroundType? terraform)
+        {
+            if (terraform.HasValue)
+            {
+                var bp = GroundPropertiesLib.Get(terraform.Value).TerraformToCost;
+                if (bp != null)
+                {
+                    return bp.available(this);
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -380,7 +395,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        bool findAdjacentFreeSpot(ForXYEdgeLoopRandomPicker edgeRandomizer, IntVector2 center, ref IntVector2 result)
+        bool findAdjacentFreeSpot(ForXYEdgeLoopRandomPicker edgeRandomizer, BuildingGroundRequirement groundRequirement, IntVector2 center, ref AutoBuildPos result)
         {
             for (int r = 1; r <= 2; r++)
             {
@@ -388,9 +403,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                 while (edgeRandomizer.Next())
                 {
-                    if (MayAutoBuildHere(edgeRandomizer.Position))
+                    if (MayAutoBuildHere(edgeRandomizer.Position, groundRequirement, out var mustTerraform))
                     {
-                        result = edgeRandomizer.Position;
+                        result = new AutoBuildPos() { pos = edgeRandomizer.Position, terraform = mustTerraform };
                         return true;
                     }
                 }

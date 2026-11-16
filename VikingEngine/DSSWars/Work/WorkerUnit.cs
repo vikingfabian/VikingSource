@@ -276,6 +276,7 @@ namespace VikingEngine.DSSWars.Work
                                 //updateGroudY(false);
                             }
                             break;
+                        case WorkType.Terraform:
                         case WorkType.Build:
                         case WorkType.Upgrade:
                         case WorkType.Demolish:

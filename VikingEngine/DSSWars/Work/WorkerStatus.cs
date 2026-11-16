@@ -1546,31 +1546,47 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.Upgrade:
                 case WorkType.Build:
-//#if DEBUG
-//                    if (BuildLib.BuildOptions[workSubType].buildType == BuildAndExpandType.OrchardApple)
-//                    {
-//                        lib.DoNothing();
-//                    }
-//#endif
                     if (orderIsActive(city))
                     {
                         bool upgrade = work == WorkType.Upgrade;
                         var build = BuildLib.BuildOptions[workSubType];
-                        if (build.execute_async(city, subTileEnd, ref subTile, upgrade))
+                        if (build.execute_async(city, subTileEnd, ref subTile, out bool bTerraform, upgrade))
                         {
-                            EditSubTile edit = new EditSubTile(city.pfaction, true, subTileEnd, subTile, true, false, true, false);
+                            EditSubTile edit = new EditSubTile(city.pfaction, true, subTileEnd, subTile, true, bTerraform, true, false);
                             edit.Submit();
                         }
                         gainXp = build.experienceType();
-                    }
-                    
+                    }                    
                     break;
+
+                case WorkType.Terraform:
+                    if (orderIsActive(city))
+                    {
+
+                        //var ground = DssRef.world.subTileGrid.Get(subTileEnd).groundType;
+                        //GroundPropertiesLib.MayBuild_GroundCheck(ground, (GroundType)workSubType, out var mustTerraform);
+                        //if (build.execute_async(city, subTileEnd, ref subTile, out bool bTerraform,, upgrade))
+                        //{
+                        subTile.groundType = (GroundType)workSubType;
+                        var grounProp = GroundPropertiesLib.Get(subTile.groundType);
+                        var terraformBp = grounProp.TerraformToCost;
+                        if (terraformBp != null)
+                        {
+                            terraformBp.payResources_BuildAndUpgrade(city);
+                            city.unreserveItems(terraformBp);
+                        }
+                        EditSubTile edit = new EditSubTile(city.pfaction, true, subTileEnd, subTile, false, true, false, false);
+                        edit.Submit();
+                        //}
+                        gainXp = grounProp.TerraformToXp;
+                    }
+                    break;
+
                 case WorkType.School:
                     setExperience((WorkExperienceType)workSubType, workBonus);
                     city.onSchoolComplete_async(subTileEnd);
                     work = WorkType.Idle;
                     processTimeStartStampSec = Ref.TotalGameTimeSec;
-
                     return;
 
                 case WorkType.Demolish:
@@ -1583,6 +1599,7 @@ namespace VikingEngine.DSSWars.Work
                         }
                     }
                     break;
+
                 case WorkType.Starving:
                 case WorkType.Exit:
                     //work = WorkType.IsDeleted;
@@ -2125,14 +2142,29 @@ namespace VikingEngine.DSSWars.Work
                     break;
 
                 case WorkType.Build:
-                    timeSec = BuildLib.BuildOptions[workSubType].buildTimeSec;
-                    //timeSec = DssConst.WorkTime_Building;
-
-                    if (city.cityCulture == CityCulture.Builders)
                     {
-                        timeSec *= 0.5f;
+                        var buildOpt = BuildLib.BuildOptions[workSubType];
+                        timeSec = buildOpt.buildTimeSec;
+                        if (city.cityCulture == CityCulture.Builders)
+                        {
+                            timeSec *= 0.5f;
+                        }
+
+                        if (DssRef.world.subTileGrid.TryGet(subTileEnd, out MapTile1_1 subTile))
+                        {
+                            GroundPropertiesLib.MayBuild_GroundCheck(subTile.groundType, buildOpt.groundRequirement, out var mustTerraform);
+                            if (mustTerraform.HasValue)
+                            {
+                                timeSec += GroundPropertiesLib.Get(mustTerraform.Value).TerraformFromTimeSec;
+                            }
+                        }
                     }
                     break;
+
+                case WorkType.Terraform:
+                    timeSec = GroundPropertiesLib.Get((GroundType)workSubType).TerraformFromTimeSec;
+                    break;
+
                 case WorkType.Upgrade:
                     timeSec = DssConst.WorkTime_UpgradeBuilding;
                     break;

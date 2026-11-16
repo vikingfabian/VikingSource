@@ -265,7 +265,8 @@ namespace VikingEngine.DSSWars.Players
                                     cityAction = citySel;
                                     automationAction = AutomationAction.UpgradeLogistics;
                                    
-                                    CityStructureProcess.AutomationInstance.NextEmptyLand(citySel, Ref.peRnd.Int(32), out subtilePos);//.EmptyLand.Last();
+                                    CityStructureProcess.AutomationInstance.NextEmptyLand(citySel, Ref.peRnd.Int(32), Map.MapLib.BuildingGroundRequirement.None, out var autoBuildPos);//.EmptyLand.Last();
+                                    subtilePos = autoBuildPos.pos;
                                     return;
                                 }
                             }

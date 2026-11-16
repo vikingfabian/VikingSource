@@ -340,6 +340,10 @@ namespace VikingEngine.DSSWars.Work
         PickUpProduce,
         DropOff,
         Craft,
+        /// <summary>
+        /// For terraform only orders
+        /// </summary>
+        Terraform,
         Build,
         Upgrade,
         Demolish,

@@ -376,7 +376,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             return true;
         }
-        public bool MayAutoBuildHere(IntVector2 subTilePos)
+        public bool MayAutoBuildHere(IntVector2 subTilePos, BuildingGroundRequirement groundRequirement, out GroundType? mustTerraform)
         {
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subtile))
             {
@@ -385,10 +385,14 @@ namespace VikingEngine.DSSWars.GameObject
                     case TerrainMainType.Destroyed:
                     case TerrainMainType.DefaultLand:
                         var tile = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(subTilePos));
-                        return /*tile.MayBuild() &&*/ tile.pcity.cityIndex == myIndex;
-
+                        if (tile.pcity.cityIndex == myIndex)
+                        {
+                            GroundPropertiesLib.MayBuild_GroundCheck(subtile.groundType, groundRequirement, out mustTerraform);
+                        }
+                        break;
                 }
             }
+            mustTerraform = null;
             return false;
         }
     }

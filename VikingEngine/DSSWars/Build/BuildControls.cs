@@ -36,6 +36,18 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Build
 {
+    struct AutoBuildPos
+    {
+        public static readonly AutoBuildPos Empty = new AutoBuildPos() { pos = IntVector2.Zero };
+        public GroundType? terraform;
+        public IntVector2 pos;
+
+        public bool HasValue()
+        {
+            return pos.X >= 0;
+        }
+    }
+
     class BuildControls
     {
         static readonly Build.BuildAndExpandType[] AutoBuildOptions =
@@ -113,6 +125,47 @@ namespace VikingEngine.DSSWars.Build
             switch (buildMode)
             {
                 case SelectTileResult.Terraform:
+                    {
+                        usesBuildQue = 1;
+                        var mayBuild = SelectedSubTile.mayTerraform(subTilePos, player, placeTerraformType, out city);
+                        if (mayBuild == MayBuildResult.Yes)
+                        {
+
+                            if (commit)
+                            {
+                                if (DssRef.state.GodPowers())
+                                {
+
+                                    EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, new MapTile1_1() { groundType = placeTerraformType }, false, true, false, false);
+                                    edit.Submit();
+
+                                    new GodBuild(subTilePos);
+                                }
+
+                                //    else if (placeBuildingOption().blueprint.meetsRequirements(city))
+                                //    {
+                                //        player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.FollowTool, toolAdd);
+                                //    }
+                                //    else
+                                //    {
+                                //        //Remove current orders
+                                //        player.orders.orderConflictingSubTile(subTilePos, true);
+                                //    }
+                                //}
+                                player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos, placeTerraformType,  BuildAndExpandType.TERRAFORM, false), ActionOnConflict.FollowTool, toolAdd);
+                            }
+                            else
+                            {
+                                if (player.orders.orderConflictingSubTile(subTilePos, false))
+                                {
+                                    usesBuildQue = -1;
+                                }
+                            }
+
+                            return true;
+                        }
+                    }
+                    break;
                 case SelectTileResult.Build:
                     {
                         usesBuildQue = 1;
@@ -133,7 +186,7 @@ namespace VikingEngine.DSSWars.Build
                                     {
                                         subTile.groundType = mustTerraform.Value;
                                     }
-                                    if (build.execute_async(city, subTilePos, ref subTile, upgrade, false))
+                                    if (build.execute_async(city, subTilePos, ref subTile, out bool bTerraform, upgrade, false))
                                     {
                                         EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, subTile, true,mustTerraform.HasValue, true, false);
                                         edit.Submit();
@@ -143,7 +196,7 @@ namespace VikingEngine.DSSWars.Build
                                 }
                                 else if (placeBuildingOption().blueprint.meetsRequirements(city))
                                 {
-                                    player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.FollowTool, toolAdd);
+                                    player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos, mustTerraform, placeBuildingType, upgrade), ActionOnConflict.FollowTool, toolAdd);
                                 }
                                 else
                                 {
@@ -447,7 +500,9 @@ namespace VikingEngine.DSSWars.Build
                 {
                     if (city.pfaction.TryGetLocalPlayer(out var player))
                     {
-                        List<IntVector2> positions = new List<IntVector2>(count);
+                       var groundReq =  Build.BuildLib.Get(buildType).groundRequirement;
+
+                        List<AutoBuildPos> positions = new List<AutoBuildPos>(count);
                         CityStructureProcess structure = new CityStructureProcess();
                         structure.update(DssRef.world, city, 1);
 
@@ -457,12 +512,12 @@ namespace VikingEngine.DSSWars.Build
                             findBuildPositons_Loop(positions);
                         }
 
-                        foreach (IntVector2 position in positions)
+                        foreach (AutoBuildPos position in positions)
                         {
-                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(priority, true, city, position, buildType, false), ActionOnConflict.Cancel, ToolAddType.NUM_NONE, false);
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(priority, true, city, position.pos, position.terraform, buildType, false), ActionOnConflict.Cancel, ToolAddType.NUM_NONE, false);
                         }
 
-                        void findBuildPositons_AutoBuilder(List<IntVector2> result)
+                        void findBuildPositons_AutoBuilder(List<AutoBuildPos> result)
                         {
                             if (city.buildingStructure.getCount(buildType) > 0)
                             {
@@ -490,10 +545,10 @@ namespace VikingEngine.DSSWars.Build
 
                                     while (Auto_EdgeRandomizer.Next())
                                     {
-                                        if (city.MayAutoBuildHere(Auto_EdgeRandomizer.Position) &&
+                                        if (city.MayAutoBuildHere(Auto_EdgeRandomizer.Position, groundReq, out var mustTerraform) &&
                                             !player.orders.orderConflictingSubTile(Auto_EdgeRandomizer.Position, false))
                                         {
-                                            result.Add(Auto_EdgeRandomizer.Position);
+                                            result.Add(new AutoBuildPos() { pos = Auto_EdgeRandomizer.Position, terraform = mustTerraform });
 
                                             if (--count <= 0)
                                             { return; }
@@ -504,7 +559,7 @@ namespace VikingEngine.DSSWars.Build
                         }
 
 
-                        void findBuildPositons_Loop(List<IntVector2> result)
+                        void findBuildPositons_Loop(List<AutoBuildPos> result)
                         {
                             IntVector2 topleft;
                             ForXYLoop subTileLoop;
@@ -533,7 +588,7 @@ namespace VikingEngine.DSSWars.Build
                                                     &&
                                                     !player.orders.orderConflictingSubTile(subTileLoop.Position, false))
                                                 {
-                                                    result.Add(subTileLoop.Position);
+                                                    result.Add(new AutoBuildPos() { pos = subTileLoop.Position, terraform = mustTerraform });
 
                                                     if (--count <= 0)
                                                     { return; }
@@ -1037,37 +1092,37 @@ namespace VikingEngine.DSSWars.Build
         {
             BuildAndExpandType type = (BuildAndExpandType)tag;
 
-            BuildOption build = BuildLib.BuildOptions[(int)type];
-            content.h2(TextLib.LargeFirstLetter(build.Label()), HudLib.TitleColor_Head);
+            BuildOption buildOpt = BuildLib.BuildOptions[(int)type];
+            content.h2(TextLib.LargeFirstLetter(buildOpt.Label()), HudLib.TitleColor_Head);
 
             //content.newLine();
-            build.blueprint.toMenu(content, city, false, true, true);
-            if (build.altBlueprint != null)
+            buildOpt.blueprint.toMenu(content, city, false, true, true);
+            if (buildOpt.altBlueprint != null)
             {
                 content.Add(new RbSeperationLine(HudLib.TitleColor_Head, 0.2f));
-                build.altBlueprint.toMenu(content, city, false, false);
+                buildOpt.altBlueprint.toMenu(content, city, false, false);
             }
             content.Add(new RbSeperationLine(HudLib.TitleColor_Head, 0.2f));
            
-            HudLib.LabelAndText(content, SpriteName.WarsConstructBuildingIcon, DssRef.lang.BuildHud_BuildTime, string.Format(DssRef.lang.Hud_Time_XSeconds, build.buildTimeSec));
+            HudLib.LabelAndText(content, SpriteName.WarsConstructBuildingIcon, DssRef.lang.BuildHud_BuildTime, string.Format(DssRef.lang.Hud_Time_XSeconds, buildOpt.buildTimeSec));
 
-            IconName.GroundRequirement(build.groundRequirement, out var groundReqIcon, out var groundReqText);
+            IconName.GroundRequirement(buildOpt.groundRequirement, out var groundReqIcon, out var groundReqText);
             HudLib.LabelAndText(content, groundReqIcon, DssRef.todoLang.GroundRequired, groundReqText);
 
 
             content.Add(new RbSeperationLine());
-            if (build.description != null)
+            if (buildOpt.description != null)
             {
-                content.text(build.description, HudLib.InfoYellow_Light);
+                content.text(buildOpt.description, HudLib.InfoYellow_Light);
             }
 
             content.newLine();
 
-            if (build.specialBuildRequirement != SpecialBuildRequirement.None)
+            if (buildOpt.specialBuildRequirement != SpecialBuildRequirement.None)
             {
                 
 
-                switch (build.specialBuildRequirement)
+                switch (buildOpt.specialBuildRequirement)
                 {
                     case SpecialBuildRequirement.FoodStorage:
                         {
@@ -1349,22 +1404,22 @@ namespace VikingEngine.DSSWars.Build
 
                     break;
                 case BuildAndExpandType.FowlPen:
-                    pen(build, TerrainContent.FowlGrowth, ItemResourceType.Fowl, CraftResourceLib.SlaughterFowl, true, false, true);
+                    pen(buildOpt, TerrainContent.FowlGrowth, ItemResourceType.Fowl, CraftResourceLib.SlaughterFowl, true, false, true);
 
                     //eggProduction();
                     break;
                 case BuildAndExpandType.HenPen:
-                    pen(build, TerrainContent.HenGrowth, ItemResourceType.Hen, CraftResourceLib.SlaughterHen, false, true, true);
+                    pen(buildOpt, TerrainContent.HenGrowth, ItemResourceType.Hen, CraftResourceLib.SlaughterHen, false, true, true);
 
                     //eggProduction();
                     break;
 
                 case BuildAndExpandType.BoarPen:
-                    pen(build, TerrainContent.BoarGrowth, ItemResourceType.Boar, CraftResourceLib.SlaughterBoar, true, false);  
+                    pen(buildOpt, TerrainContent.BoarGrowth, ItemResourceType.Boar, CraftResourceLib.SlaughterBoar, true, false);  
                     break;
 
                 case BuildAndExpandType.PigPen:
-                    pen(build, TerrainContent.PigGrowth, ItemResourceType.Pig, CraftResourceLib.SlaughterPig, false, true);                                    
+                    pen(buildOpt, TerrainContent.PigGrowth, ItemResourceType.Pig, CraftResourceLib.SlaughterPig, false, true);                                    
                     break;
 
                 //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
@@ -1393,73 +1448,73 @@ namespace VikingEngine.DSSWars.Build
                 //content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
 
                 case BuildAndExpandType.OxenPen:
-                    pen(build, TerrainContent.OxenGrowth, ItemResourceType.Oxen, CraftResourceLib.SlaughterOxen, true, false);
+                    pen(buildOpt, TerrainContent.OxenGrowth, ItemResourceType.Oxen, CraftResourceLib.SlaughterOxen, true, false);
                     break;
                 case BuildAndExpandType.KineOxenPen:
-                    pen(build, TerrainContent.KineOxenGrowth, ItemResourceType.KineOxen, CraftResourceLib.SlaughterKineOxen, false, true);
+                    pen(buildOpt, TerrainContent.KineOxenGrowth, ItemResourceType.KineOxen, CraftResourceLib.SlaughterKineOxen, false, true);
                     break;
 
                 case BuildAndExpandType.DogCage:
-                    pen(build, TerrainContent.DogGrowth, ItemResourceType.Dog, null, true, false);
+                    pen(buildOpt, TerrainContent.DogGrowth, ItemResourceType.Dog, null, true, false);
                     break;
                 case BuildAndExpandType.HoundCage:
-                    pen(build, TerrainContent.HoundGrowth, ItemResourceType.Hound, null, false, true);
+                    pen(buildOpt, TerrainContent.HoundGrowth, ItemResourceType.Hound, null, false, true);
                     break;
 
                 case BuildAndExpandType.PonyPen:
-                    pen(build, TerrainContent.PonyGrowth, ItemResourceType.Pony, CraftResourceLib.SlaughterPony, true, false);
+                    pen(buildOpt, TerrainContent.PonyGrowth, ItemResourceType.Pony, CraftResourceLib.SlaughterPony, true, false);
                     break;
                 case BuildAndExpandType.HorsePen:
-                    pen(build, TerrainContent.HorseGrowth, ItemResourceType.Horse, CraftResourceLib.SlaughterHorse, true, true);
+                    pen(buildOpt, TerrainContent.HorseGrowth, ItemResourceType.Horse, CraftResourceLib.SlaughterHorse, true, true);
                     break;
                 case BuildAndExpandType.WarHorsePen:
-                    pen(build, TerrainContent.WarHorseGrowth, ItemResourceType.WarHorse, CraftResourceLib.SlaughterWarHorse, false, true);
+                    pen(buildOpt, TerrainContent.WarHorseGrowth, ItemResourceType.WarHorse, CraftResourceLib.SlaughterWarHorse, false, true);
                     break;
                 case BuildAndExpandType.DraftHorsePen:
-                    pen(build, TerrainContent.DraftHorseGrowth, ItemResourceType.DraftHorse, CraftResourceLib.SlaughterDraftHorse, false, true);
+                    pen(buildOpt, TerrainContent.DraftHorseGrowth, ItemResourceType.DraftHorse, CraftResourceLib.SlaughterDraftHorse, false, true);
                     break;
 
                 case BuildAndExpandType.WildPigPen:
-                    pen(build, TerrainContent.WildPigGrowth, ItemResourceType.WildPig, CraftResourceLib.SlaughterWildPig, true, false);
+                    pen(buildOpt, TerrainContent.WildPigGrowth, ItemResourceType.WildPig, CraftResourceLib.SlaughterWildPig, true, false);
                     break;
                 case BuildAndExpandType.WildHogPen:
-                    pen(build, TerrainContent.WildHogGrowth, ItemResourceType.WildHog, CraftResourceLib.SlaughterWildHog, true, true);
+                    pen(buildOpt, TerrainContent.WildHogGrowth, ItemResourceType.WildHog, CraftResourceLib.SlaughterWildHog, true, true);
                     break;
                 case BuildAndExpandType.WarHogPen:
-                    pen(build, TerrainContent.WarHogGrowth, ItemResourceType.WarHog, CraftResourceLib.SlaughterWarHog, false, true);
+                    pen(buildOpt, TerrainContent.WarHogGrowth, ItemResourceType.WarHog, CraftResourceLib.SlaughterWarHog, false, true);
                     break;
                 case BuildAndExpandType.StagHogPen:
-                    pen(build, TerrainContent.StagHogGrowth, ItemResourceType.StagHog, CraftResourceLib.SlaughterStagHog, false, true);
+                    pen(buildOpt, TerrainContent.StagHogGrowth, ItemResourceType.StagHog, CraftResourceLib.SlaughterStagHog, false, true);
                     break;
 
                 case BuildAndExpandType.WolfCage:
-                    pen(build, TerrainContent.WolfGrowth, ItemResourceType.Wolf, CraftResourceLib.SlaughterWolf, true, false);
+                    pen(buildOpt, TerrainContent.WolfGrowth, ItemResourceType.Wolf, CraftResourceLib.SlaughterWolf, true, false);
                     break;
                 case BuildAndExpandType.WargCage:
-                    pen(build, TerrainContent.WargGrowth, ItemResourceType.Warg, CraftResourceLib.SlaughterWarg, true, true);
+                    pen(buildOpt, TerrainContent.WargGrowth, ItemResourceType.Warg, CraftResourceLib.SlaughterWarg, true, true);
                     break;
                 case BuildAndExpandType.AlphaWargCage:
-                    pen(build, TerrainContent.AlphaWargGrowth, ItemResourceType.AlphaWarg, CraftResourceLib.SlaughterAlphaWarg, false, true);
+                    pen(buildOpt, TerrainContent.AlphaWargGrowth, ItemResourceType.AlphaWarg, CraftResourceLib.SlaughterAlphaWarg, false, true);
                     break;
 
                 case BuildAndExpandType.WildCatCage:
-                    pen(build, TerrainContent.WildCatGrowth, ItemResourceType.WildCat, CraftResourceLib.SlaughterWildCat, true, false);
+                    pen(buildOpt, TerrainContent.WildCatGrowth, ItemResourceType.WildCat, CraftResourceLib.SlaughterWildCat, true, false);
                     break;
                 case BuildAndExpandType.LionCage:
-                    pen(build, TerrainContent.LionGrowth, ItemResourceType.Lion, CraftResourceLib.SlaughterLion, true, true);
+                    pen(buildOpt, TerrainContent.LionGrowth, ItemResourceType.Lion, CraftResourceLib.SlaughterLion, true, true);
                     break;
                 case BuildAndExpandType.WarLionCage:
-                    pen(build, TerrainContent.WarLionGrowth, ItemResourceType.WarLion, CraftResourceLib.SlaughterWarLion, false, true);
+                    pen(buildOpt, TerrainContent.WarLionGrowth, ItemResourceType.WarLion, CraftResourceLib.SlaughterWarLion, false, true);
                     break;
 
                 case BuildAndExpandType.ElephantCage:
-                    pen(build, TerrainContent.ElephantGrowth, ItemResourceType.Elephant, CraftResourceLib.SlaughterElephant, true, false);
+                    pen(buildOpt, TerrainContent.ElephantGrowth, ItemResourceType.Elephant, CraftResourceLib.SlaughterElephant, true, false);
                     break;
                 case BuildAndExpandType.WarElephantCage:
-                    pen(build, TerrainContent.WarElephantGrowth, ItemResourceType.WarElephant, CraftResourceLib.SlaughterWarElephant, true, true);
+                    pen(buildOpt, TerrainContent.WarElephantGrowth, ItemResourceType.WarElephant, CraftResourceLib.SlaughterWarElephant, true, true);
                     break;
                 case BuildAndExpandType.OliphantCage:
-                    pen(build, TerrainContent.OliphantGrowth, ItemResourceType.Oliphant, CraftResourceLib.SlaughterOliphant, false, true);
+                    pen(buildOpt, TerrainContent.OliphantGrowth, ItemResourceType.Oliphant, CraftResourceLib.SlaughterOliphant, false, true);
                     break;
 
                 case BuildAndExpandType.Brewery:
@@ -1576,7 +1631,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.StoneWallBlueRoof:
                 case BuildAndExpandType.StoneWallWoodHouse:
 
-                    DefenceMenu.WallDefenceToHud(content, (TerrainWallType)build.terrainType.subTerrain, true);
+                    DefenceMenu.WallDefenceToHud(content, (TerrainWallType)buildOpt.terrainType.subTerrain, true);
                     break;
 
             }
@@ -1585,9 +1640,9 @@ namespace VikingEngine.DSSWars.Build
             content.Add(new RbSeperationLine());
             HudLib.Label(content, DssRef.lang.HUD_Tags);
             content.space();
-            filterTag(build.filterTag1);
-            filterTag(build.filterTag2);
-            filterTag(build.filterTag3);
+            filterTag(buildOpt.filterTag1);
+            filterTag(buildOpt.filterTag2);
+            filterTag(buildOpt.filterTag3);
 
             void filterTag(BuildFilterTag value)
             {
@@ -1602,7 +1657,7 @@ namespace VikingEngine.DSSWars.Build
             }
 
             //RESOURCES
-            buildTooltip_YouOwn(city, content, type);
+            buildTooltip_YouOwn(city, content, null, type);
 
             void deliveryHud(int level)
             {
@@ -1777,24 +1832,40 @@ namespace VikingEngine.DSSWars.Build
             }
         }
 
-        public static void buildTooltip_YouOwn(City city, RichBoxContent content, BuildAndExpandType type)
-        {
-            var build = BuildLib.BuildOptions[(int)type];
+        public static void buildTooltip_YouOwn(City city, RichBoxContent content, GroundType? terraform, BuildAndExpandType type)
+        {            
 
             content.Add(new RbSeperationLine());
             content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn, HudLib.TitleColor_Head2);
-            build.blueprint.listResources(content, city);
-            if (type == BuildAndExpandType.Logistics)
+
+            BuildOption buildOpt = null;
+            if (type != BuildAndExpandType.TERRAFORM)
             {
-                bool reachedBuffer = false;
-                city.GetGroupedResource(EntityComponent.CityResourceIndex.food)/*res_food*/.toMenu(content, ItemResourceType.Food_G, ref reachedBuffer);
+                buildOpt = BuildLib.BuildOptions[(int)type];
+
+                buildOpt.blueprint.listResources(content, city);
             }
 
-            if (build.blueprint.levelRequirement > XP.ExperienceLevel.Beginner_1)
+            if (terraform != null)
             {
-                content.newLine();
+                var groundBp = GroundPropertiesLib.Get(terraform.Value).TerraformToCost;
+                groundBp?.listResources(content, city);
+            }
 
-                HudLib.Experience(content, build.blueprint.experienceType, city.cityExperienceLevels.Get(build.blueprint.experienceType).Max());
+            if (type != BuildAndExpandType.TERRAFORM)
+            {
+                if (type == BuildAndExpandType.Logistics)
+                {
+                    bool reachedBuffer = false;
+                    city.GetGroupedResource(EntityComponent.CityResourceIndex.food).toMenu(content, ItemResourceType.Food_G, ref reachedBuffer);
+                }
+
+                if (buildOpt.blueprint.levelRequirement > XP.ExperienceLevel.Beginner_1)
+                {
+                    content.newLine();
+
+                    HudLib.Experience(content, buildOpt.blueprint.experienceType, city.cityExperienceLevels.Get(buildOpt.blueprint.experienceType).Max());
+                }
             }
         }
 

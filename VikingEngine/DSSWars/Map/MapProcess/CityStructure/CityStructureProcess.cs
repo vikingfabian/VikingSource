@@ -160,7 +160,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
             return false;
         }
 
-        public static bool FindEmpty(City city, out IntVector2 position)
+        public static bool FindEmpty(City city, BuildingGroundRequirement groundRequirement, out IntVector2 position)
         {
             IntVector2 topleft;
             ForXYLoop subTileLoop;
@@ -186,8 +186,12 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
                                 if (subTile.mainTerrain == TerrainMainType.DefaultLand ||
                                     subTile.mainTerrain == TerrainMainType.Destroyed)
                                 {
-                                    position = subTileLoop.Position;
-                                    return true;
+                                    if (GroundPropertiesLib.MayBuild_GroundCheck(subTile.groundType, groundRequirement, out _))
+                                    {
+
+                                        position = subTileLoop.Position;
+                                        return true;
+                                    }
                                 }
                             }
                         }
@@ -199,9 +203,9 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
             return false;
         }
 
-        public bool NextEmptyLand(City city, int addSpaces, out IntVector2 freeSubTilePos)
+        public bool NextEmptyLand(City city, int addSpaces, BuildingGroundRequirement groundRequirement, out AutoBuildPos freeSubTilePos)
         {
-            freeSubTilePos = IntVector2.Zero;
+            freeSubTilePos = AutoBuildPos.Empty;
 
             int maxRadius = city.citySumTileArea.size.SideLength();
             for (int radius = 0; radius < maxRadius; ++radius)
@@ -228,12 +232,17 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
                                     {
                                         case TerrainMainType.Destroyed:
                                         case TerrainMainType.DefaultLand:
-                                            freeSubTilePos = subTileLoop.Position;
-                                            if (--addSpaces <= 0)
-                                            {   
+                                            
+                                        if (--addSpaces <= 0)
+                                        {
+                                            if (GroundPropertiesLib.MayBuild_GroundCheck(subTile.groundType, groundRequirement, out var mustTerraform))
+                                            {
+                                                freeSubTilePos.pos = subTileLoop.Position;
+                                                freeSubTilePos.terraform = mustTerraform;
                                                 return true;
                                             }
-                                            break;
+                                        }
+                                        break;
                                     }
                                 }
                             }
@@ -242,8 +251,8 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
                 }
             }
 
-            
-            return freeSubTilePos.X > 0;
+
+            return freeSubTilePos.HasValue();//freeSubTilePos.X > 0;
         }
 
         public void update(WorldData world, City city, int workerCount, int emptyLandExpansions = 2)
