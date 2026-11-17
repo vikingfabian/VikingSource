@@ -536,7 +536,7 @@ namespace VikingEngine.DSSWars
                 newCitiesEconomy.Add(data);
                 workForceCount += citySel.workForce.amount;
                 
-                soldResources += citySel.soldResources.displayValue_gold_sec;
+                soldResources += citySel.soldResources.displayValue_perMinute;
                 citiesMilitaryStrenght += citySel.strengthValue;
                 soldierSupplyBuildings += citySel.buildingStructure.SoldiersQuarter_Small_count * DssConst.SoldiersQuarter_Small_Supply + 
                     citySel.buildingStructure.SoldiersQuarter_Large_count * DssConst.SoldiersQuarter_Large_Supply;
@@ -567,8 +567,8 @@ namespace VikingEngine.DSSWars
                     groups.sel.Upkeep(casual, ref armyUpkeep, ref moneyCarry);
                 }
                 
-                foodImport += armiesC.sel.foodCosts_import.displayValue_gold_sec;
-                foodBlackMarket += armiesC.sel.foodCosts_blackmarket.displayValue_gold_sec;
+                foodImport += armiesC.sel.foodCosts_import.displayValue_perMinute;
+                foodBlackMarket += armiesC.sel.foodCosts_blackmarket.displayValue_perMinute;
 
                 armiesC.sel.goldCarryCapacity = Convert.ToInt32(moneyCarry);
                 armiesC.sel.totalUpkeep = armyUpkeep;

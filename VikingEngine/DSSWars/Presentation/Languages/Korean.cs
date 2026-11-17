@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Editor_FistFrame => "첫 프레임";
         public override string Editor_LastFrame => "마지막 프레임";
 
-        public override string Economy_AnimalPenUpkeep => "사육장 유지비: {0}";
+        public override string Economy_AnimalPenUpkeep => "사육장 유지비";
         public override string Work_SlaughterX => "{0} 도축";
 
         public override string BuildCategory_Farming => "농사";
@@ -880,7 +880,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Ingame display. Unit gold production
         /// </summary>
-        public override string Hud_TotalIncome => "총 수입/초: {0}";
+        public override string Hud_TotalIncomePerSecond => "총 수입/초";
 
         /// <summary>
         /// Unit gold cost.
@@ -2087,10 +2087,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string WorkForce_Peace => "평화";
         public override string WorkForce_ChildToManTime => "성인까지 성장 시간: {0}분";
 
-        public override string Economy_TaxIncome => "세금 수입: {0}";
+        public override string Economy_TaxIncome => "세금 수입";
         public override string Economy_ImportCostsForResource => "{0} 수입 비용: {1}";
         public override string Economy_BlackMarketCostsForResource => "{0} 암시장 비용: {1}";
-        public override string Economy_GuardUpkeep => "경비 유지비: {0}";
+        public override string Economy_GuardUpkeep => "경비 유지비";
 
         public override string Economy_LocalCityTrade_Export => "도시 간 수출: {0}";
         public override string Economy_LocalCityTrade_Import => "도시 간 수입: {0}";
@@ -2447,7 +2447,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string MapGenerator_Terrain_CleanUp_Option => "단일 타일 정리";
         public override string MapGenerator_Terrain_CleanUpPass => "정리 단계 실행";
 
-        public override string Economy_ServicemenUpkeep => "근위병 유지비: {0}";
+        public override string Economy_ServicemenUpkeep => "근위병 유지비";
         public override string Economy_ServicemenUpkeep_Description => "근위병 1명당 유지비는 {0}골드입니다.";
         public override string Economy_GuardUpkeep_Description => "경비병 1명당 유지비는 {0}골드입니다.";
 

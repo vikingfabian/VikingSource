@@ -258,7 +258,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Editor_FistFrame => "Первый кадр";
         public override string Editor_LastFrame => "Последний кадр";
 
-        public override string Economy_AnimalPenUpkeep => "Содержание загона: {0}";
+        public override string Economy_AnimalPenUpkeep => "Содержание загона";
         public override string Work_SlaughterX => "Забить {0}";
 
         public override string BuildCategory_Farming => "Фермерство";
@@ -879,7 +879,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Отображение в игре. Производство золота юнитом
         /// </summary>
-        public override string Hud_TotalIncome => "Общий доход/секунда: {0}";
+        public override string Hud_TotalIncomePerSecond => "Общий доход/секунда";
 
         /// <summary>
         /// Стоимость содержания юнита
@@ -2062,10 +2062,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string WorkForce_Peace => "Мир";
         public override string WorkForce_ChildToManTime => "Возраст совершеннолетия: {0} минут";
 
-        public override string Economy_TaxIncome => "Налоговый доход: {0}";
+        public override string Economy_TaxIncome => "Налоговый доход";
         public override string Economy_ImportCostsForResource => "Стоимость импорта {0}: {1}";
         public override string Economy_BlackMarketCostsForResource => "Стоимость на черном рынке {0}: {1}";
-        public override string Economy_GuardUpkeep => "Содержание охраны: {0}";
+        public override string Economy_GuardUpkeep => "Содержание охраны";
 
         public override string Economy_LocalCityTrade_Export => "Экспорт из города: {0}";
         public override string Economy_LocalCityTrade_Import => "Импорт в город: {0}";
@@ -2428,7 +2428,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string MapGenerator_Terrain_CleanUp_Option => "Очистка одиночных плиток";
         public override string MapGenerator_Terrain_CleanUpPass => "Выполнить проверку очистки";
 
-        public override string Economy_ServicemenUpkeep => "Содержание обслуживающего персонала: {0}";
+        public override string Economy_ServicemenUpkeep => "Содержание обслуживающего персонала";
         public override string Economy_ServicemenUpkeep_Description => "Содержание составляет {0} золота за одного работника";
         public override string Economy_GuardUpkeep_Description => "Содержание составляет {0} золота за одного стражника";
 

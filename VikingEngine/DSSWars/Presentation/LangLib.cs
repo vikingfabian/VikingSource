@@ -859,7 +859,7 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.MenuTab_Trade;
                 case MenuTab.BlackMarket:
                     description = DssRef.lang.MenuTab_BlackMarket_Description;
-                    return DssRef.lang.Hud_BlackMarket;
+                    return DssRef.todoLang.Tab_Market;//lang.Hud_BlackMarket;
                 case MenuTab.Economy:
                     description = null;
                     return DssRef.lang.MenuTab_Economy;

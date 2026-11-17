@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using VikingEngine.Core.DSSWars.Resource;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
@@ -154,7 +155,7 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                         break;
 
                     case MenuTab.BlackMarket:
-                        BlackMarketResources.ToHud(player, content, city);
+                        MarketTab(content);
                         break;
 
                     case MenuTab.Conscript:
@@ -210,6 +211,53 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                         break;
                 }
             }
+        }
+
+        void MarketTab(RichBoxContent content)
+        {
+            for (Interface.MapObjMenu.MarketTab sTab = 0; sTab < Interface.MapObjMenu.MarketTab.NUM; ++sTab)
+            {
+                var tabContent = new RichBoxContent();
+                string description = null;
+                //string text = null;
+                switch (sTab)
+                {
+                    case Interface.MapObjMenu.MarketTab.BlackMarket:
+                        //tabContent.Add(new RbImage(SpriteName.));
+                        //tabContent.space(0.6f);
+                        tabContent.Add(new RbText(DssRef.lang.Hud_BlackMarket));
+                        break;
+
+                    case Interface.MapObjMenu.MarketTab.Convert:
+                        //tabContent.Add(new RbImage(SpriteName.WarsUnitLevelProfessional));
+                        //tabContent.space(0.6f);
+                        tabContent.Add(new RbText(DssRef.todoLang.Resource_ConvertTitle));
+                        break;
+
+                }
+
+                var subTab = new ArtButton(player.marketSubTab == sTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, tabContent,
+                    new RbAction1Arg<MarketTab>((MarketTab selected) =>
+                    {
+                        player.marketSubTab = selected;
+                    }, sTab, RbSoundType.Tab), new RbTooltip_Text(description));
+
+                content.Add(subTab);
+                //content.space();
+            }
+            content.newParagraph();
+
+            switch (player.marketSubTab)
+            {
+                case Interface.MapObjMenu.MarketTab.BlackMarket:
+                    BlackMarketResources.ToHud(player, content, city);
+                    break;
+                case Interface.MapObjMenu.MarketTab.Convert:
+                    ResourceQuickConvert.ToMenu(player, city, content);
+                    break;
+            }
+
+
         }
 
         static readonly int[] RecruitTabCounts = [2, 5, 10, 25];
@@ -1478,6 +1526,13 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         Tag,
         HudPin,
         TagSettings,
+        NUM
+    }
+
+    enum MarketTab
+    {
+        BlackMarket,
+        Convert,
         NUM
     }
 }

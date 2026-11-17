@@ -72,9 +72,31 @@ namespace VikingEngine
             return new EndlessInt(a.Value - b);
         }
 
+        public static EndlessInt operator +(EndlessInt a, EndlessInt b)
+        {
+            if (a.IsUnlimited || a.IsNull)
+                return a;
+
+            if (b.IsUnlimited || b.IsNull)
+                return b;
+
+            return new EndlessInt(a.Value + b.Value);
+        }
+
+        public static EndlessInt operator -(EndlessInt a, EndlessInt b)
+        {
+            if (a.IsUnlimited || a.IsNull)
+                return a;
+
+            if (b.IsUnlimited || b.IsNull)
+                return b;
+
+            return new EndlessInt(a.Value - b.Value);
+        }
+
         public static implicit operator EndlessInt(int value) => new EndlessInt(value);
 
-        public string ValueString(bool largeValueFormat, string noLimitString, string nullString)
+        public string ValueString(bool plusMinus, bool largeValueFormat, string noLimitString, string nullString)
         {
             if (IsUnlimited)
             {
@@ -86,7 +108,15 @@ namespace VikingEngine
             }
             else if (largeValueFormat)
             {
+                if (plusMinus && Value > 0)
+                {
+                    return "+" + TextLib.LargeNumber(Value);
+                }
                 return TextLib.LargeNumber(Value);
+            }
+            else if (plusMinus)
+            {
+                return TextLib.PlusMinus(Value);
             }
             else
             {

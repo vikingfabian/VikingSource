@@ -355,7 +355,7 @@ namespace VikingEngine.DSSWars.Resource
             //}
         }
 
-        public void toMenu(RichBoxContent content, City city, bool upgradeOnly = false, bool newLine = true, bool includeAvailable = true, bool includeLevel = true)
+        public void toMenu(RichBoxContent content, City city, bool upgradeOnly = false, bool newLine = true, bool includeAvailable = true, bool outOfResourcesWarning = false, bool includeLevel = false)
         {
             if (upgradeFrom != null && !upgradeOnly)
             {
@@ -368,6 +368,8 @@ namespace VikingEngine.DSSWars.Resource
                 content.newLine();
             }
 
+            int warningIndex = content.Count;
+
             bool first = true;
             bool available = false;
             foreach (var r in resources)
@@ -379,6 +381,12 @@ namespace VikingEngine.DSSWars.Resource
                 IconName.Item(r.type, out SpriteName itemIcon, out string itemName);
                 addResources(r.amount, itemIcon, itemName, available);
                 first = false;
+            }
+
+            if (outOfResourcesWarning && !available)
+            {
+                content.Insert(warningIndex, new RbImage(SpriteName.WarsHudIconWarning, 1.2f));
+                content.Insert(warningIndex+1, new RbSpace(0.5f));
             }
 
             void addResources(int count, SpriteName sprite, string name, bool available)
@@ -460,6 +468,8 @@ namespace VikingEngine.DSSWars.Resource
                     content.Add(new RbText(name2));
                 }
             }
+
+            /*
             if (includeLevel && experienceType != WorkExperienceType.NUM_NONE)
             {
                 content.newLine();
@@ -489,7 +499,7 @@ namespace VikingEngine.DSSWars.Resource
                     content.newLine();
                 }
             }
-
+            */
             
         }
 

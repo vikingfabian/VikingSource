@@ -890,7 +890,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Hud_GameSpeedLabel { get; }
         public abstract string Input_GameSpeed { get; }
 
-        public abstract string Hud_TotalIncome { get; }
+        public abstract string Hud_TotalIncomePerSecond { get; }
 
         public abstract string Hud_Upkeep { get; }
 

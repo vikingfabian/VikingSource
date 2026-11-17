@@ -75,19 +75,6 @@ namespace VikingEngine
                         }
                     }
 
-                    //if (line.TrimStart().StartsWith("save_path", StringComparison.OrdinalIgnoreCase))
-                    //{
-                    //    var parts = line.Split('=', 2);
-                    //    if (parts.Length == 2)
-                    //    {
-                    //        string candidatePath = parts[1].Trim();
-                    //        if (!string.IsNullOrEmpty(candidatePath) &&
-                    //            (Directory.Exists(candidatePath) || TryCreateDirectory(candidatePath)))
-                    //        {
-                    //            userBasePath = candidatePath;
-                    //        }
-                    //    }
-                    //}
                 }
                 RWCheck.read = true;
             }
@@ -95,12 +82,12 @@ namespace VikingEngine
             {
                 // Create config file with empty save_path
                 string defaultConfig =
-$@"# Game Configuration
-# Leave 'save_path' empty to use the default location:
-# {defaultBasePath}\{FilePath.StorageFolderName}
-# Changing path will disable Steam Cloud backup
-save_path =
-";
+                    $@"# Game Configuration
+                    # Leave 'save_path' empty to use the default location:
+                    # {defaultBasePath}\{FilePath.StorageFolderName}
+                    # Changing path will disable Steam Cloud backup
+                    save_path =
+                    ";
                 try
                 {
                     File.WriteAllText(configPath, defaultConfig);

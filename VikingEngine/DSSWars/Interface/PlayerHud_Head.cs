@@ -163,8 +163,8 @@ namespace VikingEngine.DSSWars.Interface
             income = faction.GoldSecDiff();
             workForce = faction.totalWorkForce;
             totalStrength = Convert.ToInt32(faction.militaryStrength);
-            foodAdd =  Convert.ToInt32(faction.foodProduction.displayValue_gold_sec);
-            foodSub = Convert.ToInt32(faction.foodSpending.displayValue_gold_sec);
+            foodAdd =  Convert.ToInt32(faction.foodProduction.displayValue_perMinute);
+            foodSub = Convert.ToInt32(faction.foodSpending.displayValue_perMinute);
             workForce = faction.totalWorkForce;
             diplomancyPoints = player.diplomaticPoints.Int();
             diplomacySoftMax = player.diplomaticPoints_softMax;
@@ -186,7 +186,8 @@ namespace VikingEngine.DSSWars.Interface
 
             //content.space();
             content.Add(new RbTab(0.35f));
-            if (!player.profile.casualControls)
+            if (!player.profile.casualControls &&
+                DssRef.storage.ruleset_instance.module_foodAndWater)
             {
                 int foodSum = foodAdd - foodSub;
                 RichBoxContent buttonContent = new RichBoxContent();
@@ -504,7 +505,9 @@ namespace VikingEngine.DSSWars.Interface
         {
             content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.ResourceType_Gold, TextLib.LargeNumber(player.pfaction.GetFaction().money.GetGold()))));
             content.newLine();
-            content.Add(new RbText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(player.pfaction.GetFaction().GoldSecDiff()))));
+            content.Add(new RbText(DssRef.todoLang.Hud_TotalIncomePerMinute +":", HudLib.TitleColor_Label));
+            content.hspace();
+            content.Add(new RbText(TextLib.LargeNumber(player.pfaction.GetFaction().GoldSecDiff())));
         }
 
         void diplomacyTip(RichBoxContent content, object tag)
@@ -524,15 +527,21 @@ namespace VikingEngine.DSSWars.Interface
             HudLib.Label(content, DssRef.lang.Diplomacy_BelowSoftCap);
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
+            content.hspace();
+            content.Add(new RbText("+" + TextLib.TwoDecimal(player.diplomacyAddPerMin())));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.ThreeDecimal(player.diplomacyAddPerSec()))));
+            content.Add(new RbText(DssRef.lang.Hud_Time_ValuePerMinute, HudLib.InfoYellow_Light));
+            //content.space();
+            //content.Add(new RbText(string.Format(DssRef.todoLang.Info_ResourcePerMinute, TextLib.ThreeDecimal(player.diplomacyAddPerMin()))));
 
             content.newLine();
             HudLib.Label(content, DssRef.lang.Diplomacy_AboveSoftCap);
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
+            content.hspace();
+            content.Add(new RbText("+" + TextLib.TwoDecimal(DssRef.world.diplomacy.AddDiplomacy_AfterSoftlock_PerMinute)));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.ThreeDecimal(DssRef.world.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond))));
+            content.Add(new RbText(DssRef.lang.Hud_Time_ValuePerMinute, HudLib.InfoYellow_Light));
 
             content.newLine();
             content.Add(new RbSeperationLine());
@@ -542,11 +551,11 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new RbText(string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.BuildingType_Embassy, player.pfaction.GetFaction().embassyCount), HudLib.TitleColor_Head));
 
             content.newLine();
-            int diplomacydSec = Convert.ToInt32(DssRef.world.diplomacy.EmbassyAddDiplomacy * 3600);
+            int diplomacyMin = Convert.ToInt32(DssRef.world.diplomacy.EmbassyAddDiplomacy * 3600);
 
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
-            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
+            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacyMin)));
             content.newLine();
 
             HudLib.BulletPoint(content);
@@ -558,14 +567,14 @@ namespace VikingEngine.DSSWars.Interface
         {
             content.Add(new RbImage(SpriteName.WarsResource_FoodAdd));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodProduction, Convert.ToInt32( player.pfaction.GetFaction().foodProduction.displayValue_gold_sec)),
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodProduction, Convert.ToInt32( player.pfaction.GetFaction().foodProduction.displayValue_perMinute)),
                 HudLib.AvailableColor));
 
             content.newLine();
 
             content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodSpending, Convert.ToInt32(player.pfaction.GetFaction().foodSpending.displayValue_gold_sec)),
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodSpending, Convert.ToInt32(player.pfaction.GetFaction().foodSpending.displayValue_perMinute)),
                 HudLib.NotAvailableColor));
 
             content.newLine();

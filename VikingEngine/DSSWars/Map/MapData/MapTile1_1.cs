@@ -557,7 +557,14 @@ namespace VikingEngine.DSSWars.Map.MapData
                     return new MoveCost(2f, 200);
 
                 case TerrainMainType.Decor:
+                    return new MoveCost(2f, 200) { urbanTerrain = true };
+
                 case TerrainMainType.Building:
+                    switch ((TerrainBuildingType)subTerrain)
+                    {
+                        case TerrainBuildingType.Stakes:
+                            return new MoveCost(10f, 1000) { urbanTerrain = true };
+                    }
                     return new MoveCost(2f, 200) { urbanTerrain = true };
 
                 case TerrainMainType.Foil:

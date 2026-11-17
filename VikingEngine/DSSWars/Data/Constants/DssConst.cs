@@ -153,9 +153,9 @@ namespace VikingEngine.DSSWars
         public const int Gold_RichStatus = 1000000;
 
         //CITY
-        public static int TaxPerWorker_copp = 2;
-        public static int UpkeepPerServiceMan_copp = 4;
-        public static int UpkeepPerGuard_copp = 4;       
+        public static int TaxPerWorker_copp = 100;
+        public static int UpkeepPerServiceMan_copp = 200;
+        public static int UpkeepPerGuard_copp = 200;       
         public static int Maxwater = 60;
         public static int WaterResovoirWaterAdd = 20;
 

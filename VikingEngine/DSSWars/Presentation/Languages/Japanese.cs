@@ -253,7 +253,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Editor_FistFrame => "最初のフレーム";
         public override string Editor_LastFrame => "最後のフレーム";
 
-        public override string Economy_AnimalPenUpkeep => "飼育場の維持費: {0}";
+        public override string Economy_AnimalPenUpkeep => "飼育場の維持費";
         public override string Work_SlaughterX => "{0}を屠殺";
 
         public override string BuildCategory_Farming => "農業";
@@ -877,7 +877,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// ゲーム内表示。ユニットの金生産
         /// </summary>
-        public override string Hud_TotalIncome => "総収入/秒: {0}";
+        public override string Hud_TotalIncomePerSecond => "総収入/秒";
 
         /// <summary>
         /// ユニットの金コスト。
@@ -2069,10 +2069,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string WorkForce_Peace => "平和";
         public override string WorkForce_ChildToManTime => "成人年齢: {0} 分";
 
-        public override string Economy_TaxIncome => "税収: {0}";
+        public override string Economy_TaxIncome => "税収";
         public override string Economy_ImportCostsForResource => "{0}の輸入コスト: {1}";
         public override string Economy_BlackMarketCostsForResource => "{0}のブラックマーケットコスト: {1}";
-        public override string Economy_GuardUpkeep => "警備の維持: {0}";
+        public override string Economy_GuardUpkeep => "警備の維持";
 
         public override string Economy_LocalCityTrade_Export => "都市間貿易の輸出: {0}";
         public override string Economy_LocalCityTrade_Import => "都市間貿易の輸入: {0}";
@@ -2432,7 +2432,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string MapGenerator_Terrain_CleanUp_Option => "単一タイルのクリーンアップ";
         public override string MapGenerator_Terrain_CleanUpPass => "クリーンアップパスを実行";
 
-        public override string Economy_ServicemenUpkeep => "従者の維持費: {0}";
+        public override string Economy_ServicemenUpkeep => "従者の維持費";
         public override string Economy_ServicemenUpkeep_Description => "維持費は従者1人あたり{0}ゴールドです";
         public override string Economy_GuardUpkeep_Description => "維持費は衛兵1人あたり{0}ゴールドです";
 

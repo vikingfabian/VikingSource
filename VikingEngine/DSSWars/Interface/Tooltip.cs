@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars.Interface
                         //CraftBlueprint blueprint = ResourceLib.Blueprint(player.BuildControls.placeBuildingType);
                         content.newLine();
                         var bp = player.gameControls.build.placeBuildingOption().blueprint;
-                        bp.toMenu(content, subTile.city);
+                        bp.toMenu(content, subTile.city, false, true, true, true);
 
                         var mayBuild = player.gameControls.map.hover.subTile.mayBuild(player, out GroundType? mustTerraform, out bool upgrade);
                          mayBuild = player.gameControls.build.adjustMayBuild(mayBuild);
@@ -638,7 +638,7 @@ namespace VikingEngine.DSSWars.Interface
             HudLib.LabelAndText(content, SpriteName.WarsConstructBuildingIcon, DssRef.lang.BuildHud_BuildTime, string.Format(DssRef.lang.Hud_Time_XSeconds, TextLib.PlusMinus(groundFromProp.TerraformFromTimeSec)));
             if (groundToProp.TerraformToCost != null)
             {
-                groundToProp.TerraformToCost.toMenu(content, city, false, true, true, false);
+                groundToProp.TerraformToCost.toMenu(content, city, false, true, true, true, false);
             }
         }
     }

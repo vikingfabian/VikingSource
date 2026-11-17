@@ -718,6 +718,14 @@ namespace VikingEngine.DSSWars
             }
 
         }
+        public static void PerMinuteInfo(RichBoxContent content)
+        {
+            InfoButton(content, new RbTooltip(perMinuteTooltip));
+        }
+        static void perMinuteTooltip(RichBoxContent content, object tag)//bool minuteAverage)
+        {
+            content.text(DssRef.todoLang.Info_ResourcePerMinute);
+        }
         public static void Description(RichBoxContent content, string description)
         {
             content.text(description, InfoYellow_Light);
@@ -853,21 +861,22 @@ namespace VikingEngine.DSSWars
             cityEconomy.tax(city, out float taxPerWorker_copp);
             content.text(string.Format(DssRef.lang.Economy_TaxDescription, Resource.Money.CopperToGoldString_Decimal((int)taxPerWorker_copp)));
             content.newParagraph();
-            content.text(DssRef.lang.Info_ResourcePerSecond);
+            content.text(DssRef.todoLang.Info_ResourcePerMinute);
         }
 
         public static void servicemenUpkeepInfo(RichBoxContent content, object tag)
         {
             content.text(string.Format(DssRef.lang.Economy_ServicemenUpkeep_Description, Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerServiceMan_copp)));
+            content.text(string.Format(DssRef.lang.Economy_ServicemenUpkeep_Description, Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerServiceMan_copp)));
             content.newParagraph();
-            content.text(DssRef.lang.Info_ResourcePerSecond);
+            content.text(DssRef.todoLang.Info_ResourcePerMinute);
         }
 
         public static void guardUpkeepInfo(RichBoxContent content, object tag)
         {
             content.text(string.Format(DssRef.lang.Economy_GuardUpkeep_Description, Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerGuard_copp)));
             content.newParagraph();
-            content.text(DssRef.lang.Info_ResourcePerSecond);        
+            content.text(DssRef.todoLang.Info_ResourcePerMinute);
         }
     }
 }

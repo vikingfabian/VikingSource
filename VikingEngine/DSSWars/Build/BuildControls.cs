@@ -1095,7 +1095,6 @@ namespace VikingEngine.DSSWars.Build
             BuildOption buildOpt = BuildLib.BuildOptions[(int)type];
             content.h2(TextLib.LargeFirstLetter(buildOpt.Label()), HudLib.TitleColor_Head);
 
-            //content.newLine();
             buildOpt.blueprint.toMenu(content, city, false, true, true);
             if (buildOpt.altBlueprint != null)
             {
@@ -1146,8 +1145,10 @@ namespace VikingEngine.DSSWars.Build
                             HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
                             content.newLine();
                             HudLib.BulletPoint(content);
-                            content.Add(new RbText(DssRef.todoLang.BuildingType_SoldiersQuarter));
+                            content.Add(new RbText(DssRef.todoLang.BuildingType_SoldiersQuarter, HudLib.TitleColor_TypeName));
                             content.newLine();
+                            content.Add(new RbImage(SpriteName.WarsCityHall));
+                            content.hspace();
                             content.Add(new RbText(string.Format(DssRef.lang.Resource_MaxAmount, maxSoldierQuarters)));
                             content.newLine();
 
@@ -1252,9 +1253,6 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.Logistics:
-
-                    
-
                     content.newParagraph();
                     HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Gain);
                     content.newLine();
@@ -1278,10 +1276,7 @@ namespace VikingEngine.DSSWars.Build
                         content.Add(new RbImage(opt.icon));
                         content.space();
                         content.Add(new RbText(opt.Label()));
-                    }
-                    //content.newParagraph();
-
-                    
+                    }                    
                     break;
 
                 case BuildAndExpandType.ManorLord:
@@ -1321,7 +1316,7 @@ namespace VikingEngine.DSSWars.Build
 
                 case BuildAndExpandType.Noblehouse:
                     HudLib.BulletPoint(content);
-                    //content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
+
                     content.Add(new RbText(string.Format(DssRef.lang.NobleHouse_HousingCount, DssConst.NobleHouseMenCount)));
                     
                     content.newLine();
@@ -1331,27 +1326,10 @@ namespace VikingEngine.DSSWars.Build
                     content.Add(new RbImage(SpriteName.WarsBuild_Embassy));
                     content.Add(new RbText(DssRef.lang.BuildingType_Embassy));
                     content.newLine();
-
-                    //HudLib.BulletPoint(content);
-                    //content.Add(new RbImage(SpriteName.rtsUpkeepTime));
-                    //content.Add(new RbText(string.Format(DssRef.lang.Hud_Upkeep, Resource.Money.CopperToGoldString_Decimal( DssConst.NobleHouseUpkeep_copp))));
-
                     break;
 
                 case BuildAndExpandType.Embassy:
                     EmbassyDescription(content);
-
-                    //int diplomacydSec = Convert.ToInt32(DssRef.world.diplomacy.EmbassyAddDiplomacy * 3600);
-
-                    //HudLib.BulletPoint(content);
-                    //content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
-                    //content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
-                    //content.newLine();
-
-                    //HudLib.BulletPoint(content);
-                    //content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
-                    //content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.world.diplomacy.EmbassyAddMaxDiplomacy)));
-                    //content.newLine();
                     break;
 
                 case BuildAndExpandType.OrchardApple:
@@ -1421,31 +1399,6 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.PigPen:
                     pen(buildOpt, TerrainContent.PigGrowth, ItemResourceType.Pig, CraftResourceLib.SlaughterPig, false, true);                                    
                     break;
-
-                //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                //content.newLine();
-                //HudLib.BulletPoint(content);
-                //content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.PigGrowth.harvestReady - 1))));
-
-                //content.newLine();
-                //HudLib.BulletPoint(content);
-                //content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce))));
-
-                //content.newLine();
-                //HudLib.BulletPoint(content);
-                //content.Add(new RbText(DssRef.lang.BuildHud_Produce));
-                //content.space();
-                //IconName.Item(ItemResourceType.Pig, out SpriteName itemIcon, out string itemName);
-                //content.Add(new RbImage(itemIcon));
-                //content.hspace();
-                //content.Add(new RbText(itemName));    
-                //content.Add(new RbText(DssConst.PigRawFoodAmout.ToString()));
-                //content.Add(new RbImage(SpriteName.WarsResource_RawFood));
-                //content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
-                //content.Add(new RbImage(SpriteName.pjNumPlus));
-                //content.Add(new RbText(DssConst.PigSkinAmount.ToString()));
-                //content.Add(new RbImage(SpriteName.WarsResource_LinenCloth));
-                //content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
 
                 case BuildAndExpandType.OxenPen:
                     pen(buildOpt, TerrainContent.OxenGrowth, ItemResourceType.Oxen, CraftResourceLib.SlaughterOxen, true, false);
@@ -1752,9 +1705,19 @@ namespace VikingEngine.DSSWars.Build
                 content.h2(DssRef.lang.Hud_Upkeep, HudLib.TitleColor_Label);
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbImage(SpriteName.WarsResource_RawFoodRemove));
-                content.hspace();
-                content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood, HudLib.TitleColor_TypeName));
+
+                if (build.upkeep.type == ItemResourceType.RawFood_G)
+                {
+                    content.Add(new RbImage(SpriteName.WarsResource_RawFoodRemove));
+                    content.hspace();
+                    content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood, HudLib.TitleColor_TypeName));
+                }
+                else
+                {
+                    content.Add(new RbImage(SpriteName.WarsResource_RawMeat));
+                    content.hspace();
+                    content.Add(new RbText(DssRef.lang.Resource_TypeName_Meat, HudLib.TitleColor_TypeName));
+                }
                 content.hspace();
                 content.Add(new RbText(build.upkeep.amount.ToString()));
 

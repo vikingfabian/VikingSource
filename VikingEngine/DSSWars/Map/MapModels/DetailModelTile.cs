@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.GameObject.Animal;
@@ -35,7 +36,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
             IntervalF.FromCenter(0.5f * Map.MapData.MapTile1_1.ModelScale, 0.45f * Map.MapData.MapTile1_1.ModelScale);
         static readonly IntervalF GrassTuftCenterRange =
                     IntervalF.FromCenter(0.4f * Map.MapData.MapTile1_1.ModelScale, 0.35f * Map.MapData.MapTile1_1.ModelScale);
-
+        const float WallSize = 1.6f;
         public static List<LootFest.VoxelModelName> LoadModel()
         {
             return new List<LootFest.VoxelModelName>
@@ -783,11 +784,12 @@ namespace VikingEngine.DSSWars.Map.MapModels
             wp.X += MapTile1_1.SubTileHalfWidth;
             wp.Z += MapTile1_1.SubTileHalfWidth;
 
-            const float WallSize = 1.6f;
+            
             surfaceColor = ColorExt.ChangeBrighness(surfaceColor, -30);
 
             switch (buildingType)
             {
+                
                 case TerrainWallType.Palisade:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_palisade, 0, wp, Map.MapData.MapTile1_1.ModelScale * WallSize));
                     break;
@@ -821,9 +823,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 case TerrainWallType.StoneGate:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonewall, 5, VectorExt.AddY(wp, -0.03f), Map.MapData.MapTile1_1.ModelScale * 1.5f));
                     break;
-                case TerrainWallType.StoneHouse:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonewall, 6, VectorExt.AddY(wp, -0.03f), Map.MapData.MapTile1_1.ModelScale * WallSize));
-                    break;
+                
 
                 default:
                     throw new NotImplementedException();
@@ -1037,6 +1037,10 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     break;
                 case TerrainBuildingType.SoldiersQuarter_Large:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_guard_house, 1, wp, Map.MapData.MapTile1_1.ModelScale * 1.5f));
+                    break;
+
+                case TerrainBuildingType.Stakes:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_palisade, 0, VectorExt.AddY(wp, -0.01f), Map.MapData.MapTile1_1.ModelScale * 0.8f));
                     break;
 
                 case TerrainBuildingType.Tavern:
@@ -1516,7 +1520,10 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         }
                     }
                     break;
-
+                     
+                case TerrainDecorType.StoneHouse:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonewall, 6, VectorExt.AddY(wp, -0.03f), Map.MapData.MapTile1_1.ModelScale * WallSize));
+                    break;
 
                 default:
                     throw new NotImplementedException();
@@ -1532,7 +1539,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     animalData = new List<AnimalData>(8);
                 }
 
-                int count = penGrowth.visualCount(subTile.terrainAmount);//(subTile.terrainAmount + penGrowth.maxSize - 1) / penGrowth.maxSize;
+                int count = penGrowth.visualCount(subTile.terrainAmount);
                 var animal = new AnimalData(wp, animalType);
                 for (int i = 0; i < count; i++)
                 {

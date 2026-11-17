@@ -143,6 +143,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
         GuardHouse_Small,
         GuardHouse_Large,
 
+        Stakes,
         Brewery,
         Work_Cook,
         Work_Bench,
@@ -203,7 +204,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
         CityHall_Tent,
         ManorLord,
 
-        //NEW
+        
         GreatHall,
         Pottery,
         DryingPan,
@@ -222,6 +223,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
 
     enum TerrainWallType : byte
     {
+        
         DirtWall,
         DirtTower,
         WoodWall,
@@ -232,17 +234,17 @@ namespace VikingEngine.DSSWars.Map.MapLib
         StoneWallBlueRoof,
         StoneWallWoodHouse,
         StoneGate,
-        StoneHouse,
+        
         Palisade,
         NUM_NONE
     }
 
     enum TerrainDecorType : byte
     {
-        
-       // CobbleStones,
 
-       
+        // CobbleStones,
+        StoneHouse,
+
         Statue_ThePlayer,
        
         GardenFourBushes,

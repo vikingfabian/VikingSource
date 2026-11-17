@@ -255,7 +255,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Editor_FistFrame => "Erster Frame";
         public override string Editor_LastFrame => "Letzter Frame";
 
-        public override string Economy_AnimalPenUpkeep => "Gehege-Unterhalt: {0}";
+        public override string Economy_AnimalPenUpkeep => "Gehege-Unterhalt";
         public override string Work_SlaughterX => "Schlachte {0}";
 
         public override string BuildCategory_Farming => "Landwirtschaft";
@@ -766,7 +766,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GameSpeedLabel => "Spielgeschwindigkeit: {0}x";
         public override string Input_GameSpeed => "Spielgeschwindigkeit";
-        public override string Hud_TotalIncome => "Gesamteinnahmen/Sekunde: {0}";
+        public override string Hud_TotalIncomePerSecond => "Gesamteinnahmen/Sekunde";
         public override string Hud_Upkeep => "Unterhalt";
         public override string Hud_ArmyUpkeep => "Armeeunterhalt: {0}";
 
@@ -1935,10 +1935,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string WorkForce_Peace => "Frieden";
         public override string WorkForce_ChildToManTime => "Erwachsenenalter: {0} Minuten";
 
-        public override string Economy_TaxIncome => "Steuereinnahmen: {0}";
+        public override string Economy_TaxIncome => "Steuereinnahmen";
         public override string Economy_ImportCostsForResource => "Importkosten für {0}: {1}";
         public override string Economy_BlackMarketCostsForResource => "Schwarzmarktpreise für {0}: {1}";
-        public override string Economy_GuardUpkeep => "Wachunterhalt: {0}";
+        public override string Economy_GuardUpkeep => "Wachunterhalt";
 
         public override string Economy_LocalCityTrade_Export => "Stadthandel Export: {0}";
         public override string Economy_LocalCityTrade_Import => "Stadthandel Import: {0}";
@@ -2300,7 +2300,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string MapGenerator_Terrain_CleanUp_Option => "Einzelfeldbereinigung";
         public override string MapGenerator_Terrain_CleanUpPass => "Cleanup-Pass ausführen";
 
-        public override string Economy_ServicemenUpkeep => "Unterhalt für Dienstleute: {0}";
+        public override string Economy_ServicemenUpkeep => "Unterhalt für Dienstleute";
         public override string Economy_ServicemenUpkeep_Description => "Unterhalt beträgt {0} Gold pro Dienstmann";
         public override string Economy_GuardUpkeep_Description => "Unterhalt beträgt {0} Gold pro Wächter";
 

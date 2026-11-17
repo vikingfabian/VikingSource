@@ -685,37 +685,40 @@ namespace VikingEngine.DSSWars
         {
             if (isAlive)
             {
-
+                /*
+                 //Local trade
                 CityTradeImport = CityTradeImportCounting;
                 CityTradeExport = CityTradeExportCounting;
                 CityTradeImportCounting -= CityTradeImport;
                 CityTradeExportCounting -= CityTradeExport;
-
-                double incomeMultiplier = 1;
-                if (player.IsBot())
-                {
-                    if (DssRef.state.events.RunAi() == false)
-                    {
-                        incomeMultiplier = 0.1;
-                    }
-                    else if (player.aggressionLevel > AbsPlayer.AggressionLevel0_Passive)
-                    {
-                        incomeMultiplier = DssRef.difficulty.aiEconomyMultiplier;
-                    }
-                }
-                else if (player.IsRemotePlayer())
-                {
-                    incomeMultiplier = player.GetRemotePlayer().incomeMultiplier;
-                }
+                */
 
                 double income = 0;
                 Money citiesTotalCopper = Money.Zero;
+                double incomeMultiplier = 1;
+                if (minute)
+                {
+                    if (player.IsBot())
+                    {
+                        if (DssRef.state.events.RunAi() == false)
+                        {
+                            incomeMultiplier = 0.1;
+                        }
+                        else if (player.aggressionLevel > AbsPlayer.AggressionLevel0_Passive)
+                        {
+                            incomeMultiplier = DssRef.difficulty.aiEconomyMultiplier;
+                        }
+                    }
+                    else if (player.IsRemotePlayer())
+                    {
+                        incomeMultiplier = player.GetRemotePlayer().incomeMultiplier;
+                    }
+                }                
 
                 player.oneSecUpdate();
 
                 embassyCount = 0;
-                //var citiesC = cities.counter();
-                //while (citiesC.Next())
+                
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
                 {
@@ -724,8 +727,11 @@ namespace VikingEngine.DSSWars
                         city.oneSecUpdate(minute);
                         embassyCount += city.buildingStructure.Embassy_count;
 
-                        income += city.income_oneSecUpdate(incomeMultiplier);
-                        citiesTotalCopper.copper += city.money.copper;
+                        if (minute)
+                        {
+                            income += city.income_oneMinUpdate(incomeMultiplier);
+                            citiesTotalCopper.copper += city.money.copper;
+                        }
                     }
                     else
                     {
@@ -734,18 +740,20 @@ namespace VikingEngine.DSSWars
                     }
                 }
 
-
-                if (DssRef.storage.ruleset_instance.module_physicalGold)
+                if (minute)
                 {
-                    money.copper += Convert.ToInt32(income);
-                }
-                else
-                {
-                    money = citiesTotalCopper;
-                }
+                    if (DssRef.storage.ruleset_instance.module_physicalGold)
+                    {
+                        money.copper += Convert.ToInt32(income);
+                    }
+                    else
+                    {
+                        money = citiesTotalCopper;
+                    }
 
-                previuosMoney = storeMoney;
-                storeMoney = money;
+                    previuosMoney = storeMoney;
+                    storeMoney = money;
+                }
 
                 if (cities.Count == 0 && !player.protectedFromDelete && Ref.netSession.IsHost)
                 {

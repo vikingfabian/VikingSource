@@ -260,7 +260,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Editor_FistFrame => "Primeiro frame";
         public override string Editor_LastFrame => "Último frame";
 
-        public override string Economy_AnimalPenUpkeep => "Manutenção do cercado: {0}";
+        public override string Economy_AnimalPenUpkeep => "Manutenção do cercado";
         public override string Work_SlaughterX => "Abater {0}";
 
         public override string BuildCategory_Farming => "Agricultura";
@@ -783,7 +783,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Input_GameSpeed => "Velocidade do jogo";
 
         /// <summary>Ingame display. Unit gold production</summary>
-        public override string Hud_TotalIncome => "Renda total/segundo: {0}";
+        public override string Hud_TotalIncomePerSecond => "Renda total/segundo";
 
         /// <summary>Unit gold cost.</summary>
         public override string Hud_Upkeep => "Manutenção";
@@ -1625,10 +1625,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string WorkForce_Peace => "Paz";
         public override string WorkForce_ChildToManTime => "Maioridade: {0} minutos";
 
-        public override string Economy_TaxIncome => "Imposto: {0}";
+        public override string Economy_TaxIncome => "Imposto";
         public override string Economy_ImportCostsForResource => "Custo de importação de {0}: {1}";
         public override string Economy_BlackMarketCostsForResource => "Custo no mercado negro de {0}: {1}";
-        public override string Economy_GuardUpkeep => "Manutenção da guarda: {0}";
+        public override string Economy_GuardUpkeep => "Manutenção da guarda";
 
         public override string Economy_LocalCityTrade_Export => "Exportação da cidade: {0}";
         public override string Economy_LocalCityTrade_Import => "Importação da cidade: {0}";
@@ -1990,7 +1990,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string MapGenerator_Terrain_CleanUp_Option => "Limpeza de tiles isolados";
         public override string MapGenerator_Terrain_CleanUpPass => "Executar passe Limpar";
 
-        public override string Economy_ServicemenUpkeep => "Manutenção de serviçais: {0}";
+        public override string Economy_ServicemenUpkeep => "Manutenção de serviçais";
         public override string Economy_ServicemenUpkeep_Description => "Manutenção é {0} ouro por serviçal";
         public override string Economy_GuardUpkeep_Description => "Manutenção é {0} ouro por guarda";
 

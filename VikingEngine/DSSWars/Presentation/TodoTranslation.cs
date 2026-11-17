@@ -19,6 +19,10 @@ namespace VikingEngine.DSSWars.Presentation
 
     partial class TodoTranslation
     {
+        public string Hud_TotalIncomePerMinute => "Total income/minute";
+        public string Tab_Market => "Market";
+
+        public string Info_ResourcePerMinute => "Displayed in Resource Per Minute.";
         public string Conscript_Parry => "Parry";
         public string Conscript_Parry_Description => "Higher parry will block some melee attacks";
 
@@ -53,8 +57,11 @@ namespace VikingEngine.DSSWars.Presentation
         public string BuildingType_SoldiersQuarter => "Soldiers quarter";
         public string BuildingType_Economics => "Economics";
         public string BuildingType_TingsHouse => "Tings house";
+        public string BuildingType_Stakes => "Stakes";
+        public string Terrain_ReducesMovement => "Will reduce movement speed";
 
         public string Resource_TypeName_FineWood => "Fine wood";
+        public string Resource_ConvertTitle => "Convert";
 
         public string ArmySupplyCount => "Army supply count";
         public string ArmySupplyCount_ExpandByX => "Will expand army supply count by {0}";

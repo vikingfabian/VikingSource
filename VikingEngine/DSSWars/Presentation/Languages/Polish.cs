@@ -263,7 +263,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Editor_FistFrame => "Pierwsza klatka";
         public override string Editor_LastFrame => "Ostatnia klatka";
 
-        public override string Economy_AnimalPenUpkeep => "Utrzymanie zagrody: {0}";
+        public override string Economy_AnimalPenUpkeep => "Utrzymanie zagrody";
         public override string Work_SlaughterX => "Ubij {0}";
 
         public override string BuildCategory_Farming => "Rolnictwo";
@@ -905,7 +905,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Wyświetlanie w grze. Produkcja złota jednostki.
         /// </summary>
-        public override string Hud_TotalIncome => "Łączny dochód/sek: {0}";
+        public override string Hud_TotalIncomePerSecond => "Łączny dochód/sek";
 
         /// <summary>
         /// Koszt złota jednostki.
@@ -2105,10 +2105,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string WorkForce_Peace => "Pokój";
         public override string WorkForce_ChildToManTime => "Wiek dorosłości: {0} min";
 
-        public override string Economy_TaxIncome => "Przychód z podatków: {0}";
+        public override string Economy_TaxIncome => "Przychód z podatków";
         public override string Economy_ImportCostsForResource => "Koszty importu ({0}): {1}";
         public override string Economy_BlackMarketCostsForResource => "Koszty czarnorynkowe ({0}): {1}";
-        public override string Economy_GuardUpkeep => "Utrzymanie straży: {0}";
+        public override string Economy_GuardUpkeep => "Utrzymanie straży";
 
         public override string Economy_LocalCityTrade_Export => "Eksport handlowy miasta: {0}";
         public override string Economy_LocalCityTrade_Import => "Import handlowy miasta: {0}";
@@ -2482,7 +2482,7 @@ namespace VikingEngine.DSSWars.Presentation
 
 
 
-        public override string Economy_ServicemenUpkeep => "Utrzymanie personelu: {0}";
+        public override string Economy_ServicemenUpkeep => "Utrzymanie personelu";
         public override string Economy_ServicemenUpkeep_Description => "Koszt utrzymania to {0} złota za pracownika";
         public override string Economy_GuardUpkeep_Description => "Koszt utrzymania to {0} złota za strażnika";
 

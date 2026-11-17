@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
             return GroundProperties[(int)type];
         }
 
-        public static bool MayBuild_GroundCheck(GroundType groundType, BuildingGroundRequirement req, out GroundType? mustTerraform)
+        public static bool  MayBuild_GroundCheck(GroundType groundType, BuildingGroundRequirement req, out GroundType? mustTerraform)
         {
             var prop = Get(groundType);
             mustTerraform = null;

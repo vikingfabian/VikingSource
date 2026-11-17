@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Editor_FistFrame => "Première frame";
         public override string Editor_LastFrame => "Dernière frame";
 
-        public override string Economy_AnimalPenUpkeep => "Entretien de l'enclos : {0}";
+        public override string Economy_AnimalPenUpkeep => "Entretien de l'enclos";
         public override string Work_SlaughterX => "Abattre {0}";
 
         public override string BuildCategory_Farming => "Agriculture";
@@ -882,7 +882,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Ingame display. Unit gold production
         /// </summary>
-        public override string Hud_TotalIncome => "Revenu total/seconde: {0}";
+        public override string Hud_TotalIncomePerSecond => "Revenu total/seconde";
 
         /// <summary>
         /// Unit gold cost.
@@ -2081,10 +2081,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string WorkForce_Peace => "Paix";
         public override string WorkForce_ChildToManTime => "Âge adulte: {0} minutes";
 
-        public override string Economy_TaxIncome => "Revenus des taxes: {0}";
+        public override string Economy_TaxIncome => "Revenus des taxes";
         public override string Economy_ImportCostsForResource => "Coûts des imports pour {0}: {1}";
         public override string Economy_BlackMarketCostsForResource => "Coûts du marché noir pour {0}: {1}";
-        public override string Economy_GuardUpkeep => "Maintenance des gardes: {0}";
+        public override string Economy_GuardUpkeep => "Maintenance des gardes";
 
         public override string Economy_LocalCityTrade_Export => "Exports de la ville: {0}";
         public override string Economy_LocalCityTrade_Import => "Imports de la ville: {0}";
@@ -2467,7 +2467,7 @@ namespace VikingEngine.DSSWars.Presentation
 
 
 
-        public override string Economy_ServicemenUpkeep => "Maintenances des hommes de service: {0}";
+        public override string Economy_ServicemenUpkeep => "Maintenances des hommes de service";
         public override string Economy_ServicemenUpkeep_Description => "La maintenance coûte {0} d'or par homme de service";
         public override string Economy_GuardUpkeep_Description => "La maintenance coûte {0} d'or par garde";
 

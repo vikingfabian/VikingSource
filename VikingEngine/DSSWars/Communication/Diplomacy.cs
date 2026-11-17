@@ -36,13 +36,13 @@ namespace VikingEngine.DSSWars
         public List<PFaction> aiPlayerAsynchUpdate_collectAlliances = new List<PFaction>(8);
 
         public int ServantMaxCities = 2;
-        public int DefaultMaxDiplomacy = 4;
-        public double DefaultDiplomacyPerSecond/* = 1.0 / 240.0*/;
-        public double EmbassyAddDiplomacy = 1.0 / 480.0;
-        public double EmbassyAddMaxDiplomacy = 0.25;
+        public int DefaultMaxDiplomacy = 0;
+        public double DefaultDiplomacyPerMinute;
+        public double EmbassyAddDiplomacy = 1.0 / 8.0;
+        public double EmbassyAddMaxDiplomacy = 0;
 
 
-        public double AddDiplomacy_AfterSoftlock_PerSecond = 1 / 120.0;
+        public double AddDiplomacy_AfterSoftlock_PerMinute = 0.5;
         public double Diplomacy_HardMax_Add = 5;
 
         public double SpeakTermsOnWar_BadChance;
@@ -56,13 +56,16 @@ namespace VikingEngine.DSSWars
             this.factionCapacity = factionCapacity;
             diplomaticRelations = new DiplomaticRelation[length()];
             initRegister(factionCapacity - 1);
+        }
 
+        public void RefreshDifficulty()
+        {
             switch (DssRef.difficulty.diplomacyDifficulty)
             {
                 case 0:
                     DefaultMaxDiplomacy = 4;
-                    DefaultDiplomacyPerSecond = 1.0 / 60.0;
-                    EmbassyAddDiplomacy = 1.0 / 240.0;
+                    DefaultDiplomacyPerMinute = 1.0;
+                    EmbassyAddDiplomacy = 0.25;
                     EmbassyAddMaxDiplomacy = 0.5;
                     ServantMaxCities = 4;
 
@@ -75,8 +78,8 @@ namespace VikingEngine.DSSWars
                 default:
                 case 1:
                     DefaultMaxDiplomacy = 3;
-                    DefaultDiplomacyPerSecond = 1.0 / 90.0;
-                    EmbassyAddDiplomacy = 1.0 / 300.0;
+                    DefaultDiplomacyPerMinute = 0.75;
+                    EmbassyAddDiplomacy = 0.2;
                     EmbassyAddMaxDiplomacy = 0.25;
 
                     SpeakTermsOnWar_BadChance = 0.5;
@@ -87,8 +90,8 @@ namespace VikingEngine.DSSWars
 
                 case 2:
                     DefaultMaxDiplomacy = 2;
-                    DefaultDiplomacyPerSecond = 1.0 / 120.0;
-                    EmbassyAddDiplomacy = 1.0 / 600.0;
+                    DefaultDiplomacyPerMinute = 0.5;
+                    EmbassyAddDiplomacy = 0.1;
                     EmbassyAddMaxDiplomacy = 0.1;
 
                     SpeakTermsOnWar_BadChance = 0.8;
@@ -97,7 +100,6 @@ namespace VikingEngine.DSSWars
                     SpeakTermsOnNeigbor_NoneChance = 0.2;
                     break;
             }
-
         }
 
         private void initRegister(int length)

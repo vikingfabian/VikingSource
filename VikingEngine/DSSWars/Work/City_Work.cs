@@ -1416,7 +1416,7 @@ namespace VikingEngine.DSSWars.GameObject
                         GroundPropertiesLib.MayBuild_GroundCheck(ground, buildOpt.groundRequirement, out var mustTerraform);
                         if (mustTerraform.HasValue)
                         {
-                            var bp = GroundPropertiesLib.Get(ground).TerraformToCost;
+                            var bp = GroundPropertiesLib.Get(mustTerraform.Value).TerraformToCost;
                             if (bp != null && !bp.available(this))
                             {
                                 return false;
@@ -1486,8 +1486,30 @@ namespace VikingEngine.DSSWars.GameObject
         {
             switch (work.work)
             {
+                case WorkType.Terraform:
+                    {
+                        var bp = GroundPropertiesLib.Get((GroundType)work.subWork).TerraformToCost;
+                        if (bp != null)
+                        {
+                            reserve(bp);
+                        }
+                    }
+                    break;
+
                 case WorkType.Build:
-                    reserve(BuildLib.BuildOptions[work.subWork].blueprint);
+                    var buildOpt = BuildLib.BuildOptions[work.subWork];
+                    reserve(buildOpt.blueprint);
+
+                    GroundPropertiesLib.MayBuild_GroundCheck(DssRef.world.subTileGrid.Get(work.subTile).groundType, buildOpt.groundRequirement, out var mustTerraform);
+                    if (mustTerraform.HasValue)
+                    {
+                        var bp = GroundPropertiesLib.Get(mustTerraform.Value).TerraformToCost;
+                        if (bp != null)
+                        {
+                            reserve(bp);
+                        }
+                    }
+
                     break;
                 case WorkType.Craft:
                     ItemResourceType item = (ItemResourceType)work.subWork;

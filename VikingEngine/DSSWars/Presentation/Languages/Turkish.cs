@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Editor_FistFrame => "İlk frame";
         public override string Editor_LastFrame => "Son frame";
 
-        public override string Economy_AnimalPenUpkeep => "Ağıl bakım masrafı: {0}";
+        public override string Economy_AnimalPenUpkeep => "Ağıl bakım masrafı";
         public override string Work_SlaughterX => "{0} kes";
 
         public override string BuildCategory_Farming => "Tarım";
@@ -884,7 +884,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Ingame display. Unit gold production
         /// </summary>
-        public override string Hud_TotalIncome => "Saniye Başı Gelir: {0}";
+        public override string Hud_TotalIncomePerSecond => "Saniye Başı Gelir";
 
         /// <summary>
         /// Unit gold cost.
@@ -2083,10 +2083,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string WorkForce_Peace => "Refah";
         public override string WorkForce_ChildToManTime => "Büyüme süresi: {0} dakika";
 
-        public override string Economy_TaxIncome => "Vergi geliri: {0}";
+        public override string Economy_TaxIncome => "Vergi geliri";
         public override string Economy_ImportCostsForResource => "{0} için ithalat maliyeti: {1} ";
         public override string Economy_BlackMarketCostsForResource => "{0} için karaborsa maliyeti: {1}";
-        public override string Economy_GuardUpkeep => "Muhafız maliyeti: {0}";
+        public override string Economy_GuardUpkeep => "Muhafız maliyeti";
 
         public override string Economy_LocalCityTrade_Export => "Şehir ticareti, ihracat: {0}";
         public override string Economy_LocalCityTrade_Import => "Şehir ticareti, ithalat {0}";
@@ -2468,7 +2468,7 @@ namespace VikingEngine.DSSWars.Presentation
 
 
 
-        public override string Economy_ServicemenUpkeep => "Hizmetli masrafı: {0}";
+        public override string Economy_ServicemenUpkeep => "Hizmetli masrafı";
         public override string Economy_ServicemenUpkeep_Description => "Hizmetli başına altın gideri: {0}";
         public override string Economy_GuardUpkeep_Description => "Muhafız başına altın gideri: {0}";
 

@@ -260,7 +260,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Editor_FistFrame => "第一帧";
         public override string Editor_LastFrame => "最后一帧";
 
-        public override string Economy_AnimalPenUpkeep => "围栏维护费：{0}";
+        public override string Economy_AnimalPenUpkeep => "围栏维护费";
         public override string Work_SlaughterX => "宰杀{0}";
 
         public override string BuildCategory_Farming => "农业";
@@ -881,7 +881,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 游戏内显示。单位黄金产量
         /// </summary>
-        public override string Hud_TotalIncome => "每秒总收入: {0}";
+        public override string Hud_TotalIncomePerSecond => "每秒总收入";
 
         /// <summary>
         /// 单位黄金成本。
@@ -2066,10 +2066,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string WorkForce_Peace => "和平";
         public override string WorkForce_ChildToManTime => "成年时间: {0} 分钟";
 
-        public override string Economy_TaxIncome => "税收收入: {0}";
+        public override string Economy_TaxIncome => "税收收入";
         public override string Economy_ImportCostsForResource => "{0}的进口成本: {1}";
         public override string Economy_BlackMarketCostsForResource => "{0}的黑市价格: {1}";
-        public override string Economy_GuardUpkeep => "守卫维护费用: {0}";
+        public override string Economy_GuardUpkeep => "守卫维护费用";
 
         public override string Economy_LocalCityTrade_Export => "城市贸易出口: {0}";
         public override string Economy_LocalCityTrade_Import => "城市贸易进口: {0}";
@@ -2435,7 +2435,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string MapGenerator_Terrain_CleanUp_Option => "清理单个格子";
         public override string MapGenerator_Terrain_CleanUpPass => "执行清理流程";
 
-        public override string Economy_ServicemenUpkeep => "服务人员维护费：{0}";
+        public override string Economy_ServicemenUpkeep => "服务人员维护费";
         public override string Economy_ServicemenUpkeep_Description => "每位服务人员的维护费用为 {0} 金币";
         public override string Economy_GuardUpkeep_Description => "每位守卫的维护费用为 {0} 金币";
 

@@ -316,6 +316,7 @@ namespace VikingEngine.DSSWars.Data
         BuildAndExpandType.CobblestoneRoad,
         BuildAndExpandType.PavedRoad,
 
+        BuildAndExpandType.Stakes,
         BuildAndExpandType.DirtWall,
         BuildAndExpandType.DirtTower,
         BuildAndExpandType.WoodWall,

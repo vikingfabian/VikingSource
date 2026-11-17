@@ -439,7 +439,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Editor_FistFrame => "First frame";
         public override string Editor_LastFrame => "Last frame";
 
-        public override string Economy_AnimalPenUpkeep => "Pen upkeep: {0}";
+        public override string Economy_AnimalPenUpkeep => "Pen upkeep";
         public override string Work_SlaughterX => "Slaughter {0}";
 
         public override string BuildCategory_Farming => "Farming";
@@ -1088,7 +1088,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Ingame display. Unit gold production
         /// </summary>
-        public override string Hud_TotalIncome => "Total income/second: {0}";
+        public override string Hud_TotalIncomePerSecond => "Total income/second";
 
         /// <summary>
         /// Unit gold cost.
@@ -2293,7 +2293,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Economy_TaxIncome => "Tax income";
         public override string Economy_ImportCostsForResource => "Import costs for {0}: {1}";
         public override string Economy_BlackMarketCostsForResource => "Black market costs for {0}: {1}";
-        public override string Economy_GuardUpkeep => "Guard upkeep: {0}";
+        public override string Economy_GuardUpkeep => "Guard upkeep";
 
         public override string Economy_LocalCityTrade_Export => "City trade export: {0}";
         public override string Economy_LocalCityTrade_Import => "City trade import: {0}";
@@ -2684,7 +2684,7 @@ namespace VikingEngine.DSSWars.Presentation
 
 
 
-        public override string Economy_ServicemenUpkeep => "Servicemen upkeep: {0}";
+        public override string Economy_ServicemenUpkeep => "Servicemen upkeep";
         public override string Economy_ServicemenUpkeep_Description => "Upkeep is {0} gold per serviceman";
         public override string Economy_GuardUpkeep_Description => "Upkeep is {0} gold per guard";
 

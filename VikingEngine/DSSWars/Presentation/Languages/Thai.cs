@@ -260,7 +260,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Editor_FistFrame => TextLib.ThaiConv("เฟรม|แรก");
         public override string Editor_LastFrame => TextLib.ThaiConv("เฟรม|สุดท้าย");
 
-        public override string Economy_AnimalPenUpkeep => TextLib.ThaiConv("ค่า|บำรุง|คอก:|{0}");
+        public override string Economy_AnimalPenUpkeep => TextLib.ThaiConv("ค่า|บำรุง|คอก");
         public override string Work_SlaughterX => TextLib.ThaiConv("ชำแหละ|{0}");
 
         public override string BuildCategory_Farming => TextLib.ThaiConv("เกษตรกรรม");
@@ -902,7 +902,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Ingame display. Unit gold production
         /// </summary>
-        public override string Hud_TotalIncome => TextLib.ThaiConv("ราย|ได้|ทั้งหมด/วินาที: {0}");
+        public override string Hud_TotalIncomePerSecond => TextLib.ThaiConv("ราย|ได้|ทั้งหมด/วินาที");
 
         /// <summary>
         /// Unit gold cost.
@@ -2100,10 +2100,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string WorkForce_Peace => TextLib.ThaiConv("สันติ|ภาพ");
         public override string WorkForce_ChildToManTime => TextLib.ThaiConv("อายุ|เมื่อ|โต|เต็ม|วัย: {0} |นาที");
 
-        public override string Economy_TaxIncome => TextLib.ThaiConv("ราย|ได้|จาก|ภาษี: {0}");
+        public override string Economy_TaxIncome => TextLib.ThaiConv("ราย|ได้|จาก|ภาษี");
         public override string Economy_ImportCostsForResource => TextLib.ThaiConv("ค่า|นำ|เข้า| {0}: {1}");
         public override string Economy_BlackMarketCostsForResource => TextLib.ThaiConv("ราคา|ตลาด|มืด|สำหรับ| {0}: {1}");
-        public override string Economy_GuardUpkeep => TextLib.ThaiConv("ค่า|บำรุง|รักษา|ยาม: {0}");
+        public override string Economy_GuardUpkeep => TextLib.ThaiConv("ค่า|บำรุง|รักษา|ยาม");
 
         public override string Economy_LocalCityTrade_Export => TextLib.ThaiConv("การ|ส่ง|ออก|ของ|เมือง: {0}");
         public override string Economy_LocalCityTrade_Import => TextLib.ThaiConv("การ|นำ|เข้า|ของ|เมือง: {0}");
@@ -2473,7 +2473,7 @@ namespace VikingEngine.DSSWars.Presentation
 
 
 
-        public override string Economy_ServicemenUpkeep => TextLib.ThaiConv("ค่า|บำรุง|รักษา|พล|ทหาร: {0}");
+        public override string Economy_ServicemenUpkeep => TextLib.ThaiConv("ค่า|บำรุง|รักษา|พล|ทหาร");
         public override string Economy_ServicemenUpkeep_Description => TextLib.ThaiConv("ค่า|บำรุง|รักษา|คือ| {0} |ทอง|ต่อ|พล|ทหาร|หนึ่ง|คน");
         public override string Economy_GuardUpkeep_Description => TextLib.ThaiConv("ค่า|บำรุง|รักษา|คือ| {0} |ทอง|ต่อ|ยาม|หนึ่ง|คน");
 

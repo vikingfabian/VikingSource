@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars.Players.Orders
             if (buildingType != BuildAndExpandType.TERRAFORM)
             {
                 content.h2(SpriteName.WarsConstructBuildingIcon, upgrade ? DssRef.lang.Upgrade_Order : DssRef.lang.Build_Order, HudLib.TitleColor_Head);
-                BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, pcity.GetCity(), upgrade);
+                BuildLib.BuildOptions[(int)buildingType].blueprint.toMenu(content, pcity.GetCity(), upgrade, true, true, true);
 
                 content.newLine();
             }
@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.Players.Orders
             return false;
         }
 
-        public WorkQueMember createWorkQue(/*out CraftBlueprint blueprint*/)
+        public WorkQueMember createWorkQue()
         {
             WorkQueMember result;
             if (buildingType == BuildAndExpandType.TERRAFORM)

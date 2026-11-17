@@ -121,6 +121,8 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
 
         public int wallCount;
 
+        public int stakesCount;
+
         public IntVector2 SuggestedTrapperPos;
 
         public BuildingStructure()
@@ -308,6 +310,9 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
                     return ResearchCenter_count;
                 case BuildAndExpandType.BookPress:
                     return BookPress_count;
+
+                case BuildAndExpandType.Stakes:
+                    return stakesCount;
 
                 case BuildAndExpandType.DirtWall:
                 case BuildAndExpandType.DirtTower:

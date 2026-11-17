@@ -260,7 +260,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Editor_FistFrame => "Première frame";
         public override string Editor_LastFrame => "Dernière frame";
 
-        public override string Economy_AnimalPenUpkeep => "Entretien de l'enclos : {0}";
+        public override string Economy_AnimalPenUpkeep => "Entretien de l'enclos";
         public override string Work_SlaughterX => "Abattre {0}";
 
         public override string BuildCategory_Farming => "Agriculture";
@@ -876,7 +876,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Ingame display. Unit gold production
         /// </summary>
-        public override string Hud_TotalIncome => "Entrate totali/secondo: {0}";
+        public override string Hud_TotalIncomePerSecond => "Entrate totali/secondo";
 
         /// <summary>
         /// Unit gold cost.
@@ -2080,10 +2080,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string WorkForce_Peace => "Pace";
         public override string WorkForce_ChildToManTime => "Età adulta: {0} minuti";
 
-        public override string Economy_TaxIncome => "Entrate fiscali: {0}";
+        public override string Economy_TaxIncome => "Entrate fiscali";
         public override string Economy_ImportCostsForResource => "Costi d’importazione per {0}: {1}";
         public override string Economy_BlackMarketCostsForResource => "Costi del mercato nero per {0}: {1}";
-        public override string Economy_GuardUpkeep => "Mantenimento guardie: {0}";
+        public override string Economy_GuardUpkeep => "Mantenimento guardie";
 
         public override string Economy_LocalCityTrade_Export => "Esportazioni cittadine: {0}";
         public override string Economy_LocalCityTrade_Import => "Importazioni cittadine: {0}";
@@ -2472,7 +2472,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string MapGenerator_Terrain_CleanUp_Option => "Ripulisci le singole caselle";
         public override string MapGenerator_Terrain_CleanUpPass => "Esegui passaggio di pulizia";
 
-        public override string Economy_ServicemenUpkeep => "Mantenimento del personale di servizio: {0}";
+        public override string Economy_ServicemenUpkeep => "Mantenimento del personale di servizio";
         public override string Economy_ServicemenUpkeep_Description => "Il mantenimento è di {0} oro per uomo di servizio";
         public override string Economy_GuardUpkeep_Description => "Il mantenimento è di {0} oro per guardia";
 

@@ -17,7 +17,13 @@ namespace VikingEngine.DataStream
 #elif CCG
                 "PickHero";
 #elif DSS
-                "DSS_war_storage"; //"DSS_warparty"; 
+                "DSS_war_storage"
+#if DEBUG
+ + "_DEBUG";
+#else
+;
+#endif
+
 #elif TOGG
                 "TowardsGoldAndGlory"; 
 #else
@@ -157,14 +163,14 @@ namespace VikingEngine.DataStream
 
                 return androidPath;
             }
-            if (PlatformSettings.ReleaseBuild && PlatformSettings.PC_platform)
-            {               
+            //if (PlatformSettings.ReleaseBuild && PlatformSettings.PC_platform)
+            //{               
                 return Config.PcStoragePath;
-            }
-            else
-            {
-                return Directory.GetCurrentDirectory();
-            }
+            //}
+            //else
+            //{
+            //    return Directory.GetCurrentDirectory();
+            //}
 #else
             return TextLib.EmptyString; 
 #endif

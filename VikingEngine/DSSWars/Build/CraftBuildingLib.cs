@@ -1548,6 +1548,18 @@ namespace VikingEngine.DSSWars.Build
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );
 
+        public static readonly CraftBlueprint Stakes = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.Stakes,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Wood_G, 10),
+
+          },
+           XP.WorkExperienceType.WoodWork, XP.ExperienceLevel.Beginner_1
+        );
+
         public static readonly CraftBlueprint Palisade = new CraftBlueprint(
            CraftResultType.Building,
            (int)Build.BuildAndExpandType.Palisade,

@@ -6,14 +6,7 @@ Change log:
 x adjust "all facts"
 
 
-#MAP 2.0 UPDATE
-* 20 new songs added, made by Cosme Leites
-* 9 new build types
-* The color range of voxel models have been adjusted
-* Build and craft work will reserve items to avoid negative numbers (it is not perfect) 
-* Truce timer is pinned to hud
-* Made the dark horde slow and idle
-* All animal pens have double upkeep
+# MAP 2.0 UPDATE #
 
 World map 2.0
 The world map is rebuilt from the ground up to allow for more details, higher performance and is easier to modify in runtime.
@@ -67,6 +60,7 @@ X Discover resource pools
 Resources
 x Item conversion menu
 * 2 new resources: fine wood and meat
+* Income and upkeep is now updated each minute instead of every second
 
 New work management tools (prototype)
 * Worker count limit, made to better control the flow of work (! Prototype: ui will be improved if it works
@@ -92,13 +86,22 @@ Performance
 * Flag textures are only created once and share one big texture
 * Compressed the memory size of resources
 
-Vulkan
+(Vulkan)
 * DSS now runs on Vulkan, which is more performant and modern than OpenGL (Uygar "Agent" Yilmaz)
 * Map terrain loading is now done on multiple CPU cores and runs smoother
 
-
 Black Bolt Industries
 * Made an evil factory puzzle game in a one week game jam. Available as extra content.
+
+Other
+* 20 new songs added, made by Cosme Leites
+* 10 new build types
+* The color range of voxel models have been adjusted
+* Build and craft work will reserve items to avoid negative numbers (it is not perfect) 
+* Truce timer is pinned to hud
+* Made the dark horde slow and idle
+* All animal pens have double upkeep, and predators have meat upkeep
+
 
 
 ##ICONS TODO

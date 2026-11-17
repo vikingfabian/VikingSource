@@ -437,6 +437,7 @@ namespace VikingEngine.DSSWars
                 
                 new AsynchUpdateable_TryCatch(asynchAiPlayersUpdate, "DSS ai player update", 52, System.Threading.ThreadPriority.BelowNormal);                
             }
+            DssRef.world.diplomacy.RefreshDifficulty();
 
             new AsynchUpdateable_TryCatch(asynchGameObjectsUpdate, "DSS gameobjects update", 51, System.Threading.ThreadPriority.BelowNormal);
 

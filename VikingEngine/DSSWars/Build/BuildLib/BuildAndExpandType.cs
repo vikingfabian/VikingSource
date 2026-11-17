@@ -98,6 +98,7 @@ namespace VikingEngine.DSSWars.Build
         CobblestoneRoad,
         PavedRoad,
 
+        Stakes,
         DirtWall,
         DirtTower,
         WoodWall,

@@ -92,10 +92,10 @@ namespace VikingEngine.DSSWars.Players
 
         public Automation automation;
 
-        const int MercenaryMarketSoftLock1 = DssLib.MercenaryPurchaseCount * 5;
-        const double MercenaryMarketAddPerSec_Speed1 = 0.5;
-        const double MercenaryMarketAddPerSec_Speed2 = 0.3;
-        public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
+        //const int MercenaryMarketSoftLock1 = DssLib.MercenaryPurchaseCount * 5;
+        //const double MercenaryMarketAddPerSec_Speed1 = 0.5;
+        //const double MercenaryMarketAddPerSec_Speed2 = 0.3;
+        //public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
 
         public MenuTab factionTab = MenuTab.NUM_NONE;
         public MenuTab cityTab;
@@ -107,6 +107,7 @@ namespace VikingEngine.DSSWars.Players
         public MovingGroupsCollection movingGroupsCollection = null;
 
         public ProgressSubTab progressSubTab = 0;
+        public MarketTab marketSubTab = 0;
         public TagSubTab tagSubTab = 0;
         public BuildAndExpandType conscriptSubTab = BuildAndExpandType.ALL;
         public ItemResourceType deliverySupTab = ItemResourceType.NUM;
@@ -1966,9 +1967,9 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public double diplomacyAddPerSec()
+        public double diplomacyAddPerMin()
         {
-            return DssRef.world.diplomacy.DefaultDiplomacyPerSecond + DssRef.world.diplomacy.EmbassyAddDiplomacy * pfaction.GetFaction().embassyCount;
+            return DssRef.world.diplomacy.DefaultDiplomacyPerMinute + DssRef.world.diplomacy.EmbassyAddDiplomacy * pfaction.GetFaction().embassyCount;
         }
 
         public MapDetailLayerType mapLayer()
@@ -1981,15 +1982,15 @@ namespace VikingEngine.DSSWars.Players
 
             return MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex].current.type;
         }
-        public double diplomacyAddPerSec_CapIncluded()
+        public double diplomacyAddPerMin_CapIncluded()
         {
             if (diplomaticPoints.value < diplomaticPoints_softMax)
             {
-                return diplomacyAddPerSec();
+                return diplomacyAddPerMin();
             }
             else
             {
-                return DssRef.world.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond;
+                return DssRef.world.diplomacy.AddDiplomacy_AfterSoftlock_PerMinute;
             }
         }
 
@@ -1997,23 +1998,38 @@ namespace VikingEngine.DSSWars.Players
         {
             base.oneSecUpdate();
 
-            if (DssRef.time.oneMinute)
-            {
-                pfaction.GetFaction().resourceOverviewOneMinuteUpdate();
-            }
             double max = DssRef.world.diplomacy.DefaultMaxDiplomacy + DssRef.world.diplomacy.EmbassyAddMaxDiplomacy * pfaction.GetFaction().embassyCount;
             diplomaticPoints_softMax = (int)Math.Floor(max);
             diplomaticPoints.setMax(max + DssRef.world.diplomacy.Diplomacy_HardMax_Add);
 
-            if (diplomaticPoints.value < diplomaticPoints_softMax)
+            if (DssRef.time.oneMinute)
             {
-                diplomaticPoints.add(diplomacyAddPerSec(), diplomaticPoints_softMax);
-            }
-            else
-            {
-                diplomaticPoints.add(DssRef.world.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond);
+                pfaction.GetFaction().resourceOverviewOneMinuteUpdate();
+
+                if (diplomaticPoints.value < diplomaticPoints_softMax)
+                {
+                    diplomaticPoints.add(diplomacyAddPerMin(), diplomaticPoints_softMax);
+                }
+                else
+                {
+                    diplomaticPoints.add(DssRef.world.diplomacy.AddDiplomacy_AfterSoftlock_PerMinute);
+                }
+
+                if (StartupSettings.EndlessResources)
+                {
+                    pfaction.GetFaction().addGold_factionWide(10000);
+                }
+
+                if (StartupSettings.EndlessDiplomacy)
+                {
+                    diplomaticPoints.max = 10;
+                    diplomaticPoints.value = 10;
+                }
             }
 
+            automation.oneSecondUpdate();
+
+            /*
             if (mercenaryMarket.value < MercenaryMarketSoftLock1)
             {
                 mercenaryMarket.value += MercenaryMarketAddPerSec_Speed1;
@@ -2022,19 +2038,8 @@ namespace VikingEngine.DSSWars.Players
             {
                 mercenaryMarket.value += MercenaryMarketAddPerSec_Speed2;
             }
+            */
 
-            if (StartupSettings.EndlessResources)
-            {
-                pfaction.GetFaction().addGold_factionWide(1000);
-            }
-
-            if (StartupSettings.EndlessDiplomacy)
-            {
-                diplomaticPoints.max = 10;
-                diplomaticPoints.value = 10;
-            }
-
-            automation.oneSecondUpdate();
             //hud.oneSecondUpdate(this);
         }
 

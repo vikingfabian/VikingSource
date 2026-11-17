@@ -476,7 +476,7 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.Add(new RbText(DssRef.lang.Resource_ConservedFood_Reserves +": " + TextLib.LargeNumber((int)conservedFood)));
                 args.content.Add(new RbText(" / " + TextLib.LargeNumber((int)bufferGoalConservedFood), HudLib.SecondaryTextColor));
 
-                args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.TwoDecimal(foodCosts_import.displayValue_gold_sec + foodCosts_blackmarket.displayValue_gold_sec)));
+                args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.TwoDecimal(foodCosts_import.displayValue_perMinute + foodCosts_blackmarket.displayValue_perMinute)));
                 args.content.space();
                 HudLib.PerSecondInfo(args.player, args.content, true);
             }

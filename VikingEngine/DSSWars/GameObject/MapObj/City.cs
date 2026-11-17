@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int HousingCount_NobelMen = 0;
 
         public bool PenUpkeep_IsPayed = true;
-        public int PenFoodUpkeep_minute = 0;
+        public AnimalPenUpkeep PenFoodUpkeep_minute = new AnimalPenUpkeep();
 
         public int AvailableGuardHousing()
         {
@@ -644,7 +644,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             w.Write(Bound.UShort(HousingCount_NobelMen));
             w.Write(Bound.Short(freeNobelMen.amount));
-            w.Write(Bound.UShort(PenFoodUpkeep_minute));
+            w.Write(Bound.UShort(PenFoodUpkeep_minute.rawFood));
+            w.Write(Bound.UShort(PenFoodUpkeep_minute.meat));
 
             WP.writeSubTilePos(w, maptilePos);
             WP.writeSubTilePos(w, citySquareSubtilePos);
@@ -679,7 +680,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             HousingCount_NobelMen = r.ReadUInt16();
             freeNobelMen.amount = r.ReadInt16();
-            PenFoodUpkeep_minute = r.ReadUInt16();
+            PenFoodUpkeep_minute.rawFood = r.ReadUInt16();
+            PenFoodUpkeep_minute.meat = r.ReadUInt16();
 
 
             maptilePos = WP.readSubTilePos(r);
@@ -1829,7 +1831,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
-        public int income_oneSecUpdate(double incomeMultiplier)
+        public int income_oneMinUpdate(double incomeMultiplier)
         {
             CityEconomyData cityEconomy = new CityEconomyData(this);
             
@@ -1984,7 +1986,8 @@ namespace VikingEngine.DSSWars.GameObject
                 float addNobel = HousingCount_NobelMen * DssConst.NobelHouseMenAddSpeed_PerManHouse;
                 freeNobelMen.amount = Bound.Max(freeNobelMen.amount + Convert.ToInt32(addNobel), HousingCount_NobelMen);
 
-                PenUpkeep_IsPayed = PenFoodUpkeep_minute <= 0 || payResource(CityResourceIndex.rawFood, PenFoodUpkeep_minute, false);
+                PenUpkeep_IsPayed = PenFoodUpkeep_minute.rawFood <= 0 || payResource(CityResourceIndex.rawFood, PenFoodUpkeep_minute.rawFood, false);
+                PenUpkeep_IsPayed &= PenFoodUpkeep_minute.meat <= 0 || payResource(CityResourceIndex.Meat, PenFoodUpkeep_minute.meat, false);
             }
         }
 
@@ -3081,8 +3084,13 @@ namespace VikingEngine.DSSWars.GameObject
                     ResourceLib.ResourceIconCountDisplay(this, ItemResourceType.Food_G, content);
 
                 }
-
-                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, Money.CopperToGoldString_Large(cityEconomy.IncomeAndUpkeep_Total())));
+                content.newLine();
+                content.Add(new RbImage(SpriteName.rtsIncomeTime));
+                content.space();
+                content.Add(new RbText(DssRef.todoLang.Hud_TotalIncomePerMinute + ":", HudLib.TitleColor_Label));
+                content.hspace();
+                content.Add(new RbText(Money.CopperToGoldString_Large(cityEconomy.IncomeAndUpkeep_Total())));
+                //content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncomePerSecond, Money.CopperToGoldString_Large(cityEconomy.IncomeAndUpkeep_Total())));
                 //content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
 
                 {
@@ -3091,8 +3099,10 @@ namespace VikingEngine.DSSWars.GameObject
                     content.space();
                     content.Add(new RbImage(SpriteName.WarsWorker));
                     content.space();
-                    var textCont = new RbText(string.Format(DssRef.lang.Language_LabelAndText_Colon, DssRef.lang.Economy_TaxIncome, Money.CopperToGoldString_Large(cityEconomy.taxIncome_copp)));
-                    content.Add(textCont);
+                    content.Add(new RbText(DssRef.lang.Economy_TaxIncome + ":", HudLib.TitleColor_Label));
+                    content.hspace();
+                    content.Add(new RbText(Money.CopperToGoldString_Large(cityEconomy.taxIncome_copp)));
+                    
                     if (interactive)
                     {
                         content.space();
@@ -3106,8 +3116,10 @@ namespace VikingEngine.DSSWars.GameObject
                     content.space();
                     content.Add(new RbImage(SpriteName.WarsServiceMen));
                     content.space();
-                    var textCont = new RbText(string.Format(DssRef.lang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.servicemenUpkeep_copp)));
-                    content.Add(textCont);
+                    content.Add(new RbText(DssRef.lang.Economy_ServicemenUpkeep + ":", HudLib.TitleColor_Label));
+                    content.hspace();
+                    content.Add(new RbText(Money.CopperToGoldString_Dynamic(cityEconomy.servicemenUpkeep_copp)));
+                    
                     if (interactive)
                     {
                         content.space();
@@ -3120,8 +3132,11 @@ namespace VikingEngine.DSSWars.GameObject
                     content.space();
                     content.Add(new RbImage(SpriteName.WarsGuard));
                     content.space();
-                    var textCont = new RbText(string.Format(DssRef.lang.Economy_GuardUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.cityGuardUpkeep_copp)));
-                    content.Add(textCont);
+                    content.Add(new RbText(DssRef.lang.Economy_GuardUpkeep + ":", HudLib.TitleColor_Label));
+                    content.hspace();
+                    content.Add(new RbText(Money.CopperToGoldString_Dynamic(cityEconomy.cityGuardUpkeep_copp)));
+                    //var textCont = new RbText(string.Format(DssRef.lang.Economy_GuardUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.cityGuardUpkeep_copp)));
+                    //content.Add(textCont);
                     if (interactive)
                     {
                         content.space();
@@ -3136,7 +3151,17 @@ namespace VikingEngine.DSSWars.GameObject
                     content.space();                    
                     content.Add(new RbImage(SpriteName.WarsBuild_PigPen));
                     content.space();
-                    content.Add(new RbText(string.Format(DssRef.lang.Economy_AnimalPenUpkeep, TextLib.TwoDecimal(cityEconomy.animalPenUpkeep))));
+                    content.Add(new RbText(DssRef.lang.Economy_AnimalPenUpkeep + ":", HudLib.TitleColor_Label));
+
+                    HudLib.BulletSeperationPoint(content);
+                    content.Add(new RbImage(SpriteName.WarsResource_RawFood));
+                    content.hspace();
+                    content.Add(new RbText(cityEconomy.animalPenUpkeep.rawFood.ToString()));
+
+                    HudLib.BulletSeperationPoint(content);
+                    content.Add(new RbImage(SpriteName.WarsResource_RawMeat));
+                    content.hspace();
+                    content.Add(new RbText(cityEconomy.animalPenUpkeep.meat.ToString()));
 
                     if (!PenUpkeep_IsPayed)
                     {
@@ -3147,7 +3172,11 @@ namespace VikingEngine.DSSWars.GameObject
                                 content.text(DssRef.lang.Animals_ProductionStop);
 
                                 content.Add(new RbSeperationLine() { thick = true });
+                                content.newParagraph();
                                 ResourceLib.FullResourceInfo(pfaction.GetFaction(), this, ItemResourceType.RawFood_G, content);
+                                content.Add(new RbSeperationLine() { thick = true });
+                                content.newParagraph();
+                                ResourceLib.FullResourceInfo(pfaction.GetFaction(), this, ItemResourceType.Meat, content);
                             })));
                     }
                 }
@@ -3156,7 +3185,7 @@ namespace VikingEngine.DSSWars.GameObject
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsHammerAdd));
                     content.space();
-                    content.Add(new RbText(DssRef.lang.WorkQueue_Title + ":"));
+                    content.Add(new RbText(DssRef.lang.WorkQueue_Title + ":", HudLib.TitleColor_Label));
                     content.hspace();
                     content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
 
@@ -4335,41 +4364,23 @@ namespace VikingEngine.DSSWars.GameObject
             CityHallSetup currentSetup = DssRef.storage.ruleset_instance.CitySizeSetup[(int)cityType];
             CityHallSetup nextSetup = DssRef.storage.ruleset_instance.CitySizeSetup[(int)toSize];
 
-            supportedWorkersString = nextSetup.maxWorkForce.ValueString(false, DssRef.lang.Hud_NoLimit, null);
+            supportedWorkersString = nextSetup.maxWorkForce.ValueString(false, false, DssRef.lang.Hud_NoLimit, null);
             addGuardHousing = nextSetup.defaultGuardHousing - currentSetup.defaultGuardHousing;
-            //switch (toSize)
-            //{
-            //    case CityType.Village:
-            //        supportedWorkersString = DssConst.VillageHall_MaxWorkForce.ToString();
-            //        addGuardHousing = DssConst.VillageHall_GuardHousing - DssConst.CampHall_GuardHousing;
-            //        break;
-            //    case CityType.Town:
-            //        supportedWorkersString = DssConst.TownHall_MaxWorkForce.ToString();
-            //        addGuardHousing = DssConst.TownHall_GuardHousing - DssConst.VillageHall_GuardHousing;
-            //        break;
-            //    default:
-            //    case CityType.Capital:
-            //        supportedWorkersString = DssRef.lang.Hud_NoLimit;
-            //        addGuardHousing = DssConst.CapitalHall_GuardHousing - DssConst.TownHall_GuardHousing;
-            //        break;
-
-            //}
-            //if (toSize == CityType.Town)
-            //{
-            //    supportedWorkersString = DssConst.TownHall_MaxWorkForce.ToString();
-            //    addGuardHousing = DssConst.TownHall_GuardHousing - DssConst.VillageHall_GuardHousing;
-            //}
-            //else
-            //{
-            //    supportedWorkersString = DssRef.lang.Hud_NoLimit;
-            //    addGuardHousing = DssConst.CapitalHall_GuardHousing - DssConst.TownHall_GuardHousing;
-            //}
+            //var addSoldierQuarters = nextSetup.maxSoldierQuarters/* - currentSetup.maxSoldierQuarters*/;
+           
             HudLib.BulletPoint(content);
             content.Add(new RbText(string.Format(DssRef.lang.CityHall_MaxSupportedWorkers, supportedWorkersString)));
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, ".Lords seat limit", nextSetup.maxExpansions)));
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, ".Soldier quarters limit", nextSetup.maxSoldierQuarters.ValueString(false, false, null, DssRef.lang.Hud_NoLimit))));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.GuardHousingCount, TextLib.PlusMinus(addGuardHousing))));
+            
 
             content.newParagraph();
 

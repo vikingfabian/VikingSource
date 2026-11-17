@@ -1563,10 +1563,6 @@ namespace VikingEngine.DSSWars.Work
                     if (orderIsActive(city))
                     {
 
-                        //var ground = DssRef.world.subTileGrid.Get(subTileEnd).groundType;
-                        //GroundPropertiesLib.MayBuild_GroundCheck(ground, (GroundType)workSubType, out var mustTerraform);
-                        //if (build.execute_async(city, subTileEnd, ref subTile, out bool bTerraform,, upgrade))
-                        //{
                         subTile.groundType = (GroundType)workSubType;
                         var grounProp = GroundPropertiesLib.Get(subTile.groundType);
                         var terraformBp = grounProp.TerraformToCost;
@@ -1577,7 +1573,7 @@ namespace VikingEngine.DSSWars.Work
                         }
                         EditSubTile edit = new EditSubTile(city.pfaction, true, subTileEnd, subTile, false, true, false, false);
                         edit.Submit();
-                        //}
+                        
                         gainXp = grounProp.TerraformToXp;
                     }
                     break;
@@ -2155,14 +2151,23 @@ namespace VikingEngine.DSSWars.Work
                             GroundPropertiesLib.MayBuild_GroundCheck(subTile.groundType, buildOpt.groundRequirement, out var mustTerraform);
                             if (mustTerraform.HasValue)
                             {
-                                timeSec += GroundPropertiesLib.Get(mustTerraform.Value).TerraformFromTimeSec;
+                                timeSec += GroundPropertiesLib.Get(subTile.groundType).TerraformFromTimeSec;
                             }
                         }
                     }
                     break;
 
                 case WorkType.Terraform:
-                    timeSec = GroundPropertiesLib.Get((GroundType)workSubType).TerraformFromTimeSec;
+                    {
+                        if (DssRef.world.subTileGrid.TryGet(subTileEnd, out MapTile1_1 subTile))
+                        {
+                            timeSec = GroundPropertiesLib.Get(subTile.groundType).TerraformFromTimeSec;
+                        }
+                        else
+                        {
+                            timeSec = 1;//Error
+                        }
+                    }
                     break;
 
                 case WorkType.Upgrade:

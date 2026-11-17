@@ -387,7 +387,7 @@ namespace VikingEngine.DSSWars.Build
             list.Add(BuildAndExpandType.DirtTower);
 
             if (logistics1)
-            {
+            {   
                 list.Add(BuildAndExpandType.WoodWall);
                 list.Add(BuildAndExpandType.WoodTower);
                 list.Add(BuildAndExpandType.StoneWall);
@@ -397,6 +397,7 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.StoneWallWoodHouse);
                 list.Add(BuildAndExpandType.StoneGate);
                 list.Add(BuildAndExpandType.StoneHouse);
+                list.Add(BuildAndExpandType.Stakes);
                 list.Add(BuildAndExpandType.CitySquare);
             }
 

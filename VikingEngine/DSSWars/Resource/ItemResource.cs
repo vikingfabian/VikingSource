@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Resource
 {
@@ -64,6 +65,16 @@ namespace VikingEngine.DSSWars.Resource
             amount += other.amount;
             //quality /= amount;
             //cost += other.cost;
+        }
+
+        public void ToHud(RichBoxContent content)
+        {
+            IconName.Item(type, out var itemIcon, out var itemName);
+            content.Add(new RbText(amount.ToString()));
+            content.hspace();
+            content.Add(new RbImage(itemIcon));
+            content.hspace();
+            content.Add(new RbText(itemName, HudLib.TitleColor_TypeName));
         }
 
         public override string ToString()
