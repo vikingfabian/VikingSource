@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Security.Authentication;
 using System.Text;
 using VikingEngine.Core.Wand.Equipment;
+using VikingEngine.Core.Wand.GO.ObjectPointer;
 using VikingEngine.LootFest.GO.EnvironmentObj;
 using VikingEngine.PJ.SpaceWar.SpaceShip;
 
@@ -17,6 +18,8 @@ namespace VikingEngine.Core.Wand.Data
         public static MagicFormula SmallDamage = new MagicFormula("Small damage", MagicTrigger.ObjectHit, MagicTrigger_ObjectType.Creature, MagicEffect.Damage, 1);
         public static MagicFormula MediumDamage = new MagicFormula("Medium damage", MagicTrigger.ObjectHit, MagicTrigger_ObjectType.Creature, MagicEffect.Damage, 2);
         public static MagicFormula MassiveDamage = new MagicFormula("Massive damage", MagicTrigger.ObjectHit, MagicTrigger_ObjectType.Creature, MagicEffect.Damage, 5);
+        public static MagicFormula Sides1 = new MagicFormula("Sides 1", MagicTrigger.ObjectSideHit1, MagicTrigger_ObjectType.Creature, MagicEffect.Damage, 1);
+        public static MagicFormula Sides2 = new MagicFormula("Sides 2", MagicTrigger.ObjectSideHit2, MagicTrigger_ObjectType.Creature, MagicEffect.Damage, 2);
         public static MagicFormula Backfire = new MagicFormula("Backfire", MagicTrigger.OnComplete, MagicTrigger_ObjectType.None, MagicEffect.Back_fire, 1);
         public static MagicFormula Leecher = new MagicFormula("Leecher", MagicTrigger.ObjectHit, MagicTrigger_ObjectType.Creature, MagicEffect.Leech, 2);
         public static MagicFormula Executer = new MagicFormula("Executer", MagicTrigger.ObjectHit, MagicTrigger_ObjectType.Creature, MagicEffect.Execute_damaged, MagicFormula.NoTier);
@@ -34,6 +37,8 @@ namespace VikingEngine.Core.Wand.Data
         public static MagicFormula BloodRevival = new MagicFormula("Blood revival", MagicTrigger.SpendFluid, MagicTrigger_ObjectType.Blood, MagicEffect.Heal_target, 1);
         public static MagicFormula EndOnCreature = new MagicFormula("End on creature", MagicTrigger.ObjectHit, MagicTrigger_ObjectType.Creature, MagicEffect.End, MagicFormula.NoTier);
         public static MagicFormula Cloner = new MagicFormula("Cloner", MagicTrigger.ObjectHit, MagicTrigger_ObjectType.Any, MagicEffect.Clone, 1);
+        public static MagicFormula SpawnGoblin = new MagicFormula("Goblin spawn", MagicTrigger.OnComplete, MagicTrigger_ObjectType.None, MagicEffect.SpawnCreature, MagicFormula.NoTier) { effectSubType = (int)CreatureType.Goblin };
+        public static MagicFormula SpawnOrc = new MagicFormula("Orc spawn", MagicTrigger.OnComplete, MagicTrigger_ObjectType.None, MagicEffect.SpawnCreature, MagicFormula.NoTier) { effectSubType = (int)CreatureType.Orc };
         public static MagicFormula Upper = new MagicFormula("Upper", MagicTrigger.ObjectHit, MagicTrigger_ObjectType.Any, MagicEffect.Level_up, 1);
 
         public static MagicFormula BloodActivate = new MagicFormula("Blood activate", MagicTrigger.SpendFluid, MagicTrigger_ObjectType.Blood, MagicEffect.Activate, 1);
@@ -218,6 +223,8 @@ namespace VikingEngine.Core.Wand.Data
                     add(MagicFormulaLib.SmallDamage, 4);
                     add(MagicFormulaLib.MediumDamage, 2);
                     add(MagicFormulaLib.MassiveDamage, 2);
+                    add(MagicFormulaLib.Sides1, 2);
+                    add(MagicFormulaLib.Sides2, 1);
                     add(MagicFormulaLib.Backfire, 2);
                     add(MagicFormulaLib.Leecher, 2);
                     add(MagicFormulaLib.Executer, 2);
@@ -232,6 +239,8 @@ namespace VikingEngine.Core.Wand.Data
                     add(MagicFormulaLib.BloodRevival, 2);
                     add(MagicFormulaLib.EndOnCreature, 2);
                     add(MagicFormulaLib.Cloner, 2);
+                    add(MagicFormulaLib.SpawnGoblin, 1);
+                    add(MagicFormulaLib.SpawnOrc, 1);
                     add(MagicFormulaLib.Upper, 2);
 
                     break;

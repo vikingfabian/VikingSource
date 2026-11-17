@@ -15,7 +15,7 @@ namespace VikingEngine.Core.Wand.Data
         public MagicTrigger_ObjectType triggerObject;
         public MagicEffect effect;
         public int triggerTier;
-
+        public int effectSubType;
         public int triggerBoost;
 
         public SpecialTarget specialTarget;
@@ -73,6 +73,9 @@ namespace VikingEngine.Core.Wand.Data
         Auto,
 
         ObjectHit,
+        ObjectSideHit1,
+        ObjectSideHit2,
+
 
         PassObject,
 
@@ -111,6 +114,7 @@ namespace VikingEngine.Core.Wand.Data
         Magic_up,
         Clone,
         Level_up,
+        SpawnCreature,
 
         End,
     }

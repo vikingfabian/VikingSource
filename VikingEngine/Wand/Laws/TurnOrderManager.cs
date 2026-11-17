@@ -309,11 +309,38 @@ namespace VikingEngine.Core.Wand.Laws
                         removeFluid = true;
                         break;
                     case MagicTrigger_ObjectType.Creature:
-                        if (tile.creature.HasGameObject())
+                        switch (cast.magic.magicEffects[effectIx].trigger)
                         {
-                            willTrigger = true;
-                            magicTargetObjects.Enqueue(tile.creature.Get());
+                            default:
+                                if (tile.creature.HasGameObject())
+                                {
+                                    willTrigger = true;
+                                    magicTargetObjects.Enqueue(tile.creature.Get());
+                                }
+                                break;
+                            case MagicTrigger.ObjectSideHit1:
+                                sideHit(cast.currentPos.LeftPos().tilePos);
+                                sideHit(cast.currentPos.RightPos().tilePos);
+                                break;
+                            case MagicTrigger.ObjectSideHit2:
+                                sideHit(cast.currentPos.LeftPos().LeftPos().tilePos);
+                                sideHit(cast.currentPos.RightPos().RightPos().tilePos);
+                                break;
+
                         }
+
+                        void sideHit(IntVector2 pos)
+                        {
+                            if (WandRef.world.map.tileGrid.TryGet(pos, out var sTile))
+                            {
+                                if (sTile.creature.HasGameObject())
+                                {
+                                    willTrigger = true;
+                                    magicTargetObjects.Enqueue(sTile.creature.Get());
+                                }
+                            }
+                        }
+
                         break;
                     case MagicTrigger_ObjectType.Any_Wall:
                         if (cast.magic.magicEffects[effectIx].charges > 0)
@@ -334,12 +361,9 @@ namespace VikingEngine.Core.Wand.Laws
                                 wallHinder = false;
                             }
                         }
-                        break;
-                    
+                        break;                    
                 }
 
-
-                
 
                 if (willTrigger)
                 {
@@ -507,6 +531,12 @@ namespace VikingEngine.Core.Wand.Laws
                                     {
                                         WandRef.world.hero.Heal(cast.magic.magicEffects[effectIx].PowerAndBoost);
                                         isFound = true;
+                                    }
+                                    break;
+                                case MagicEffect.SpawnCreature:
+                                    if (tile.creature.HasGameObject() == false)
+                                    {
+                                        ObjectLifeTime.SpawnCreature(cast.currentPos.tilePos, (GO.ObjectPointer.CreatureType)cast.magic.magicEffects[effectIx].effectSubType, true);
                                     }
                                     break;
                             }
