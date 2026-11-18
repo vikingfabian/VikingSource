@@ -44,6 +44,8 @@ namespace VikingEngine
 
         const int WarsCheckSize = 20;
 
+        const int OneAndHalfTile = 48;
+
         public SpriteSheet()
         {
             addTexture(SpriteName.WaterEdgeMask_coast, 32, 32, LoadedTexture.waterEdge);
@@ -3058,6 +3060,17 @@ namespace VikingEngine
                     add(SpriteName.LangButton_Thai, 8, 2);
                     add(SpriteName.WarsClayPit, 2, 2);
                     add(SpriteName.warsWorkerPromoMap2, 4, 2);
+
+
+                    addWithSizeDef(SpriteName.WarsMinimapButtonMapLay1, currentIndex, OneAndHalfTile, OneAndHalfTile);
+                    addWithSizeDef(SpriteName.WarsMinimapButtonMapLay2, currentIndex, OneAndHalfTile, OneAndHalfTile);
+                    addWithSizeDef(SpriteName.WarsMinimapButtonMapLay3, currentIndex, OneAndHalfTile, OneAndHalfTile);
+                    addWithSizeDef(SpriteName.WarsMinimapButtonAutoPanOn, currentIndex, OneAndHalfTile, OneAndHalfTile);
+                    addWithSizeDef(SpriteName.WarsMinimapButtonAutoPanOff, currentIndex, OneAndHalfTile, OneAndHalfTile);
+                    addWithSizeDef(SpriteName.WarsMinimapButtonAutoZoomOn, currentIndex, OneAndHalfTile, OneAndHalfTile);
+                    addWithSizeDef(SpriteName.WarsMinimapButtonAutoZoomOff, currentIndex, OneAndHalfTile, OneAndHalfTile);
+                    addWithSizeDef(SpriteName.WarsMinimapButtonBlackAndWhite, currentIndex, OneAndHalfTile, OneAndHalfTile);
+                    addWithSizeDef(SpriteName.WarsMinimapButtonFullColor, currentIndex, OneAndHalfTile, OneAndHalfTile);
 
                     //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }

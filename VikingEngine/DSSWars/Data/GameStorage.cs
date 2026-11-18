@@ -7,6 +7,7 @@ using System.Text;
 using System.Xml.Schema;
 using VikingEngine.Core.DSSWars.Data;
 using VikingEngine.DataStream;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.Engine;
@@ -33,7 +34,8 @@ namespace VikingEngine.DSSWars.Data
         public bool runTutorial = true;
         public bool speed5x = true;
         public bool blockImportAchievements = true;
-        
+        public MinimapOptions minimapOptions = new MinimapOptions();
+
         public LocalPlayerStorage[] localPlayers = null;
         public int selectedPlayer = 0;
         public ProfileStorage profileStorage;
@@ -171,7 +173,7 @@ namespace VikingEngine.DSSWars.Data
             w.Write(runTutorial);
 
             w.Write(speed5x);
-
+            minimapOptions.write(w);
             mapSettings.write(w);
 
             w.Write(mutedSongs.Count);
@@ -228,14 +230,10 @@ namespace VikingEngine.DSSWars.Data
 
                 multiplayerGameSpeed = r.ReadSingle();
 
-                
-                
-
-               
-                    runTutorial = r.ReadBoolean();
-               
+                runTutorial = r.ReadBoolean();               
 
                 speed5x = r.ReadBoolean();
+                minimapOptions.read(r);
 
                 mapSettings.read(r, version);
 

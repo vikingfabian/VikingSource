@@ -652,7 +652,7 @@ namespace VikingEngine.DSSWars.Presentation
             }
         }
 
-        public static string ValueSymbol(int value)
+        public static string ValueSymbol(int value, bool plusMinus)
         {
             string result;
             var abs = Math.Abs(value);
@@ -675,14 +675,18 @@ namespace VikingEngine.DSSWars.Presentation
                     break;
             }
 
-            if (value >= 0)
+            if (plusMinus)
             {
-                return "+" + result;
+                if (value >= 0)
+                {
+                    return "+" + result;
+                }
+                else
+                {
+                    return "-" + result;
+                }
             }
-            else
-            {
-                return "-" + result;
-            }
+            return result;
         }
         public static SpriteName ExperienceLevelIcon(ExperienceLevel level)
         {

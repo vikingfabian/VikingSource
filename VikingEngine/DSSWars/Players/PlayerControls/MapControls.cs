@@ -1131,6 +1131,7 @@ namespace VikingEngine.DSSWars.Players
             if (player.mapLayersManager.current.type != layerType)
             {
                 targetZoom = player.mapLayersManager.GetLayer(layerType).zoom.Center;
+                camera.CurrentZoom = targetZoom;
             }
         }
 

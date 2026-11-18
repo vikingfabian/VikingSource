@@ -1885,7 +1885,8 @@ namespace VikingEngine.DSSWars.Players
                 (DssRef.settings.playType == GameState.PlayStateType.Play || DssRef.settings.playType == GameState.PlayStateType.MapEditor) ?
                 FactionMapFilter.FactionCols : FactionMapFilter.Terrain)
             { overview = true };
-            minimapPixelTexture = new FactionPixelTexture(playerData.localPlayerIndex, true, FactionMapFilter.Minimap);
+            minimapPixelTexture = new FactionPixelTexture(playerData.localPlayerIndex, true, FactionMapFilter.Minimap_blackwhite);
+            //minimapPixelTexture.refreshMiniMapFilter();
             unitsPixelTexture = new UnitsPixelTexture(playerData.localPlayerIndex);
         }
 

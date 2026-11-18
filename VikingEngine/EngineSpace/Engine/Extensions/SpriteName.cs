@@ -2609,6 +2609,16 @@ namespace VikingEngine
         WarsHudFilterButtonSelected,
         WarsHudFilterButton,
 
+        WarsMinimapButtonMapLay1,
+        WarsMinimapButtonMapLay2,
+        WarsMinimapButtonMapLay3,
+        WarsMinimapButtonAutoPanOn,
+        WarsMinimapButtonAutoPanOff,
+        WarsMinimapButtonAutoZoomOn,
+        WarsMinimapButtonAutoZoomOff,
+        WarsMinimapButtonBlackAndWhite,
+        WarsMinimapButtonFullColor,
+
         WarsHudIconReset,
         WarsHudIconWarning,
         WarsHudIconExit,

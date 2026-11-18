@@ -201,38 +201,24 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 return ColorExt.MultiplyRGB( WorldData.WaterDarkCol1,  0.7f + 0.3f * height / MapHeight2.ShallowWaterHeight);
             }
         }
+
         public static Color TerrainColor(CombinedTile tile, int leanY)
-        {
-            //if (tile.mapTile.heightValue <= MapLib.MapHeight2.WaterPlaneHeight)
-            //{
-            //    float depth = /*1f - */tile.mapTile.heightValue / (float)MapLib.MapHeight2.WaterPlaneHeight;//1f - tile.groundY / MapLib.MapHeight2.WaterBottomY;
-            //    return new Color(depth * 0.7f, depth * 0.7f, depth * 0.7f + 0.2f);
-            //}
-            //else
-            //{
-                //float height = tile.groundY / MapLib.MapHeight2.MountainPeekY;
-                //int biomColorheight = Bound.Set(MapLib.MapHeight2.MinLandHeight +  Convert.ToInt32( (ColorHeight.MaxHeight - ColorHeight.MinLandHeight) * height), 0, 9);
+        {       
+            MapLib.MapHeight2.ToColorHeight(tile.mapTile.heightValue, out int biomColorheight, out float percNextHeight);
+            Color color = biomCol(tile.sumTile.biom1, biomColorheight, percNextHeight);
 
-                
-                MapLib.MapHeight2.ToColorHeight(tile.mapTile.heightValue, out int biomColorheight, out float percNextHeight);
-                //var col = DssRef.map.bioms.bioms[(int)tile.biom1].colors_height[biomColorheight].Color;
-                Color color = biomCol(tile.sumTile.biom1, biomColorheight, percNextHeight);
-
-                if (tile.sumTile.biom2 != tile.sumTile.biom1 && tile.sumTile.secondBiomWeight > 0)
-                {
-                    var col2 = biomCol(tile.sumTile.biom2, biomColorheight, percNextHeight);//DssRef.map.bioms.bioms[(int)tile.biom2].colors_height[biomColorheight].Color;
-                    color = ColorExt.Mix(col2, color, tile.sumTile.secondBiomWeight / (float)byte.MaxValue);
-                }
+            if (tile.sumTile.biom2 != tile.sumTile.biom1 && tile.sumTile.secondBiomWeight > 0)
+            {
+                var col2 = biomCol(tile.sumTile.biom2, biomColorheight, percNextHeight);
+                color = ColorExt.Mix(col2, color, tile.sumTile.secondBiomWeight / (float)byte.MaxValue);
+            }
 
             if (leanY < -1)
             {
                 color = ColorExt.MultiplyRGB(color, tile.mapTile.heightValue < MapHeight2.MountainStarHeight? 0.97f : 0.92f);
             }
 
-                return color;
-                //depth *= 0.75f;
-                //tile.color = ColorExt.MultiplyRGB(col, 0.5f + 0.9f * height);//new Color(depth, depth + 0.2f, depth);
-            //}
+            return color;
         }
 
         public static Color factionColor(CombinedTile tile)

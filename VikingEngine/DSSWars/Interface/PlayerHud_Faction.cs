@@ -208,7 +208,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsServiceMen));
                 content.space();
-                var textCont = new RbText(string.Format(DssRef.lang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(player.pfaction.GetFaction().citiesEconomy.servicemenUpkeep_copp)),
+                var textCont = new RbText(string.Format( DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(player.pfaction.GetFaction().citiesEconomy.servicemenUpkeep_copp)),
                     HudLib.NotAvailableColor);
                 content.Add(textCont);
 
@@ -222,7 +222,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsGuard));
                 content.space();
-                var textCont = new RbText(string.Format(DssRef.lang.Economy_GuardUpkeep, Money.CopperToGoldString_Dynamic(player.pfaction.GetFaction().citiesEconomy.cityGuardUpkeep_copp)),
+                var textCont = new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Economy_GuardUpkeep, Money.CopperToGoldString_Dynamic(player.pfaction.GetFaction().citiesEconomy.cityGuardUpkeep_copp)),
                     HudLib.NotAvailableColor);
                 content.Add(textCont);
 

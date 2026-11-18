@@ -440,15 +440,6 @@ namespace VikingEngine.DSSWars.Resource
                     content.hspace();
                     content.Add(new RbText(resultAmount1.ToString()));
                     content.hspace();
-
-                    //if ( > 0)
-                    //{
-                    //    content.Add(new RbImage(SpriteName.pjNumPlus));
-
-                    //    content.hspace();
-                    //    content.Add(new RbText(resultAmount1.ToString()));
-
-                    //}
                 }
 
                 iconName(1, out SpriteName icon, out string name);

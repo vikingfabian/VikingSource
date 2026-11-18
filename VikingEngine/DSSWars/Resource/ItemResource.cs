@@ -73,8 +73,8 @@ namespace VikingEngine.DSSWars.Resource
             content.Add(new RbText(amount.ToString()));
             content.hspace();
             content.Add(new RbImage(itemIcon));
-            content.hspace();
-            content.Add(new RbText(itemName, HudLib.TitleColor_TypeName));
+            //content.hspace();
+            //content.Add(new RbText(itemName, HudLib.TitleColor_TypeName));
         }
 
         public override string ToString()

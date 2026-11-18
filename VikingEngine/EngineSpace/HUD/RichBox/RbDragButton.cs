@@ -304,7 +304,7 @@ namespace VikingEngine.HUD.RichBox
 
             if (useSymbols)
             {
-                content = new List<AbsRichBoxMember> { new RbText(LangLib.ValueSymbol((int)add)) };
+                content = new List<AbsRichBoxMember> { new RbText(LangLib.ValueSymbol((int)add, true)) };
                 enter = new RbTooltip_Text(Math.Abs(add) >= 1000? TextLib.LargeNumber((int)add) : TextLib.PlusMinus(add));
             }
             else

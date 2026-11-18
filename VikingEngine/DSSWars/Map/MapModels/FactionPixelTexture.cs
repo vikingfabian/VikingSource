@@ -23,7 +23,8 @@ namespace VikingEngine.DSSWars.Map.MapModels
     { 
         FactionCols,
         Terrain,
-        Minimap,
+        Minimap_blackwhite,
+        Minimap_terrain,
         PopulationHeatmap,
         StrengthHeatmap,
         ResourceHeatmap,
@@ -81,11 +82,21 @@ namespace VikingEngine.DSSWars.Map.MapModels
             : base(playerIx)
         {
             this.filter = filter;
+            if (filter == FactionMapFilter.Minimap_blackwhite)
+            {
+                refreshMiniMapFilter();
+            }
+
             if (init)
             {
                 initTexture();
                 refreshWorld();
             }
+        }
+
+        public void refreshMiniMapFilter()
+        {
+            this.filter = DssRef.storage.minimapOptions.blackAndWhite ? FactionMapFilter.Minimap_blackwhite : FactionMapFilter.Minimap_terrain;
         }
 
         public bool HeatMap()
@@ -241,6 +252,43 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     AddCityIcons();
                     break;
 
+                case FactionMapFilter.Minimap_terrain:
+                    while (loop.Next())
+                    {
+                        //midu
+                        var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
+                        if (tile.sumTile.fogExploreLevel == WorldData.FogOfWarView_None && DssRef.storage.ruleset.module_fogOfWar)
+                        {
+                            texture.SetPixel(loop.Position / TilesPerPixelScale, Color.Black);
+                        }
+                        else
+                        {
+                            Color color;
+                            if (tile.mapTile.IsLand())
+                            {
+                                color = TileColor.BorderAndTerrainColor(tile, leanY, out var groundColor);
+                                if (groundColor)
+                                {
+                                    addTerrainAndBuildingColor(loop.Position, ref color);
+                                }
+                            }
+                            else
+                            {
+                                color = TileColor.WaterColor(tile.mapTile.heightValue);
+                            }
+
+                            if (tile.sumTile.fogExploreLevel > WorldData.FogOfWarView_TerrainOnly)
+                            {
+                                texture.SetPixel(loop.Position / TilesPerPixelScale, color);
+                            }
+                            else
+                            {
+                                texture.SetPixel(loop.Position / TilesPerPixelScale, ColorExt.ChangeBrighness(color, -70));
+                            }
+                        }
+                    }
+                    break;
+
                 case FactionMapFilter.Terrain:
                     while (loop.Next())
                     {
@@ -269,7 +317,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         }
                     }
                     break;
-                case FactionMapFilter.Minimap:
+                case FactionMapFilter.Minimap_blackwhite:
                     Faction playerFaction = DssRef.state.localPlayers[playerIx].pfaction.GetFaction();
                     while (loop.Next())
                     {

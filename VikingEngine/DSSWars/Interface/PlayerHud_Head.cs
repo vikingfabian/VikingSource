@@ -409,7 +409,7 @@ namespace VikingEngine.DSSWars.Interface
                         icon = SpriteName.WarsMapFilterTerrain;
                         filterName = DssRef.lang.ItemSource_Terrain;
                         break;
-                    case FactionMapFilter.Minimap:
+                    case FactionMapFilter.Minimap_blackwhite:
                         icon = SpriteName.WarsMapFilterMinimap;
                         filterName = DssRef.lang.InputActionName_MiniMap;
                         break;
