@@ -9,7 +9,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapModels
 {
     class FogPixelTexture
     {
-        static readonly Color TerrainOnlyCol = new Color(byte.MinValue, byte.MinValue, byte.MinValue, (byte)100);
+        static readonly Color TerrainOnlyCol = Color.MultiplyAlpha(DssLib.FogColor, 0.25f);//new Color(byte.MinValue, byte.MinValue, byte.MinValue, (byte)100);
         static readonly Color FullViewCol = ColorExt.Empty;
         
         public Graphics.PixelTexture texture;
@@ -33,7 +33,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapModels
         {
             var previousTexture = texture;
             texture = new Graphics.PixelTexture(DssRef.world.tileGrid.Size);
-            texture.ClearPixelArray(Color.Black);
+            texture.ClearPixelArray(DssLib.FogColor);
             texture.ApplyPixelsToTexture();
 
             Graphics.GpuResourceSync.Release(previousTexture);

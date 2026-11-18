@@ -55,6 +55,8 @@ namespace VikingEngine.DSSWars
         public const double NobleHouseAddCommand = 1.0 / 120.0;
         public const double NobleHouseAddMaxCommand = 0.5;
 
+        public static readonly Color FogColor = new Color(20, 28, 39);
+
         //public const int DefaultMaxDiplomacy = 4;
         //public const double DefaultDiplomacyPerSecond = 1.0 / 60.0;
         //public const double NobelHouseAddDiplomacy = 1.0 / 240.0;

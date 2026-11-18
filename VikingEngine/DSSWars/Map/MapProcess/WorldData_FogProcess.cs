@@ -9,6 +9,8 @@ namespace VikingEngine.DSSWars
 
     partial class WorldData
     {
+        
+
         public const byte FogOfWarView_None = 0;
         public const byte FogOfWarView_TerrainOnly = 1;
         public const byte FogOfWarView_Full = FogOfWarView_TerrainOnly + 6;

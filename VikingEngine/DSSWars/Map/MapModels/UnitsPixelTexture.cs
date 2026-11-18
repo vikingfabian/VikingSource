@@ -46,29 +46,40 @@ namespace VikingEngine.DSSWars.Map.MapModels
         public void updateColorProfile(PFaction pfaction)
         {
             var playerPFaction = DssRef.state.localPlayers[playerIx].pfaction;
-            
-            if (pfaction == playerPFaction)
+
+            if (DssRef.storage.minimapOptions.blackAndWhite)
             {
-                colorProfile1 = Color.Green;
-                colorProfile2 = Color.LightGreen;
-            }
-            else
-            {
-                var relation = DssRef.world.diplomacy.GetRefRelation_Safe(playerPFaction, pfaction).Relation;
-                if (relation <= RelationType.RelationTypeN1_Enemies)
+                if (pfaction == playerPFaction)
                 {
-                    colorProfile1 = Color.Red;
-                    colorProfile2 = Color.DarkRed;
-                }
-                else if (relation >= RelationType.RelationType3_Ally)
-                {
-                    colorProfile1 = Color.Blue;
-                    colorProfile2 = Color.LightBlue;
+                    colorProfile1 = Color.Green;
+                    colorProfile2 = Color.LightGreen;
                 }
                 else
                 {
-                    colorProfile1 = Color.Gray;
-                    colorProfile2 = Color.LightGray;
+                    var relation = DssRef.world.diplomacy.GetRefRelation_Safe(playerPFaction, pfaction).Relation;
+                    if (relation <= RelationType.RelationTypeN1_Enemies)
+                    {
+                        colorProfile1 = Color.Red;
+                        colorProfile2 = Color.DarkRed;
+                    }
+                    else if (relation >= RelationType.RelationType3_Ally)
+                    {
+                        colorProfile1 = Color.Blue;
+                        colorProfile2 = Color.LightBlue;
+                    }
+                    else
+                    {
+                        colorProfile1 = Color.Gray;
+                        colorProfile2 = Color.LightGray;
+                    }
+                }
+            }
+            else
+            {
+                if (pfaction.TryGetPlayer(out var player))
+                {
+                    colorProfile1 = player.profile.flag.col0_Main;
+                    colorProfile2 = player.profile.flag.col1_Detail1;
                 }
             }
             
@@ -87,9 +98,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     previousPos = groupsCounter.sel.maptilePos;
                     IntVector2 topleft =
                        WP.MaptileToSumTile(groupsCounter.sel.maptilePos);
-                    //new IntVector2(
-                    //    groupsCounter.sel.position.X - 0.5f,
-                    //    groupsCounter.sel.position.Z - 0.5f));
+                 
 
                     if (texture.InBound_TwoPixels(topleft))
                     {

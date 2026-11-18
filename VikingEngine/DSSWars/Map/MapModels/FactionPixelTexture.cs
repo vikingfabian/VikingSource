@@ -232,7 +232,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
                         if (tile.sumTile.fogExploreLevel == WorldData.FogOfWarView_None && DssRef.storage.ruleset.module_fogOfWar)
                         {
-                            texture.SetPixel(loop.Position / TilesPerPixelScale, Color.Black);
+                            texture.SetPixel(loop.Position / TilesPerPixelScale, DssLib.FogColor);
                         }
                         else
                         {
@@ -259,7 +259,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
                         if (tile.sumTile.fogExploreLevel == WorldData.FogOfWarView_None && DssRef.storage.ruleset.module_fogOfWar)
                         {
-                            texture.SetPixel(loop.Position / TilesPerPixelScale, Color.Black);
+                            texture.SetPixel(loop.Position / TilesPerPixelScale, DssLib.FogColor);
                         }
                         else
                         {
@@ -296,7 +296,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         var tile = DssRef.world.GetCombinedTileAndLean(loop.Position, out int leanY);
                         if (tile.sumTile.fogExploreLevel == WorldData.FogOfWarView_None && DssRef.storage.ruleset.module_fogOfWar)
                         {
-                            texture.SetPixel(loop.Position / TilesPerPixelScale, Color.Black);
+                            texture.SetPixel(loop.Position / TilesPerPixelScale, DssLib.FogColor);
                         }
                         else
                         {
