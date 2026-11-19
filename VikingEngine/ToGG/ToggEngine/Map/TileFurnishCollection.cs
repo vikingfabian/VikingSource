@@ -39,7 +39,7 @@ namespace VikingEngine.ToGG.ToggEngine.Map
                         isStompable = true;
 
                         Range count = new Range(1, 3);
-                        List<Vector3> pos = positions(count.GetRandom(), 2);
+                        List<Vector3> pos = positions(count.GetRandom_Inc(), 2);
                         foreach (var m in pos)
                         {
                             new BoxModel(m, position, this);
@@ -51,7 +51,7 @@ namespace VikingEngine.ToGG.ToggEngine.Map
                         isCritter = true;
 
                         Range count = new Range(1, 2);
-                        List<Vector3> pos = positions(count.GetRandom(), 2);
+                        List<Vector3> pos = positions(count.GetRandom_Inc(), 2);
                         foreach (var m in pos)
                         {
                             new CritterRatModel(m, position, this);
@@ -63,7 +63,7 @@ namespace VikingEngine.ToGG.ToggEngine.Map
                         isCritter = true;
 
                         Range count = new Range(2, 5);
-                        List<Vector3> pos = positions(count.GetRandom(), 3);
+                        List<Vector3> pos = positions(count.GetRandom_Inc(), 3);
                         foreach (var m in pos)
                         {
                             new CritterSparrowModel(m, position, this);

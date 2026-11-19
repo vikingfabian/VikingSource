@@ -34,7 +34,7 @@ namespace VikingEngine.PJ.MiniGolf.GO
                 double areaChance = Ref.rnd.Double();
                 if (areaChance < 0.12)
                 {
-                    IntVector2 sz = new IntVector2(BunkerSzRange.GetRandom(), BunkerSzRange.GetRandom());
+                    IntVector2 sz = new IntVector2(BunkerSzRange.GetRandom_Inc(), BunkerSzRange.GetRandom_Inc());
                     Rectangle2 rndArea;
                     if (area.randomArea(sz, true, out rndArea))
                     {
@@ -45,7 +45,7 @@ namespace VikingEngine.PJ.MiniGolf.GO
                 {
                     if (useDamageTraps)
                     {
-                        IntVector2 sz = new IntVector2(SpikeSzRange.GetRandom(), SpikeSzRange.GetRandom());
+                        IntVector2 sz = new IntVector2(SpikeSzRange.GetRandom_Inc(), SpikeSzRange.GetRandom_Inc());
                         Rectangle2 rndArea;
                         if (area.randomArea(sz, true, out rndArea))
                         {

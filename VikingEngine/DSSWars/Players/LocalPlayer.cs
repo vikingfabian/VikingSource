@@ -1946,7 +1946,7 @@ namespace VikingEngine.DSSWars.Players
                 gameControls.map.setCameraPos(DssRef.world.Size / 2);
             }
 
-            nextDominationSize = faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();
+            nextDominationSize = faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom_Inc();
 
             if (DssRef.state.host)
             {

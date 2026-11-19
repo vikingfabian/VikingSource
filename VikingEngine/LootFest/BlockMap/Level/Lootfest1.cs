@@ -109,7 +109,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             Range seaAndMoutainAreaSizeRange = new Range(2, 4);
             for (int i = 0; i < seaAndMoutainAreas; ++i)
             {
-                IntVector2 sz = new IntVector2(seaAndMoutainAreaSizeRange.GetRandom(rnd), seaAndMoutainAreaSizeRange.GetRandom(rnd));
+                IntVector2 sz = new IntVector2(seaAndMoutainAreaSizeRange.GetRandom_Inc(rnd), seaAndMoutainAreaSizeRange.GetRandom_Inc(rnd));
 
                 IntVector2 placementArea = gridDots.Size - sz;
 

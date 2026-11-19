@@ -173,7 +173,7 @@ namespace VikingEngine.ToGG.HeroQuest.MapGen
 
         public void getOneGroup(PcgRandom rnd, List<HqUnitType> result)
         {   
-            int count = MinionCountRange.GetRandom(rnd);
+            int count = MinionCountRange.GetRandom_Inc(rnd);
 
             for (int i = 0; i < count; ++i)
             {

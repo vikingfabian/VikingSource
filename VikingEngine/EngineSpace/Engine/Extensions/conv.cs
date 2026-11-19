@@ -62,6 +62,7 @@ namespace VikingEngine
             }
         }
 
+
         public static Dir8 ToDir8(Rotation1D rotation)
         {
             rotation.Add(-MathHelper.Pi / lib.Dir8Count);

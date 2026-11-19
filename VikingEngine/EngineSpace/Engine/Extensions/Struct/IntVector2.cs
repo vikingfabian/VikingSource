@@ -235,7 +235,7 @@ namespace VikingEngine
                 Y = value.Y;
             }
         }
-        public Dir4 MajorDirection
+        public Dir4 ToDir4
         {
             get
             {
@@ -308,6 +308,18 @@ namespace VikingEngine
         public IntVector2 Normal()
         {
             int l = SideLength();
+           
+            return new IntVector2(X / l, Y / l);
+        }
+
+        public IntVector2 Normal_Safe()
+        {
+            int l = SideLength();
+            if (l == 0)
+            {
+                return IntVector2.Zero;
+            }
+
             return new IntVector2(X / l, Y / l);
         }
         public IntVector2 Normal_Round()

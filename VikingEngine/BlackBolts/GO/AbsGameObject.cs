@@ -6,6 +6,7 @@ using VikingEngine.Core.BlackBolts.Data;
 using VikingEngine.Core.BlackBolts.Interface;
 using VikingEngine.Core.BlackBolts.Map;
 using VikingEngine.Core.BlackBolts.Render;
+using VikingEngine.Core.Wand.GO;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.Core.BlackBolts.GO
@@ -115,6 +116,8 @@ namespace VikingEngine.Core.BlackBolts.GO
                 resource.DeleteMe();
             }
         }
+
+        
 
     }
 

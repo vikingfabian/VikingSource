@@ -23,6 +23,18 @@ namespace VikingEngine
             Array = new T[capacity];
         }
 
+        public T PullIndex(int index)
+        {
+            T result = Array[index];
+            RemoveAt(index);
+            return result;
+        }
+
+        public void SelectRandom()
+        {
+            selIndex = Ref.rnd.Int(Count);
+        }
+
         // 1. Classic RemoveAt: Shifts all subsequent elements left
         public void RemoveAt(int index)
         {
@@ -169,6 +181,14 @@ namespace VikingEngine
             }
         }
 
+        public bool HasSelection()
+        {
+            return selIndex >= 0;
+        }
+        public void UnSelect()
+        {
+            selIndex = -1;
+        }
         public bool HasValue()
         {
             return Count > 0;

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Core.BlackBolts.Scene;
 using VikingEngine.Core.DSSWars.Work;
+using VikingEngine.Core.Wand.Scene;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
@@ -284,8 +285,8 @@ namespace VikingEngine.DSSWars
                 }
                 else
                 {
-#if BLACK
-                    new Core.BlackBolts.Scene.BlackIntroScene();
+#if WAND
+                    new WandIntroScene();
 #else
                     new MainMenuState(bgTex);
 #endif

@@ -181,7 +181,7 @@ namespace VikingEngine.DSSWars.Players
                 }
 
                 bool tooPeaceful = true;
-                int maxChecks = warManagerGear.maxPeacefulChecks.GetRandom();
+                int maxChecks = warManagerGear.maxPeacefulChecks.GetRandom_Inc();
 
                 int attackersCount = 0;
                 Span<PFaction> attackers = stackalloc PFaction[maxChecks];

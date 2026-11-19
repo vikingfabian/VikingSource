@@ -60,11 +60,11 @@ namespace VikingEngine
         public Range(int min, int max)
         { Min = min; Max = max; }
 
-        public int GetRandom()
+        public int GetRandom_Inc()
         {
             return Ref.rnd.Interval(Min, Max);
         }
-        public int GetRandom(PcgRandom rnd)
+        public int GetRandom_Inc(PcgRandom rnd)
         {
             return rnd.Interval(Min, Max);
         }

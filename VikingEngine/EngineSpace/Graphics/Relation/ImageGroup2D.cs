@@ -14,9 +14,9 @@ namespace VikingEngine.Graphics
         {
             images = new List<AbsDraw2D>();
         }
-        public ImageGroup2D(int count)
+        public ImageGroup2D(int capacity)
         {
-            images = new List<AbsDraw2D>(count);
+            images = new List<AbsDraw2D>(capacity);
         }
 
         public ImageGroup2D(List<AbsDraw2D> images)

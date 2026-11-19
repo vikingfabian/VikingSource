@@ -384,7 +384,13 @@ namespace VikingEngine
         }
 
         public int ValueRemoved
-        { get { return EndValue() - value; } }
+        { 
+            get { return EndValue() - value; }
+            set 
+            { 
+                this.value = EndValue() - value;
+            }
+        }
 
         public void add(int add)
         {

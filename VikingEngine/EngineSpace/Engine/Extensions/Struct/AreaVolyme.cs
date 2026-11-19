@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.Maths;
 using VikingEngine.Graphics;
 using VikingEngine.Physics;
+using VikingEngine.ToGG.HeroQuest.Data.Condition;
 
 
 namespace VikingEngine //AreaVolyme
@@ -897,7 +897,30 @@ namespace VikingEngine //AreaVolyme
         {
             return (position - this.Position) / Size;
         }
+        /// <summary>
+        /// Expand the rectangle so it will cover area
+        /// </summary>
+        public void includeArea(VectorRect area)
+        {
+            includePoint(area.Position);
+            includePoint(area.RightBottom);
+        }
 
+        /// <summary>
+        /// Expand the rectangle so it will cover the point
+        /// </summary>
+        public void includePoint(Vector2 point)
+        {
+            if (Position.X > point.X)
+                AddToLeftSide(Position.X - point.X);
+            if (Position.Y > point.Y)
+                AddToTopSide(Position.Y - point.Y);
+
+            if (Right < point.X)
+                Size.X += point.X - Right;
+            if (Bottom < point.Y)
+                Size.Y += point.Y - Bottom;
+        }
         public void AddToLeftSide(float add)
         {
             Position.X -= add; Size.X += add;

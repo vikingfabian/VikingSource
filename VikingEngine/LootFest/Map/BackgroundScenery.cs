@@ -242,7 +242,7 @@ namespace VikingEngine.LootFest.Map
 
                 createCloudBlock(width, length, cloudH, cloudClusterPos, polygons);
 
-                int clusterCount = ClusterCountRange.GetRandom();
+                int clusterCount = ClusterCountRange.GetRandom_Inc();
                 for (int c = 0; c < clusterCount; c++)
                 {
                     Vector3 pos = cloudClusterPos +
