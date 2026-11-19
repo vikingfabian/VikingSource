@@ -237,6 +237,10 @@ namespace VikingEngine.DSSWars.Interface
                                 avaialableAction = false;
                                 content.icontext(HudLib.NotAvailableIcon, DssRef.lang.BuildHud_OutsideFaction, HudLib.NotAvailableColor);
                                 break;
+                            case Players.MayBuildResult.No_InsideRegion:
+                                avaialableAction = false;
+                                content.icontext(HudLib.NotAvailableIcon, DssRef.todoLang.BuildHud_MustBuildOutsideBorders, HudLib.NotAvailableColor);
+                                break;
 
                             case Players.MayBuildResult.No_Occupied:
                                 avaialableAction = false;
@@ -245,7 +249,7 @@ namespace VikingEngine.DSSWars.Interface
 
                             case Players.MayBuildResult.No_BadGround:
                                 avaialableAction = false;
-                                content.icontext(HudLib.NotAvailableIcon, ".Bad ground", HudLib.NotAvailableColor);
+                                content.icontext(HudLib.NotAvailableIcon, DssRef.todoLang.BuildHud_BadGround, HudLib.NotAvailableColor);
                                 break;
                         }
 

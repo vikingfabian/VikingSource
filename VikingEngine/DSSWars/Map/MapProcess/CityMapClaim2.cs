@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.DSSWars.Data.GameSetup;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 
@@ -11,17 +14,35 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess
 {
     static class CityMapClaim2
     {
-        
+        const double OutsideRegionRadiusMultiplier = 2.0;
         const float HeightDifferenceMaxEffect = MapHeight2.HeightY * 40;
 
         public static void CityClaim(City city)
         {
-            var pcity = new VikingEngine.DSSWars.GameObject.ObjectPointer.PCity(city.myIndex);
+            //var pcity = new PCity(city.myIndex);
 
-            IntVector2 center = WP.MaptileToSumTile(city.maptilePos);
-            float cityHeight = DssRef.world.subTileGrid.Get(city.maptilePos).groundY;
+           // IntVector2 center = WP.MaptileToSumTile(city.maptilePos);
+            
             int radius = DssRef.storage.ruleset_instance.CitySizeSetup[(int)city.cityType].claimRadius_sum;
-            int maxRadius = radius + 4;
+
+            city.buildOutsideRegionRadius = MathExt.MultiplyInt(radius, OutsideRegionRadiusMultiplier) * SumTile4_4.TileWidth;
+
+            AreaClaim(city.maptilePos, radius, city);
+        }
+
+        public static void CityExpansionClaim(City city, TerrainBuildingType build, IntVector2 expansionMapTilePos)
+        {
+            int radius = CityHallSetup.ExpansionRadius(build);
+            AreaClaim(expansionMapTilePos, radius, city);
+        }
+
+        static void AreaClaim(IntVector2 mapTileCenter, int sumTileRadius, City city)
+        {
+            var pcity = city.Pointer();
+            IntVector2 center = WP.MaptileToSumTile(mapTileCenter);
+            float cityHeight = DssRef.world.subTileGrid.Get(mapTileCenter).groundY;
+
+            int maxRadius = sumTileRadius + 4;
             Rectangle2 maxArea = Rectangle2.FromCenterTileAndRadius(center, maxRadius);
             Grid2D_L<float> inflenceMap = new Grid2D_L<float>(maxArea);
 
@@ -32,7 +53,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess
                 {
                     tile.pcity = pcity;
                     DssRef.world.tileGrid.Set(setuploop.Position, tile);
-                    inflenceMap.Set_offset(setuploop.Position, radius -1);
+                    inflenceMap.Set_offset(setuploop.Position, sumTileRadius - 1);
                 }
             }
 
@@ -108,45 +129,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess
                 city.citySumTileArea.includeArea(sumArea);
             }
 
-            //ForXYLoop loop = new ForXYLoop(area);
-
-            //while (loop.Next())
-            //{
-            //    if (DssRef.world.tileGrid.TryGet(loop.Position, out var tile))
-            //    {
-            //        if (tile.pcity.IsEmpty())
-            //        {
-            //            tile.pcity = new GameObject.ObjectPointer.PCity(city.myIndex);
-            //            DssRef.world.tileGrid.Set(loop.Position, tile);
-            //        }
-            //    }
-            //}
-
-            //ForXYEdgeLoop outerEdge = new ForXYEdgeLoop(area);
-            //while (outerEdge.Next())
-            //{
-            //    if (DssRef.world.tileGrid.TryGet(outerEdge.Position, out var tile))
-            //    {
-            //        tile.IsBorderTile = true;
-            //        DssRef.world.tileGrid.Set(outerEdge.Position, tile);
-            //    }
-            //}
         }
 
-        //static int ClaimRadius(CityType cityType)
-        //{
-        //    switch (cityType)
-        //    {
-        //        default:
-        //            return ClaimRadius_Campsite;
-        //        case CityType.Village:
-        //            return ClaimRadius_Village;
-        //        case CityType.Town:
-        //            return ClaimRadius_Town;
-        //        case CityType.Capital:
-        //            return ClaimRadius_Capital;
-
-        //    }
-        //}
     }
 }

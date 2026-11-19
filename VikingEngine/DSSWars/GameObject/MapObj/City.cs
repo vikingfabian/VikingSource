@@ -96,6 +96,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         Intvector2MinMax guardCullingMinMax;
         public Rectangle2 citySumTileArea;
+        public int buildOutsideRegionRadius;
         public CityCulture cityCulture = CityCulture.NUM_NONE;
         public CityBiome cityBiome = CityBiome.Default_Fields;
 

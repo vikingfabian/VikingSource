@@ -643,7 +643,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             if (player.mapLayersManager.current.DrawNearLayer)
             {
-                if (input.Build.DownEvent && map.hover.subTile.city.pfaction == player.pfaction)
+                if (input.Build.DownEvent && map.hover.subTile.city != null && map.hover.subTile.city.pfaction == player.pfaction)
                 {
                     if (player.profile.casualControls)
                     {

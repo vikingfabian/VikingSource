@@ -31,27 +31,41 @@ namespace VikingEngine.DSSWars.Resource
         {
             int capacity = DssConst.StorageStartSize + storageCount * DssConst.StorageBuildingSizeAdd;
 
-            if (storageType == StorageType.FoodStorage && city.cityBiome == CityBiome.Frozen)
+            switch (storageType)
             {
-                capacity *= 2;
+                case StorageType.WaterStorage:
+                    capacity = DssConst.Maxwater + storageCount * DssConst.WaterResovoirWaterAdd;
+                    break;
+                case StorageType.FoodStorage:
+                    if (city.cityBiome == CityBiome.Frozen)
+                    {
+                        capacity *= 2;
+                    }
+                    break;
             }
+
 
             //Task.Run(() =>
             //{
-                for (ResourceGroupType group = 0; group < ResourceGroupType.NUM; group++)
-                {
-                    var resources = ResourceLib.ResourceGroupList(group);
+            for (ResourceGroupType group = 0; group < ResourceGroupType.NUM; group++)
+            {
+                var resources = ResourceLib.ResourceGroupList(group);
 
-                    foreach (var resource in resources)
-                    {
-                        var properties = ItemPropertyColl.Get(resource);
-                        if (properties.storageType == storageType)
-                        {                            
-                            DssRef.world.cityResouces[city.resourceComponentStartIndex + properties.cityResourceIndex].UpdateCapacity(capacity);
-                        }
+                foreach (var resource in resources)
+                {
+                    var properties = ItemPropertyColl.Get(resource);
+                    if (properties.storageType == storageType)
+                    {                            
+                        DssRef.world.cityResouces[city.resourceComponentStartIndex + properties.cityResourceIndex].UpdateCapacity(capacity);
                     }
                 }
+            }
             //});
+
+            //int defaultSize()
+            //{
+            //   return DssConst.StorageStartSize + storageCount * DssConst.StorageBuildingSizeAdd;
+            //}
         }
 
         public void write(System.IO.BinaryWriter w)

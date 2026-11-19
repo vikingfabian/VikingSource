@@ -8,6 +8,7 @@ using VikingEngine.Core.BlackBolts.Player;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 using VikingEngine.Graphics;
@@ -215,6 +216,7 @@ namespace VikingEngine.DSSWars.Players
                     city = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(subTilePos)).pcity.City();
                     if (city.pfaction == player.pfaction)
                     {
+
                         return MayBuildResult.Yes;
                     }
                     else
@@ -246,9 +248,18 @@ namespace VikingEngine.DSSWars.Players
                 {
                     //if (tile.MayBuild())
                     {
-                        city = tile.pcity.City();
+                        
 
-                        return MayBuild(city, subTile, player, out mustTerraform, out upgrade);
+                        var result = MayBuild(tile.pcity, subTile, subTilePos, player, out mustTerraform, out upgrade);
+                        if (tile.pcity.HasValue())
+                        {
+                            city = tile.pcity.City();
+                        }
+                        else
+                        {
+                            city = player.gameControls.map.selection.obj.GetCity();
+                        }
+                        return result;
                     }
                 }
             }
@@ -259,43 +270,58 @@ namespace VikingEngine.DSSWars.Players
             return MayBuildResult.ERR;
         }
 
-        public static MayBuildResult MayBuild(City city, MapTile1_1 subTile, LocalPlayer player, out GroundType? mustTerraform, out bool upgrade)
+        public static MayBuildResult MayBuild(PCity tilePCity, MapTile1_1 subTile, IntVector2 subTilePos, LocalPlayer player, out GroundType? mustTerraform, out bool upgrade)
         {
             mustTerraform = null;
             upgrade = false;
-            if (city != null)
+
+            MayBuildResult regionResult = BuildLib.Get(player.gameControls.build.placeBuildingType).mayBuild_regionCheck(tilePCity, subTilePos, player.pfaction, player.gameControls.map.selection.obj.GetCity());
+
+            //if (tilecity != null)
+            //{
+            //    if (tilecity.pfaction.GetPlayer() == player || DssRef.state.GodPowers())
+            //    {
+            switch (regionResult)
             {
-                if (city.pfaction.GetPlayer() == player || DssRef.state.GodPowers())
-                {
+                default:
+                    return regionResult;
+
+                case MayBuildResult.Yes:
+                case MayBuildResult.Yes_ChangeCity:
                     MayBuildResult tileMayBuild = subTile.MayBuild(player.gameControls.build.placeBuildingType, false, out mustTerraform, out upgrade);
-                    if (tileMayBuild == MayBuildResult.Yes)
-                    {
-                        if (player.gameControls.map.selection.obj == city)
-                        {
-                            return MayBuildResult.Yes;
-                        }
-                        else
-                        {
-                            List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-                            AvailableBuildTypes.Available(available, city, false);
-                            if (!available.Contains(player.gameControls.build.placeBuildingType))
-                            {
-                                return MayBuildResult.Yes_ChangeCity;
-                            }
-                            else
-                            {
-                                return MayBuildResult.No_OutsideRegion;
-                            }
-                        }
-                    }
-                    else
-                    { 
-                        return tileMayBuild;
-                    }
-                }
+                    return tileMayBuild;
+
             }
 
-            return MayBuildResult.No_OutsideRegion;
+                    //if (tileMayBuild == MayBuildResult.Yes)
+                    //{
+                    //    if (player.gameControls.map.selection.obj == tilecity)
+                    //    {
+                    //        return MayBuildResult.Yes;
+                    //    }
+                    //    else
+                    //    {
+                    //        List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
+                    //        AvailableBuildTypes.Available(available, tilecity, false);
+
+                    //        if (!available.Contains(player.gameControls.build.placeBuildingType))
+                    //        {
+                    //            return MayBuildResult.Yes_ChangeCity;
+                    //        }
+                    //        else
+                    //        {
+                    //            return MayBuildResult.No_OutsideRegion;
+                    //        }
+                    //    }
+                    //}
+                    //else
+                    //{ 
+                    //    return tileMayBuild;
+                    //}
+            //    }
+            //}
+
+            //return MayBuildResult.No_OutsideRegion;
         }
 
         //public MayBuildResult MayBuild(LocalPlayer player, out bool upgrade)
@@ -423,6 +449,7 @@ namespace VikingEngine.DSSWars.Players
         YesUpgrade,
         Yes_ChangeCity,
         No_OutsideRegion,
+        No_InsideRegion,
         No_Occupied,
 
         No_BadGround,

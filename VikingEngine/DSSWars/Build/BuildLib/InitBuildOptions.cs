@@ -72,21 +72,21 @@ namespace VikingEngine.DSSWars.Build
                 CraftBuildingLib.ExpansionHall_Lvl1, false,
                 BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { buildInArea = BuildInAreaOptions.OutsideBorders, specialBuildRequirement = SpecialBuildRequirement.MaxExpansions };
+            { buildInArea = BuildInAreaOptions.OutsideOnly, specialBuildRequirement = SpecialBuildRequirement.MaxExpansions };
 
             new BuildOption(BuildAndExpandType.ExpansionHall_Lvl2, TerrainMainType.Building, (int)TerrainBuildingType.ExpansionHall_Lvl2, BuildingGroundRequirement.BuildMedium,
                 SpriteName.WarsCityHall, DssRef.todoLang.BuildingType_ExpansionHall, null,
                 CraftBuildingLib.ExpansionHall_Lvl2, false,
                 BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { buildInArea = BuildInAreaOptions.OutsideBorders, specialBuildRequirement = SpecialBuildRequirement.MaxExpansions };
+            { buildInArea = BuildInAreaOptions.OutsideOnly, specialBuildRequirement = SpecialBuildRequirement.MaxExpansions };
 
             new BuildOption(BuildAndExpandType.ExpansionHall_Lvl3, TerrainMainType.Building, (int)TerrainBuildingType.ExpansionHall_Lvl3, BuildingGroundRequirement.BuildMedium,
                 SpriteName.WarsCityHall, DssRef.todoLang.BuildingType_ExpansionHall, null,
                 CraftBuildingLib.ExpansionHall_Lvl3, false,
                 BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large)
-            { buildInArea = BuildInAreaOptions.OutsideBorders, specialBuildRequirement = SpecialBuildRequirement.MaxExpansions };
+            { buildInArea = BuildInAreaOptions.OutsideOnly, specialBuildRequirement = SpecialBuildRequirement.MaxExpansions };
 
             new BuildOption(BuildAndExpandType.WorkerTent, TerrainMainType.Building, (int)TerrainBuildingType.WorkerTent, BuildingGroundRequirement.BuildLight,
                 SpriteName.WarsBuild_TentHut, DssRef.lang.BuildingType_WorkerHut, string.Format(DssRef.lang.BuildingType_WorkerHut_DescriptionLimitX, DssConst.HousingCount_WorkerTent),
@@ -384,25 +384,29 @@ namespace VikingEngine.DSSWars.Build
                 SpriteName.warsFoliageDirtRoad, DssRef.lang.BuildingType_DirtRoad, null,
                 CraftBuildingLib.DirtRoad, false,
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
-                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
+                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small)
+            { buildInArea = BuildInAreaOptions.Anywhere };
 
             new BuildOption(BuildAndExpandType.GravelRoad, TerrainMainType.Road, (int)TerrainRoadType.GravelRoad, BuildingGroundRequirement.BuildLight,
                 SpriteName.warsFoliageDirtRoad, DssRef.todoLang.BuildingType_GravelRoad, null,
                 CraftBuildingLib.DirtRoad, false,
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
-                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
+                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small)
+            { buildInArea = BuildInAreaOptions.Anywhere };
 
             new BuildOption(BuildAndExpandType.CobblestoneRoad, TerrainMainType.Road, (int)TerrainRoadType.CobblestoneRoad, BuildingGroundRequirement.BuildMedium,
                 SpriteName.warsFoliageDirtRoad, DssRef.todoLang.BuildingType_CobblestoneRoad, null,
                 CraftBuildingLib.DirtRoad, false,
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
-                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
+                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small)
+            { buildInArea = BuildInAreaOptions.Anywhere };
 
             new BuildOption(BuildAndExpandType.PavedRoad, TerrainMainType.Road, (int)TerrainRoadType.PavedRoad, BuildingGroundRequirement.BuildMedium,
                 SpriteName.warsFoliageDirtRoad, DssRef.todoLang.BuildingType_PavedRoad, null,
                 CraftBuildingLib.DirtRoad, false,
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
-                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
+                MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small)
+            { buildInArea = BuildInAreaOptions.Anywhere };
 
             new BuildOption(BuildAndExpandType.PavementStreet, TerrainMainType.Road, (int)TerrainRoadType.PavementStreet, BuildingGroundRequirement.BuildMedium,
                 SpriteName.WarsBuild_Pavement, string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Pavement), null,

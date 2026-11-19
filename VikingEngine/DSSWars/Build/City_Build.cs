@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Map.MapData;
@@ -20,7 +21,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 case TerrainMainType.Building:
                     {
-                        switch ((TerrainBuildingType)subType)
+                        var buildingType = (TerrainBuildingType)subType;
+                        switch (buildingType)
                         {
                             case TerrainBuildingType.Logistics:
                                 if (build)
@@ -300,7 +302,24 @@ namespace VikingEngine.DSSWars.GameObject
                                     destroyCesspit(subPos);
                                 }
                                 break;
-
+                            case TerrainBuildingType.ExpansionHall_Lvl1:
+                            case TerrainBuildingType.ExpansionHall_Lvl2:
+                            case TerrainBuildingType.ExpansionHall_Lvl3:
+                                if (build)
+                                {
+                                    Task.Factory.StartNew(() =>
+                                    {
+                                        try
+                                        {
+                                            Core.DSSWars.Map.MapProcess.CityMapClaim2.CityExpansionClaim(this, buildingType, subPos);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            DebugExtensions.BlueScreen.ThreadException = ex;
+                                        }
+                                    });
+                                }
+                                break;
                         }
                     }
                     break;
@@ -380,6 +399,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             return true;
+
         }
         public bool MayAutoBuildHere(IntVector2 subTilePos, BuildingGroundRequirement groundRequirement, out GroundType? mustTerraform)
         {

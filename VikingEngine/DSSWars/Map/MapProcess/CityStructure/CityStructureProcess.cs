@@ -24,6 +24,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
 
         public List<IntVector2> FoodSpots_workupdate = new List<IntVector2>(4);
         public List<IntVector2> StoragePoints_workupdate = new List<IntVector2>(4);
+        //public List<IntVector2> WaterSpot = new List<IntVector2>(20);
         public List<IntVector2> Trees = new List<IntVector2>(20);
         public List<IntVector2> Stones = new List<IntVector2>(20);
         public List<SubTileWork> Farms = new List<SubTileWork>(20);
@@ -265,6 +266,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
             ForXYLoop subTileLoop;
             FoodSpots_workupdate.Clear();
             StoragePoints_workupdate.Clear();
+            //WaterSpot.Clear();
             Trees.Clear();
             Stones.Clear();
             Farms.Clear();
@@ -512,16 +514,22 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
                                         break;
 
                                     case TerrainBuildingType.ExpansionHall_Lvl1:
+                                        FoodSpots_workupdate.Add(subTileLoop.Position);
+                                        StoragePoints_workupdate.Add(subTileLoop.Position);
                                         ++buildingStructure.ExpansionHall_count;
-                                        buildingStructure.ExpansionHall_LowestLevel = Math.Min(buildingStructure.ExpansionHall_LowestLevel, 1);
-                                        
+                                        buildingStructure.ExpansionHall_LowestLevel = Math.Min(buildingStructure.ExpansionHall_LowestLevel, 1);                                        
                                         break;
+
                                     case TerrainBuildingType.ExpansionHall_Lvl2:
+                                        FoodSpots_workupdate.Add(subTileLoop.Position);
+                                        StoragePoints_workupdate.Add(subTileLoop.Position);
                                         ++buildingStructure.ExpansionHall_count;
                                         buildingStructure.ExpansionHall_LowestLevel = Math.Min(buildingStructure.ExpansionHall_LowestLevel, 2);
-
                                         break;
+
                                     case TerrainBuildingType.ExpansionHall_Lvl3:
+                                        FoodSpots_workupdate.Add(subTileLoop.Position);
+                                        StoragePoints_workupdate.Add(subTileLoop.Position);
                                         ++buildingStructure.ExpansionHall_count;
                                         buildingStructure.ExpansionHall_LowestLevel = Math.Min(buildingStructure.ExpansionHall_LowestLevel, 3);
 

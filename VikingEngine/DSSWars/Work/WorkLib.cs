@@ -27,6 +27,7 @@ namespace VikingEngine.DSSWars.Work
             ViewOrder_Group_Work[(int)ResourceGroupType.Resources] = new WorkPriorityType[]
             {
         WorkPriorityType.move,
+        WorkPriorityType.collectWater,
         WorkPriorityType.wood,
         WorkPriorityType.stone,
         WorkPriorityType.collectClay,

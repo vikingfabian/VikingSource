@@ -36,13 +36,14 @@ namespace VikingEngine.DSSWars.Work
         public static void InitComponents(WorkPriority[] work, int startIndex)
         {
             work[startIndex + (int)WorkPriorityType.move].value = 3;
+            work[startIndex + (int)WorkPriorityType.collectWater].value = (byte)(DssRef.storage.ruleset_instance.module_foodAndWater? 3 : 0);
             work[startIndex + (int)WorkPriorityType.wood].value = 2;
             work[startIndex + (int)WorkPriorityType.stone].value = 2;
             work[startIndex + (int)WorkPriorityType.collectClay].value = 1;
             work[startIndex + (int)WorkPriorityType.craftBrick].value = 1;
             work[startIndex + (int)WorkPriorityType.craftFuel].value = 1;
-            work[startIndex + (int)WorkPriorityType.farmFood].value = 4;
-            work[startIndex + (int)WorkPriorityType.farmRawFood].value = 1;
+            work[startIndex + (int)WorkPriorityType.farmFood].value = (byte)(DssRef.storage.ruleset_instance.module_foodAndWater ? 4 : 0); ;
+            work[startIndex + (int)WorkPriorityType.farmRawFood].value = (byte)(DssRef.storage.ruleset_instance.module_foodAndWater ? 1 : 0); ;
             work[startIndex + (int)WorkPriorityType.craftBeer].value = 1;
 
             work[startIndex + (int)WorkPriorityType.smeltIron].value = 3;
@@ -904,8 +905,10 @@ namespace VikingEngine.DSSWars.Work
 
     enum WorkPriorityType : byte
     {
-        collectWater,
+        
         move,
+
+        collectWater,
         wood,
         stone,
         miningBrick,

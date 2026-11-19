@@ -170,14 +170,17 @@ namespace VikingEngine.DSSWars.GameObject
 
                 CityTypeSetup setup = new CityTypeSetup(this.cityType);
               
-            List<TerrainBuildingType> craftStations = new List<TerrainBuildingType>
+            List2<TerrainBuildingType> craftStations = new List2<TerrainBuildingType>(4)
             {
                 (setup.large? TerrainBuildingType.GuardHouse_Large: TerrainBuildingType.GuardHouse_Small),
                 (setup.large? TerrainBuildingType.SoldiersQuarter_Large: TerrainBuildingType.SoldiersQuarter_Small),
                 TerrainBuildingType.Work_Bench,
                 //TerrainBuildingType.Work_Cook,
             };
-
+                if (DssRef.storage.ruleset_instance.module_foodAndWater)
+                {
+                    craftStations.Add(TerrainBuildingType.WaterWell);
+                }
                 //IntVector2 templatePos = IntVector2.Zero;
                 var templateLoop = template.LoopInstance();
                 while (templateLoop.Next())
@@ -250,7 +253,7 @@ namespace VikingEngine.DSSWars.GameObject
                             case CityTemplateCellType.CraftArea:
                                 if (craftStations.Count > 0)
                                 {
-                                    var building = arraylib.RandomListMemberPop(craftStations, rnd);
+                                    var building = //arraylib.RandomListMemberPop(craftStations, rnd);
                                     sub = (int)building;
                                     switch (building)
                                     {

@@ -7,12 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.DSSWars.Map.MapData;
+using VikingEngine.DSSWars.Map.MapLib;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
-using VikingEngine.DSSWars.Map.MapLib;
-using VikingEngine.DSSWars.Map.MapData;
 
 namespace VikingEngine.DSSWars.Build
 {
@@ -37,7 +39,7 @@ namespace VikingEngine.DSSWars.Build
 
         public ItemResource upkeep = ItemResource.Empty;
 
-        public BuildInAreaOptions buildInArea = BuildInAreaOptions.WithInBorders;
+        public BuildInAreaOptions buildInArea = BuildInAreaOptions.WithInOnly;
         public SpecialBuildRequirement specialBuildRequirement = SpecialBuildRequirement.None;
         public BuildingGroundRequirement groundRequirement;
 
@@ -179,6 +181,62 @@ namespace VikingEngine.DSSWars.Build
         public bool availableBlueprintResources_ignorewater(City city)
         {
             return blueprint.hasResources_ignorewater(city) || (altBlueprint != null && altBlueprint.hasResources_ignorewater(city));
+        }
+
+        public MayBuildResult mayBuild_regionCheck(PCity tilePCity, IntVector2 mapTilePos, PFaction pFaction, City fromCity)
+        {
+            bool insideRegion = tilePCity.cityIndex == fromCity.myIndex;
+
+            if (insideRegion)
+            {
+                if (buildInArea.WithInBorders)
+                {
+                    return MayBuildResult.Yes;
+                }
+                else
+                {
+                    return MayBuildResult.No_InsideRegion;
+                }
+            }
+            if (tilePCity.HasValue())
+            {
+                City tilecity = tilePCity.City();
+                if (tilecity.pfaction == pFaction)
+                {
+                    //Expecting only players to do this
+                    if (pFaction.TryGetLocalPlayer(out var player))
+                    {
+                        List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
+                        AvailableBuildTypes.Available(available, tilecity, false);
+
+                        if (!available.Contains(player.gameControls.build.placeBuildingType))
+                        {
+                            return MayBuildResult.Yes_ChangeCity;
+                        }
+                        else
+                        {
+                            return MayBuildResult.No_OutsideRegion;
+                        }
+                    }
+                    //return MayBuildResult.Yes_ChangeCity;
+                }
+                else
+                {
+                    return MayBuildResult.No_OutsideRegion;
+                }
+            }
+            if (DssRef.state.GodPowers())
+            { 
+                return MayBuildResult.Yes;
+            }
+            if (buildInArea.OutsideBorders)
+            {
+                if ((mapTilePos - fromCity.maptilePos).Length() < fromCity.buildOutsideRegionRadius)
+                {
+                    return MayBuildResult.Yes;
+                }
+            }
+            return MayBuildResult.No_OutsideRegion;
         }
     }
 

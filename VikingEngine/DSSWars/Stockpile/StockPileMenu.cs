@@ -53,6 +53,7 @@ namespace VikingEngine.DSSWars.Resource
                 case ResourceGroupType.Resources:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
                     groupType = ResourceGroupType.Resources;
+                    stockpile(player, ItemResourceType.Water_G);
                     stockpile(player, ItemResourceType.Wood_G);
                     stockpile(player, ItemResourceType.FineWood_G);
                     stockpile(player, ItemResourceType.Fuel_G);

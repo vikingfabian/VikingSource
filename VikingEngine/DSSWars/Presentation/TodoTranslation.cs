@@ -60,6 +60,9 @@ namespace VikingEngine.DSSWars.Presentation
         public string BuildingType_Stakes => "Stakes";
         public string Terrain_ReducesMovement => "Will reduce movement speed";
 
+        public string BuildHud_MustBuildOutsideBorders => "Must build outside city region!";
+        public string BuildHud_BadGround => "Bad ground";
+
         public string Resource_TypeName_FineWood => "Fine wood";
         public string Resource_ConvertTitle => "Convert";
 

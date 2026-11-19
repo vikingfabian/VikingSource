@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Text;
 using VikingEngine.Core.EngineSpace.Engine.Extensions.Struct;
 using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.Core.DSSWars.Data.GameSetup
 {
@@ -34,6 +36,11 @@ namespace VikingEngine.Core.DSSWars.Data.GameSetup
         const int ClaimRadius_Village = ClaimRadius_Campsite + 2;
         const int ClaimRadius_Town = ClaimRadius_Village + 2;
         const int ClaimRadius_Capital = ClaimRadius_Town + 2;
+
+        const int ExpansionRadius_Level1 = 8;
+        const int ExpansionRadius_Level2 = ExpansionRadius_Level1 + 2;
+        const int ExpansionRadius_Level3 = ExpansionRadius_Level2 + 2;
+
 
         public static int CampsiteCityStartMaxWorkForce = DssConst.HousingCount_WorkerTent;
         public static int SmallCityStartMaxWorkForce = DssConst.SoldierGroup_DefaultCount * 5;
@@ -117,6 +124,22 @@ namespace VikingEngine.Core.DSSWars.Data.GameSetup
                     break;
 
 
+            }
+        }
+
+        public static int ExpansionRadius(TerrainBuildingType build)
+        {
+            switch (build)
+            {
+                case TerrainBuildingType.ExpansionHall_Lvl1:
+                    return ExpansionRadius_Level1;
+                case TerrainBuildingType.ExpansionHall_Lvl2:
+                    return ExpansionRadius_Level2;
+                case TerrainBuildingType.ExpansionHall_Lvl3:
+                    return ExpansionRadius_Level3;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }

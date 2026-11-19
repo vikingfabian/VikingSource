@@ -228,11 +228,19 @@ namespace VikingEngine.DSSWars.Build
 
     }
 
-    enum BuildInAreaOptions
+    struct BuildInAreaOptions
     {
-        WithInBorders,
-        OutsideBorders,
-        Both,
+        public static readonly BuildInAreaOptions WithInOnly = new BuildInAreaOptions() { WithInBorders = true };
+        public static readonly BuildInAreaOptions OutsideOnly = new BuildInAreaOptions() { OutsideBorders = true };
+        public static readonly BuildInAreaOptions Anywhere = new BuildInAreaOptions() { WithInBorders = true, OutsideBorders = true };
+
+        public bool WithInBorders, OutsideBorders;
     }
+    //enum BuildInAreaOptions
+    //{
+    //    WithInBorders,
+    //    OutsideBorders,
+    //    Both,
+    //}
 
 }

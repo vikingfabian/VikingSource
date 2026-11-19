@@ -313,7 +313,6 @@ namespace VikingEngine.DSSWars.Map.MapModels
                             {
                                 texture.SetPixel(loop.Position / TilesPerPixelScale, ColorExt.ChangeBrighness(color, -70));
                             }
-                            //texture.SetPixel(loop.Position / TilesPerPixelScale, color);
                         }
                     }
                     break;
