@@ -1204,9 +1204,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 case TerrainBuildingType.Brewery:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workstation, 2, wp, Map.MapData.MapTile1_1.ModelScale * 1f));
                     break;
-                case TerrainBuildingType.WaterWell:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_water, 0, wp, Map.MapData.MapTile1_1.ModelScale * 0.5f));
-                    break;
+               
                 case TerrainBuildingType.WaterResovoir:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_water, 0, wp, Map.MapData.MapTile1_1.ModelScale * 1f));
                     break;
@@ -1560,6 +1558,10 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
             switch (mineType)
             {
+                case TerrainMineType.WaterWell:
+                case TerrainMineType.WaterNaturalSpring:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_water, 0, wp, Map.MapData.MapTile1_1.ModelScale * 0.5f));
+                    break;
                 case TerrainMineType.BogIron:
                     //manMade = false;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 3, wp, 0.14f));

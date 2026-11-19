@@ -486,7 +486,7 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Advanced, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Large);
 
-            new BuildOption(BuildAndExpandType.WaterWell, TerrainMainType.Building, (int)TerrainBuildingType.WaterWell, BuildingGroundRequirement.BuildMedium,
+            new BuildOption(BuildAndExpandType.WaterWell, TerrainMainType.Mine, (int)TerrainMineType.WaterWell, BuildingGroundRequirement.BuildMedium,
                 SpriteName.MissingImage, DssRef.todoLang.BuildingType_WaterWell, null,
                 CraftBuildingLib.WaterWell, true,
                 BuildCategoryTab.General, BuildFilterTag.Optimize, BuildFilterTag.Water, BuildFilterTag.NUM_NONE,

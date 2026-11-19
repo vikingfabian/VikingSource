@@ -187,7 +187,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
         WoodCutter,
         StoneCutter,
         Embassy,
-        WaterWell,
+        
         WaterResovoir,
 
         Foundry,
@@ -297,6 +297,7 @@ namespace VikingEngine.DSSWars.Map.MapLib
     {
         PointOfInterest,
         WaterNaturalSpring,
+        WaterWell,
         BogIron,
         ClayPit,
         SaltPit,

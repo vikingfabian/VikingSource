@@ -427,7 +427,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
                                 }
                                 break;
                             case TerrainMainType.Mine:
-                                Mines.Add(subTileLoop.Position);
+                                
 
                                 var mineType = (TerrainMineType)subTile.subTerrain;
                                 switch (mineType)
@@ -436,49 +436,68 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
                                         ++terrainStructure.mineCount_waterSpring;
                                         WaterCollect.Add(subTileLoop.Position);
                                         break;
+                                    case TerrainMineType.WaterWell:
+                                        ++buildingStructure.WaterWell_count;
+                                        BuildingPosition.Set(ref buildingPosition.Water_pos, ref subTileLoop.Position);
+                                        WaterCollect.Add(subTileLoop.Position);
+                                        break;
                                     case TerrainMineType.BogIron:
                                         ++terrainStructure.mineCount_bogIron;
                                         BogIron.Add(subTileLoop.Position);
+                                        Mines.Add(subTileLoop.Position);
                                         break;
 
                                     case TerrainMineType.ClayPit:
                                         ++terrainStructure.resourceCount_clay;
-                                        ClayPit.Add(subTileLoop.Position);                                        
+                                        ClayPit.Add(subTileLoop.Position);
+                                        Mines.Add(subTileLoop.Position);
                                         break;
                                     case TerrainMineType.SaltPit:
+                                        Mines.Add(subTileLoop.Position);
                                         break;
                                     case TerrainMineType.Coal:
                                         ++terrainStructure.mineCount_coal;
+                                        Mines.Add(subTileLoop.Position);
                                         break;
                                     case TerrainMineType.IronOre:
                                         ++terrainStructure.mineCount_iron;
+                                        Mines.Add(subTileLoop.Position);
                                         break;
                                     case TerrainMineType.TinOre:
                                         ++terrainStructure.mineCount_tin;
+                                        Mines.Add(subTileLoop.Position);
                                         break;
                                     case TerrainMineType.CopperOre:
                                         ++terrainStructure.mineCount_copper;
+                                        Mines.Add(subTileLoop.Position);
                                         break;
                                     case TerrainMineType.Sulfur:
                                         ++terrainStructure.mineCount_sulfur;
+                                        Mines.Add(subTileLoop.Position);
                                         break;
                                     case TerrainMineType.LeadOre:
                                         ++terrainStructure.mineCount_lead;
+                                        Mines.Add(subTileLoop.Position);
                                         break;
                                     case TerrainMineType.SilverOre:
                                         ++terrainStructure.mineCount_silver;
+                                        Mines.Add(subTileLoop.Position);
                                         break;
                                     case TerrainMineType.GoldOre:
                                         ++terrainStructure.mineCount_gold;
+                                        Mines.Add(subTileLoop.Position);
                                         break;
                                     case TerrainMineType.Salt:
                                         ++terrainStructure.mineCount_salt;
+                                        Mines.Add(subTileLoop.Position);
                                         break;
                                     case TerrainMineType.StoneBlock:
                                         ++terrainStructure.mineCount_stoneblock;
+                                        Mines.Add(subTileLoop.Position);
                                         break;
                                     case TerrainMineType.Mithril:
                                         ++terrainStructure.mineCount_mithril;
+                                        Mines.Add(subTileLoop.Position);
                                         break;
                                 }
                                 break;
@@ -736,11 +755,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
                                         ++buildingStructure.BookPress_count;
                                         BuildingPosition.Set(ref buildingPosition.BookPress_pos, ref subTileLoop.Position); 
                                        break;
-                                    case TerrainBuildingType.WaterWell:
-                                        ++buildingStructure.WaterWell_count;
-                                        BuildingPosition.Set(ref buildingPosition.Water_pos, ref subTileLoop.Position); 
-                                        WaterCollect.Add(subTileLoop.Position); 
-                                        break;
+                                    
                                     case TerrainBuildingType.WaterResovoir:
                                         ++buildingStructure.WaterResovoir_count;
                                         BuildingPosition.Set(ref buildingPosition.Water_pos, ref subTileLoop.Position); 

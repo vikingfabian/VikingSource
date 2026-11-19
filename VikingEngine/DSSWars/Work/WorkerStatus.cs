@@ -1344,78 +1344,85 @@ namespace VikingEngine.DSSWars.Work
                             city.waterDepthLevel.value += DssConst.GroundWaterDepthAddPerCollect;
                             gainXp = WorkExperienceType.Transport;
                         }
-                        else if (subTile.mainTerrain == TerrainMainType.Mine)
-                        {
-
-                            var mineType = (TerrainMineType)subTile.subTerrain;
-
-                            switch (mineType)
-                            {
-                                case TerrainMineType.BogIron:
-                                    carry = new ItemResource(ItemResourceType.IronOre_G, /*1, Convert.ToInt32(processTimeLengthSec),*/ TerrainContent.DefaultMineAmount);
-
-                                    break;
-                                case TerrainMineType.ClayPit:
-                                    carry = new ItemResource(ItemResourceType.Clay, /*1, Convert.ToInt32(processTimeLengthSec),*/ TerrainContent.DefaultMineAmount);
-
-                                    gainXp = WorkExperienceType.StoneCutter;
-                                    break;
-
-                                case TerrainMineType.IronOre:
-                                    resourceType = ItemResourceType.IronOre_G;
-                                    break;
-                                case TerrainMineType.Salt:
-                                    resourceType = ItemResourceType.Salt;
-                                    break;
-                                case TerrainMineType.StoneBlock:
-                                    resourceType = ItemResourceType.Brick;
-                                    gainXp = WorkExperienceType.StoneCutter;
-                                    break;
-                                case TerrainMineType.TinOre:
-                                    resourceType = ItemResourceType.TinOre;
-                                    break;
-                                case TerrainMineType.CopperOre:
-                                    resourceType = ItemResourceType.CopperOre;
-                                    break;
-                                case TerrainMineType.LeadOre:
-                                    resourceType = ItemResourceType.LeadOre;
-                                    break;
-                                case TerrainMineType.Sulfur:
-                                    resourceType = ItemResourceType.Sulfur;
-                                    break;
-                                case TerrainMineType.SilverOre:
-                                    resourceType = ItemResourceType.SilverOre;
-                                    break;
-
-                                case TerrainMineType.Coal:
-                                    resourceType = ItemResourceType.Coal;
-                                    amount = TerrainContent.MineAmount_Coal;
-                                    break;
-                                case TerrainMineType.GoldOre:
-                                    resourceType = ItemResourceType.GoldOre;
-                                    break;
-
-                                case TerrainMineType.Mithril:
-                                    resourceType = ItemResourceType.RawMithril;
-                                    break;
-                            }
-
-
-                            if (city.cityCulture == CityCulture.Miners)
-                            {
-                                amount *= 2;
-                            }
-                        }
                         else
                         {
-                            resourceType = ItemResourceType.Salt;
-                            amount = TerrainContent.DryingSaltAmount;
+                            if (subTile.mainTerrain == TerrainMainType.Mine)
+                            {
+
+                                var mineType = (TerrainMineType)subTile.subTerrain;
+
+                                switch (mineType)
+                                {
+                                    case TerrainMineType.BogIron:
+                                        carry = new ItemResource(ItemResourceType.IronOre_G, /*1, Convert.ToInt32(processTimeLengthSec),*/ TerrainContent.DefaultMineAmount);
+
+                                        break;
+                                    case TerrainMineType.ClayPit:
+                                        carry = new ItemResource(ItemResourceType.Clay, /*1, Convert.ToInt32(processTimeLengthSec),*/ TerrainContent.DefaultMineAmount);
+
+                                        gainXp = WorkExperienceType.StoneCutter;
+                                        break;
+
+                                    case TerrainMineType.IronOre:
+                                        resourceType = ItemResourceType.IronOre_G;
+                                        break;
+                                    case TerrainMineType.Salt:
+                                        resourceType = ItemResourceType.Salt;
+                                        break;
+                                    case TerrainMineType.StoneBlock:
+                                        resourceType = ItemResourceType.Brick;
+                                        gainXp = WorkExperienceType.StoneCutter;
+                                        break;
+                                    case TerrainMineType.TinOre:
+                                        resourceType = ItemResourceType.TinOre;
+                                        break;
+                                    case TerrainMineType.CopperOre:
+                                        resourceType = ItemResourceType.CopperOre;
+                                        break;
+                                    case TerrainMineType.LeadOre:
+                                        resourceType = ItemResourceType.LeadOre;
+                                        break;
+                                    case TerrainMineType.Sulfur:
+                                        resourceType = ItemResourceType.Sulfur;
+                                        break;
+                                    case TerrainMineType.SilverOre:
+                                        resourceType = ItemResourceType.SilverOre;
+                                        break;
+
+                                    case TerrainMineType.Coal:
+                                        resourceType = ItemResourceType.Coal;
+                                        amount = TerrainContent.MineAmount_Coal;
+                                        break;
+                                    case TerrainMineType.GoldOre:
+                                        resourceType = ItemResourceType.GoldOre;
+                                        break;
+
+                                    case TerrainMineType.Mithril:
+                                        resourceType = ItemResourceType.RawMithril;
+                                        break;
+                                }
+
+
+                                if (city.cityCulture == CityCulture.Miners)
+                                {
+                                    amount *= 2;
+                                }
+                            }
+                            else
+                            {
+                                resourceType = ItemResourceType.Salt;
+                                amount = TerrainContent.DryingSaltAmount;
+                            }
+
+                            carry = new ItemResource(
+                                resourceType,
+                                amount);
                         }
-
-                        carry = new ItemResource(
-                            resourceType,
-                            amount);
-
+                                                
+                        //if (carry.type == ItemResourceType.NONE)
+                        //{
+                        //     lib.DoNothing();
+                        //}
                         
                     }
                     break;

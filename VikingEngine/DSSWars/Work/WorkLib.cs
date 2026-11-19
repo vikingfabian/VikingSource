@@ -271,16 +271,22 @@ namespace VikingEngine.DSSWars.Work
                     {
                         if (DssRef.world.subTileGrid.TryGet(subTileEnd, out MapTile1_1 subTile))
                         {
+
                             switch ((TerrainMineType)subTile.subTerrain)
                             {
                                 case TerrainMineType.ClayPit:
                                 case TerrainMineType.StoneBlock:
                                     gainXpType = WorkExperienceType.StoneCutter;
                                     break;
+                                case TerrainMineType.WaterWell:
+                                case TerrainMineType.WaterNaturalSpring:
+                                    gainXpType = WorkExperienceType.Transport;
+                                    break;
                                 default:
                                     gainXpType = WorkExperienceType.Mining;
                                     break;
                             }
+
                         }
                     }
                     

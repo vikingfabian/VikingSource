@@ -169,18 +169,22 @@ namespace VikingEngine.DSSWars.GameObject
                 Grid2D<CityTemplateCellType> template = templateCollection.getTemplate(this, world, maptilePos, out IntVector2 topleft);
 
                 CityTypeSetup setup = new CityTypeSetup(this.cityType);
-              
-            List2<TerrainBuildingType> craftStations = new List2<TerrainBuildingType>(4)
+
+                //Span<TerrainBuildingType> test = stackalloc TerrainBuildingType[4];
+                //new List2(test);
+
+                List2 <BuildAndExpandType> craftStations = new List2<BuildAndExpandType>(4)
             {
-                (setup.large? TerrainBuildingType.GuardHouse_Large: TerrainBuildingType.GuardHouse_Small),
-                (setup.large? TerrainBuildingType.SoldiersQuarter_Large: TerrainBuildingType.SoldiersQuarter_Small),
-                TerrainBuildingType.Work_Bench,
+                (setup.large? BuildAndExpandType.GuardHouse_Large: BuildAndExpandType.GuardHouse_Small),
+                (setup.large? BuildAndExpandType.SoldiersQuarter_Large: BuildAndExpandType.SoldiersQuarter_Small),
+                BuildAndExpandType.WorkBench,
+                BuildAndExpandType.WaterWell,
                 //TerrainBuildingType.Work_Cook,
             };
-                if (DssRef.storage.ruleset_instance.module_foodAndWater)
-                {
-                    craftStations.Add(TerrainBuildingType.WaterWell);
-                }
+                //if (DssRef.storage.ruleset_instance.module_foodAndWater)
+                //{
+                //    craftStations.Add(TerrainBuildingType.WaterWell);
+                //}
                 //IntVector2 templatePos = IntVector2.Zero;
                 var templateLoop = template.LoopInstance();
                 while (templateLoop.Next())
@@ -253,14 +257,19 @@ namespace VikingEngine.DSSWars.GameObject
                             case CityTemplateCellType.CraftArea:
                                 if (craftStations.Count > 0)
                                 {
-                                    var building = //arraylib.RandomListMemberPop(craftStations, rnd);
-                                    sub = (int)building;
+
+                                    var building = craftStations.PullRandom_SwapBack(); //arraylib.RandomListMemberPop(craftStations, rnd);
+                                    //sub = (int)building;
+                                    var opt = BuildLib.Get(building);
+                                    main = opt.terrainType.mainTerrain;
+                                    sub = opt.terrainType.subTerrain;
+
                                     switch (building)
                                     {
-                                        case TerrainBuildingType.GuardHouse_Small:
+                                        case BuildAndExpandType.GuardHouse_Small:
                                             onGuardHouseBuild(true, false);
                                             break;
-                                        case TerrainBuildingType.GuardHouse_Large:
+                                        case BuildAndExpandType.GuardHouse_Large:
                                             onGuardHouseBuild(true, true);
                                             break;
                                     }

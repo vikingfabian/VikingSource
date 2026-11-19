@@ -23,10 +23,22 @@ namespace VikingEngine
             Array = new T[capacity];
         }
 
+        //public List2(Span<T> values)
+        //{
+        //    this.Array = values;
+        //}
+
         public T PullIndex(int index)
         {
             T result = Array[index];
             RemoveAt(index);
+            return result;
+        }
+        public T PullRandom_SwapBack()
+        {
+            int index = Ref.rnd.Int(Count);
+            T result = Array[index];
+            RemoveAtSwapBack(index);
             return result;
         }
 
