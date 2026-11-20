@@ -90,6 +90,10 @@ namespace VikingEngine.Core.DSSWars.Work
 
 
             // --- Metals ---
+
+            workProperties[(int)WorkPriorityType.landSurveyingInsideBorders] = new WorkProperty(WorkPriorityType.landSurveyingInsideBorders, SpriteName.pjNumQuestion, SpriteName.pjNumQuestion, DssRef.todoLang.Work_LandSurvey, ItemResourceType.NONE, ItemResourceType.NONE);
+            workProperties[(int)WorkPriorityType.landSurveyingOutsideBorders] = new WorkProperty(WorkPriorityType.landSurveyingOutsideBorders, SpriteName.pjNumQuestion, SpriteName.pjNumQuestion, DssRef.todoLang.Work_LandSurveyOutsideBorder, ItemResourceType.NONE, ItemResourceType.NONE);
+
             workProperties[(int)WorkPriorityType.bogiron] = new WorkProperty(WorkPriorityType.bogiron, SpriteName.WarsWorkCollect, SpriteName.WarsResource_IronOre, DssRef.lang.Resource_TypeName_BogIron, ItemResourceType.IronOre_G, ItemResourceType.NONE);
 
             workProperties[(int)WorkPriorityType.miningIron] = new WorkProperty(WorkPriorityType.miningIron, SpriteName.WarsWorkMine, SpriteName.WarsResource_Iron, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Iron.ToLowerInvariant()), ItemResourceType.IronOre_G, ItemResourceType.NONE)

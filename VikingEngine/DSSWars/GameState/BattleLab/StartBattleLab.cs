@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map.Generate;
-using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.GameState.BattleLab

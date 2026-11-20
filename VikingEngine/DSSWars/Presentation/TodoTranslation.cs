@@ -37,8 +37,9 @@ namespace VikingEngine.DSSWars.Presentation
         public string Minigame_BlackBolt_Description => "Factory puzzle minigame. English only.";
 
         public string Work_LandSurvey => "Land survey";
+        public string Work_LandSurveyOutsideBorder => "Wild land survey";
         public string Work_LandSurvey_Description => "Explore points of interest to find natural resources";
-
+        public string Work_OutsideBorder_Description => "Outside your city borders";
         public string Point_PrimitiveExloration => "Primitive exporation complete";
         public string Point_FullExloration => "Exporation complete";
 

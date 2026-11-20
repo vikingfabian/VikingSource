@@ -22,7 +22,8 @@ namespace VikingEngine.DSSWars.Map.MapLib
                 //1.1f, 0.6f, 0
                 new BiomGroundType()
                 {
-                    groundType = GroundType.Default,                    
+                    groundType = GroundType.Default, 
+                    
                 },
                 new BiomGroundType()
                 {

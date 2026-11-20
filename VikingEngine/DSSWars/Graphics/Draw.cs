@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VikingEngine.DSSWars.GameState.VoxelEditor;
+using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLayer;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.Graphics.DeferredRendering;
@@ -212,7 +213,7 @@ namespace VikingEngine.DSSWars
                     if (Ref.gamesett.modelShadow)
                     {
                         var area = DssRef.state.culling.players[p.localPlayerIndex].GetState().enterArea;
-                        shadowProcessor.light.updateScene(Camera, area.Width, area.Height);
+                        shadowProcessor.light.updateScene(Camera, area.Width * MapTile1_1.ModelScale, area.Height * MapTile1_1.ModelScale);
                         shadowProcessor.BeginShadowMapPass();
                         {
                             shadowProcessor.DrawRenderListMembersDepthOnly(NearLayer, DrawObjType.MeshGenerated, cameraIndex);

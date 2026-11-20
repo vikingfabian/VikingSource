@@ -51,6 +51,7 @@ namespace VikingEngine.DSSWars.Work
             work[startIndex + (int)WorkPriorityType.craftPaddedArmor].value = 1;
             work[startIndex + (int)WorkPriorityType.farmfuel].value = 2;
             work[startIndex + (int)WorkPriorityType.farmlinen].value = 3;
+            work[startIndex + (int)WorkPriorityType.landSurveyingInsideBorders].value = 1;
             work[startIndex + (int)WorkPriorityType.bogiron].value = 1;
             work[startIndex + (int)WorkPriorityType.miningIron].value = 3;
             work[startIndex + (int)WorkPriorityType.trading].value = 2;
@@ -1002,6 +1003,10 @@ namespace VikingEngine.DSSWars.Work
         farmlinen,
         bogiron,
         collectClay,
+
+        landSurveyingInsideBorders,
+        landSurveyingOutsideBorders,
+
         miningIron,
         miningTin,
         miningCopper,

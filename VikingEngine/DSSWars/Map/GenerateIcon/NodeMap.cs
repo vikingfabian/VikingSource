@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.Generate;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map.Map2

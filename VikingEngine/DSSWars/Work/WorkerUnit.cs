@@ -226,6 +226,7 @@ namespace VikingEngine.DSSWars.Work
                                 }
                             }
                             break;
+                        case WorkType.Explore:
                         case WorkType.Mine:
                             if (workAnimation_soundframe())
                             {
@@ -679,7 +680,10 @@ namespace VikingEngine.DSSWars.Work
                 args.content.Add(new RbText(string.Format(DssRef.lang.WorkerHud_Carry, status.carry.amount, name)));
             }
 
-            args.content.text(string.Format(DssRef.lang.WorkerHud_Energy, TextLib.OneDecimal(status.energy)));
+            if (DssRef.storage.ruleset_instance.module_foodAndWater)
+            {
+                args.content.text(string.Format(DssRef.lang.WorkerHud_Energy, TextLib.OneDecimal(status.energy)));
+            }
 
             if (DssRef.difficulty.GodPowers() && GetCity() != null)
             {

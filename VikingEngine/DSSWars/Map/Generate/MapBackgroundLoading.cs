@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
+using VikingEngine.Core.DSSWars.Map.Generate;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map.Map2;
@@ -252,7 +252,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                             {
                                 
                                 postGenerate = new Map2PostGenerate(dataGenerate.mapBuilder.world);
-                                postGenerate.placeTerrain();
+                                //postGenerate.placeTerrain();
+                                new GenerateMapTileContent(dataGenerate.mapBuilder.world).placeTerrain();
                                 postGenerate.citiesAndFactionsSetup(dataGenerate.generateSettings);
 
                                 loadingState++;

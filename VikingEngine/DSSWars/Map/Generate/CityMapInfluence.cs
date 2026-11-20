@@ -1,473 +1,473 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+//using System;
+//using System.Collections.Generic;
+//using System.Drawing;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
-using VikingEngine.DebugExtensions;
-using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.ObjectPointer;
-using VikingEngine.LootFest.GO.Characters.Monsters;
-using VikingEngine.LootFest.Map;
+//using VikingEngine.DebugExtensions;
+//using VikingEngine.DSSWars.GameObject;
+//using VikingEngine.DSSWars.GameObject.ObjectPointer;
+//using VikingEngine.LootFest.GO.Characters.Monsters;
+//using VikingEngine.LootFest.Map;
 
-namespace VikingEngine.DSSWars.Map
-{
-    class CityMapInfluence
-    {
-        Grid2D<Influence> inflenceMap;
-        MapCity[] cities;
+//namespace VikingEngine.DSSWars.Map
+//{
+//    class CityMapInfluence
+//    {
+//        Grid2D<Influence> inflenceMap;
+//        MapCity[] cities;
 
-        public bool generate(WorldData world) 
-        {
-            inflenceMap = new Grid2D<Influence>(world.Size);
+//        public bool generate(WorldData world) 
+//        {
+//            inflenceMap = new Grid2D<Influence>(world.Size);
            
-            cities = new MapCity[world.cities.Count];
+//            cities = new MapCity[world.cities.Count];
 
-            int verticalDivitions = world.Size.X / 128;
+//            int verticalDivitions = world.Size.X / 128;
             
-            bool result = Task.Run(async ()=> {
+//            bool result = Task.Run(async ()=> {
 
-                try
-                {
-                    List<Task> tasks = new List<Task>(verticalDivitions);
+//                try
+//                {
+//                    List<Task> tasks = new List<Task>(verticalDivitions);
 
-                    const int InitDivitions = 8;
-                    int cityCountDiv = world.cities.Count / 8;
-                    for (int i = 0; i < InitDivitions; ++i)
-                    {
-                        int start = i * cityCountDiv;
-                        int end_plusone = start + cityCountDiv;
-                        if (i == InitDivitions - 1)
-                        {
-                            end_plusone = world.cities.Count;
-                        }
+//                    const int InitDivitions = 8;
+//                    int cityCountDiv = world.cities.Count / 8;
+//                    for (int i = 0; i < InitDivitions; ++i)
+//                    {
+//                        int start = i * cityCountDiv;
+//                        int end_plusone = start + cityCountDiv;
+//                        if (i == InitDivitions - 1)
+//                        {
+//                            end_plusone = world.cities.Count;
+//                        }
 
-                        tasks.Add(Task.Run(() =>
-                        {
-                            try
-                            {
-                                for (int cityIx = start; cityIx < end_plusone; cityIx++)
-                                {
-                                    cities[cityIx] = new MapCity(world.cities[cityIx], inflenceMap);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                BlueScreen.ThreadException = ex;
-                            }
+//                        tasks.Add(Task.Run(() =>
+//                        {
+//                            try
+//                            {
+//                                for (int cityIx = start; cityIx < end_plusone; cityIx++)
+//                                {
+//                                    cities[cityIx] = new MapCity(world.cities[cityIx], inflenceMap);
+//                                }
+//                            }
+//                            catch (Exception ex)
+//                            {
+//                                BlueScreen.ThreadException = ex;
+//                            }
                             
-                        }));
-                    }
+//                        }));
+//                    }
 
-                    //foreach (var c in world.cities)
-                    //{
-                    //    cities.Add(new MapCity(c, inflenceMap));
-                    //}
+//                    //foreach (var c in world.cities)
+//                    //{
+//                    //    cities.Add(new MapCity(c, inflenceMap));
+//                    //}
 
-                    await Task.WhenAll(tasks);
-                    tasks.Clear();
+//                    await Task.WhenAll(tasks);
+//                    tasks.Clear();
 
-                    //Optimized by diviting the world in vertical stripes, and running even, then odd
+//                    //Optimized by diviting the world in vertical stripes, and running even, then odd
 
-                    int loopCount = 0;
+//                    int loopCount = 0;
 
-                    bool activeCities = false;
+//                    bool activeCities = false;
 
-                    //while (cities.Count > 0)
-                    do
-                    {
-                        activeCities = false;
+//                    //while (cities.Count > 0)
+//                    do
+//                    {
+//                        activeCities = false;
 
-                        for (int evenOdd = 0; evenOdd < 2; evenOdd++)
-                        {
-                            for (int verticalStripeIx = 0; verticalStripeIx < verticalDivitions; verticalStripeIx++)
-                            {
-                                if (lib.IsEven(evenOdd) == lib.IsEven(verticalStripeIx))
-                                {
-                                    int ix = verticalStripeIx;
-                                    tasks.Add(Task.Run(() =>
-                                    {
-                                        try
-                                        {
-                                            Rectangle2 area = cityArea(ix, verticalDivitions, true);
+//                        for (int evenOdd = 0; evenOdd < 2; evenOdd++)
+//                        {
+//                            for (int verticalStripeIx = 0; verticalStripeIx < verticalDivitions; verticalStripeIx++)
+//                            {
+//                                if (lib.IsEven(evenOdd) == lib.IsEven(verticalStripeIx))
+//                                {
+//                                    int ix = verticalStripeIx;
+//                                    tasks.Add(Task.Run(() =>
+//                                    {
+//                                        try
+//                                        {
+//                                            Rectangle2 area = cityArea(ix, verticalDivitions, true);
 
-                                            for (int cityIx = 0; cityIx < world.cities.Count; cityIx++)
-                                            {
-                                                if (cities[cityIx].active)
-                                                {
-                                                    activeCities = true;
+//                                            for (int cityIx = 0; cityIx < world.cities.Count; cityIx++)
+//                                            {
+//                                                if (cities[cityIx].active)
+//                                                {
+//                                                    activeCities = true;
 
-                                                    if (area.IntersectTilePoint(cities[cityIx].city.maptilePos))
-                                                    {
-                                                        cities[cityIx].next(inflenceMap, world);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            BlueScreen.ThreadException = ex;
-                                        }
+//                                                    if (area.IntersectTilePoint(cities[cityIx].city.maptilePos))
+//                                                    {
+//                                                        cities[cityIx].next(inflenceMap, world);
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                        catch (Exception ex)
+//                                        {
+//                                            BlueScreen.ThreadException = ex;
+//                                        }
                                         
 
-                                    }));
-                                }
-                            }
-                            await Task.WhenAll(tasks);
-                            tasks.Clear();
-                        }
-                        //for (int i = cities.Count - 1; i >= 0; --i)
-                        //{
-                        //    if (cities[i].next(inflenceMap, world))
-                        //    {
-                        //        cities.RemoveAt(i);
-                        //    }
-                        //}
+//                                    }));
+//                                }
+//                            }
+//                            await Task.WhenAll(tasks);
+//                            tasks.Clear();
+//                        }
+//                        //for (int i = cities.Count - 1; i >= 0; --i)
+//                        //{
+//                        //    if (cities[i].next(inflenceMap, world))
+//                        //    {
+//                        //        cities.RemoveAt(i);
+//                        //    }
+//                        //}
 
-                        if (++loopCount > 10000)
-                        {
-                            throw new EndlessLoopException("CityMapInfluence");
-                        }
-                    } while (activeCities);
+//                        if (++loopCount > 10000)
+//                        {
+//                            throw new EndlessLoopException("CityMapInfluence");
+//                        }
+//                    } while (activeCities);
 
 
 
-                    debugLog();
+//                    debugLog();
 
-                    for (int evenOdd = 0; evenOdd < 2; evenOdd++)
-                    {
-                        for (int verticalStripeIx = 0; verticalStripeIx < verticalDivitions; verticalStripeIx++)
-                        {
-                            if (lib.IsEven(evenOdd) == lib.IsEven(verticalStripeIx))
-                            {
-                                int ix = verticalStripeIx;
-                                tasks.Add(Task.Run(() =>
-                                {
-                                    try
-                                    {
-                                        Rectangle2 area = cityArea(ix, verticalDivitions, true);
+//                    for (int evenOdd = 0; evenOdd < 2; evenOdd++)
+//                    {
+//                        for (int verticalStripeIx = 0; verticalStripeIx < verticalDivitions; verticalStripeIx++)
+//                        {
+//                            if (lib.IsEven(evenOdd) == lib.IsEven(verticalStripeIx))
+//                            {
+//                                int ix = verticalStripeIx;
+//                                tasks.Add(Task.Run(() =>
+//                                {
+//                                    try
+//                                    {
+//                                        Rectangle2 area = cityArea(ix, verticalDivitions, true);
 
-                                        cleanUpEdges(world, area);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        BlueScreen.ThreadException = ex;
-                                    }
+//                                        cleanUpEdges(world, area);
+//                                    }
+//                                    catch (Exception ex)
+//                                    {
+//                                        BlueScreen.ThreadException = ex;
+//                                    }
                                    
 
-                                }));
-                            }
-                        }
-                        await Task.WhenAll(tasks);
-                        tasks.Clear();
-                    }
+//                                }));
+//                            }
+//                        }
+//                        await Task.WhenAll(tasks);
+//                        tasks.Clear();
+//                    }
 
 
-                    for (int evenOdd = 0; evenOdd < 2; evenOdd++)
-                    {
-                        for (int verticalStripeIx = 0; verticalStripeIx < verticalDivitions; verticalStripeIx++)
-                        {
-                            if (lib.IsEven(evenOdd) == lib.IsEven(verticalStripeIx))
-                            {
-                                int ix = verticalStripeIx;
-                                tasks.Add(Task.Run(() =>
-                                {
-                                    try
-                                    {
-                                        Rectangle2 area = cityArea(ix, verticalDivitions, false);
+//                    for (int evenOdd = 0; evenOdd < 2; evenOdd++)
+//                    {
+//                        for (int verticalStripeIx = 0; verticalStripeIx < verticalDivitions; verticalStripeIx++)
+//                        {
+//                            if (lib.IsEven(evenOdd) == lib.IsEven(verticalStripeIx))
+//                            {
+//                                int ix = verticalStripeIx;
+//                                tasks.Add(Task.Run(() =>
+//                                {
+//                                    try
+//                                    {
+//                                        Rectangle2 area = cityArea(ix, verticalDivitions, false);
 
-                                        bindTiles(world, area);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        BlueScreen.ThreadException = ex;
-                                    }
+//                                        bindTiles(world, area);
+//                                    }
+//                                    catch (Exception ex)
+//                                    {
+//                                        BlueScreen.ThreadException = ex;
+//                                    }
                                     
 
-                                }));
-                            }
-                        }
-                        await Task.WhenAll(tasks);
-                        tasks.Clear();
-                    }
+//                                }));
+//                            }
+//                        }
+//                        await Task.WhenAll(tasks);
+//                        tasks.Clear();
+//                    }
 
-                    //foreach (var city in world.cities)
-                    //{ 
-                    //    city.cityTileArea = city.buildArea.max
-                    //}
+//                    //foreach (var city in world.cities)
+//                    //{ 
+//                    //    city.cityTileArea = city.buildArea.max
+//                    //}
 
 
-                    Rectangle2 cityArea(int part, int divitions, bool insertEdges)
-                    {
-                        Rectangle2 area = new Rectangle2();
-                        int widthChunk = world.Size.X / divitions;
-                        area.X = part * widthChunk;
-                        area.Width = widthChunk;
+//                    Rectangle2 cityArea(int part, int divitions, bool insertEdges)
+//                    {
+//                        Rectangle2 area = new Rectangle2();
+//                        int widthChunk = world.Size.X / divitions;
+//                        area.X = part * widthChunk;
+//                        area.Width = widthChunk;
 
-                        if (part == 0 && insertEdges)
-                        {
-                            area.AddToLeftSide(-1);
-                        }
-                        else if (part == divitions - 1)
-                        {
-                            //last
-                            if (insertEdges)
-                            {
-                                area.SetRight(world.Size.X - 1, true);
-                            }
-                            else
-                            {
-                                area.SetRight(world.Size.X, true);
-                            }
-                        }
+//                        if (part == 0 && insertEdges)
+//                        {
+//                            area.AddToLeftSide(-1);
+//                        }
+//                        else if (part == divitions - 1)
+//                        {
+//                            //last
+//                            if (insertEdges)
+//                            {
+//                                area.SetRight(world.Size.X - 1, true);
+//                            }
+//                            else
+//                            {
+//                                area.SetRight(world.Size.X, true);
+//                            }
+//                        }
 
-                        if (insertEdges)
-                        {
-                            area.Y = 1;
-                            area.Height = world.Size.Y - 2;
-                        }
-                        else
-                        {
-                            area.Y = 0;
-                            area.Height = world.Size.Y;
-                        }
-                        return area;
-                    }
+//                        if (insertEdges)
+//                        {
+//                            area.Y = 1;
+//                            area.Height = world.Size.Y - 2;
+//                        }
+//                        else
+//                        {
+//                            area.Y = 0;
+//                            area.Height = world.Size.Y;
+//                        }
+//                        return area;
+//                    }
 
                     
-                }
-                catch (Exception ex)
-                {
-                    BlueScreen.ThreadException = ex;
-                }
+//                }
+//                catch (Exception ex)
+//                {
+//                    BlueScreen.ThreadException = ex;
+//                }
 
-                return true;
+//                return true;
 
-            }).Result;
+//            }).Result;
 
-            return result;
-        }
+//            return result;
+//        }
 
-        void debugLog()
-        {
-            const bool LogInfluence = false;
-            if (LogInfluence)
-            {
-                for (int y = 0; y < inflenceMap.Height; ++y)
-                {
-                    StringBuilder line = new StringBuilder();
-                    for (int x = 0; x < inflenceMap.Width; ++x)
-                    {
-                        line.Append(string.Format("{0:D6}", inflenceMap.Get(x, y).city.ToString()));
-                        line.Append(',');
-                    }
+//        void debugLog()
+//        {
+//            const bool LogInfluence = false;
+//            if (LogInfluence)
+//            {
+//                for (int y = 0; y < inflenceMap.Height; ++y)
+//                {
+//                    StringBuilder line = new StringBuilder();
+//                    for (int x = 0; x < inflenceMap.Width; ++x)
+//                    {
+//                        line.Append(string.Format("{0:D6}", inflenceMap.Get(x, y).city.ToString()));
+//                        line.Append(',');
+//                    }
 
-                    System.Diagnostics.Debug.WriteLine(line.ToString());
-                }
-            }
-        }
+//                    System.Diagnostics.Debug.WriteLine(line.ToString());
+//                }
+//            }
+//        }
 
-        void cleanUpEdges(WorldData world, Rectangle2 area)
-        {
+//        void cleanUpEdges(WorldData world, Rectangle2 area)
+//        {
            
-            //ForXYLoop loop = new ForXYLoop(area);
-            //while (loop.Next())
-            //{
-            //    if (world.tileGrid.Get(loop.Position).IsLand())
-            //    {
-            //        Dictionary<int, int> cityInfluence = new Dictionary<int, int>();
-            //        ref var inf = ref inflenceMap.GetRef(loop.Position);
-            //        cityInfluence.Add(inf.city.myIndex, 1);
+//            //ForXYLoop loop = new ForXYLoop(area);
+//            //while (loop.Next())
+//            //{
+//            //    if (world.tileGrid.Get(loop.Position).IsLand())
+//            //    {
+//            //        Dictionary<int, int> cityInfluence = new Dictionary<int, int>();
+//            //        ref var inf = ref inflenceMap.GetRef(loop.Position);
+//            //        cityInfluence.Add(inf.city.myIndex, 1);
 
-            //        int mostInfluence = 1;
-            //        int mostInfluenceCity = inf.city.myIndex;
+//            //        int mostInfluence = 1;
+//            //        int mostInfluenceCity = inf.city.myIndex;
 
-            //        foreach (var dir in IntVector2.Dir8Array)
-            //        {
-            //            IntVector2 npos = loop.Position + dir;
-            //            if (world.tileGrid.Get(npos).IsLand())
-            //            {
-            //                var city = inflenceMap.Get(npos).city;
-            //                if (cityInfluence.ContainsKey(city.myIndex))
-            //                {
-            //                    ++cityInfluence[city.myIndex];
-            //                }
-            //                else
-            //                {
-            //                    cityInfluence.Add(city.myIndex, 1);
-            //                }
-            //            }
-            //        }
+//            //        foreach (var dir in IntVector2.Dir8Array)
+//            //        {
+//            //            IntVector2 npos = loop.Position + dir;
+//            //            if (world.tileGrid.Get(npos).IsLand())
+//            //            {
+//            //                var city = inflenceMap.Get(npos).city;
+//            //                if (cityInfluence.ContainsKey(city.myIndex))
+//            //                {
+//            //                    ++cityInfluence[city.myIndex];
+//            //                }
+//            //                else
+//            //                {
+//            //                    cityInfluence.Add(city.myIndex, 1);
+//            //                }
+//            //            }
+//            //        }
 
-            //        foreach (var kv in cityInfluence)
-            //        {
-            //            if (kv.Value > mostInfluence)
-            //            {
-            //                mostInfluence = kv.Value;
-            //                mostInfluenceCity = kv.Key;
-            //            }
-            //        }
+//            //        foreach (var kv in cityInfluence)
+//            //        {
+//            //            if (kv.Value > mostInfluence)
+//            //            {
+//            //                mostInfluence = kv.Value;
+//            //                mostInfluenceCity = kv.Key;
+//            //            }
+//            //        }
 
-            //        inf.city = world.cities[ mostInfluenceCity];
-            //    }
-            //}
-        }
+//            //        inf.city = world.cities[ mostInfluenceCity];
+//            //    }
+//            //}
+//        }
 
-        void bindTiles(WorldData world, Rectangle2 area)
-        {
+//        void bindTiles(WorldData world, Rectangle2 area)
+//        {
             
 
-            //End by binding tiles to cities
-            //inflenceMap.LoopBegin();
-            ForXYLoop loop = new ForXYLoop(area);
-            //Debug.Log("bindTiles " + area.ToString());
-            while (loop.Next())
-            {
-                var city = inflenceMap.Get(loop.Position).city;
-                if (city == null)
-                {
-                    throw new Exception();
-                }
+//            //End by binding tiles to cities
+//            //inflenceMap.LoopBegin();
+//            ForXYLoop loop = new ForXYLoop(area);
+//            //Debug.Log("bindTiles " + area.ToString());
+//            while (loop.Next())
+//            {
+//                var city = inflenceMap.Get(loop.Position).city;
+//                if (city == null)
+//                {
+//                    throw new Exception();
+//                }
                 
-                var tile = world.tileGrid.Get(loop.Position);
-                tile.pcity = new PCity( city.myIndex);
-                world.tileGrid.Set(loop.Position, tile);
+//                var tile = world.tileGrid.Get(loop.Position);
+//                tile.pcity = new PCity( city.myIndex);
+//                world.tileGrid.Set(loop.Position, tile);
 
-                //var r = loop.Position.SideLength(city.tilePos);
+//                //var r = loop.Position.SideLength(city.tilePos);
 
-                lock (city)
-                {
-                   city.citySumTileArea.includeTile(loop.Position);
-                }
+//                lock (city)
+//                {
+//                   city.citySumTileArea.includeTile(loop.Position);
+//                }
                 
-                //if (city.cityTileArea.size.X == 0)
-                //{
-                //    city.cityTileArea = Rectangle2.FromCenterTileAndRadius(city.tilePos, 3);
-                //}
-                //city.buildArea.Next(ref loop.Position);//cityTileArea.includeTile(loop.Position);
-                //if (city.cityTileRadius < r)
-                //{
-                //    city.cityTileRadius = r;
-                //}
-            }
-        }
+//                //if (city.cityTileArea.size.X == 0)
+//                //{
+//                //    city.cityTileArea = Rectangle2.FromCenterTileAndRadius(city.tilePos, 3);
+//                //}
+//                //city.buildArea.Next(ref loop.Position);//cityTileArea.includeTile(loop.Position);
+//                //if (city.cityTileRadius < r)
+//                //{
+//                //    city.cityTileRadius = r;
+//                //}
+//            }
+//        }
 
-        struct Influence
-        {
-            public City city;
-            public int influence;
-            public bool locked;
-        }
+//        struct Influence
+//        {
+//            public City city;
+//            public int influence;
+//            public bool locked;
+//        }
 
-        class MapCity
-        {
-            public GameObject.City city;
-            ForXYEdgeLoop edgeloop;
-            int radius = 1;
-            public bool active = true;
+//        class MapCity
+//        {
+//            public GameObject.City city;
+//            ForXYEdgeLoop edgeloop;
+//            int radius = 1;
+//            public bool active = true;
 
-            public MapCity(GameObject.City city, Grid2D<Influence> inflenceMap)
-            { 
-                this.city = city;
-                //Workforce är ca 300
-                int startInfluence = 20000 + city.HousingCount_Workers * 200;
-                Rectangle2 startArea = Rectangle2.FromCenterTileAndRadius(city.maptilePos, 1);
-                ForXYLoop startloop = new ForXYLoop(startArea);
-                while(startloop.Next())
-                {
-                    ref var inf = ref inflenceMap.GetRef(startloop.Position);
-                    inf.city = city;
-                    inf.influence = startInfluence;
-                    inf.locked = true;  
-                }
+//            public MapCity(GameObject.City city, Grid2D<Influence> inflenceMap)
+//            { 
+//                this.city = city;
+//                //Workforce är ca 300
+//                int startInfluence = 20000 + city.HousingCount_Workers * 200;
+//                Rectangle2 startArea = Rectangle2.FromCenterTileAndRadius(city.maptilePos, 1);
+//                ForXYLoop startloop = new ForXYLoop(startArea);
+//                while(startloop.Next())
+//                {
+//                    ref var inf = ref inflenceMap.GetRef(startloop.Position);
+//                    inf.city = city;
+//                    inf.influence = startInfluence;
+//                    inf.locked = true;  
+//                }
 
-                edgeloop = new ForXYEdgeLoop(startArea);
-            }
+//                edgeloop = new ForXYEdgeLoop(startArea);
+//            }
 
-            /// <returns>Is complete</returns>
-            public bool next(Grid2D<Influence> inflenceMap, WorldData world)
-            { 
-                //Will loop the outer edge of the city influence, and end by expanding one tile
-                //All cities will expand this way until they meet eachother
+//            /// <returns>Is complete</returns>
+//            public bool next(Grid2D<Influence> inflenceMap, WorldData world)
+//            { 
+//                //Will loop the outer edge of the city influence, and end by expanding one tile
+//                //All cities will expand this way until they meet eachother
 
-                bool madeInflence = false;
+//                bool madeInflence = false;
 
-                while (edgeloop.Next())
-                {
-                    //Influence inf;
-                    if (inflenceMap.InBounds(edgeloop.Position))
-                    {
-                        ref var inf = ref inflenceMap.GetRef(edgeloop.Position);
-                        if (inf.city == city)
-                        {
-                            int influence = inf.influence;
-                            int support = 0;
-                            //Collect supporting tiles (avoid thin areas)
-                            foreach (var dir in IntVector2.Dir8Array)
-                            {
-                                //Influence adjInf;
-                                var npos = edgeloop.Position + dir;
-                                if (inflenceMap.InBounds(npos))//, out adjInf))
-                                {
-                                    ref var adjInf = ref inflenceMap.GetRef(npos);
-                                    if (adjInf.city == city)
-                                    {
-                                        support++;
-                                    }
-                                }
-                            }
+//                while (edgeloop.Next())
+//                {
+//                    //Influence inf;
+//                    if (inflenceMap.InBounds(edgeloop.Position))
+//                    {
+//                        ref var inf = ref inflenceMap.GetRef(edgeloop.Position);
+//                        if (inf.city == city)
+//                        {
+//                            int influence = inf.influence;
+//                            int support = 0;
+//                            //Collect supporting tiles (avoid thin areas)
+//                            foreach (var dir in IntVector2.Dir8Array)
+//                            {
+//                                //Influence adjInf;
+//                                var npos = edgeloop.Position + dir;
+//                                if (inflenceMap.InBounds(npos))//, out adjInf))
+//                                {
+//                                    ref var adjInf = ref inflenceMap.GetRef(npos);
+//                                    if (adjInf.city == city)
+//                                    {
+//                                        support++;
+//                                    }
+//                                }
+//                            }
 
-                            if (support == 0)
-                            {
-                                influence /= 64;
-                            }
-                            else if (support == 1)
-                            {
-                                influence /= 16;
-                            }
-                            else if (support == 2)
-                            {
-                                influence /= 2;
-                            }
+//                            if (support == 0)
+//                            {
+//                                influence /= 64;
+//                            }
+//                            else if (support == 1)
+//                            {
+//                                influence /= 16;
+//                            }
+//                            else if (support == 2)
+//                            {
+//                                influence /= 2;
+//                            }
 
-                            foreach (var dir in IntVector2.Dir8Array)
-                            {
-                                //Influence adjInf;
-                                var npos = edgeloop.Position + dir;
-                                if (inflenceMap.InBounds(npos))//, out adjInf))
-                                {
-                                    ref var adjInf = ref inflenceMap.GetRef(npos);
-                                    if (!adjInf.locked)
-                                    {
-                                        double length = (npos-city.maptilePos).Length64();
-                                        int cost = world.tileGrid.Get(npos).mapInflenceCost() + adjInf.influence;
-                                        cost += Convert.ToInt32(length * length) * 10;
+//                            foreach (var dir in IntVector2.Dir8Array)
+//                            {
+//                                //Influence adjInf;
+//                                var npos = edgeloop.Position + dir;
+//                                if (inflenceMap.InBounds(npos))//, out adjInf))
+//                                {
+//                                    ref var adjInf = ref inflenceMap.GetRef(npos);
+//                                    if (!adjInf.locked)
+//                                    {
+//                                        double length = (npos-city.maptilePos).Length64();
+//                                        int cost = world.tileGrid.Get(npos).mapInflenceCost() + adjInf.influence;
+//                                        cost += Convert.ToInt32(length * length) * 10;
 
-                                        if (adjInf.city == null || cost < influence)
-                                        {
-                                            adjInf.city = city;
-                                            adjInf.influence = influence - Math.Max(cost, 0);
-                                            madeInflence = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+//                                        if (adjInf.city == null || cost < influence)
+//                                        {
+//                                            adjInf.city = city;
+//                                            adjInf.influence = influence - Math.Max(cost, 0);
+//                                            madeInflence = true;
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
 
-                if (madeInflence)
-                {
-                    edgeloop.ExpandRadius();
-                    return false;
-                }
-                else
-                {
-                    active = false;
-                    return true;
-                }
-            }
-        }
-    }
-}
+//                if (madeInflence)
+//                {
+//                    edgeloop.ExpandRadius();
+//                    return false;
+//                }
+//                else
+//                {
+//                    active = false;
+//                    return true;
+//                }
+//            }
+//        }
+//    }
+//}

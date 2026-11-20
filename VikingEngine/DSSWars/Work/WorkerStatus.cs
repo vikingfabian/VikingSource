@@ -166,6 +166,8 @@ namespace VikingEngine.DSSWars.Work
                     return DssRef.lang.Hud_Idle;
                 case WorkType.Mine:
                     return DssRef.lang.Work_Mining;
+                case WorkType.Explore:
+                    return DssRef.todoLang.Work_LandSurvey;
                 case WorkType.PickUpProduce:
                 case WorkType.PickUpResource:
                     return DssRef.lang.WorkerStatus_PickUpResource;
@@ -1330,6 +1332,16 @@ namespace VikingEngine.DSSWars.Work
                     carry = recieved;
                     break;
 
+                case WorkType.Explore:
+                    if (DssRef.world.mineLocations.LandSurveyResult(subTile.terrainAmount, out var terrainFound))
+                    {
+                        EditSubTile edit = new EditSubTile(city.pfaction, true, subTileEnd, terrainFound, true, false, true, false);
+                        edit.Submit();
+                    }
+                    gainXp = WorkExperienceType.Mining;
+            
+                    break;
+
                 case WorkType.Mine:
                     {
                         Resource.ItemResourceType resourceType = ItemResourceType.NONE;
@@ -1354,13 +1366,11 @@ namespace VikingEngine.DSSWars.Work
                                 switch (mineType)
                                 {
                                     case TerrainMineType.BogIron:
-                                        carry = new ItemResource(ItemResourceType.IronOre_G, /*1, Convert.ToInt32(processTimeLengthSec),*/ TerrainContent.DefaultMineAmount);
-
+                                        resourceType = ItemResourceType.IronOre_G;
                                         break;
                                     case TerrainMineType.ClayPit:
-                                        carry = new ItemResource(ItemResourceType.Clay, /*1, Convert.ToInt32(processTimeLengthSec),*/ TerrainContent.DefaultMineAmount);
-
                                         gainXp = WorkExperienceType.StoneCutter;
+                                        resourceType = ItemResourceType.Clay;
                                         break;
 
                                     case TerrainMineType.IronOre:
@@ -1388,7 +1398,6 @@ namespace VikingEngine.DSSWars.Work
                                     case TerrainMineType.SilverOre:
                                         resourceType = ItemResourceType.SilverOre;
                                         break;
-
                                     case TerrainMineType.Coal:
                                         resourceType = ItemResourceType.Coal;
                                         amount = TerrainContent.MineAmount_Coal;
@@ -2136,6 +2145,9 @@ namespace VikingEngine.DSSWars.Work
                     { 
                         timeSec = DssConst.WorkTime_Plant_Upgraded;
                     }
+                    break;
+                case WorkType.Explore:
+                    timeSec = DssConst.WorkTime_ExplorePoint;
                     break;
                 case WorkType.Mine:
                     timeSec = DssConst.WorkTime_Mine;

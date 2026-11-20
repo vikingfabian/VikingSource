@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.Map.Generate;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.MapData;

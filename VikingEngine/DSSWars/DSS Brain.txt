@@ -55,12 +55,14 @@ Onboarding and Game modules
 * A couple of high friction mechanics, like starvation and deserters, have been split off to optional modules
 * Difficulty numbers have been decreased to counter the % creep
 
-X Discover resource pools
-
 Resources
-x Item conversion menu
+* Item conversion menu
 * 2 new resources: fine wood and meat
 * Income and upkeep is now updated each minute instead of every second
+* Water is now collected by by workers
+
+Land survey
+* Your workers much search the map for resource pools
 
 New work management tools (prototype)
 * Worker count limit, made to better control the flow of work (! Prototype: ui will be improved if it works
@@ -127,6 +129,10 @@ Other
 - Boss; 1 hour
 Plus the boss fight: about 10 hours
 (total: about 45 hours)
+
+#Langages above 2%
+English, German, French, Japanese, Chinese, Russian, Spanish
+
 
 #current
 English, Simplified Chinese, Japanese, Korean, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian, Polish, Thai

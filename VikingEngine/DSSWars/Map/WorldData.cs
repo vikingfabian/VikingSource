@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using VikingEngine.Core.DSSWars.Map.Generate;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.Core.DSSWars.Map.MapModels;
 using VikingEngine.Core.DSSWars.Map.MapProcess;
@@ -97,6 +98,8 @@ namespace VikingEngine.DSSWars
          public float storyPlacementScale = 1f;
 
         public FogPixelTexture fogTexture;
+
+        public MineLocations mineLocations;
 
         public WorldData()
         {
@@ -287,7 +290,7 @@ namespace VikingEngine.DSSWars
             return false;
         }
 
-        public WorldData(WorldMetaData metaData, Map.Map2.Map2GenerateSettings generateSettings/*, bool customEditorMap*/)//ushort seed, MapSize size)
+        public WorldData(WorldMetaData metaData, Map2GenerateSettings generateSettings/*, bool customEditorMap*/)//ushort seed, MapSize size)
             : this()
         {
             this.metaData = metaData;

@@ -296,6 +296,11 @@ namespace VikingEngine.DSSWars.Map.MapLib
     enum TerrainMineType : byte
     {
         PointOfInterest,
+        Explored1,
+        Explored2,
+        ExploredFully,
+        ClosedMine,
+
         WaterNaturalSpring,
         WaterWell,
         BogIron,

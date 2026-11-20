@@ -4,12 +4,22 @@ using VikingEngine.DSSWars.GameObject;
 using System;
 using VikingEngine.ToGG.HeroQuest.Data;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Sentry;
 
 namespace VikingEngine.DSSWars
 {
     static class DssConst
     {
         public const int MaxSpeedOption = 5;
+
+        //MINING
+        public const int MineDecay_DepositsPerTick = 4;
+        public const float MineDecay_Chance = 1f / MineDecay_DepositsPerTick;
+        public static readonly Range MineDeposits_Shallow = new Range(20, 30);
+        public static readonly Range MineDeposits_Medium = new Range(50, 90);
+        public const byte MineDeposits_Endless = byte.MaxValue;
+
+        public const double MineDeposits_Endless_Chance = 0.5;
 
         //DIPLOMACY
         public const int TruceTimeSec = 180;
@@ -259,6 +269,13 @@ namespace VikingEngine.DSSWars
         //public static float WorkTime_Till_Upgraded = 24;
         public static float WorkTime_Plant = 25;
         public static float WorkTime_Plant_Upgraded = 15;
+
+        public static float WorkTime_ExplorePoint =
+#if DEBUG
+            20;
+#else
+            TimeExt.MinuteInSeconds * 2;
+#endif
         public static float WorkTime_Mine = 35;
         public static float WorkTime_BogIron = WorkTime_Mine * 4;
         public static float WorkTime_ClayPit = WorkTime_Mine;

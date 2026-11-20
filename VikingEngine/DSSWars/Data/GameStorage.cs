@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Data
         public float multiplayerGameSpeed = 1;
         public bool generateNewMaps = true;
 
-        public MapSettingsStorage mapSettings = MapSettingsStorage.Default;
+        //public MapSettingsStorage mapSettings = MapSettingsStorage.Default;
         public MetaProgression metaProgression = new MetaProgression();
         public GameRuleset ruleset = new GameRuleset();
         public GameRuleset ruleset_instance = new GameRuleset();
@@ -80,9 +80,9 @@ namespace VikingEngine.DSSWars.Data
         void demoSetup()
         {
             ruleset.demoSetup();
-            mapSettings = MapSettingsStorage.Default;
-            mapSettings.customSeed = true;
-            mapSettings.seed = 1;
+            //mapSettings = MapSettingsStorage.Default;
+            //mapSettings.customSeed = true;
+            //mapSettings.seed = 1;
         }
 
         public void multiplayerGameSpeedToMenu(RichBoxContent content, RichMenu menu)
@@ -174,7 +174,7 @@ namespace VikingEngine.DSSWars.Data
 
             w.Write(speed5x);
             minimapOptions.write(w);
-            mapSettings.write(w);
+            //mapSettings.write(w);
 
             w.Write(mutedSongs.Count);
             foreach (var s in mutedSongs)
@@ -235,7 +235,7 @@ namespace VikingEngine.DSSWars.Data
                 speed5x = r.ReadBoolean();
                 minimapOptions.read(r);
 
-                mapSettings.read(r, version);
+                //mapSettings.read(r, version);
 
                 generateNewMaps = true;
 

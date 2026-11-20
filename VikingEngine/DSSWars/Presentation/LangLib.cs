@@ -105,6 +105,7 @@ namespace VikingEngine.DSSWars.Presentation
                     break;
             }
         }
+        /*
         public static void WorkNameIcon(WorkPriorityType type, out string name, out SpriteName workIcon, out SpriteName typeIcon)
         {
             switch (type)
@@ -540,6 +541,7 @@ namespace VikingEngine.DSSWars.Presentation
                     break;
             }
         }
+        */
         public static string ExperienceLevel(ExperienceLevel level)
         {
             switch (level)

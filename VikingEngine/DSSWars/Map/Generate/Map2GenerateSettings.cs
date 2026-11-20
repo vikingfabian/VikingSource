@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.GameState.MapEditor2.IconEditor;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.MapLib;
 
-namespace VikingEngine.DSSWars.Map.Map2
+namespace VikingEngine.Core.DSSWars.Map.Generate
 {
     class Map2GenerateSettings
     {

@@ -60,6 +60,8 @@ namespace VikingEngine.DSSWars.Work
 
             ViewOrder_Group_Work[(int)ResourceGroupType.Metals] = new WorkPriorityType[]
             {
+                WorkPriorityType.landSurveyingInsideBorders,
+                WorkPriorityType.landSurveyingOutsideBorders,
         WorkPriorityType.bogiron,
         WorkPriorityType.miningIron,
         WorkPriorityType.miningTin,
@@ -288,8 +290,11 @@ namespace VikingEngine.DSSWars.Work
                             }
 
                         }
-                    }
-                    
+                    }                    
+                    break;
+
+                case WorkType.Explore:
+                    gainXpType = WorkExperienceType.Mining;
                     break;
 
                 case WorkType.Craft:
@@ -342,6 +347,7 @@ namespace VikingEngine.DSSWars.Work
         Plant,
         GatherFoil,
         GatherFarm,
+        Explore,
         Mine,
         PickUpResource,
         PickUpProduce,

@@ -1558,21 +1558,37 @@ namespace VikingEngine.DSSWars.Map.MapModels
 
             switch (mineType)
             {
+                case TerrainMineType.PointOfInterest:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 3, wp, scale * 0.5f));
+                    break;
+                case TerrainMineType.Explored1:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 3, wp, scale * 0.5f));
+
+                    break;
+                case TerrainMineType.Explored2:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 3, wp, scale * 0.5f));
+
+                    break;
+                case TerrainMineType.ExploredFully:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 3, wp, scale * 0.5f));
+
+                    break;
+
                 case TerrainMineType.WaterWell:
                 case TerrainMineType.WaterNaturalSpring:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_water, 0, wp, Map.MapData.MapTile1_1.ModelScale * 0.5f));
                     break;
                 case TerrainMineType.BogIron:
                     //manMade = false;
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 3, wp, 0.14f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 3, wp, scale));
                     break;
                 case TerrainMineType.ClayPit:
                     //manMade = false;
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 10, wp, 0.14f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 10, wp, scale));
                     break;
                 case TerrainMineType.SaltPit:
                     //manMade = true;
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 12, wp, 0.14f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 12, wp, scale));
                     break;
                 case TerrainMineType.IronOre:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 0, wp, scale) );

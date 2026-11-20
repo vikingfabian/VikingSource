@@ -1964,30 +1964,30 @@ namespace VikingEngine.DSSWars
             //    return DssRef.storage.generateNewMaps;
             //}
 
-            bool bCustomSeedProperty(object tag, bool set, bool value)
-            {
-                if (set)
-                {
-                    DssRef.storage.mapSettings.customSeed = value;
+            //bool bCustomSeedProperty(object tag, bool set, bool value)
+            //{
+            //    if (set)
+            //    {
+            //        DssRef.storage.mapSettings.customSeed = value;
 
-                    restartBackgroundLoading();
-                    DssRef.storage.Save(null);
-                }
-                return DssRef.storage.mapSettings.customSeed;
-            }
+            //        restartBackgroundLoading();
+            //        DssRef.storage.Save(null);
+            //    }
+            //    return DssRef.storage.mapSettings.customSeed;
+            //}
 
-            int SeedProperty(object tag, bool set, int value)
-            {
+            //int SeedProperty(object tag, bool set, int value)
+            //{
 
-                if (set)
-                {
-                    DssRef.storage.mapSettings.seed = (ushort)value;
+            //    if (set)
+            //    {
+            //        DssRef.storage.mapSettings.seed = (ushort)value;
 
-                    restartBackgroundLoading();
-                    DssRef.storage.Save(null);
-                }
-                return DssRef.storage.mapSettings.seed;
-            }
+            //        restartBackgroundLoading();
+            //        DssRef.storage.Save(null);
+            //    }
+            //    return DssRef.storage.mapSettings.seed;
+            //}
 
             int quickPlayerCountProperty(object tag, bool set, int value)
             {

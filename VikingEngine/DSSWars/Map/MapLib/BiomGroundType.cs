@@ -49,6 +49,12 @@ namespace VikingEngine.DSSWars.Map.MapLib
         public bool mineSpawn;
 
 
+        public BiomGroundType()
+        {
+            animalSpawn = true;
+            mineSpawn = true;
+        }
+
         public void set(PcgRandom rnd, ref CombinedTile cTile)
         {
             if (setTerrain1.set(rnd, ref cTile))

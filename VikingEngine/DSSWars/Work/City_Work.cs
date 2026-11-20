@@ -635,12 +635,11 @@ namespace VikingEngine.DSSWars.GameObject
                     foreach (var pos in CityStructureProcess.WorkInstance.Mines)
                     {
                         bool bNeedMore = true;
-                        //bool safeGuard = false;
                         WorkPriorityType prioType = WorkPriorityType.NUM_NONE;
 
                         var subTile = DssRef.world.subTileGrid.Get(pos);
                         switch ((TerrainMineType)subTile.subTerrain)
-                        {
+                        {                           
                             default:
                             case TerrainMineType.IronOre:
                                 bNeedMore = needMore(CityResourceIndex.ironore);
@@ -708,6 +707,22 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
+                    WorkPriority landSurveyingInsideBordersPrio = workTemplate.Get( WorkPriorityType.landSurveyingInsideBorders);
+                    if (landSurveyingInsideBordersPrio.HasPrio())
+                    {
+                        foreach (var pointOfInterest in CityStructureProcess.WorkInstance.LandSurvey)
+                        {
+                            if (pointOfInterest.level == 0)
+                            {
+                                if (work_isFreeTile(pointOfInterest.pos))
+                                {
+                                    int distanceValue = -center.SideLength(pointOfInterest.pos);
+                                    workQue.Add(new WorkQueMember(WorkType.Explore, NoSubWork, 0, WorkPriorityType.landSurveyingInsideBorders, pointOfInterest.pos,
+                                        landSurveyingInsideBordersPrio.value, 0, distanceValue));
+                                }
+                            }
+                        }
+                    }
 
                     //ANIMALS
                     if (workTemplate.Get(WorkPriorityType.move).HasPrio())
@@ -1423,6 +1438,15 @@ namespace VikingEngine.DSSWars.GameObject
                             }
                         }
                         return buildOpt.availableBlueprintResources(this);
+                    }
+
+                case WorkType.Explore:
+                    switch ((TerrainMineType)DssRef.world.subTileGrid.Get(mapTile).subTerrain)
+                    {
+                        case TerrainMineType.PointOfInterest:
+                            return true;
+                        default:
+                            return false;
                     }
 
                 default:

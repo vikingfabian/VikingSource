@@ -16,12 +16,21 @@ using VikingEngine.ToGG.ToggEngine.Map;
 
 namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
 {
+
+    struct PointOfInterest
+    {
+        public IntVector2 pos;
+        public int level;
+        public bool InBorders;
+    }
+
     class CityStructureProcess
     {
         public static readonly CityStructureProcess WorkInstance = new CityStructureProcess();
         public static readonly CityStructureProcess AutomationInstance = new CityStructureProcess();
         ForXYEdgeLoopRandomPicker edgeRandomizer = new ForXYEdgeLoopRandomPicker();
 
+        public List<PointOfInterest> LandSurvey = new List<PointOfInterest>();
         public List<IntVector2> FoodSpots_workupdate = new List<IntVector2>(4);
         public List<IntVector2> StoragePoints_workupdate = new List<IntVector2>(4);
         //public List<IntVector2> WaterSpot = new List<IntVector2>(20);
@@ -432,6 +441,16 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
                                 var mineType = (TerrainMineType)subTile.subTerrain;
                                 switch (mineType)
                                 {
+                                    case TerrainMineType.PointOfInterest:
+                                        LandSurvey.Add(new PointOfInterest() { level = 0, InBorders = true, pos = subTileLoop.Position });
+                                        break;
+                                    case TerrainMineType.Explored1:
+                                        LandSurvey.Add(new PointOfInterest() { level = 1, InBorders = true, pos = subTileLoop.Position });
+                                        break;
+                                    case TerrainMineType.Explored2:
+                                        LandSurvey.Add(new PointOfInterest() { level = 2, InBorders = true, pos = subTileLoop.Position });
+                                        break;
+
                                     case TerrainMineType.WaterNaturalSpring:
                                         ++terrainStructure.mineCount_waterSpring;
                                         WaterCollect.Add(subTileLoop.Position);

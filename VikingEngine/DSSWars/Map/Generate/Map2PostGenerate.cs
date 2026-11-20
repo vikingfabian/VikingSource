@@ -5,17 +5,13 @@ using System.Threading.Tasks;
 using VikingEngine.Core.DSSWars.Data.GameSetup;
 using VikingEngine.Core.DSSWars.Map.MapProcess;
 using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.Map.Generate;
-using VikingEngine.DSSWars.Map.MapData;
-using VikingEngine.DSSWars.Map.MapProcess;
-using VikingEngine.DSSWars.Map.Settings;
-using VikingEngine.LootFest.Data;
-using VikingEngine.PJ.Tanks;
 
-namespace VikingEngine.DSSWars.Map.Map2
+namespace VikingEngine.Core.DSSWars.Map.Generate
 {
     class Map2PostGenerate
     {
@@ -23,13 +19,13 @@ namespace VikingEngine.DSSWars.Map.Map2
         GenerateRegion region = new GenerateRegion();
         CityCultureCollection cityCultureCollection = new CityCultureCollection();
         WorldData world;
-        VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap;
+        //VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap;
 
         
         public Map2PostGenerate(WorldData world) 
         { 
             this.world = world;
-            noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData.worldId.seed);
+         //   noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData.worldId.seed);
         }
 
         public async void citiesAndFactionsSetup(Map2GenerateSettings generateSettings)
@@ -180,23 +176,23 @@ namespace VikingEngine.DSSWars.Map.Map2
             }
         }
 
-        public void placeTerrain()
-        {
-            List<IntVector2> mineLocations = new List<IntVector2>(1024);
-            List<IntVector2> animalSpawns = new List<IntVector2>(1024);
+        //public void placeTerrain()
+        //{
+        //    List<IntVector2> mineLocations = new List<IntVector2>(1024);
+        //    List<IntVector2> animalSpawns = new List<IntVector2>(1024);
 
-            Parallel.For(0, world.subTileGrid.Size.X, x =>
-            {
-                for (int y = 0; y < world.subTileGrid.Size.Y; y++)
-                {
-                    var ctile = world.GetCombinedTile(new IntVector2(x, y));//new MapTile1_1(tiletype, subType, rndColor, topY);
-                    TerrainContent.createSubTileContent(x, y, ref ctile, world, noiseMap, mineLocations, animalSpawns);
-                    world.subTileGrid.Set(x, y, ctile.mapTile);
-                }
-            });
+        //    Parallel.For(0, world.subTileGrid.Size.X, x =>
+        //    {
+        //        for (int y = 0; y < world.subTileGrid.Size.Y; y++)
+        //        {
+        //            var ctile = world.GetCombinedTile(new IntVector2(x, y));//new MapTile1_1(tiletype, subType, rndColor, topY);
+        //            TerrainContent.createSubTileContent(x, y, ref ctile, world, noiseMap, mineLocations, animalSpawns);
+        //            world.subTileGrid.Set(x, y, ctile.mapTile);
+        //        }
+        //    });
 
-            world.InitMoveCostLayers();
-        }
+        //    world.InitMoveCostLayers();
+        //}
       
         public void generateCityBuildings()
         {

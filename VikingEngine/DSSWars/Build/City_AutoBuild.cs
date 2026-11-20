@@ -977,6 +977,8 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.setWorkPrio(WorkPriorityType.collectClay, 3);
 
             // Mining
+            workTemplate.setWorkPrio(WorkPriorityType.landSurveyingInsideBorders, 2);
+            workTemplate.setWorkPrio(WorkPriorityType.landSurveyingOutsideBorders, 1);
             workTemplate.setWorkPrio(WorkPriorityType.miningSalt, 2);
             workTemplate.setWorkPrio(WorkPriorityType.miningIron, 3);
             workTemplate.setWorkPrio(WorkPriorityType.miningTin, 2);

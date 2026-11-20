@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.Core.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameState.BattleLab;
 using VikingEngine.DSSWars.Map.Generate;
-using VikingEngine.DSSWars.Map.Map2;
 using VikingEngine.DSSWars.Map.MapLib;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor2
