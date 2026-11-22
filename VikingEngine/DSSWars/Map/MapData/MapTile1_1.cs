@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Map.Path3;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.EngineSpace.Maths;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Map.MapData
@@ -48,7 +49,8 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         public byte health = 100;
 
-        public TwoNibble orientation_variant = TwoNibble.Zero;
+       
+        public TwoNibble orient_variantOrLvl = TwoNibble.Zero;
 
         /// <summary>
         /// Pointer to array with all resources found lying on ground
@@ -281,7 +283,21 @@ namespace VikingEngine.DSSWars.Map.MapData
         {
             if (MayBuild_GroundCheck(build, out mustTerraform))
             {
-                return MayBuild_TerrainCheck(build, autoPlace, out upgrade)? MayBuildResult.Yes : MayBuildResult.No_Occupied;
+                if (MayBuild_TerrainCheck(build, autoPlace, out upgrade))
+                {
+                    return MayBuildResult.Yes;
+                }
+                else
+                {
+                    if (build == BuildAndExpandType.DigSite_Lvl1)
+                    {
+                        return MayBuildResult.No_RequirementFailed;
+                    }
+                    else
+                    {
+                        return MayBuildResult.No_Occupied;
+                    }
+                }
             }
             upgrade = false;
             return MayBuildResult.No_BadGround;
@@ -289,117 +305,99 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         public bool MayBuild_GroundCheck(BuildAndExpandType build, out GroundType? mustTerraform)
         {
-            if (groundType == GroundType.Frost)
-            {
-                lib.DoNothing();
-            }
+            //if (groundType == GroundType.Frost)
+            //{
+            //    lib.DoNothing();
+            //}
             var req = BuildLib.Get(build).groundRequirement;
             return GroundPropertiesLib.MayBuild_GroundCheck(groundType, req, out mustTerraform);
-            //var prop = GroundPropertiesLib.Get(groundType);
-            /*
-            mustTerraform = null;
-
-            switch (req)
-            {
-                case BuildingGroundRequirement.Plant:
-                    if (prop.canPlant)
-                    {
-                        return true;
-                    }
-                    else if (prop.canTerraform)
-                    {
-                        mustTerraform = GroundType.MadeField;
-                        return true;
-                    }
-                    return false;
-
-                case BuildingGroundRequirement.BuildLight:
-                    if (prop.canBuildLight)
-                    {
-                        return true;
-                    }
-                    else if (prop.canTerraform)
-                    {
-                        mustTerraform = GroundType.MadeSolid;
-                        return true;
-                    }
-                    return false;
-
-                case BuildingGroundRequirement.BuildMedium:
-                    if (prop.canBuild)
-                    {
-                        return true;
-                    }
-                    else if (prop.canTerraform)
-                    {
-                        mustTerraform = GroundType.MadeSolid;
-                        return true;
-                    }
-                    return false;
-
-                case BuildingGroundRequirement.BuildHeavy:
-                    return prop.canBuildHeavy;
-
-                default:
-                case BuildingGroundRequirement.None:
-                    return true;
-            }
-            */
+            
         }
 
         public bool MayBuild_TerrainCheck(BuildAndExpandType build, bool autoPlace, out bool upgrade)
         {
             upgrade = false;
-            switch (mainTerrain)
+
+            if (build == BuildAndExpandType.DigSite_Lvl1)
             {
-                case TerrainMainType.Building:
-                    switch ((TerrainBuildingType)subTerrain)
+                if (mainTerrain == TerrainMainType.Mine)
+                {
+                    switch ((TerrainMineType)subTerrain)
                     {
-                        default: return false;
-
-                        case TerrainBuildingType.Postal:
-                            upgrade = true;
-                            return build == BuildAndExpandType.PostalLevel2 || build == BuildAndExpandType.PostalLevel3;
-                        case TerrainBuildingType.PostalLevel2:
-                            upgrade = true;
-                            return build == BuildAndExpandType.PostalLevel3;
-
-                        case TerrainBuildingType.Recruitment:
-                            upgrade = true;
-                            return build == BuildAndExpandType.RecruitmentLevel2 || build == BuildAndExpandType.RecruitmentLevel3;
-                        case TerrainBuildingType.RecruitmentLevel2:
-                            upgrade = true;
-                            return build == BuildAndExpandType.RecruitmentLevel3;
+                        case TerrainMineType.BogIron:
+                        case TerrainMineType.ClayPit:
+                        case TerrainMineType.Salt:
+                        case TerrainMineType.Sulfur:
+                        case TerrainMineType.Coal:
+                        case TerrainMineType.StoneBlock:
+                        case TerrainMineType.IronOre:
+                        case TerrainMineType.TinOre:
+                        case TerrainMineType.CopperOre:
+                        case TerrainMineType.SilverOre:
+                        case TerrainMineType.GoldOre:
+                        case TerrainMineType.LeadOre:
+                        case TerrainMineType.Mithril:
+                            return true;
                     }
-                case TerrainMainType.Road:
-                    return !autoPlace;
+                }
+                return false;
+            }
+            else
+            {
 
-                case TerrainMainType.AnimalPen:
-                case TerrainMainType.Wall:
-                case TerrainMainType.Mine:
-                case TerrainMainType.DefaultSea:
-                    return false;
+                switch (mainTerrain)
+                {
+                    case TerrainMainType.Building:
+                        switch ((TerrainBuildingType)subTerrain)
+                        {
+                            default: return false;
 
-                case TerrainMainType.Farm:
-                    switch ((TerrainSubFarmType)subTerrain)
-                    {
-                        case TerrainSubFarmType.WheatFarm:
-                            upgrade = true;
-                            return build == BuildAndExpandType.WheatFarmUpgraded;
+                            case TerrainBuildingType.Postal:
+                                upgrade = true;
+                                return build == BuildAndExpandType.PostalLevel2 || build == BuildAndExpandType.PostalLevel3;
+                            case TerrainBuildingType.PostalLevel2:
+                                upgrade = true;
+                                return build == BuildAndExpandType.PostalLevel3;
 
-                        case TerrainSubFarmType.LinenFarm:
-                            upgrade = true;
-                            return build == BuildAndExpandType.LinenFarmUpgraded;
+                            case TerrainBuildingType.Recruitment:
+                                upgrade = true;
+                                return build == BuildAndExpandType.RecruitmentLevel2 || build == BuildAndExpandType.RecruitmentLevel3;
+                            case TerrainBuildingType.RecruitmentLevel2:
+                                upgrade = true;
+                                return build == BuildAndExpandType.RecruitmentLevel3;
+                        }
+                    case TerrainMainType.Road:
+                        return !autoPlace;
 
-                        case TerrainSubFarmType.RapeSeedFarm:
-                            upgrade = true;
-                            return build == BuildAndExpandType.RapeSeedFarmUpgraded;
+                    case TerrainMainType.AnimalPen:
+                    case TerrainMainType.Wall:
+                    case TerrainMainType.DefaultSea:
+                        return false;
 
-                        case TerrainSubFarmType.HempFarm:
-                            upgrade = true;
-                            return build == BuildAndExpandType.HempFarmUpgraded;
-                    }
-                    break;
+                    case TerrainMainType.Mine:
+                        return false;
+
+                    case TerrainMainType.Farm:
+                        switch ((TerrainSubFarmType)subTerrain)
+                        {
+                            case TerrainSubFarmType.WheatFarm:
+                                upgrade = true;
+                                return build == BuildAndExpandType.WheatFarmUpgraded;
+
+                            case TerrainSubFarmType.LinenFarm:
+                                upgrade = true;
+                                return build == BuildAndExpandType.LinenFarmUpgraded;
+
+                            case TerrainSubFarmType.RapeSeedFarm:
+                                upgrade = true;
+                                return build == BuildAndExpandType.RapeSeedFarmUpgraded;
+
+                            case TerrainSubFarmType.HempFarm:
+                                upgrade = true;
+                                return build == BuildAndExpandType.HempFarmUpgraded;
+                        }
+                        break;
+                }
             }
 
             return true;
@@ -460,7 +458,7 @@ namespace VikingEngine.DSSWars.Map.MapData
         }
         public bool IsWater()
         {
-            return heightValue <= MapHeight2.WaterPlaneHeight;//mainTerrain == TerrainMainType.DefaultSea;
+            return heightValue <= MapHeight2.WaterPlaneHeight;
         }
 
         public float BuildingHeight()
@@ -628,7 +626,7 @@ namespace VikingEngine.DSSWars.Map.MapData
                    $"  SubTerrain: {subTerrain}\n" +
                    $"  Amount: {terrainAmount}\n" +
                    $"  Health: {health}\n" +
-                   $"  Orientation: {orientation_variant}\n" +
+                   $"  Orientation: {orient_variantOrLvl}\n" +
                    $"  CollectionPointer: {collectionPointer}";
         }
     }

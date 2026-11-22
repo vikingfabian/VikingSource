@@ -63,6 +63,8 @@ Resources
 
 Land survey
 * Your workers much search the map for resource pools
+* Mines require buildings to extract the resource
+* Mines have different levels of production, and it will go down with time 
 
 New work management tools (prototype)
 * Worker count limit, made to better control the flow of work (! Prototype: ui will be improved if it works
@@ -92,9 +94,6 @@ Performance
 * DSS now runs on Vulkan, which is more performant and modern than OpenGL (Uygar "Agent" Yilmaz)
 * Map terrain loading is now done on multiple CPU cores and runs smoother
 
-Black Bolt Industries
-* Made an evil factory puzzle game in a one week game jam. Available as extra content.
-
 Other
 * 20 new songs added, made by Cosme Leites
 * 10 new build types
@@ -103,6 +102,9 @@ Other
 * Truce timer is pinned to hud
 * Made the dark horde slow and idle
 * All animal pens have double upkeep, and predators have meat upkeep
+
+Black Bolt Industries
+* Made an evil factory puzzle game in a one week game jam. Available as extra content.
 
 
 

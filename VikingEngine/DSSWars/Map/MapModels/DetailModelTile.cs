@@ -234,7 +234,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                                         break;
                                     case TerrainMainType.Mine:
                                         bSurfacePolygonTexture = false;
-                                        createMine((TerrainMineType)comTile.mapTile.subTerrain,
+                                        createMine((TerrainMineType)comTile.mapTile.subTerrain, comTile.mapTile.orient_variantOrLvl.Value2,
                                             topCenter(ref comTile.mapTile, ref subTopLeft));
                                         break;
                                     case TerrainMainType.Road:
@@ -1549,7 +1549,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
             }
         }
 
-        void createMine(TerrainMineType mineType, Vector3 wp)
+        void createMine(TerrainMineType mineType, int level, Vector3 wp)
         {
             wp.X += MapTile1_1.SubTileHalfWidth;
             wp.Z += MapTile1_1.SubTileHalfWidth;
@@ -1562,7 +1562,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 3, wp, scale * 0.5f));
                     break;
                 case TerrainMineType.Explored1:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 3, wp, scale * 0.5f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 10, wp, scale * 0.3f));
 
                     break;
                 case TerrainMineType.Explored2:
@@ -1580,53 +1580,72 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     break;
                 case TerrainMineType.BogIron:
                     //manMade = false;
+                    
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 3, wp, scale));
+                    digSite();
                     break;
                 case TerrainMineType.ClayPit:
                     //manMade = false;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 10, wp, scale));
+                    digSite();
                     break;
-                case TerrainMineType.SaltPit:
-                    //manMade = true;
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 12, wp, scale));
-                    break;
+                
                 case TerrainMineType.IronOre:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 0, wp, scale) );
+                    digSite();
                     break;
                 case TerrainMineType.Coal:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 2, wp, scale));
+                    digSite();
                     break;
                 case TerrainMineType.TinOre:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 6, wp, scale));
+                    digSite();
                     break;                
                 case TerrainMineType.CopperOre:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 9, wp, scale));
+                    digSite();
                     break;                
                 case TerrainMineType.LeadOre:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 7, wp, scale));
+                    digSite();
                     break;
                 case TerrainMineType.SilverOre:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 4, wp, scale));
+                    digSite();
                     break;
                 case TerrainMineType.GoldOre:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 1, wp, scale));
+                    digSite();
                     break;
                 case TerrainMineType.Mithril:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 8, wp, scale));
+                    digSite();
                     break;
                 case TerrainMineType.Salt:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 11, wp, scale));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 12, wp, scale));
+                    digSite();
                     break;
                 case TerrainMineType.StoneBlock:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 13, wp, scale));
+                    digSite();
                     break;
                 case TerrainMineType.Sulfur:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 5, wp, scale));
+                    digSite();
                     break;
 
                 default:
                     throw new NotImplementedException();
-            }    
+            }  
+            
+            void digSite()
+            {
+                if (level > 0)
+                {
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workerhut, 0, VectorExt.AddY( wp, 0.03f), Map.MapData.MapTile1_1.ModelScale * 0.6f));
+                }
+            }
         }
 
         void createResoursePile(TerrainResourcesType resourceType, Vector3 wp)

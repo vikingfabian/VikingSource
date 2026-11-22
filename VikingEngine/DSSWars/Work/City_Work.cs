@@ -605,30 +605,30 @@ namespace VikingEngine.DSSWars.GameObject
                     }
 
                     //MINING
-                    if (workTemplate.Get(WorkPriorityType.bogiron).HasPrio() &&
-                        needMore(CityResourceIndex.ironore))
-                    {
-                        foreach (var pos in CityStructureProcess.WorkInstance.BogIron)
-                        {
-                            if (work_isFreeTile(pos))
-                            {
-                                int distanceValue = -center.SideLength(pos);
-                                workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, 0, WorkPriorityType.bogiron, pos, workTemplate.Get(WorkPriorityType.bogiron).value, 0, distanceValue));
-                            }
-                        }
-                    }
-                    if (workTemplate.Get(WorkPriorityType.collectClay).HasPrio() &&
-                        needMore(CityResourceIndex.Clay))
-                    {
-                        foreach (var pos in CityStructureProcess.WorkInstance.ClayPit)
-                        {
-                            if (work_isFreeTile(pos))
-                            {
-                                int distanceValue = -center.SideLength(pos);
-                                workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, 0, WorkPriorityType.collectClay, pos, workTemplate.Get(WorkPriorityType.collectClay).value, 0, distanceValue));
-                            }
-                        }
-                    }
+                    //if (workTemplate.Get(WorkPriorityType.bogiron).HasPrio() &&
+                    //    needMore(CityResourceIndex.ironore))
+                    //{
+                    //    foreach (var pos in CityStructureProcess.WorkInstance.BogIron)
+                    //    {
+                    //        if (work_isFreeTile(pos))
+                    //        {
+                    //            int distanceValue = -center.SideLength(pos);
+                    //            workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, 0, WorkPriorityType.bogiron, pos, workTemplate.Get(WorkPriorityType.bogiron).value, 0, distanceValue));
+                    //        }
+                    //    }
+                    //}
+                    //if (workTemplate.Get(WorkPriorityType.collectClay).HasPrio() &&
+                    //    needMore(CityResourceIndex.Clay))
+                    //{
+                    //    foreach (var pos in CityStructureProcess.WorkInstance.ClayPit)
+                    //    {
+                    //        if (work_isFreeTile(pos))
+                    //        {
+                    //            int distanceValue = -center.SideLength(pos);
+                    //            workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, 0, WorkPriorityType.collectClay, pos, workTemplate.Get(WorkPriorityType.collectClay).value, 0, distanceValue));
+                    //        }
+                    //    }
+                    //}
 
                     //if (fuelSafeGuard)
                     //{
@@ -646,6 +646,15 @@ namespace VikingEngine.DSSWars.GameObject
                                 prioType = WorkPriorityType.miningIron;
                                 //priority = workTemplate.Get(WorkPriorityType.miningIron);
                                 break;
+                            case TerrainMineType.ClayPit:
+                                bNeedMore = needMore(CityResourceIndex.Clay);
+                                prioType = WorkPriorityType.collectClay;
+                                break;
+                            case TerrainMineType.BogIron:
+                                bNeedMore = needMore(CityResourceIndex.ironore);
+                                prioType = WorkPriorityType.bogiron;
+                                break;
+
                             case TerrainMineType.TinOre:
                                 bNeedMore = needMore(CityResourceIndex.TinOre);
                                 prioType = WorkPriorityType.miningTin;

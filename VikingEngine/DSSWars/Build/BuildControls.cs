@@ -135,8 +135,7 @@ namespace VikingEngine.DSSWars.Build
                             {
                                 if (DssRef.state.GodPowers())
                                 {
-
-                                    EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, new MapTile1_1() { groundType = placeTerraformType }, false, true, false, false);
+                                    EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, new MapTile1_1() { groundType = placeTerraformType }, false, true, false, false, false);
                                     edit.Submit();
 
                                     new GodBuild(subTilePos);
@@ -178,8 +177,6 @@ namespace VikingEngine.DSSWars.Build
                             {
                                 if (DssRef.state.GodPowers())
                                 {
-                                   
-
                                     var build = BuildLib.BuildOptions[(int)placeBuildingType];
                                     MapTile1_1 subTile = DssRef.world.subTileGrid.Get(subTilePos);
                                     if (mustTerraform.HasValue)
@@ -188,7 +185,7 @@ namespace VikingEngine.DSSWars.Build
                                     }
                                     if (build.execute_async(city, subTilePos, ref subTile, out bool bTerraform, upgrade, false))
                                     {
-                                        EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, subTile, true,mustTerraform.HasValue, true, false);
+                                        EditSubTile edit = new EditSubTile(player.pfaction, true, subTilePos, subTile, true,mustTerraform.HasValue, true, false, false);
                                         edit.Submit();
                                     }
 
@@ -1119,10 +1116,13 @@ namespace VikingEngine.DSSWars.Build
 
             if (buildOpt.specialBuildRequirement != SpecialBuildRequirement.None)
             {
-                
-
                 switch (buildOpt.specialBuildRequirement)
                 {
+                    case SpecialBuildRequirement.PlacedOnMines:
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(".Place on mine locations"));
+                        break;
+
                     case SpecialBuildRequirement.FoodStorage:
                         {
                             HudLib.BulletPoint(content);
@@ -1136,6 +1136,7 @@ namespace VikingEngine.DSSWars.Build
                             content.Add(reqText);
                         }
                         break;
+
                     case SpecialBuildRequirement.MaxSoldierQuarters:
                         var maxSoldierQuarters = city.HallSetup().maxSoldierQuarters;
                         if (maxSoldierQuarters.HasLimit)

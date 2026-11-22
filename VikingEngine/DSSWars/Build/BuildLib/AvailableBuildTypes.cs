@@ -280,12 +280,12 @@ namespace VikingEngine.DSSWars.Build
                 }
             }
             //list.Add(BuildAndExpandType.Cook);
+
+            list.Add(BuildAndExpandType.DigSite_Lvl1);
             list.Add(BuildAndExpandType.Smelter);
             list.Add(BuildAndExpandType.Foundry);
             list.Add(BuildAndExpandType.Smith);
-
             list.Add(BuildAndExpandType.Carpenter);
-
             list.Add(BuildAndExpandType.Pottery);
 
 

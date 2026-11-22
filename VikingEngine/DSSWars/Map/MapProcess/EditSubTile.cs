@@ -18,11 +18,13 @@ namespace VikingEngine.DSSWars.Map.MapProcess
         public bool editGround;
         public bool editAmount;
         public bool editCollection;
+        public bool editOrientVariant;
         public bool hostedTile;
         public bool isPlayer;
         public bool netShare;
+              
 
-        public EditSubTile(PFaction pfaction, bool netShare, IntVector2 position, MapTile1_1 value, bool editTerrain, bool editGround, bool editAmount, bool editCollection)
+        public EditSubTile(PFaction pfaction, bool netShare, IntVector2 position, MapTile1_1 value, bool editTerrain, bool editGround, bool editAmount, bool editCollection, bool editOrientVariant)
         {
             hostedTile = pfaction.TryGetFaction(out var faction) && faction.IsNetHosted();
             isPlayer = faction.player != null && faction.player.IsLocalPlayer();
@@ -33,9 +35,10 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             this.editGround = editGround;
             this.editAmount = editAmount;
             this.editCollection = editCollection;
+            this.editOrientVariant = editOrientVariant;
         }
 
-        public EditSubTile(bool hosted, bool isPlayer, IntVector2 position, MapTile1_1 value, bool editTerrain, bool editGround, bool editAmount, bool editCollection)
+        public EditSubTile(bool hosted, bool isPlayer, IntVector2 position, MapTile1_1 value, bool editTerrain, bool editGround, bool editAmount, bool editCollection, bool editOrientVariant)
         {
             hostedTile = hosted;
             this.isPlayer = isPlayer;
@@ -45,12 +48,13 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             this.editGround = editGround;
             this.editAmount = editAmount;
             this.editCollection = editCollection;
+            this.editOrientVariant = editOrientVariant;
         }
 
         void write(System.IO.BinaryWriter w)
         { 
             position.writeUshort(w);
-            new EightBit(editTerrain, editGround, editAmount, editCollection).write(w);
+            new EightBit(editTerrain, editGround, editAmount, editCollection, editOrientVariant).write(w);
             if (editTerrain)
             {
                 w.Write((byte)value.mainTerrain);
@@ -64,6 +68,10 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             {
                 w.Write((byte)value.terrainAmount);
             }
+            if (editOrientVariant)
+            {
+                value.orient_variantOrLvl.write(w);
+            }
         }
 
         public void read(System.IO.BinaryReader r)
@@ -72,7 +80,7 @@ namespace VikingEngine.DSSWars.Map.MapProcess
 
             position.readShort(r);
             EightBit eightBit = new EightBit(r);
-            eightBit.Get(out editTerrain, out editGround, out editAmount, out editCollection);
+            eightBit.Get(out editTerrain, out editGround, out editAmount, out editCollection, out editOrientVariant);
             if (editTerrain)
             {
                 value.mainTerrain = (TerrainMainType)r.ReadByte();
@@ -85,6 +93,10 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             if (editAmount)
             {
                 value.terrainAmount = r.ReadByte();
+            }
+            if (editOrientVariant)
+            {
+                value.orient_variantOrLvl.read(r);
             }
 
             hostedTile = true;
@@ -138,6 +150,11 @@ namespace VikingEngine.DSSWars.Map.MapProcess
             if (editCollection)
             {
                 subTile.collectionPointer = value.collectionPointer;
+            }
+
+            if (editOrientVariant)
+            {
+                subTile.orient_variantOrLvl = value.orient_variantOrLvl;
             }
 
             if (netShare && Ref.netSession.InMultiplayerSession)

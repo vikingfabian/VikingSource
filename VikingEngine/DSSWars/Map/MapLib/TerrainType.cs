@@ -303,10 +303,12 @@ namespace VikingEngine.DSSWars.Map.MapLib
 
         WaterNaturalSpring,
         WaterWell,
+
+        //All above are needDigSite = false, and hasExtractLimit = false
         BogIron,
         ClayPit,
-        SaltPit,
         Salt,
+        //Salt,
         Sulfur,
         Coal,
         StoneBlock,
@@ -317,7 +319,10 @@ namespace VikingEngine.DSSWars.Map.MapLib
         GoldOre,
         LeadOre,
         Mithril,
-        NUM_NONE
+
+        NUM_NONE,
+
+        DigSiteLvl1,
     }
 
     //enum TerrainSeaType : byte

@@ -147,6 +147,8 @@ namespace VikingEngine.DSSWars.Build
         TreeSoft,
         TreeHard,
 
+        DigSite_Lvl1,
+        //MineShaft
 
         StonesMine,
         CoalMine,
@@ -160,10 +162,6 @@ namespace VikingEngine.DSSWars.Build
         MithrilMine,
         SulfurMine,
         WorkerTent,
-
-
-
-        //New
         SaltMine,
 
         Pottery,

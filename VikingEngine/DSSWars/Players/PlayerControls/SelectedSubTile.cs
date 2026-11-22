@@ -451,7 +451,7 @@ namespace VikingEngine.DSSWars.Players
         No_OutsideRegion,
         No_InsideRegion,
         No_Occupied,
-
+        No_RequirementFailed,
         No_BadGround,
 
     }

@@ -45,6 +45,7 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         public string TerrainType_PointOfInterest => "Point of interest";
+        public string TerrainType_Explored => "Explored";
         public string TerrainType_NaturalSpring => "Natural spring";
         public string BuildingType_GravelRoad => "Gravel road";
         public string BuildingType_CobblestoneRoad => "Cobbled road";
@@ -61,8 +62,12 @@ namespace VikingEngine.DSSWars.Presentation
         public string BuildingType_Stakes => "Stakes";
         public string Terrain_ReducesMovement => "Will reduce movement speed";
 
+        public string BuildingType_DigSite => "Dig site";
+        public string BuildingType_DigSite_Description => "Place on resource pools to extract them";
+
         public string BuildHud_MustBuildOutsideBorders => "Must build outside city region!";
         public string BuildHud_BadGround => "Bad ground";
+        public string BuildHud_RequirementFailed => "Place requirement failed";
 
         public string Resource_TypeName_FineWood => "Fine wood";
         public string Resource_ConvertTitle => "Convert";
@@ -80,7 +85,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Language_IncludeX => "Include - {0}";
         public string Language_EditX => "Edit {0}";
 
-     
+        public string GroundType => "Ground type";
         public string GroundRequired => "Ground requirement";
         public string GroundRequired_Plant => "Soil";
         public string GroundRequired_Light => "Light";

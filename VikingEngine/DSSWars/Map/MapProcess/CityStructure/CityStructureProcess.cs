@@ -40,8 +40,8 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
         //public List<IntVector2> FarmGather = new List<IntVector2>(20);
         public List<IntVector2> AnimalPens = new List<IntVector2>(20);
         public List<IntVector2> WaterCollect = new List<IntVector2>(8);
-        public List<IntVector2> BogIron = new List<IntVector2>(20);
-        public List<IntVector2> ClayPit = new List<IntVector2>(20);
+        //public List<IntVector2> BogIron = new List<IntVector2>(20);
+        //public List<IntVector2> ClayPit = new List<IntVector2>(20);
         public List<IntVector2> Mines = new List<IntVector2>(20);
         public List<IntVector2> CraftStation = new List<IntVector2>(20);
         public List<IntVector2> CoinMinting = new List<IntVector2>(2);
@@ -282,8 +282,8 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
             //FarmGather.Clear();
             AnimalPens.Clear();
             WaterCollect.Clear();
-            BogIron.Clear();
-            ClayPit.Clear();
+            //BogIron.Clear();
+            //ClayPit.Clear();
             Mines.Clear();
             CraftStation.Clear();
             CoinMinting.Clear();
@@ -462,61 +462,98 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
                                         break;
                                     case TerrainMineType.BogIron:
                                         ++terrainStructure.mineCount_bogIron;
-                                        BogIron.Add(subTileLoop.Position);
-                                        Mines.Add(subTileLoop.Position);
+                                        //BogIron.Add(subTileLoop.Position);
+                                        if (subTile.orient_variantOrLvl.Value2 > 0)
+                                        {
+                                            Mines.Add(subTileLoop.Position);
+                                        }
                                         break;
 
                                     case TerrainMineType.ClayPit:
                                         ++terrainStructure.resourceCount_clay;
-                                        ClayPit.Add(subTileLoop.Position);
-                                        Mines.Add(subTileLoop.Position);
+                                        //ClayPit.Add(subTileLoop.Position);
+                                        if (subTile.orient_variantOrLvl.Value2 > 0)
+                                        {
+                                            Mines.Add(subTileLoop.Position);
+                                        }
                                         break;
-                                    case TerrainMineType.SaltPit:
-                                        Mines.Add(subTileLoop.Position);
-                                        break;
+                                   
                                     case TerrainMineType.Coal:
                                         ++terrainStructure.mineCount_coal;
-                                        Mines.Add(subTileLoop.Position);
+                                        if (subTile.orient_variantOrLvl.Value2 > 0)
+                                        {
+                                            Mines.Add(subTileLoop.Position);
+                                        }
                                         break;
                                     case TerrainMineType.IronOre:
                                         ++terrainStructure.mineCount_iron;
-                                        Mines.Add(subTileLoop.Position);
+                                        if (subTile.orient_variantOrLvl.Value2 > 0)
+                                        {
+                                            Mines.Add(subTileLoop.Position);
+                                        }
                                         break;
                                     case TerrainMineType.TinOre:
                                         ++terrainStructure.mineCount_tin;
-                                        Mines.Add(subTileLoop.Position);
+                                        if (subTile.orient_variantOrLvl.Value2 > 0)
+                                        {
+                                            Mines.Add(subTileLoop.Position);
+                                        }
                                         break;
                                     case TerrainMineType.CopperOre:
                                         ++terrainStructure.mineCount_copper;
-                                        Mines.Add(subTileLoop.Position);
+                                        if (subTile.orient_variantOrLvl.Value2 > 0)
+                                        {
+                                            Mines.Add(subTileLoop.Position);
+                                        }
                                         break;
                                     case TerrainMineType.Sulfur:
                                         ++terrainStructure.mineCount_sulfur;
-                                        Mines.Add(subTileLoop.Position);
+                                        if (subTile.orient_variantOrLvl.Value2 > 0)
+                                        {
+                                            Mines.Add(subTileLoop.Position);
+                                        }
                                         break;
                                     case TerrainMineType.LeadOre:
                                         ++terrainStructure.mineCount_lead;
-                                        Mines.Add(subTileLoop.Position);
+                                        if (subTile.orient_variantOrLvl.Value2 > 0)
+                                        {
+                                            Mines.Add(subTileLoop.Position);
+                                        }
                                         break;
                                     case TerrainMineType.SilverOre:
                                         ++terrainStructure.mineCount_silver;
-                                        Mines.Add(subTileLoop.Position);
+                                        if (subTile.orient_variantOrLvl.Value2 > 0)
+                                        {
+                                            Mines.Add(subTileLoop.Position);
+                                        }
                                         break;
                                     case TerrainMineType.GoldOre:
                                         ++terrainStructure.mineCount_gold;
-                                        Mines.Add(subTileLoop.Position);
+                                        if (subTile.orient_variantOrLvl.Value2 > 0)
+                                        {
+                                            Mines.Add(subTileLoop.Position);
+                                        }
                                         break;
                                     case TerrainMineType.Salt:
                                         ++terrainStructure.mineCount_salt;
-                                        Mines.Add(subTileLoop.Position);
+                                        if (subTile.orient_variantOrLvl.Value2 > 0)
+                                        {
+                                            Mines.Add(subTileLoop.Position);
+                                        }
                                         break;
                                     case TerrainMineType.StoneBlock:
                                         ++terrainStructure.mineCount_stoneblock;
-                                        Mines.Add(subTileLoop.Position);
+                                        if (subTile.orient_variantOrLvl.Value2 > 0)
+                                        {
+                                            Mines.Add(subTileLoop.Position);
+                                        }
                                         break;
                                     case TerrainMineType.Mithril:
                                         ++terrainStructure.mineCount_mithril;
-                                        Mines.Add(subTileLoop.Position);
+                                        if (subTile.orient_variantOrLvl.Value2 > 0)
+                                        {
+                                            Mines.Add(subTileLoop.Position);
+                                        }
                                         break;
                                 }
                                 break;
@@ -1278,7 +1315,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
 
                 foreach (var pos in AnimalPens)
                 {
-                    EditSubTile editValue = new EditSubTile(city.pfaction, false, pos, new MapTile1_1() { terrainAmount = 1 }, false, false, true, false);
+                    EditSubTile editValue = new EditSubTile(city.pfaction, false, pos, new MapTile1_1() { terrainAmount = 1 }, false, false, true, false, false);
                     editValue.Submit();
                 }
             }

@@ -22,6 +22,8 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.PJ.CarBall;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.Core.DSSWars.Map.MapData;
+using VikingEngine.Core.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -198,6 +200,11 @@ namespace VikingEngine.DSSWars.Interface
                                 avaialableAction = false;
                                 content.icontext(HudLib.NotAvailableIcon, DssRef.todoLang.BuildHud_BadGround, HudLib.NotAvailableColor);
                                 break;
+
+                            case Players.MayBuildResult.No_RequirementFailed:
+                                avaialableAction = false;
+                                content.icontext(HudLib.NotAvailableIcon, DssRef.todoLang.BuildHud_RequirementFailed, HudLib.NotAvailableColor);
+                                break;
                         }
 
                         buildOpt.blueprint.requirementToHud(content, subTile.city, out _);
@@ -351,7 +358,7 @@ namespace VikingEngine.DSSWars.Interface
             }
             content.Add(new RbText(tileName));
 
-            HudLib.Label(content, ".Ground type");
+            HudLib.Label(content,DssRef.todoLang.GroundType);
             content.space();
             content.Add(new RbText(subTile.subTile.groundType.ToString()));
 
@@ -370,6 +377,45 @@ namespace VikingEngine.DSSWars.Interface
 
             switch (subTile.subTile.mainTerrain)
             {
+                case TerrainMainType.Mine:
+                    var prop = MinePropertiesLib.Get((TerrainMineType)subTile.subTile.subTerrain);
+                    //switch ((TerrainMineType)subTile.subTile.subTerrain)
+                    //{
+                    //    case TerrainMineType.BogIron:
+                    //    case TerrainMineType.ClayPit:
+                    //    case TerrainMineType.Salt:
+                    //    case TerrainMineType.Sulfur:
+                    //    case TerrainMineType.Coal:
+                    //    case TerrainMineType.StoneBlock:
+                    //    case TerrainMineType.IronOre:
+                    //    case TerrainMineType.TinOre:
+                    //    case TerrainMineType.CopperOre:
+                    //    case TerrainMineType.SilverOre:
+                    //    case TerrainMineType.GoldOre:
+                    //    case TerrainMineType.LeadOre:
+                    //    case TerrainMineType.Mithril:
+                    if (prop.needDigSite)
+                    {
+                        if (subTile.subTile.orient_variantOrLvl.Value2 == 0)
+                        {
+                            content.newLine();
+                            player.gameControls.input.Build.ToRichContent(content);
+                            content.hspace();
+                            content.Add(new RbImage(SpriteName.WarsConstructBuildingIcon));
+                            content.space();
+                            content.Add(new RbText(".Place Dig site to extract"));
+                        }
+                    }
+                    if (prop.hasExtractLimit)
+                    {
+                            MinePropertiesLib.GetExtractionLevel(subTile.subTile.terrainAmount, out ExtractionLevel level, out float extractionLevelPerc, out int expectedExtractCount);
+                            content.text($".Extraction level: {level} ({extractionLevelPerc * 100}%)");
+                            content.text($".Expected extractions: {expectedExtractCount}");
+                            content.text($".(Resources total: {expectedExtractCount * prop.mineAmount})");
+                            break;
+                    }
+                    break;
+
                 case TerrainMainType.Building:
                     switch ((TerrainBuildingType)subTile.subTile.subTerrain)
                     {

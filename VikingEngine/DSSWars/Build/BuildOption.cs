@@ -246,5 +246,6 @@ namespace VikingEngine.DSSWars.Build
         FoodStorage,
         MaxSoldierQuarters, 
         MaxExpansions,
+        PlacedOnMines,
     }
 }

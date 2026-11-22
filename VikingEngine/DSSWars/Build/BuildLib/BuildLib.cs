@@ -62,17 +62,28 @@ namespace VikingEngine.DSSWars.Build
 
 
         public static BuildAndExpandType BuildTypeFromTerrain(TerrainMainType main, int sub)
-        { 
-            foreach (BuildOption buildOption in BuildOptions)
+        {
+            if (TerrainToBuildType.TryGetValue(TerrainHash(main, sub), out BuildAndExpandType result))
             {
-                if (buildOption != null && buildOption.terrainType.EqualTerrain(main, sub))
-                { 
-                    return buildOption.buildType;
-                }
+                return result;
             }
 
             return BuildAndExpandType.NUM_NONE;
         }
+
+        //public static BuildAndExpandType BuildActionInputFromTerrain(TerrainMainType main, int sub)
+        //{
+        //    if (TerrainToBuildType.TryGetValue(TerrainHash(main, sub), out BuildAndExpandType result))
+        //    {
+        //        return result;
+        //    }
+        //    if (main == TerrainMainType.Mine)
+        //    { 
+                
+        //    }
+
+        //    return BuildAndExpandType.NUM_NONE;
+        //}
 
         public static bool CanAutoBuildHere(ref MapTile1_1 subTile)
         {
@@ -104,7 +115,7 @@ namespace VikingEngine.DSSWars.Build
                 if (CanAutoBuildHere(ref subTile))
                 {
                     subTile.SetType(mainType, terrainSubType, amount);
-                    EditSubTile edit = new EditSubTile(pfaction, true, subTilePos, subTile, true, false, true, false);
+                    EditSubTile edit = new EditSubTile(pfaction, true, subTilePos, subTile, true, false, true, false, false);
                     edit.Submit();
                     return true;
                 }

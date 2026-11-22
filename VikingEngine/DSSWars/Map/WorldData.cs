@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars
                     case TerrainMainType.Wall:
                         subTile.mainTerrain = TerrainMainType.DefaultLand;
                         subTile.subTerrain = 0;
-                        EditSubTile edit = new EditSubTile(true, true, tilePos, subTile, true, false, true, true);
+                        EditSubTile edit = new EditSubTile(true, true, tilePos, subTile, true, false, true, true, false);
                         edit.Submit();
                         new GodBuild(tilePos);
                         break;

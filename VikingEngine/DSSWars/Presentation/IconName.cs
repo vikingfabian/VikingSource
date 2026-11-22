@@ -1892,6 +1892,14 @@ namespace VikingEngine.DSSWars
                             name = DssRef.lang.BuildingType_ClayPit;
                             break;
 
+                        case TerrainMineType.PointOfInterest:
+                            name = DssRef.todoLang.TerrainType_PointOfInterest;
+                            break;
+                        case TerrainMineType.Explored1:
+                            name = DssRef.todoLang.TerrainType_Explored;
+                            break;
+
+
                         case TerrainMineType.StoneBlock:
                             name = string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Stone);
                             break;

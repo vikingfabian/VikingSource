@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-
+using VikingEngine.Core.DSSWars.Resource;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Data;
@@ -659,16 +659,28 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             return;
                         }
 
-                        var build = BuildLib.BuildTypeFromTerrain(map.hover.subTile.subTile.mainTerrain, map.hover.subTile.subTile.subTerrain);
-
-
-                        if (build != BuildAndExpandType.NUM_NONE)
+                        var build = BuildAndExpandType.NUM_NONE;
+                        if (map.hover.subTile.subTile.mainTerrain == TerrainMainType.Mine)
                         {
-                            List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
-                            AvailableBuildTypes.Available(available, map.hover.subTile.city, false);
-                            if (!available.Contains(build))
+                            var prop = MinePropertiesLib.Get((TerrainMineType)map.hover.subTile.subTile.subTerrain);
+
+                            if (prop.needDigSite)
                             {
-                                build = BuildAndExpandType.NUM_NONE;
+                                build = BuildAndExpandType.DigSite_Lvl1;
+                            }
+                        }
+                        else
+                        {
+                            build = BuildLib.BuildTypeFromTerrain(map.hover.subTile.subTile.mainTerrain, map.hover.subTile.subTile.subTerrain);
+
+                            if (build != BuildAndExpandType.NUM_NONE)
+                            {
+                                List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
+                                AvailableBuildTypes.Available(available, map.hover.subTile.city, false);
+                                if (!available.Contains(build))
+                                {
+                                    build = BuildAndExpandType.NUM_NONE;
+                                }
                             }
                         }
 

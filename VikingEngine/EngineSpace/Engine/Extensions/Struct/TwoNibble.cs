@@ -14,6 +14,8 @@ namespace VikingEngine.Core.EngineSpace.Engine.Extensions.Struct
     {
         public struct TwoNibble : IBinaryIOobj
         {
+            public const byte NibbleMaxValue = 15;
+
             public static readonly TwoNibble Zero = new TwoNibble(byte.MinValue);
             public static readonly TwoNibble Max = new TwoNibble(byte.MaxValue);
 

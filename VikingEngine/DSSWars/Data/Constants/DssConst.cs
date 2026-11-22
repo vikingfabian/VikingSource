@@ -15,9 +15,21 @@ namespace VikingEngine.DSSWars
         //MINING
         public const int MineDecay_DepositsPerTick = 4;
         public const float MineDecay_Chance = 1f / MineDecay_DepositsPerTick;
-        public static readonly Range MineDeposits_Shallow = new Range(20, 30);
-        public static readonly Range MineDeposits_Medium = new Range(50, 90);
-        public const byte MineDeposits_Endless = byte.MaxValue;
+
+        public const int ExtractionSpeedDying_Value = 1;
+        public const int ExtractionSpeedLow_Value = 20;
+        public const int ExtractionSpeedHigh_Value = 50;
+
+        public const float ExtractionSpeedDying_Percentage = 0.1f;
+        public const float ExtractionSpeedLow_Percentage = 0.5f;
+        public const float ExtractionSpeedHigh_Percentage = 1f;
+
+
+        public static readonly Range MineDeposits_VeryLow = new Range(20, 30);
+        public static readonly Range MineDeposits_Low = new Range(50, 90);
+
+        public static readonly Range MineDeposits_High = new Range(180, 240);
+        //public const byte MineDeposits_Endless = byte.MaxValue;
 
         public const double MineDeposits_Endless_Chance = 0.5;
 

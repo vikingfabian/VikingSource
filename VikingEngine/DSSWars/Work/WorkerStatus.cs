@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Core.DSSWars.Map.MapData;
+using VikingEngine.Core.DSSWars.Resource;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
@@ -851,7 +852,7 @@ namespace VikingEngine.DSSWars.Work
 
                             if (chunk.count <= 0)
                             {
-                                EditSubTile editTile = new EditSubTile(city.pfaction, true, subTileEnd, subTile, false, false, false, true);
+                                EditSubTile editTile = new EditSubTile(city.pfaction, true, subTileEnd, subTile, false, false, false, true, false);
                                 editTile.value.collectionPointer = -1;
 
                                 if (subTile.mainTerrain == TerrainMainType.Resourses)
@@ -1282,7 +1283,7 @@ namespace VikingEngine.DSSWars.Work
                         {
                             subTile.terrainAmount = (byte)(subTile.terrainAmount - size.maxSize);
 
-                            EditSubTile editTile = new EditSubTile(city.pfaction, false, subTileEnd, subTile, false, false, true, false);
+                            EditSubTile editTile = new EditSubTile(city.pfaction, false, subTileEnd, subTile, false, false, true, false, false);
                             editTile.Submit();
                             
                             //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -1333,19 +1334,26 @@ namespace VikingEngine.DSSWars.Work
                     break;
 
                 case WorkType.Explore:
-                    if (DssRef.world.mineLocations.LandSurveyResult(subTile.terrainAmount, out var terrainFound))
                     {
-                        EditSubTile edit = new EditSubTile(city.pfaction, true, subTileEnd, terrainFound, true, false, true, false);
+                        EditSubTile edit;
+                        if (DssRef.world.mineLocations.LandSurveyResult(subTile.terrainAmount, out var terrainFound))
+                        {
+                            edit = new EditSubTile(city.pfaction, true, subTileEnd, terrainFound, true, false, true, false, false);
+                        }
+                        else
+                        {
+                            terrainFound.subTerrain = (byte)TerrainMineType.Explored1;
+                            edit = new EditSubTile(city.pfaction, true, subTileEnd, terrainFound, true, false, false, false, false);
+                        }
                         edit.Submit();
+                        gainXp = WorkExperienceType.Mining;
                     }
-                    gainXp = WorkExperienceType.Mining;
-            
                     break;
 
                 case WorkType.Mine:
                     {
                         Resource.ItemResourceType resourceType = ItemResourceType.NONE;
-                        int amount = TerrainContent.DefaultMineAmount;
+                        //int amount = TerrainContent.DefaultMineAmount;
                         gainXp = WorkExperienceType.Mining;
 
                         if (workPriorityType == WorkPriorityType.collectWater)
@@ -1358,74 +1366,90 @@ namespace VikingEngine.DSSWars.Work
                         }
                         else
                         {
+                            MineProperties prop;
                             if (subTile.mainTerrain == TerrainMainType.Mine)
                             {
+                                prop = MinePropertiesLib.Get((TerrainMineType)subTile.subTerrain);
+                                gainXp = prop.xp;
+                                //var mineType = (TerrainMineType)subTile.subTerrain;
 
-                                var mineType = (TerrainMineType)subTile.subTerrain;
+                                //switch (mineType)
+                                //{
+                                //    case TerrainMineType.BogIron:
+                                //        resourceType = ItemResourceType.IronOre_G;
+                                //        break;
+                                //    case TerrainMineType.ClayPit:
+                                //        gainXp = WorkExperienceType.StoneCutter;
+                                //        resourceType = ItemResourceType.Clay;
+                                //        break;
 
-                                switch (mineType)
-                                {
-                                    case TerrainMineType.BogIron:
-                                        resourceType = ItemResourceType.IronOre_G;
-                                        break;
-                                    case TerrainMineType.ClayPit:
-                                        gainXp = WorkExperienceType.StoneCutter;
-                                        resourceType = ItemResourceType.Clay;
-                                        break;
+                                //    case TerrainMineType.IronOre:
+                                //        resourceType = ItemResourceType.IronOre_G;
+                                //        break;
+                                //    case TerrainMineType.Salt:
+                                //        resourceType = ItemResourceType.Salt;
+                                //        break;
+                                //    case TerrainMineType.StoneBlock:
+                                //        resourceType = ItemResourceType.Brick;
+                                //        gainXp = WorkExperienceType.StoneCutter;
+                                //        break;
+                                //    case TerrainMineType.TinOre:
+                                //        resourceType = ItemResourceType.TinOre;
+                                //        break;
+                                //    case TerrainMineType.CopperOre:
+                                //        resourceType = ItemResourceType.CopperOre;
+                                //        break;
+                                //    case TerrainMineType.LeadOre:
+                                //        resourceType = ItemResourceType.LeadOre;
+                                //        break;
+                                //    case TerrainMineType.Sulfur:
+                                //        resourceType = ItemResourceType.Sulfur;
+                                //        break;
+                                //    case TerrainMineType.SilverOre:
+                                //        resourceType = ItemResourceType.SilverOre;
+                                //        break;
+                                //    case TerrainMineType.Coal:
+                                //        resourceType = ItemResourceType.Coal;
+                                //        amount = TerrainContent.MineAmount_Coal;
+                                //        break;
+                                //    case TerrainMineType.GoldOre:
+                                //        resourceType = ItemResourceType.GoldOre;
+                                //        break;
 
-                                    case TerrainMineType.IronOre:
-                                        resourceType = ItemResourceType.IronOre_G;
-                                        break;
-                                    case TerrainMineType.Salt:
-                                        resourceType = ItemResourceType.Salt;
-                                        break;
-                                    case TerrainMineType.StoneBlock:
-                                        resourceType = ItemResourceType.Brick;
-                                        gainXp = WorkExperienceType.StoneCutter;
-                                        break;
-                                    case TerrainMineType.TinOre:
-                                        resourceType = ItemResourceType.TinOre;
-                                        break;
-                                    case TerrainMineType.CopperOre:
-                                        resourceType = ItemResourceType.CopperOre;
-                                        break;
-                                    case TerrainMineType.LeadOre:
-                                        resourceType = ItemResourceType.LeadOre;
-                                        break;
-                                    case TerrainMineType.Sulfur:
-                                        resourceType = ItemResourceType.Sulfur;
-                                        break;
-                                    case TerrainMineType.SilverOre:
-                                        resourceType = ItemResourceType.SilverOre;
-                                        break;
-                                    case TerrainMineType.Coal:
-                                        resourceType = ItemResourceType.Coal;
-                                        amount = TerrainContent.MineAmount_Coal;
-                                        break;
-                                    case TerrainMineType.GoldOre:
-                                        resourceType = ItemResourceType.GoldOre;
-                                        break;
-
-                                    case TerrainMineType.Mithril:
-                                        resourceType = ItemResourceType.RawMithril;
-                                        break;
-                                }
+                                //    case TerrainMineType.Mithril:
+                                //        resourceType = ItemResourceType.RawMithril;
+                                //        break;
+                                //}
 
 
                                 if (city.cityCulture == CityCulture.Miners)
                                 {
-                                    amount *= 2;
+                                    prop.mineAmount *= 2;
+                                }
+
+                                if (prop.hasExtractLimit)
+                                { 
+                                    
                                 }
                             }
                             else
                             {
-                                resourceType = ItemResourceType.Salt;
-                                amount = TerrainContent.DryingSaltAmount;
+                                prop.resourceType = ItemResourceType.Salt;
+                                prop.mineAmount = TerrainContent.DryingSaltAmount;
+                                prop.hasExtractLimit = false;
                             }
 
                             carry = new ItemResource(
-                                resourceType,
-                                amount);
+                                prop.resourceType,
+                                prop.mineAmount);
+
+                            if (prop.hasExtractLimit && 
+                                subTile.terrainAmount > 1 && 
+                                Ref.peRnd.ChanceF(DssConst.MineDecay_Chance))
+                            {
+                                MinePropertiesLib.GetExtractionLevel(subTile.terrainAmount, out _, out float perc, out _);
+                                prop.mineAmount = Convert.ToInt32(prop.mineAmount * perc);
+                            }
                         }
                                                 
                         //if (carry.type == ItemResourceType.NONE)
@@ -1564,14 +1588,25 @@ namespace VikingEngine.DSSWars.Work
                 case WorkType.Build:
                     if (orderIsActive(city))
                     {
-                        bool upgrade = work == WorkType.Upgrade;
-                        var build = BuildLib.BuildOptions[workSubType];
-                        if (build.execute_async(city, subTileEnd, ref subTile, out bool bTerraform, upgrade))
+                        if (workSubType == (int)BuildAndExpandType.DigSite_Lvl1)
                         {
-                            EditSubTile edit = new EditSubTile(city.pfaction, true, subTileEnd, subTile, true, bTerraform, true, false);
+                            subTile.orient_variantOrLvl.Value2 = 1;
+                            EditSubTile edit = new EditSubTile(city.pfaction, true, subTileEnd, subTile, false, false, false, false, true);
                             edit.Submit();
+                            gainXp = WorkExperienceType.HouseBuilding;
                         }
-                        gainXp = build.experienceType();
+                        else
+                        {
+                            bool upgrade = work == WorkType.Upgrade;
+                            var build = BuildLib.BuildOptions[workSubType];
+                            if (build.execute_async(city, subTileEnd, ref subTile, out bool bTerraform, upgrade))
+                            {
+                                EditSubTile edit = new EditSubTile(city.pfaction, true, subTileEnd, subTile, true, bTerraform, true, false, false);
+                                edit.Submit();
+                            }
+                            gainXp = build.experienceType();
+                        }
+                        
                     }                    
                     break;
 
@@ -1587,7 +1622,7 @@ namespace VikingEngine.DSSWars.Work
                             terraformBp.payResources_BuildAndUpgrade(city);
                             city.unreserveItems(terraformBp);
                         }
-                        EditSubTile edit = new EditSubTile(city.pfaction, true, subTileEnd, subTile, false, true, false, false);
+                        EditSubTile edit = new EditSubTile(city.pfaction, true, subTileEnd, subTile, false, true, false, false, false);
                         edit.Submit();
                         
                         gainXp = grounProp.TerraformToXp;
@@ -1995,7 +2030,7 @@ namespace VikingEngine.DSSWars.Work
                 ref subTile.collectionPointer);
 
             subTile.SetType(TerrainMainType.Resourses, (int)TerrainResourcesType.Wood, 1);
-            EditSubTile editSubTile = new EditSubTile(city.pfaction, true, subTileEnd, subTile, true, false, true, true);
+            EditSubTile editSubTile = new EditSubTile(city.pfaction, true, subTileEnd, subTile, true, false, true, true, false);
             editSubTile.Submit();
             //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
         }

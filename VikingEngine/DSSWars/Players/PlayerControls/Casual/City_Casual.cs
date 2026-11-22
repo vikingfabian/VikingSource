@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (buildOpt.execute_async(this, buildPos.pos, ref subTile, out bool bTerraform, upgrade))
                 {
-                    EditSubTile edit = new EditSubTile(true, true, buildPos.pos, subTile, true, bTerraform, true, false) { netShare = true };
+                    EditSubTile edit = new EditSubTile(true, true, buildPos.pos, subTile, true, bTerraform, true, false, false) { netShare = true };
                     edit.ExecuteEdit();
                 }
             }

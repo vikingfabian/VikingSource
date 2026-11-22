@@ -273,7 +273,8 @@ namespace VikingEngine.DSSWars.Data
         BuildAndExpandType.WorkBench,
         BuildAndExpandType.Pottery,
         BuildAndExpandType.DryingPan,
-        
+        BuildAndExpandType.DigSite_Lvl1,
+
         BuildAndExpandType.Smith,
         BuildAndExpandType.Carpenter,
         BuildAndExpandType.WheatFarm,

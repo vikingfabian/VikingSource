@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Core.BlackBolts.Scene;
+using VikingEngine.Core.DSSWars.Resource;
 using VikingEngine.Core.DSSWars.Work;
 using VikingEngine.Core.Wand.Scene;
 using VikingEngine.DataStream;
@@ -146,6 +147,7 @@ namespace VikingEngine.DSSWars
             dataProcessPart++;
 
             ItemPropertyColl.Init();
+            MinePropertiesLib.Init();
             dataProcessPart++;
             WorkLib.Init();
             

@@ -1197,6 +1197,17 @@ namespace VikingEngine.DSSWars.Build
             XP.WorkExperienceType.HouseBuilding
         );
 
+        public static readonly CraftBlueprint DigSite1 = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.DigSite_Lvl1,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Wood_G, 20),
+          },
+           XP.WorkExperienceType.HouseBuilding
+       );
+
         public static readonly CraftBlueprint Smelter = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Smelter,

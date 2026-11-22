@@ -444,6 +444,13 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Decor, BuildFilterTag.Statue, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Epic);
 
+            new BuildOption(BuildAndExpandType.DigSite_Lvl1, TerrainMainType.Mine, (int)TerrainMineType.DigSiteLvl1, BuildingGroundRequirement.None,
+                SpriteName.MissingImage, DssRef.todoLang.BuildingType_DigSite, DssRef.todoLang.BuildingType_DigSite_Description,
+                CraftBuildingLib.DigSite1, true,
+                BuildCategoryTab.General, BuildFilterTag.Resources, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
+            { specialBuildRequirement = SpecialBuildRequirement.PlacedOnMines };
+            
             new BuildOption(BuildAndExpandType.Smelter, TerrainMainType.Building, (int)TerrainBuildingType.Smelter, BuildingGroundRequirement.BuildLight,
                 SpriteName.WarsBuild_Smelter, DssRef.lang.BuildingType_SmeltingFurnace, DssRef.lang.BuildingType_SmeltingFurnace_Description,
                 CraftBuildingLib.Smelter, true,

@@ -11,6 +11,8 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
     {
         public const int ShallowMine = 1;
         public const int DeepMine = 2;
+
+
         int totalCount;
         int[] typesCountLeft;
 
@@ -50,21 +52,24 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
                 }
             }
 
+            const double DefaultCommoness = 0.03;
+
             addCount(MineLocationType.Mithril, mithrilCount);
-            addCount(MineLocationType.SilverOre, MathExt.MultiplyInt(world.rnd.Double(0.04, 0.05), totalMineCount));
-            addCount(MineLocationType.GoldOre, MathExt.MultiplyInt(world.rnd.Double(0.02, 0.03), totalMineCount));
+            addCount(MineLocationType.SilverOre, MathExt.MultiplyInt(world.rnd.Double(1, 1.2) * DefaultCommoness, totalMineCount));
+            addCount(MineLocationType.GoldOre, MathExt.MultiplyInt(world.rnd.Double(0.5, 0.6) * DefaultCommoness, totalMineCount));
 
 
-            addCount(MineLocationType.WaterNaturalSpring, MathExt.MultiplyInt(world.rnd.Double(0.035, 0.045), totalMineCount));
-            addCount(MineLocationType.BogIron, MathExt.MultiplyInt(world.rnd.Double(0.14, 0.16), totalMineCount));
-            addCount(MineLocationType.IronOre, MathExt.MultiplyInt(world.rnd.Double(0.07, 0.08), totalMineCount));
-            addCount(MineLocationType.TinOre, MathExt.MultiplyInt(world.rnd.Double(0.04, 0.05), totalMineCount));
+            addCount(MineLocationType.WaterNaturalSpring, MathExt.MultiplyInt(world.rnd.Double(0.9, 1.1) * DefaultCommoness, totalMineCount));
+            addCount(MineLocationType.BogIron, MathExt.MultiplyInt(world.rnd.Double(5, 6) * DefaultCommoness, totalMineCount));
+            addCount(MineLocationType.IronOre, MathExt.MultiplyInt(world.rnd.Double(3, 3.5) * DefaultCommoness, totalMineCount));
+            addCount(MineLocationType.TinOre, MathExt.MultiplyInt(world.rnd.Double(1, 1.2) * DefaultCommoness, totalMineCount));
             addCount(MineLocationType.CopperOre, MathExt.MultiplyInt(world.rnd.Double(0.05, 0.06), totalMineCount));
-            addCount(MineLocationType.LeadOre, MathExt.MultiplyInt(world.rnd.Double(0.035, 0.045), totalMineCount));
-            addCount(MineLocationType.Sulfur, MathExt.MultiplyInt(world.rnd.Double(0.035, 0.045), totalMineCount));
-            addCount(MineLocationType.Salt, MathExt.MultiplyInt(world.rnd.Double(0.06, 0.07), totalMineCount));
-            addCount(MineLocationType.StoneBlock, MathExt.MultiplyInt(world.rnd.Double(0.06, 0.07), totalMineCount));
-            addCount(MineLocationType.Coal, MathExt.MultiplyInt(world.rnd.Double(0.05, 0.06), totalMineCount));
+            addCount(MineLocationType.LeadOre, MathExt.MultiplyInt(world.rnd.Double(0.9, 1.1) * DefaultCommoness, totalMineCount));
+            addCount(MineLocationType.Sulfur, MathExt.MultiplyInt(world.rnd.Double(0.9, 1.1) * DefaultCommoness, totalMineCount));
+            addCount(MineLocationType.ClayPit, MathExt.MultiplyInt(world.rnd.Double(0.9, 1.1) * DefaultCommoness, totalMineCount));
+            addCount(MineLocationType.Salt, MathExt.MultiplyInt(world.rnd.Double(0.8, 0.85) * DefaultCommoness, totalMineCount));
+            addCount(MineLocationType.StoneBlock, MathExt.MultiplyInt(world.rnd.Double(1.5, 1.8) * DefaultCommoness, totalMineCount));
+            addCount(MineLocationType.Coal, MathExt.MultiplyInt(world.rnd.Double(1.5, 1.8) * DefaultCommoness, totalMineCount));
 
             totalCount = 0;
             for (int i = 0; i < typesCountLeft.Length; ++i)
@@ -86,6 +91,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
         public bool LandSurveyResult(int depthLevel, out MapTile1_1 result)
         {
             MineLocationType locationFound = MineLocationType.None;
+            result = new MapTile1_1() { mainTerrain = TerrainMainType.Mine };
 
             if (totalCount > 0)
             {
@@ -94,18 +100,18 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
                 if (depthLevel <= 1)
                 {
                     exend = (int)MineLocationType.SilverOre;
-                    result.terrainAmount = (byte)DssConst.MineDeposits_Shallow.GetRandom_Inc();
+                    result.terrainAmount = (byte)DssConst.MineDeposits_VeryLow.GetRandom_Inc();
                 }
                 else
                 {
                     exend = typesCountLeft.Length;
                     if (Ref.rnd.Chance(DssConst.MineDeposits_Endless_Chance))
                     {
-                        result.terrainAmount = DssConst.MineDeposits_Endless;
+                        result.terrainAmount = (byte)DssConst.MineDeposits_High.GetRandom_Inc();
                     }
                     else
                     {
-                        result.terrainAmount = (byte)DssConst.MineDeposits_Medium.GetRandom_Inc();
+                        result.terrainAmount = (byte)DssConst.MineDeposits_Low.GetRandom_Inc();
                     }
                 }
 
@@ -123,7 +129,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
                 totalCount--;
             }
 
-            result = new MapTile1_1() { mainTerrain = TerrainMainType.Mine };
+            
             switch (locationFound)
             {
                 default:
@@ -139,12 +145,12 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
                 case MineLocationType.ClayPit:
                     result.subTerrain = (int)TerrainMineType.ClayPit;
                     break;
-                case MineLocationType.SaltPit:
-                    result.subTerrain = (int)TerrainMineType.SaltPit;
-                    break;
                 case MineLocationType.Salt:
                     result.subTerrain = (int)TerrainMineType.Salt;
                     break;
+                //case MineLocationType.Salt:
+                //    result.subTerrain = (int)TerrainMineType.Salt;
+                //    break;
                 case MineLocationType.Sulfur:
                     result.subTerrain = (int)TerrainMineType.Sulfur;
                     break;
@@ -178,6 +184,8 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
             }
             return true;
         }
+
+        
     }
 
     enum MineLocationType
@@ -188,8 +196,8 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
         StoneBlock,
         BogIron,
         ClayPit,
-        SaltPit,
         Salt,
+        //Salt,
         Sulfur,
         Coal,
         IronOre,
@@ -203,4 +211,6 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
         Mithril,
         NUM
     }
+
+   
 }
