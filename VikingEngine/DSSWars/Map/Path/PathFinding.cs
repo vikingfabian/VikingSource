@@ -110,8 +110,8 @@ namespace VikingEngine.DSSWars.Map
         {
             // Short circuit if already at goal or coordinates are out of bounds.
             if (center == goal ||
-                !DssRef.world.tileGrid.InBounds(center) ||
-                !DssRef.world.tileGrid.InBounds(goal))
+                !DssRef.world.sumtileGrid.InBounds(center) ||
+                !DssRef.world.sumtileGrid.InBounds(goal))
             {
                 return new WalkingPath();
             }
@@ -495,7 +495,7 @@ namespace VikingEngine.DSSWars.Map
                 moveCost -= 1f;
             }
 
-            SumTile4_4 tile = world.tileGrid.Get(pos);
+            SumTile4_4 tile = world.sumtileGrid.Get(pos);
             //waterTile = tile.IsWater();
 
             if (waterTile != parent.waterTile)

@@ -958,8 +958,8 @@ namespace VikingEngine.DSSWars
             var armiesCounter = armies.counter();
             while (armiesCounter.Next())
             {
-                Vector3 diff = armiesCounter.sel.position - position;
-                float l = diff.Length();
+                float l = VectorExt.SideLength_XZ( armiesCounter.sel.position, position);
+                //float l = diff.Length();
                 if (l < maxDist)
                 {
                     if (l < closestLenght)

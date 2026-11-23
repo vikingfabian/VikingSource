@@ -952,7 +952,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public void selectAreaCity()
         {
             if (map.selection.obj == null &&
-                DssRef.world.tileGrid.TryGet(map.sumtilePosition, out var tile))
+                DssRef.world.sumtileGrid.TryGet(map.sumtilePosition, out var tile))
             {
                 var city = tile.pcity.City();
                 if (city.pfaction == player.pfaction)

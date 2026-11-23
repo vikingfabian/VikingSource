@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Data
         public float manFoodUpkeep;
         public float mountFoodUpkeep;
 
-        public CityHallSetup[] CitySizeSetup = new CityHallSetup[(int)CityType.NUM];
+        //public CityHallSetup[] CitySizeSetup = new CityHallSetup[(int)CityType.NUM];
 
 
         public GameRuleset()
@@ -65,10 +65,7 @@ namespace VikingEngine.DSSWars.Data
                 setting_craftMulti = 1;
             }
 
-            for (CityType sz = 0; sz < CityType.NUM; sz++)
-            {
-                CitySizeSetup[(int)sz] = new CityHallSetup(sz, module_foodAndWater);
-            }
+            
         }
 
 

@@ -211,7 +211,7 @@ namespace VikingEngine.DSSWars.Players
                             }
                             if (!isSubTile)
                             {
-                                var tile = DssRef.world.tileGrid.Get(loop.Position);
+                                var tile = DssRef.world.sumtileGrid.Get(loop.Position);
                                 if (tile.pcity.HasValue() && !citiesRecieved[tile.pcity.cityIndex])
                                 {
                                     CitiesInView.Add(tile.pcity.cityIndex);
@@ -348,7 +348,7 @@ namespace VikingEngine.DSSWars.Players
             while (loop.Next())
             {  
                 
-                var tile = DssRef.world.tileGrid.Get(loop.Position);
+                var tile = DssRef.world.sumtileGrid.Get(loop.Position);
                 
                 CitiesInView.Add(tile.pcity.cityIndex);
                 

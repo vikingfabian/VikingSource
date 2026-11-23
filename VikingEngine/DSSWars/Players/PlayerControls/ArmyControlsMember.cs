@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.Players
             if (pathState == PathFindState.None && isAlive)
             {
                 if (army.maptilePos != player.gameControls.map.sumtilePosition &&
-                    DssRef.world.tileGrid.InBounds(player.gameControls.map.sumtilePosition))
+                    DssRef.world.sumtileGrid.InBounds(player.gameControls.map.sumtilePosition))
                 {
                     /*
                     PathFinding pf = DssRef.world.pathFindingPool.GetPf();

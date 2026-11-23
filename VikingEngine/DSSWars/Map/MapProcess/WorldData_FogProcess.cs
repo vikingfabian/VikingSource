@@ -31,14 +31,14 @@ namespace VikingEngine.DSSWars
                 else if (lastFogCountDown.hasSecPassed(FogOfWarTimePerLevelSec))
                 {
                     lastFogCountDown = GameTimeStamp.Now();
-                    var loop = tileGrid.LoopInstance();
+                    var loop = sumtileGrid.LoopInstance();
                     while (loop.Next())
                     {
-                        var tile = DssRef.world.tileGrid.Get(loop.Position);
+                        var tile = DssRef.world.sumtileGrid.Get(loop.Position);
                         if (tile.fogExploreLevel > FogOfWarView_TerrainOnly && tile.fogExploreLevel < FogOfWarView_LockedFull)
                         {
                             tile.fogExploreLevel--;
-                            tileGrid.Set(loop.Position, tile);
+                            sumtileGrid.Set(loop.Position, tile);
                         }
                     }
                 }
@@ -63,10 +63,10 @@ namespace VikingEngine.DSSWars
                 //Revieal full map
                 lastFogCountDown = GameTimeStamp.Now();
 
-                ForXYLoop loop = DssRef.world.tileGrid.LoopInstance();
+                ForXYLoop loop = DssRef.world.sumtileGrid.LoopInstance();
                 while (loop.Next())
                 {
-                    DssRef.world.tileGrid.GetRef(loop.Position).fogExploreLevel = FogOfWarView_LockedFull;
+                    DssRef.world.sumtileGrid.GetRef(loop.Position).fogExploreLevel = FogOfWarView_LockedFull;
                 }
 
                 var factionsC = factions.counter();
@@ -101,15 +101,15 @@ namespace VikingEngine.DSSWars
         void async_fog_addViewPoint(IntVector2 sumTilePos, int viewRadius, byte viewLevel, float unhinderedViewPercent, float fullViewPercent)
         {
             PCity prevCity = PCity.Empty;
-            int centerHeight = DssRef.world.tileGrid.Get(sumTilePos).biomColorHeight +1;
+            int centerHeight = DssRef.world.sumtileGrid.Get(sumTilePos).biomColorHeight +1;
             float unhinderedViewR = viewRadius * unhinderedViewPercent;
             float fullViewR = viewRadius * fullViewPercent;
             Rectangle2 area = Rectangle2.FromCenterTileAndRadius(sumTilePos, viewRadius);
-            area.SetBounds(DssRef.world.tileGrid.Area);
+            area.SetBounds(DssRef.world.sumtileGrid.Area);
             ForXYLoop loop = new ForXYLoop(area);
             while (loop.Next())
             {
-                var tile = DssRef.world.tileGrid.Get(loop.Position);
+                var tile = DssRef.world.sumtileGrid.Get(loop.Position);
                 float dist = (loop.Position - sumTilePos).Length();
 
                 if (dist < viewRadius /*&& (dist <= unhinderedViewPercent || tile.biomColorHeight <= centerHeight)*/)
@@ -127,7 +127,7 @@ namespace VikingEngine.DSSWars
                     if (explore > tile.fogExploreLevel)
                     {
                         tile.fogExploreLevel = explore;
-                        DssRef.world.tileGrid.Set(loop.Position, tile);
+                        DssRef.world.sumtileGrid.Set(loop.Position, tile);
                     }
                 }
             }

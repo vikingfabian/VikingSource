@@ -20,6 +20,16 @@ namespace VikingEngine.DSSWars.GameObject.ObjectPointer
             this.cityIndex = (ushort)cityIndex;
         }
 
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write(cityIndex);
+        }
+
+        public PCity(System.IO.BinaryReader r)
+        {
+            this.cityIndex = r.ReadUInt16();
+        }
+
         public bool HasValue()
         {
             return cityIndex != EmptyPointer;

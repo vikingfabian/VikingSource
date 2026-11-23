@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.GameObject
                         //    lib.DoNothing();
                         //}
                         IntVector2 moveToPos = IntVector2.FromDir8(dir) + currentNode.Position;
-                        if (DssRef.world.tileGrid.InBounds(moveToPos) &&
+                        if (DssRef.world.sumtileGrid.InBounds(moveToPos) &&
                             checkedPathsFrom[moveToPos.X, moveToPos.Y] == false)
                         {
                             if (group.canMoveTo(currentNode.Position, moveToPos))

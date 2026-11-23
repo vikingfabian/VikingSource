@@ -183,7 +183,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure
                 {
                     if (DssRef.world.GetMapAndSumTile_Safe(cirkleLoop.Position, out var mapTile, out var sumTile))
                     {
-                        var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
+                        var tile = DssRef.world.sumtileGrid.Get(cirkleLoop.Position);
                         if (tile.pcity.cityIndex == city.myIndex /*&& tile.MayBuild()*/)
                         {
                             topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);

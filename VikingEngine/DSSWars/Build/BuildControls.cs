@@ -570,7 +570,7 @@ namespace VikingEngine.DSSWars.Build
                                 while (cirkleLoop.Next())
                                 {
 
-                                    if (DssRef.world.tileGrid.TryGet(cirkleLoop.Position, out var sumTile))
+                                    if (DssRef.world.sumtileGrid.TryGet(cirkleLoop.Position, out var sumTile))
                                     {
                                         if (sumTile.pcity.cityIndex == city.myIndex)
                                         {

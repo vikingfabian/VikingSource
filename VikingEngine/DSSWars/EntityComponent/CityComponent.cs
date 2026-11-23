@@ -371,20 +371,20 @@ namespace VikingEngine.DSSWars
 
         }
 
-        public void writeComponents(System.IO.BinaryWriter w)
-        {
-            for (int i = 0; i < cityStorage.Length; i++)
-            {
-                cityStorage[i].write(w);
-            }
-        }
-        public void readComponents(System.IO.BinaryReader r, int subVersion) //TODO move to city read
-        {
-            for (int i = 0; i < cityStorage.Length; i++)
-            {
-                cityStorage[i].read(r, subVersion);
-            }
-        }
+        //public void writeComponents(System.IO.BinaryWriter w)
+        //{
+        //    for (int i = 0; i < cityStorage.Length; i++)
+        //    {
+        //        cityStorage[i].write(w);
+        //    }
+        //}
+        //public void readComponents(System.IO.BinaryReader r, int subVersion) //TODO move to city read
+        //{
+        //    for (int i = 0; i < cityStorage.Length; i++)
+        //    {
+        //        cityStorage[i].read(r, subVersion);
+        //    }
+        //}
 
         public void writeCityStorage(System.IO.BinaryWriter w, City city)
         {

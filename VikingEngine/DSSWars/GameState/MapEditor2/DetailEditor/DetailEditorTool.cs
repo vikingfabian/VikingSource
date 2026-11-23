@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.ObjectPointer;
 using VikingEngine.DSSWars.GameState.MapEditor2.IconEditor;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
@@ -125,7 +126,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2.DetailEditor
                             case CityPaintTool.CityAdd:
                                 if (DssRef.world.CanPlaceCity(subTilePos))
                                 {
-                                    DssRef.world.AddCity(subTilePos, cityType, true, cityPaint_IncludeBuildings);
+                                    DssRef.world.AddCity(subTilePos, cityType, true, cityPaint_IncludeBuildings, PFaction.Empty);
                                     new GodBuild(subTilePos);
                                 }
                                 break;

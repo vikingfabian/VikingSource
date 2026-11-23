@@ -56,7 +56,7 @@ namespace VikingEngine.Tests.Pathfinding.Legacy
                 moveCost -= 1f;
             }
 
-            SumTile4_4 tile = world.tileGrid.Get(pos);
+            SumTile4_4 tile = world.sumtileGrid.Get(pos);
             //waterTile = tile.IsWater();
 
             if (waterTile != parent.waterTile)

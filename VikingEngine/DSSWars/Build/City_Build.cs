@@ -409,7 +409,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     case TerrainMainType.Destroyed:
                     case TerrainMainType.DefaultLand:
-                        var tile = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(subTilePos));
+                        var tile = DssRef.world.sumtileGrid.Get(WP.MaptileToSumTile(subTilePos));
                         if (tile.pcity.cityIndex == myIndex)
                         {
                             GroundPropertiesLib.MayBuild_GroundCheck(subtile.groundType, groundRequirement, out mustTerraform);

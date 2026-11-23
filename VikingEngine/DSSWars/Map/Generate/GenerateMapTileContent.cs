@@ -14,9 +14,6 @@ namespace VikingEngine.Core.DSSWars.Map.Generate
 {
     class GenerateMapTileContent
     {
-        
-
-
         WorldData world;
         List<IntVector2> mineLocations = new List<IntVector2>(1024);
         List<IntVector2> animalSpawns = new List<IntVector2>(1024);
@@ -53,7 +50,7 @@ namespace VikingEngine.Core.DSSWars.Map.Generate
                 }
             });
 
-            world.InitMoveCostLayers();
+           
         }
 
         const int TerrainCutOff = MapHeight2.MountainStarHeight;

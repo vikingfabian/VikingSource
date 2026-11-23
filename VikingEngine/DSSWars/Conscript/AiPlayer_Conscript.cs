@@ -337,7 +337,7 @@ namespace VikingEngine.DSSWars.Players
                     var armiesC = pfaction.GetFaction().armies.counter();
                     while (armiesC.Next())
                     {
-                        if (DssRef.world.tileGrid.Get(WP.MaptileToSumTile( armiesC.sel.maptilePos)).pcity.cityIndex == city.myIndex)
+                        if (DssRef.world.sumtileGrid.Get(WP.MaptileToSumTile( armiesC.sel.maptilePos)).pcity.cityIndex == city.myIndex)
                         {
                             maxCount -= armiesC.sel.soldiersCount;
                             if (maxCount < 0)

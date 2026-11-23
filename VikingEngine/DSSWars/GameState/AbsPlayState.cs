@@ -89,6 +89,7 @@ namespace VikingEngine.DSSWars.GameState
 #else
             Input.Mouse.SetMenuMode(true);
 #endif
+            DssRef.world.RefreshPlayerFlags();
         }
 
         public bool resourceCheckTime()

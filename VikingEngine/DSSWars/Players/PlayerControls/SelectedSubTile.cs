@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars.Players
                     this.subTilePos = subTilePos;
                     isNew = true;
                     tileOfInterest = false;
-                    if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(subTilePos), out var tile))
+                    if (DssRef.world.sumtileGrid.TryGet(WP.MaptileToSumTile(subTilePos), out var tile))
                     {
                         city = tile.pcity.City();
                     }
@@ -213,7 +213,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (subTile.groundType != toGround && GroundPropertiesLib.Get(subTile.groundType).canTerraform)
                 {
-                    city = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(subTilePos)).pcity.City();
+                    city = DssRef.world.sumtileGrid.Get(WP.MaptileToSumTile(subTilePos)).pcity.City();
                     if (city.pfaction == player.pfaction)
                     {
 
@@ -244,7 +244,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
             { 
-                if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(subTilePos), out var tile))
+                if (DssRef.world.sumtileGrid.TryGet(WP.MaptileToSumTile(subTilePos), out var tile))
                 {
                     //if (tile.MayBuild())
                     {
@@ -358,7 +358,7 @@ namespace VikingEngine.DSSWars.Players
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
             {
                 IntVector2 tilePos = WP.MaptileToSumTile(subTilePos);
-                if (DssRef.world.tileGrid.TryGet(tilePos, out var tile) && tile.pcity.HasValue())
+                if (DssRef.world.sumtileGrid.TryGet(tilePos, out var tile) && tile.pcity.HasValue())
                 {
                     city = tile.pcity.City();
                     

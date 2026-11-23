@@ -74,18 +74,19 @@ namespace VikingEngine.DSSWars.Players.Command
 
         public override bool update(LocalPlayer player)
         {
-            /*
+
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.map.hover.subTile.subTilePos);
             available = false;
 
-            if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(player.gameControls.map.hover.subTile.subTilePos), out var tile))
+            if (player.gameControls.map.hover.subTile.subTile.MayBuild_GroundCheck( Build.BuildAndExpandType.GreatHall, out _) &&
+                DssRef.world.sumtileGrid.TryGet(WP.MaptileToSumTile(player.gameControls.map.hover.subTile.subTilePos), out var tile))
             {
-                available = tile.pcity.City().cityType == CityType.UnClaimed;
+                available = tile.pcity.IsEmpty();
             }
 
             model.Color = available ? Color.White : HudLib.NotAvailableColor;
 
-            */
+
             return base.update(player);
         }
 

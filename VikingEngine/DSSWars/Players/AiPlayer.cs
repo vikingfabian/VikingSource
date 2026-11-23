@@ -1938,7 +1938,7 @@ namespace VikingEngine.DSSWars.Players
                     }
                     else
                     {
-                        if (DssRef.world.tileGrid.TryGet(WP.MaptileToSumTile(mainArmy.maptilePos), out SumTile4_4 tile) && tile.pcity.HasValue())
+                        if (DssRef.world.sumtileGrid.TryGet(WP.MaptileToSumTile(mainArmy.maptilePos), out SumTile4_4 tile) && tile.pcity.HasValue())
                         {
                             var city = tile.pcity.City();
                             if (city != null && city.pfaction == pfaction)

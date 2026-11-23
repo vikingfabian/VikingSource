@@ -36,7 +36,13 @@ namespace VikingEngine.DSSWars
             }
             blackFlagSprite = new Sprite(new Microsoft.Xna.Framework.Rectangle(topLeft.X, topLeft.Y, DssLib.UserHeraldicWidth, DssLib.UserHeraldicWidth), LoadedTexture.FlagTexture);
         }
-
+        public void RefreshPlayerFlags()
+        {
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                CreateFlagSprite(p.pfaction.factionIndex, p.profile.flag);
+            }
+        }
         public void CreateFlagSprite(int factionIndex, FlagAndColor factionVisual)
         {
             IntVector2 gridPos = new IntVector2(factionIndex % FlagsWidthCount, factionIndex / FlagsWidthCount) * DssLib.UserHeraldicWidth;

@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 if (DssRef.world.subTileGrid.TryGet(currentPos, out var subTile) && subTile.EqualTerrain(terrainType))
                 {
-                    if (DssRef.world.tileGrid.Get(WP.MaptileToSumTile(currentPos)).pcity.cityIndex == cityIx)
+                    if (DssRef.world.sumtileGrid.Get(WP.MaptileToSumTile(currentPos)).pcity.cityIndex == cityIx)
                     {                        
                         var result = WP.MaptileToWorldPosXZ(currentPos);
                         Next();

@@ -195,7 +195,7 @@ namespace VikingEngine.DSSWars.Work
             switch (work)
             {
                 case WorkType.TrossCityTrade:
-                    var toCity = DssRef.world.tileGrid.Get(WP.MaptileToSumTile( subTileEnd)).pcity.City();
+                    var toCity = DssRef.world.sumtileGrid.Get(WP.MaptileToSumTile( subTileEnd)).pcity.City();
 
                     if (toCity != null)
                     {
@@ -1266,19 +1266,6 @@ namespace VikingEngine.DSSWars.Work
                             
                         }
 
-                        //if (building == TerrainBuildingType.PigPen)
-                        //{
-                        //    resourceType = Resource.ItemResourceType.Pig;
-                        //    min = TerrainContent.PigReady;
-                        //    size = TerrainContent.PigMaxSize;
-                        //}
-                        //else
-                        //{
-                        //    resourceType = Resource.ItemResourceType.Hen;
-                        //    min = TerrainContent.HenReady;
-                        //    size = TerrainContent.HenMaxSize;
-                        //}
-
                         if (subTile.terrainAmount >= size.harvestReady)
                         {
                             subTile.terrainAmount = (byte)(subTile.terrainAmount - size.maxSize);
@@ -1320,7 +1307,7 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.LocalTrade:
                     ItemResourceType tradeForItem = (ItemResourceType)workSubType;
-                    var toCity = DssRef.world.tileGrid.Get(subTileEnd / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
+                    var toCity = DssRef.world.sumtileGrid.Get(subTileEnd / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
                     int payment = carry.amount;
                     ItemResource recieved = toCity.MakeTrade(tradeForItem, payment);
 
@@ -1336,7 +1323,14 @@ namespace VikingEngine.DSSWars.Work
                 case WorkType.Explore:
                     {
                         EditSubTile edit;
-                        if (DssRef.world.mineLocations.LandSurveyResult(subTile.terrainAmount, out var terrainFound))
+                        if (city.terrainStructure.mineCount_bogIron + city.terrainStructure.mineCount_iron == 0)
+                        {
+                            DssRef.world.mineLocations.PullOneBogMine(subTile.terrainAmount, out var terrainFound);
+                            edit = new EditSubTile(city.pfaction, true, subTileEnd, terrainFound, true, false, true, false, false);
+                            city.terrainStructure.mineCount_bogIron++;
+
+                        }
+                        else if (DssRef.world.mineLocations.LandSurveyResult(subTile.terrainAmount, out var terrainFound))
                         {
                             edit = new EditSubTile(city.pfaction, true, subTileEnd, terrainFound, true, false, true, false, false);
                         }
@@ -1352,7 +1346,7 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.Mine:
                     {
-                        Resource.ItemResourceType resourceType = ItemResourceType.NONE;
+                        //Resource.ItemResourceType resourceType = ItemResourceType.NONE;
                         //int amount = TerrainContent.DefaultMineAmount;
                         gainXp = WorkExperienceType.Mining;
 
@@ -2057,7 +2051,7 @@ namespace VikingEngine.DSSWars.Work
                 case WorkType.LocalTrade:
                     {
                         ItemResourceType tradeForItem = (ItemResourceType)workSubType;
-                        var toCity = DssRef.world.tileGrid.Get(targetSubTile / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
+                        var toCity = DssRef.world.sumtileGrid.Get(targetSubTile / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
                         int goldCost = tradeForItem == ItemResourceType.ConservedFood? DssConst.ConservedFoodGoldValue : DssConst.FoodGoldValue;// toCity.SellCost(tradeForItem);
 
                         carry = new ItemResource(ItemResourceType.Gold, /*1, 1,*/ goldCost * DssConst.Worker_TrossWorkerCarryWeight);
@@ -2066,7 +2060,7 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.TrossCityTrade:
                     {
-                        var toCity = DssRef.world.tileGrid.Get(targetSubTile / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
+                        var toCity = DssRef.world.sumtileGrid.Get(targetSubTile / Map.MapData.MapTile1_1.ModelScale_Inv).pcity.City();
                         int goldCost = DssConst.FoodGoldValue;//toCity.SellCost(ItemResourceType.Food_G);
 
                         carry = new ItemResource(ItemResourceType.Gold, /*1, 1,*/ goldCost);

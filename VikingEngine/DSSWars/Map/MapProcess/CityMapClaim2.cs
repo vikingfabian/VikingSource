@@ -23,7 +23,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess
 
            // IntVector2 center = WP.MaptileToSumTile(city.maptilePos);
             
-            int radius = DssRef.storage.ruleset_instance.CitySizeSetup[(int)city.cityType].claimRadius_sum;
+            int radius = DssRef.world.CitySizeSetup[(int)city.cityType].claimRadius_sum;
 
             city.buildOutsideRegionRadius = MathExt.MultiplyInt(radius, OutsideRegionRadiusMultiplier) * SumTile4_4.TileWidth;
 
@@ -49,10 +49,10 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess
             ForXYLoop setuploop = new ForXYLoop(Rectangle2.FromCenterTileAndRadius(center, 1));
             while (setuploop.Next())
             {
-                if (DssRef.world.tileGrid.TryGet(setuploop.Position, out var tile))
+                if (DssRef.world.sumtileGrid.TryGet(setuploop.Position, out var tile))
                 {
                     tile.pcity = pcity;
-                    DssRef.world.tileGrid.Set(setuploop.Position, tile);
+                    DssRef.world.sumtileGrid.Set(setuploop.Position, tile);
                     inflenceMap.Set_offset(setuploop.Position, sumTileRadius - 1);
                 }
             }
@@ -68,12 +68,12 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess
                         for (int i = 0; i < IntVector2.Dir8Array.Length; ++i)//foreach (var dir in IntVector2.Dir4Array)
                         {
                             IntVector2 npos = loop.Position + IntVector2.Dir8Array[i];
-                            if (DssRef.world.tileGrid.TryGet(npos, out var ntile))
+                            if (DssRef.world.sumtileGrid.TryGet(npos, out var ntile))
                             {
                                 if (ntile.pcity.IsEmpty() || ntile.pcity == pcity)
                                 {
                                     ntile.pcity = pcity;
-                                    DssRef.world.tileGrid.Set(npos, ntile);
+                                    DssRef.world.sumtileGrid.Set(npos, ntile);
 
                                     float height = WP.GroundY_SumTile(npos);
                                     float heightDiff = height - cityHeight;
@@ -100,7 +100,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess
                 ForXYLoop loop = new ForXYLoop(maxArea);
                 while (loop.Next())
                 {
-                    if (DssRef.world.tileGrid.TryGet(loop.Position, out var tile))
+                    if (DssRef.world.sumtileGrid.TryGet(loop.Position, out var tile))
                     {
                         if (tile.pcity == pcity)
                         {
@@ -111,7 +111,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess
                                 tile.IsBorderTile = false;
                                 foreach (var dir in IntVector2.Dir8Array)
                                 {
-                                    if ((DssRef.world.tileGrid.TryGet(loop.Position + dir, out var ntile) &&
+                                    if ((DssRef.world.sumtileGrid.TryGet(loop.Position + dir, out var ntile) &&
                                         ntile.pcity == pcity &&
                                         ntile.biomColorHeight > 1) == false)
                                     {
@@ -119,7 +119,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapProcess
                                         break;
                                     }
                                 }
-                                DssRef.world.tileGrid.Set(loop.Position, tile);
+                                DssRef.world.sumtileGrid.Set(loop.Position, tile);
 
                             }
                         }

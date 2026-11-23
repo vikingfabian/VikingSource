@@ -322,10 +322,15 @@ namespace VikingEngine.DSSWars.Data
         
         int difficulty;
         public GameModeMainType gameMode = GameModeMainType.NUM;
-        public float setting_foodMulti = -1;
-        public float setting_waterMulti = -1;
-        public float setting_childMulti = -1;
-        public float setting_craftMulti = -1;
+        
+        /// <summary>
+        /// Only for file preview
+        /// </summary>
+        public GameRuleset ruleset;
+        //public float setting_foodMulti = -1;
+        //public float setting_waterMulti = -1;
+        //public float setting_childMulti = -1;
+        //public float setting_craftMulti = -1;
 
         public int metaVersion = Version;
         public int stateVersion= SaveGamestate.Version;
@@ -382,14 +387,14 @@ namespace VikingEngine.DSSWars.Data
                     DssRef.lang.Lobby_MapSizeTitle + ": " + worldmeta.mapScale.SizeString() + Environment.NewLine;
             }
 
-            if (setting_foodMulti > 0)
-            {
-                result += string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(setting_foodMulti)) + Environment.NewLine +
-                    string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(setting_waterMulti)) + Environment.NewLine +
-                    string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(setting_childMulti)) + Environment.NewLine +
-                    string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(setting_craftMulti)) + Environment.NewLine;
+            //if (setting_foodMulti > 0)
+            //{
+                result += string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(ruleset.setting_foodMulti)) + Environment.NewLine +
+                    string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(ruleset.setting_waterMulti)) + Environment.NewLine +
+                    string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(ruleset.setting_childMulti)) + Environment.NewLine +
+                    string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(ruleset.setting_craftMulti)) + Environment.NewLine;
 
-            }
+            //}
 
             if (localPlayerCount > 1)
             {
@@ -422,10 +427,11 @@ namespace VikingEngine.DSSWars.Data
             difficulty = DssRef.difficulty.TotalDifficulty();
             gameMode = DssRef.difficulty.setting_gameMode;
 
-            setting_foodMulti = DssRef.storage.ruleset.setting_foodMulti;
-            setting_waterMulti = DssRef.storage.ruleset.setting_waterMulti;
-            setting_childMulti = DssRef.storage.ruleset.setting_childMulti;
-            setting_craftMulti = DssRef.storage.ruleset.setting_craftMulti;
+            //setting_foodMulti = DssRef.storage.ruleset.setting_foodMulti;
+            //setting_waterMulti = DssRef.storage.ruleset.setting_waterMulti;
+            //setting_childMulti = DssRef.storage.ruleset.setting_childMulti;
+            //setting_craftMulti = DssRef.storage.ruleset.setting_craftMulti;
+            ruleset = DssRef.storage.ruleset;
             worldmeta = DssRef.world.metaData;
         }
 
@@ -455,10 +461,11 @@ namespace VikingEngine.DSSWars.Data
 
             w.Write((byte)gameMode);
 
-            w.Write(setting_foodMulti);
-            w.Write(setting_waterMulti);
-            w.Write(setting_childMulti);
-            w.Write(setting_craftMulti);
+            ruleset.write(w, true);
+            //w.Write(setting_foodMulti);
+            //w.Write(setting_waterMulti);
+            //w.Write(setting_childMulti);
+            //w.Write(setting_craftMulti);
 
             w.Write(autosave);
             w.Write((byte)index);
@@ -487,28 +494,20 @@ namespace VikingEngine.DSSWars.Data
             stateVersion = r.ReadInt32();
 
 
-            if (metaVersion >= 4)
-            {
-                gameMode = (GameModeMainType)r.ReadByte();
-            }
+            gameMode = (GameModeMainType)r.ReadByte();
 
-            if (metaVersion >= 5)
-            {
-                setting_foodMulti = r.ReadSingle();
-                setting_waterMulti = r.ReadSingle();
-                setting_childMulti = r.ReadSingle();
-                setting_craftMulti = r.ReadSingle();
-            }
 
-            if (metaVersion == 1)
-            {
-                autosave = false;
-            }
-            else
-            {
+            ruleset.read(r, true);
+                //setting_foodMulti = r.ReadSingle();
+                //setting_waterMulti = r.ReadSingle();
+                //setting_childMulti = r.ReadSingle();
+                //setting_craftMulti = r.ReadSingle();
+           
+
+           
                 autosave = r.ReadBoolean();
                 index = r.ReadByte();
-            }
+            
 
             saveDate = new DateTime(r.ReadInt64());
             playTime = new TimeSpan(r.ReadInt64());
@@ -518,15 +517,11 @@ namespace VikingEngine.DSSWars.Data
 
             worldmeta = new WorldMetaData(r);
 
-            if (metaVersion >= 6)
-            {
-                importedWorld = r.ReadBoolean();
-            }
+            importedWorld = r.ReadBoolean();
+            
 
-            if (metaVersion >= 5)
-            {
-                Debug.ReadCheck(r);
-            }
+             Debug.ReadCheck(r);
+            
         }
 
         public int CompareTo(SaveStateMeta other)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map.MapData;
 using VikingEngine.DSSWars.Map.MapLib;
 
@@ -16,10 +17,14 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
         int totalCount;
         int[] typesCountLeft;
 
-        public MineLocations(WorldData world, int totalMineCount)
+        public MineLocations()
         {
             typesCountLeft = new int[(int)MineLocationType.NUM];
+        }
 
+        public MineLocations(WorldData world, int totalMineCount)
+            : this()
+        {
             int mithrilCount = 0;
             switch (world.metaData.mapScale.sizeCategory)
             {
@@ -83,9 +88,36 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
             }
         }
 
+        public void write(System.IO.BinaryWriter w)
+        {
+            for (int i = 0; i < typesCountLeft.Length; ++i)
+            {
+                w.Write((ushort)typesCountLeft[i]);
+            }
+        }
+        public void read(System.IO.BinaryReader r, int subversion)
+        {
+            for (int i = 0; i < typesCountLeft.Length; ++i)
+            {
+                int count = r.ReadUInt16();
+                typesCountLeft[i] = count;
+                totalCount += count;
+            }
+        }
+
         void addCount(MineLocationType type, int count)
         {
             typesCountLeft[(int)type] = count;
+        }
+
+        public void PullOneBogMine(int depthLevel, out MapTile1_1 result)
+        {
+            if (typesCountLeft[(int)MineLocationType.BogIron] > 0)
+            {
+                typesCountLeft[(int)MineLocationType.BogIron]--;
+            }
+            result = new MapTile1_1() { mainTerrain = TerrainMainType.Mine, subTerrain = (byte)TerrainMineType.BogIron };
+            depthToResultRange(depthLevel, ref result);
         }
 
         public bool LandSurveyResult(int depthLevel, out MapTile1_1 result)
@@ -96,24 +128,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
             if (totalCount > 0)
             {
                 int index = Ref.rnd.Int(totalCount);
-                int exend;
-                if (depthLevel <= 1)
-                {
-                    exend = (int)MineLocationType.SilverOre;
-                    result.terrainAmount = (byte)DssConst.MineDeposits_VeryLow.GetRandom_Inc();
-                }
-                else
-                {
-                    exend = typesCountLeft.Length;
-                    if (Ref.rnd.Chance(DssConst.MineDeposits_Endless_Chance))
-                    {
-                        result.terrainAmount = (byte)DssConst.MineDeposits_High.GetRandom_Inc();
-                    }
-                    else
-                    {
-                        result.terrainAmount = (byte)DssConst.MineDeposits_Low.GetRandom_Inc();
-                    }
-                }
+                int exend = depthToResultRange(depthLevel, ref result);
 
                 for (int i = 0; i < exend; ++i)
                 {
@@ -129,7 +144,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
                 totalCount--;
             }
 
-            
+
             switch (locationFound)
             {
                 default:
@@ -185,7 +200,30 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
             return true;
         }
 
-        
+        private int depthToResultRange(int depthLevel, ref MapTile1_1 result)
+        {
+            int exend;
+            if (depthLevel <= 1)
+            {
+                exend = (int)MineLocationType.SilverOre;
+                result.terrainAmount = (byte)DssConst.MineDeposits_VeryLow.GetRandom_Inc();
+            }
+            else
+            {
+                exend = typesCountLeft.Length;
+                if (Ref.rnd.Chance(DssConst.MineDeposits_Endless_Chance))
+                {
+                    result.terrainAmount = (byte)DssConst.MineDeposits_High.GetRandom_Inc();
+                }
+                else
+                {
+                    result.terrainAmount = (byte)DssConst.MineDeposits_Low.GetRandom_Inc();
+                }
+            }
+
+            return exend;
+        }
+
     }
 
     enum MineLocationType

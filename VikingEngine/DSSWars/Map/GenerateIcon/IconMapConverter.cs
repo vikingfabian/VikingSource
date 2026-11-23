@@ -36,10 +36,10 @@ namespace VikingEngine.DSSWars.Map.Map2
                 }
             });
 
-            Parallel.For(0, world.tileGrid.Size.X, x =>
+            Parallel.For(0, world.sumtileGrid.Size.X, x =>
             {
                 int tileX = x * SumTile4_4.TileWidth + 1;
-                for (int y = 0; y < world.tileGrid.Size.Y; y++)
+                for (int y = 0; y < world.sumtileGrid.Size.Y; y++)
                 {
                     int tileY = y * SumTile4_4.TileWidth + 1;
 
@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                         biomColorHeight = (byte)(MapHeight2.HeightY_Interval.GetValueBytePercentPos_WithBound(genTile.groundY) / MapHeight2.ColorLayerHeight),
                         IsFullTile = genTile.WithinMayBuildHeight(),
                     };
-                    world.tileGrid.Set(x, y, sumTile);
+                    world.sumtileGrid.Set(x, y, sumTile);
                 }
             });
 

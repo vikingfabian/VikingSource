@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Map.MapData.SumTile4_4 Tile()
         {
-            return DssRef.world.tileGrid.Get(maptilePos);
+            return DssRef.world.sumtileGrid.Get(maptilePos);
         }
         public override void toButtonContent(RichBoxContent content, bool dark)
         {

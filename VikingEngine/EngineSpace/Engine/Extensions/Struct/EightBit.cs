@@ -101,6 +101,17 @@ namespace VikingEngine
             value5 = Get(4);
             value6 = Get(5);
         }
+        public void Get(out bool value1, out bool value2, out bool value3, out bool value4, out bool value5, out bool value6, out bool value7, out bool value8)
+        {
+            value1 = Get(0);
+            value2 = Get(1);
+            value3 = Get(2);
+            value4 = Get(3);
+            value5 = Get(4);
+            value6 = Get(5);
+            value7 = Get(6);
+            value8 = Get(7);
+        }
 
         public void Set(int index, bool value)
         {

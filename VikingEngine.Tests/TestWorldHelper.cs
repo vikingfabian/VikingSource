@@ -19,7 +19,7 @@ namespace VikingEngine.Tests
             var world = new WorldData();
             var size = new IntVector2(width, height);
             world.refreshSize(size);
-            world.tileGrid = new Grid2D_L<SumTile4_4>(size);
+            world.sumtileGrid = new Grid2D_L<SumTile4_4>(size);
             world.moveLayer0 = new Grid2D_L<MoveCost>(size);
 
             for (int y = 0; y < height; y++)

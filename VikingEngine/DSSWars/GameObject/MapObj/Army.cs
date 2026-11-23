@@ -1031,7 +1031,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (!fogViewResult)
                     {
-                        fogViewResult = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(groupsC.sel.maptilePos)).fogExploreLevel > WorldData.FogOfWarView_TerrainOnly;
+                        fogViewResult = DssRef.world.sumtileGrid.Get(WP.MaptileToSumTile(groupsC.sel.maptilePos)).fogExploreLevel > WorldData.FogOfWarView_TerrainOnly;
                     }
                     
                     totalStrength += groupsC.sel.strengthValue();/*AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip)*/;//(dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
@@ -1105,7 +1105,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (!DssRef.storage.ruleset_instance.module_physicalGold && time > 0)
                 {
-                    var onCity = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(maptilePos)).pcity.City();
+                    var onCity = DssRef.world.sumtileGrid.Get(WP.MaptileToSumTile(maptilePos)).pcity.City();
 
                     if (onCity != null && onCity.pfaction == pfaction)
                     {

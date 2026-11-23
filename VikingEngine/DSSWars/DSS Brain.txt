@@ -89,6 +89,7 @@ Performance
 * Flags are changed to linears arrays
 * Flag textures are only created once and share one big texture
 * Compressed the memory size of resources
+* Map saves are done in a squre pattern for higher compression
 
 (Vulkan)
 * DSS now runs on Vulkan, which is more performant and modern than OpenGL (Uygar "Agent" Yilmaz)
@@ -151,7 +152,7 @@ For Thai, use a pipe (|) between words, example: "สวัสดี|ตอน|�
 English, German, French, Japanese, Simplified Chinese, Russian, Spanish
 
 Steam page prompt:
-output the text inside a Markdown code block rather than generating a .txt
+output the text inside a Markdown code block
 
 ##
 Translate all strings to French.

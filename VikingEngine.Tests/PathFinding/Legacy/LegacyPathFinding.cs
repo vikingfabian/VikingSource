@@ -36,8 +36,8 @@ namespace VikingEngine.Tests.Pathfinding.Legacy
             * 4.Varje ny ruta ska till en öppen lista
             */
 
-            if (!DssRef.world.tileGrid.InBounds(center) ||
-                !DssRef.world.tileGrid.InBounds(goal))
+            if (!DssRef.world.sumtileGrid.InBounds(center) ||
+                !DssRef.world.sumtileGrid.InBounds(goal))
             {
                 return new WalkingPath();
             }

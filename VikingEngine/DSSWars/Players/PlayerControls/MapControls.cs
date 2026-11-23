@@ -210,7 +210,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (onNewTile)
             {
-                var newCity = DssRef.world.tileGrid.Get(sumtilePosition).pcity.City();
+                var newCity = DssRef.world.sumtileGrid.Get(sumtilePosition).pcity.City();
 
                 //if (newCity == null && DssRef.state.GodPowers() && player.gameControls.map.selection.objectType() == GameObjectType.City)
                 //{

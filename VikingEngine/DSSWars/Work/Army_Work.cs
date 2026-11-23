@@ -115,7 +115,7 @@ namespace VikingEngine.DSSWars.GameObject
             else
             {
                 //Order new food
-                City city = DssRef.world.tileGrid.Get(WP.MaptileToSumTile( maptilePos)).pcity.City();
+                City city = DssRef.world.sumtileGrid.Get(WP.MaptileToSumTile( maptilePos)).pcity.City();
                 if (city != null && city.pfaction.TryGetFaction(out _))
                 {
                     float bufferGoal_percentage = -1;

@@ -125,14 +125,14 @@ namespace VikingEngine.DSSWars.Map.MapModels
                 if (token.IsCancellationRequested)
                     return;
 
-                var sumtile = DssRef.world.tileGrid.Get(loop.Position);
+                var sumtile = DssRef.world.sumtileGrid.Get(loop.Position);
                 if (sumtile.pcity.cityIndex == current.myIndex &&
                     sumtile.IsBorderTile)
                 {
                     for (Dir4 dir = 0; dir < Dir4.NUM_NON; dir++)
                     {
                         var npos = loop.Position + IntVector2.Dir4Array[(int)dir];
-                        if (DssRef.world.tileGrid.TryGet(npos, out var nSumTile) &&
+                        if (DssRef.world.sumtileGrid.TryGet(npos, out var nSumTile) &&
                             nSumTile.pcity.cityIndex != current.myIndex)
                         {
                             // Neighbor belongs to a different region/city

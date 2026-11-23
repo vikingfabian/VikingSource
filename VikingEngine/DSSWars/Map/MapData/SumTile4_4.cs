@@ -14,96 +14,113 @@ using VikingEngine.ToGG.HeroQuest;
 
 namespace VikingEngine.DSSWars.Map.MapData
 {
-    //enum FogOfWar_ExlporeLevel : byte
-    //{ 
-    //    None,
-    //    TerrainOnly,
-    //    Full,
-    //}
-
-
+    
     /// <summary>
     /// Group of 4 by 4 tiles
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     struct SumTile4_4
     {
-        
-
         public static readonly SumTile4_4 Empty = new SumTile4_4();
         public const int TileWidth = 4;
 
         public const float ModelScale = MapTile1_1.ModelScale * TileWidth;
         public const float ModelScale_Inv = 1f / ModelScale;
-        public const ushort NoBorderRegion = ushort.MaxValue;
-        public const ushort SeaBorder = ushort.MaxValue -1;
         const int CompareToAmountCities = 8;
 
-       
-
-        // 4-byte members (naturally 4-byte aligned)       
-        
-        public int seaDistanceHeatMap = int.MinValue;
+        public int seaDistanceHeatMap = int.MinValue; //Not in use
 
         
-
-        // 2-byte members (naturally 2-byte aligned at offset 16)
-        public PCity pcity;
-
-       
-       
-
-        //OLD
-        //public ushort BorderRegion_North;
-        //public ushort BorderRegion_East;
-        //public ushort BorderRegion_South;
-        //public ushort BorderRegion_West;
-
-        // 1-byte members (always aligned)
-        //public BiomType biom = BiomType.Green;
-        //public BiomType secondaryBiom = BiomType.Green;
-        public BiomType biom1= BiomType.Green; 
+        public PCity pcity;// 2-byte
+        public BiomType biom1 = BiomType.Green; 
         public BiomType biom2 = BiomType.Green;
         public byte secondBiomWeight;
         public byte biomColorHeight;
+        public byte fogExploreLevel = WorldData.FogOfWarView_None;
         public bool IsBorderTile;
         public bool IsFullTile;
 
-        public byte fogExploreLevel = WorldData.FogOfWarView_None;
+        public void writeMapFile(System.IO.BinaryWriter w, SumTile4_4 previuos)
+        {
+            bool eqCity = pcity == previuos.pcity;
+            bool eqBiom1 = biom1 == previuos.biom1;
+            bool eqBiom2 = biom2 == biom1;//Local comparison!
+            bool eqBiom2Weight = secondBiomWeight == previuos.secondBiomWeight;
+            bool eqColHeight = biomColorHeight == previuos.biomColorHeight;
+            bool eqFog = fogExploreLevel == previuos.fogExploreLevel;
 
-        //public TileContent tileContent = TileContent.NONE;
-        //public byte BorderCount;
+            new EightBit(eqCity, eqBiom1, eqBiom2, eqBiom2Weight, eqColHeight, eqFog, IsBorderTile, IsFullTile).write(w);
 
-        //public byte secondaryBiomStrength = 0;
-        //public bool inRender = false;
+            if (!eqCity) { pcity.write(w); }
+            if (!eqBiom1) { w.Write((byte)biom1); } //Could be nibbs
+            if (!eqBiom2) { w.Write((byte)biom2); } //Could be nibbs
+            if (!eqBiom2Weight) { w.Write(secondBiomWeight); }
+            if (!eqColHeight) { w.Write(biomColorHeight); }
+            if (!eqFog) { w.Write(fogExploreLevel); }
+        }
 
-        //public static void Init()
-        //{
-        //    TypeToHeight_aboveWater = new float[TypeToHeight.Length];
-        //    for (int i = 0; i < TypeToHeight.Length; i++)
-        //    {
-        //        TypeToHeight_aboveWater[i] = Math.Max(TypeToHeight[i], 0);
+        public void readMapFile(System.IO.BinaryReader r, SumTile4_4 previuos, int version)
+        {
+            EightBit bits = new EightBit(r);
+            bits.Get(out var eqCity, out var eqBiom1, out var eqBiom2, out var eqBiom2Weight, out var eqColHeight, out var eqFog, out IsBorderTile, out IsFullTile);
+            if (eqCity)
+            {
+                this.pcity = previuos.pcity;
+            }
+            else
+            {
+                this.pcity = new PCity(r);
+            }
+            if (eqBiom1)
+            {
+                this.biom1 = previuos.biom1;
+            }
+            else
+            {
+                this.biom1 = (BiomType)r.ReadByte();
+            }
 
-        //        if (i >= MapHeight2.MountainStartY)
-        //        { 
-        //            TypeToHeight_aboveWater[i] += 0.2f;
-        //        }
-        //    }
+            // local comparison
+            if (eqBiom2)
+            {
+                this.biom2 = this.biom1;
+            }
+            else
+            {
+                this.biom2 = (BiomType)r.ReadByte();
+            }
 
-        //    TypeToWalkingMultiplier = new float[TypeToWalkingDistance.Length];
-        //    TypeToShipTravelMultiplier = new float[TypeToWalkingDistance.Length];
-        //    for (int i = 0; i < TypeToWalkingDistance.Length; ++i)
-        //    {
-        //        TypeToWalkingMultiplier[i] = 1f / TypeToWalkingDistance[i];
-        //        TypeToShipTravelMultiplier[i] = 1f / TypeToShipDistance[i];
-        //    }
-        //}
+            if (eqBiom2Weight)
+            {
+                this.secondBiomWeight = previuos.secondBiomWeight;
+            }
+            else
+            {
+                this.secondBiomWeight = r.ReadByte();
+            }
+
+            if (eqColHeight)
+            {
+                this.biomColorHeight = previuos.biomColorHeight;
+            }
+            else
+            {
+                this.biomColorHeight = r.ReadByte();
+            }
+
+            if (eqFog)
+            {
+                this.fogExploreLevel = previuos.fogExploreLevel;
+            }
+            else
+            {
+                this.fogExploreLevel = r.ReadByte();
+            }
+        }
 
         public SumTile4_4()
         {
-            //heightLevel = Height.DeepWaterHeight;
             pcity = PCity.Empty;
-            //clearCityData();
         }
 
         public void GetBiom(out BiomHeightColor biomHeight, out Biom biom)
@@ -111,18 +128,6 @@ namespace VikingEngine.DSSWars.Map.MapData
             biom = DssRef.map.bioms.bioms[(int)biom1];
             biomHeight = DssRef.map.heigts[biomColorHeight];
         }
-
-        //public void clearCityData()
-        //{ 
-        //     pcity = PCity.Empty;
-        //    //tileContent = TileContent.NONE;
-        //    BorderCount = 0;
-        //    BorderRegion_North = NoBorderRegion; 
-        //    BorderRegion_East = NoBorderRegion; 
-        //    BorderRegion_South = NoBorderRegion; 
-        //    BorderRegion_West = NoBorderRegion;
-        //    seaDistanceHeatMap = int.MinValue;
-        //}
 
         public SumTile4_4(System.IO.BinaryReader r, SumTile4_4 previous, int version)
             :this()
@@ -137,7 +142,6 @@ namespace VikingEngine.DSSWars.Map.MapData
 
         public void setWaterHeat_Land(int heat)
         {
-            //int heat = neighborHeat + (diagonal ? 12 : 10);
             if (seaDistanceHeatMap == int.MinValue)
             {
                 seaDistanceHeatMap = heat;
@@ -167,194 +171,6 @@ namespace VikingEngine.DSSWars.Map.MapData
         }
 
 
-        const int SaveOpt_IsCity_Ix = 0;
-        const int SaveOpt_CityIndex_Ix = 1;
-        const int SaveOpt_biom_Ix = 2;
-        const int SaveOpt_heightLevel_Ix = 3;
-        const int SaveOpt_HasBorderN_Ix = 4;
-        const int SaveOpt_HasBorderE_Ix = 5;
-        const int SaveOpt_HasBorderS_Ix = 6;
-        const int SaveOpt_HasBorderW_Ix = 7;
-
-
-        public void writeMapFile(System.IO.BinaryWriter w, SumTile4_4 previuos)
-        {
-            /*
-            EightBit saveOpt = new EightBit();
-            bool bIsCity = tileContent == TileContent.City;
-            bool eqCityIndex = CityIndex == previuos.CityIndex;
-            bool eqBiom = biom == previuos.biom;
-            bool eqHeight = heightLevel == previuos.heightLevel;
-
-            bool bBorderN = BorderRegion_North != NoBorderRegion;
-            bool bBorderE = BorderRegion_East != NoBorderRegion;
-            bool bBorderS = BorderRegion_South != NoBorderRegion;
-            bool bBorderW = BorderRegion_West != NoBorderRegion;
-
-            saveOpt.Set(SaveOpt_IsCity_Ix, bIsCity);
-            saveOpt.Set(SaveOpt_CityIndex_Ix, eqCityIndex);
-            saveOpt.Set(SaveOpt_biom_Ix, eqBiom);
-            saveOpt.Set(SaveOpt_heightLevel_Ix, eqHeight);
-            saveOpt.Set(SaveOpt_HasBorderN_Ix, bBorderN);
-            saveOpt.Set(SaveOpt_HasBorderE_Ix, bBorderE);
-            saveOpt.Set(SaveOpt_HasBorderS_Ix, bBorderS);
-            saveOpt.Set(SaveOpt_HasBorderW_Ix, bBorderW);
-
-            saveOpt.write(w);
-
-            //w.Write(Debug.Byte_OrCrash((int)tileContent));
-            if (!eqCityIndex)
-            {
-                w.Write(CityIndex);
-            }
-
-            if (!eqBiom)
-            {
-                w.Write(Debug.Byte_OrCrash((byte)biom));
-            }
-
-            if (!eqHeight)
-            {
-                w.Write(Debug.Byte_OrCrash(heightLevel));
-            }
-
-
-            //w.Write(Debug.Ushort_OrCrash(BorderCount));
-            if (bBorderN)
-            {
-                w.Write(Debug.Short_OrCrash(BorderRegion_North));
-            }
-            if (bBorderE)
-            {
-                w.Write(Debug.Short_OrCrash(BorderRegion_East));
-            }
-            if (bBorderS)
-            {
-                w.Write(Debug.Short_OrCrash(BorderRegion_South));
-            }
-            if (bBorderW)
-            {
-                w.Write(Debug.Short_OrCrash(BorderRegion_West));
-            }
-
-            */
-        }
-
-        public void readMapFile(System.IO.BinaryReader r, SumTile4_4 previuos, int version)
-        {
-            /*
-            //TODO optimera med att spara bool för repeat av vanliga värden
-
-            //tileContent = (TileContent)r.ReadByte();
-
-            EightBit saveOpt = new EightBit(r);
-
-            if (saveOpt.Get(SaveOpt_IsCity_Ix))
-            {
-                tileContent = TileContent.City;
-            }
-
-            if (saveOpt.Get(SaveOpt_CityIndex_Ix))
-            {
-                CityIndex = previuos.CityIndex;
-            }
-            else
-            {
-                if (version <= 11)
-                {
-                    CityIndex = (short)r.ReadUInt16();
-                }
-                else
-                {
-                    CityIndex = r.ReadInt16();
-                }
-            }
-
-            if (saveOpt.Get(SaveOpt_biom_Ix))
-            {
-                biom = previuos.biom;
-            }
-            else
-            {
-                biom = (BiomType)r.ReadByte();
-            }
-
-            if (saveOpt.Get(SaveOpt_heightLevel_Ix))
-            {
-                heightLevel = previuos.heightLevel;
-            }
-            else
-            {
-                heightLevel = r.ReadByte();
-            }
-
-            //BorderCount = r.ReadUInt16();
-
-            //TODO optimera med att spara bytebools för icke NO, och tilecontent == city
-            //Spara inte border count
-            BorderCount = 0;
-            if (saveOpt.Get(SaveOpt_HasBorderN_Ix))
-            {
-                ++BorderCount;
-                BorderRegion_North = r.ReadInt16();
-            }
-            else
-            { 
-                BorderRegion_North = NoBorderRegion;
-            }
-
-            if (saveOpt.Get(SaveOpt_HasBorderE_Ix))
-            {
-                ++BorderCount;
-                BorderRegion_East = r.ReadInt16();
-            }
-            else
-            {
-                BorderRegion_East = NoBorderRegion;
-            }
-
-            if (saveOpt.Get(SaveOpt_HasBorderS_Ix))
-            {
-                ++BorderCount;
-                BorderRegion_South = r.ReadInt16();
-            }
-            else
-            {
-                BorderRegion_South = NoBorderRegion;
-            }
-
-            if (saveOpt.Get(SaveOpt_HasBorderW_Ix))
-            {
-                ++BorderCount;
-                BorderRegion_West = r.ReadInt16();
-            }
-            else
-            {
-                BorderRegion_West = NoBorderRegion;
-            }
-            */
-        }
-
-        //public void AddBorder(int dir, ushort toregion)
-        //{
-        //    ++BorderCount;
-            
-        //    switch (dir)
-        //    {
-        //        case 0:
-        //            BorderRegion_North = toregion;
-        //            break;
-        //        case 1:
-        //            BorderRegion_East = toregion;
-        //            break;
-        //        case 2:
-        //            BorderRegion_South = toregion;
-        //            break;
-        //        case 3:
-        //            BorderRegion_West = toregion;
-        //            break;
-        //    }
-        //}
 
         public bool hasBorder(out bool sameFaction)
         {

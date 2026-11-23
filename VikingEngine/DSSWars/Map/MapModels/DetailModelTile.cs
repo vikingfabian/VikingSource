@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                         }
                         CombinedTile comTile = new CombinedTile()
                         {
-                            sumTile = DssRef.world.tileGrid.Get(
+                            sumTile = DssRef.world.sumtileGrid.Get(
                                 chunkGrindex.X * ChunkSumTilesW + sumx,
                                 chunkGrindex.Y * ChunkSumTilesW + sumy),
                         };

@@ -32,7 +32,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapModels
         public void initTexture()
         {
             var previousTexture = texture;
-            texture = new Graphics.PixelTexture(DssRef.world.tileGrid.Size);
+            texture = new Graphics.PixelTexture(DssRef.world.sumtileGrid.Size);
             texture.ClearPixelArray(DssLib.FogColor);
             texture.ApplyPixelsToTexture();
 
@@ -41,7 +41,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapModels
 
         public void refreshWorld()
         {
-            refreshArea(DssRef.world.tileGrid.Area);
+            refreshArea(DssRef.world.sumtileGrid.Area);
             
         }
 
@@ -50,7 +50,7 @@ namespace VikingEngine.Core.DSSWars.Map.MapModels
             ForXYLoop loop = new ForXYLoop(sumTileArea);
             while (loop.Next())
             {
-                var tile = DssRef.world.tileGrid.Get(loop.Position);
+                var tile = DssRef.world.sumtileGrid.Get(loop.Position);
                 //if (tile.fogExploreLevel != VikingEngine.DSSWars.Map.MapData.FogOfWar_ExlporeLevel.None)
                 //{
                 //    lib.DoNothing();

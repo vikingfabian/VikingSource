@@ -221,8 +221,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected override void completeTransform()
         {
-            
-            //var city = DssRef.world.tileGrid.Get(WP.MaptileToSumTile(subTile)).pcity.City();
+
+            var city = DssRef.world.sumtileGrid.Get(WP.MaptileToSumTile(subTile)).pcity;
+
+            if (group.soldierCount > 0 && city.IsEmpty())
+            {
+                DssRef.world.AddCity(subTile, CityType.Campsite, true, true, group.pfaction);
+                group.DeleteMe(DeleteReason.Transform, true);
+            }
 
             //if (group.soldierCount > 0 &&
             //    city.cityType == CityType.UnClaimed)

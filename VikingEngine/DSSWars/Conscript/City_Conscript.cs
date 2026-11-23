@@ -362,7 +362,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                startPos = WP.ChunkToWorldPos(maptilePos);
+                startPos = WP.MaptileToWorldPosXZ(maptilePos);
             }
 
             return startPos;
@@ -404,8 +404,12 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public Army conscriptSettler(City settleArea, bool checkIfExists)
         {
-            Army army = recruitToClosestArmy();
-            
+            Army army = null;
+            if (checkIfExists)
+            {
+                recruitToClosestArmy();
+            }
+
             if ((!checkIfExists || army == null || !army.HasSettler(out _)) &&
                 SettlerBp().tryPayResources(this))
             {

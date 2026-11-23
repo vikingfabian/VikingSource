@@ -170,7 +170,7 @@ namespace VikingEngine.DSSWars.GameObject
                 ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(citySumPos, radius));
                 while (loop.Next())
                 {
-                    SumTile4_4 t = DssRef.world.tileGrid.Get(loop.Position);
+                    SumTile4_4 t = DssRef.world.sumtileGrid.Get(loop.Position);
                     if (t.IsFullTile)
                     {
                         armySpawnMapTilePos = WP.SumTileToMaptile(loop.Position);
@@ -622,10 +622,8 @@ namespace VikingEngine.DSSWars.GameObject
             
 
             cityCulture = (CityCulture)r.ReadByte();
-            if (saveMapVersion >= 11)
-            {
-                cityBiome = (CityBiome)r.ReadByte();
-            }
+            cityBiome = (CityBiome)r.ReadByte();
+            
             //workerCullingMinMax = new Intvector2MinMax(tilePos);
             //guardCullingMinMax = workerCullingMinMax;
 
@@ -763,6 +761,8 @@ namespace VikingEngine.DSSWars.GameObject
 
                 writeResources(w);
 
+                DssRef.world.writeCityStorage(w, this);
+
                 writeWorkerStatuses(w, false, -1);
 
                 lock (conscriptBuildings)
@@ -885,6 +885,8 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.ReadCheck(r);
 
             readResources(r, subversion);
+
+            DssRef.world.readCityStorage(r, this);
             
             readWorkerStatuses(r, false, -1, subversion);
 
@@ -1341,7 +1343,7 @@ namespace VikingEngine.DSSWars.GameObject
                             if (edgeLoop.Next())
                             {
 
-                                if (DssRef.world.tileGrid.TryGet(edgeLoop.Position, out SumTile4_4 t) &&
+                                if (DssRef.world.sumtileGrid.TryGet(edgeLoop.Position, out SumTile4_4 t) &&
                                         /*t.MayBuild() &&*/ t.pcity.cityIndex == myIndex)
                                 {
                                     const int SubStartTrialCount = 4;
@@ -1598,8 +1600,11 @@ namespace VikingEngine.DSSWars.GameObject
             }            
         }        
 
-        public bool claimCity(Faction faction, IntVector2 subtile)
+        public void onFoundCity(/*Faction faction, IntVector2 subtile*/)
         {
+            workForce.amount = DssConst.HousingCount_WorkerTent;
+            HousingCount_Workers = DssConst.HousingCount_WorkerTent;
+            HousingCount_Guard = CityHallSetup.CampHall_GuardHousing;
             /*
             if (cityType == CityType.UnClaimed && faction != null)
             {
@@ -1692,18 +1697,18 @@ namespace VikingEngine.DSSWars.GameObject
 
 
 
-            return false;
+            //return false;
 
 
         }
 
         public static void NetReadClaim(System.IO.BinaryReader r)
         {
-            var city = Net.ObjectId.ReadCity(r);
-            PFaction faction = new PFaction(r);
-            IntVector2 subtile = IntVector2.FromRead(r);
+            //var city = Net.ObjectId.ReadCity(r);
+            //PFaction faction = new PFaction(r);
+            //IntVector2 subtile = IntVector2.FromRead(r);
 
-            city.claimCity(faction.GetFaction(), subtile);           
+            //city.claimCity(faction.GetFaction(), subtile);           
         }
 
         void refreshCitySize()
@@ -4362,8 +4367,8 @@ namespace VikingEngine.DSSWars.GameObject
             int addGuardHousing;
             CityType toSize = cityType + 1;
 
-            CityHallSetup currentSetup = DssRef.storage.ruleset_instance.CitySizeSetup[(int)cityType];
-            CityHallSetup nextSetup = DssRef.storage.ruleset_instance.CitySizeSetup[(int)toSize];
+            CityHallSetup currentSetup = DssRef.world.CitySizeSetup[(int)cityType];
+            CityHallSetup nextSetup = DssRef.world.CitySizeSetup[(int)toSize];
 
             supportedWorkersString = nextSetup.maxWorkForce.ValueString(false, false, DssRef.lang.Hud_NoLimit, null);
             addGuardHousing = nextSetup.defaultGuardHousing - currentSetup.defaultGuardHousing;
@@ -4396,15 +4401,15 @@ namespace VikingEngine.DSSWars.GameObject
 
         public CityHallSetup HallSetup()
         {
-            return DssRef.storage.ruleset_instance.CitySizeSetup[(int)cityType];
+            return DssRef.world.CitySizeSetup[(int)cityType];
         }
 
         bool canUpgradeCityHall(out CraftBlueprint blueprint, out int currentStaff, out int serviceHouses_required, out int serviceHouses_available)
         {
             CityType toSize = cityType + 1;
 
-            CityHallSetup currentSetup = DssRef.storage.ruleset_instance.CitySizeSetup[(int)cityType];
-            CityHallSetup nextSetup = DssRef.storage.ruleset_instance.CitySizeSetup[(int)toSize];
+            CityHallSetup currentSetup = DssRef.world.CitySizeSetup[(int)cityType];
+            CityHallSetup nextSetup = DssRef.world.CitySizeSetup[(int)toSize];
 
             currentStaff = currentSetup.requiredStaff;
             serviceHouses_available = freeServiceMen.amount + currentSetup.requiredStaff;
