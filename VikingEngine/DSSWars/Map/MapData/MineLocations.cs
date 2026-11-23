@@ -65,8 +65,8 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
 
 
             addCount(MineLocationType.WaterNaturalSpring, MathExt.MultiplyInt(world.rnd.Double(0.9, 1.1) * DefaultCommoness, totalMineCount));
-            addCount(MineLocationType.BogIron, MathExt.MultiplyInt(world.rnd.Double(5, 6) * DefaultCommoness, totalMineCount));
-            addCount(MineLocationType.IronOre, MathExt.MultiplyInt(world.rnd.Double(3, 3.5) * DefaultCommoness, totalMineCount));
+            addCount(MineLocationType.BogIron, MathExt.MultiplyInt(world.rnd.Double(4, 4.5) * DefaultCommoness, totalMineCount));
+            addCount(MineLocationType.IronOre, MathExt.MultiplyInt(world.rnd.Double(2, 2.5) * DefaultCommoness, totalMineCount));
             addCount(MineLocationType.TinOre, MathExt.MultiplyInt(world.rnd.Double(1, 1.2) * DefaultCommoness, totalMineCount));
             addCount(MineLocationType.CopperOre, MathExt.MultiplyInt(world.rnd.Double(0.05, 0.06), totalMineCount));
             addCount(MineLocationType.LeadOre, MathExt.MultiplyInt(world.rnd.Double(0.9, 1.1) * DefaultCommoness, totalMineCount));

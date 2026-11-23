@@ -78,6 +78,11 @@ namespace VikingEngine.DSSWars.Players.Command
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.map.hover.subTile.subTilePos);
             available = false;
 
+            //if (player.gameControls.map.hover.subTile.subTile.groundType == Map.MapLib.GroundType.Frost)
+            //{
+            //    lib.DoNothing();
+            //}
+
             if (player.gameControls.map.hover.subTile.subTile.MayBuild_GroundCheck( Build.BuildAndExpandType.GreatHall, out _) &&
                 DssRef.world.sumtileGrid.TryGet(WP.MaptileToSumTile(player.gameControls.map.hover.subTile.subTilePos), out var tile))
             {
