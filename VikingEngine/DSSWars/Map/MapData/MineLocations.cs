@@ -163,9 +163,6 @@ namespace VikingEngine.Core.DSSWars.Map.MapData
                 case MineLocationType.Salt:
                     result.subTerrain = (int)TerrainMineType.Salt;
                     break;
-                //case MineLocationType.Salt:
-                //    result.subTerrain = (int)TerrainMineType.Salt;
-                //    break;
                 case MineLocationType.Sulfur:
                     result.subTerrain = (int)TerrainMineType.Sulfur;
                     break;

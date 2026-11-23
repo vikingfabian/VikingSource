@@ -44,6 +44,7 @@ namespace VikingEngine.Core.DSSWars.Work
         {
             // --- Resources ---
             workProperties[(int)WorkPriorityType.move] = new WorkProperty(WorkPriorityType.move, SpriteName.WarsWorkMove, SpriteName.WarsBuild_Storehouse, DssRef.lang.Work_Move, ItemResourceType.NONE, ItemResourceType.NONE);
+            workProperties[(int)WorkPriorityType.landSurveyingInsideBorders] = new WorkProperty(WorkPriorityType.landSurveyingInsideBorders, SpriteName.WarsWorkMine, SpriteName.pjNumQuestion, DssRef.todoLang.Work_LandSurvey, ItemResourceType.NONE, ItemResourceType.NONE);
             workProperties[(int)WorkPriorityType.wood] = new WorkProperty(WorkPriorityType.wood, SpriteName.WarsWorkCollect, SpriteName.WarsResource_Wood, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Wood.ToLowerInvariant()), ItemResourceType.Wood_G, ItemResourceType.NONE);
             workProperties[(int)WorkPriorityType.stone] = new WorkProperty(WorkPriorityType.stone, SpriteName.WarsWorkCollect, SpriteName.WarsResource_Stone, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Stone.ToLowerInvariant()), ItemResourceType.Stone_G, ItemResourceType.NONE);
             workProperties[(int)WorkPriorityType.collectClay] = new WorkProperty(WorkPriorityType.collectClay, SpriteName.WarsWorkCollect, SpriteName.WarsResource_Clay, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Clay), ItemResourceType.Clay, ItemResourceType.NONE);

@@ -61,6 +61,9 @@ Resources
 * Income and upkeep is now updated each minute instead of every second
 * Water is now collected by by workers
 
+Tech tree 2.0
+
+
 Land survey
 * Your workers much search the map for resource pools
 * Mines require buildings to extract the resource
