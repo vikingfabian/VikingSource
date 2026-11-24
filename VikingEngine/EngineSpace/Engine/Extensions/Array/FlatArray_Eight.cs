@@ -39,6 +39,15 @@ namespace VikingEngine
             this.value4 = value4;
             this.Count = 4;
         }
+        public FlatArray_Eight(T value1, T value2, T value3, T value4, T value5)
+        {
+            this.value1 = value1;
+            this.value2 = value2;
+            this.value3 = value3;
+            this.value4 = value4;
+            this.value5 = value5;
+            this.Count = 5;
+        }
         public FlatArray_Eight(T value1, T value2, T value3, T value4, T value5, T value6, T value7, T value8) 
         { 
             this.value1 = value1;

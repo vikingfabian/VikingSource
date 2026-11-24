@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
+using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -447,17 +448,39 @@ namespace VikingEngine.DSSWars
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            subTileGrid.LoopBegin();
-            MapTile1_1 previuos = new MapTile1_1();
+            //subTileGrid.LoopBegin();
+            /*
+            SumTile4_4 prevSumTile = new SumTile4_4();
+            MapTile1_1 prevMapTile = new MapTile1_1();
 
-            while (subTileGrid.LoopNext())
+            for (int sumY = 0; sumY < sumtileGrid.Size.Y; sumY++)
             {
-                var subtile = subTileGrid.LoopValueGet();
-                subtile.write(w, ref previuos);
+                for (int sumX = 0; sumX < sumtileGrid.Size.X; sumX++)
+                {
+                    var sumtile = sumtileGrid.Get(sumX, sumY);
+                    sumtile.writeMapFile(w, ref prevSumTile);
+                    prevSumTile = sumtile;
 
-                previuos = subtile;
-
+                    for (int localY = 0; localY < SumTile4_4.TileWidth; ++localY)
+                    {
+                        for (int localX = 0; localX < SumTile4_4.TileWidth; ++localX)
+                        {
+                            var maptile = subTileGrid.Get(sumX * SumTile4_4.TileWidth + localX, sumY * SumTile4_4.TileWidth + localY);
+                            maptile.write(w, ref prevMapTile);
+                            prevMapTile = maptile;
+                        }
+                    }
+                }
             }
+            */
+            //while (subTileGrid.LoopNext())
+            //{
+            //    var subtile = subTileGrid.LoopValueGet();
+            //    subtile.write(w, ref prevMapTile);
+
+            //    prevMapTile = subtile;
+
+            //}
 
             mineLocations.write(w);
             Debug.WriteCheck(w);
@@ -511,19 +534,44 @@ namespace VikingEngine.DSSWars
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
             availableGenericAiTypes.Clear();
-            subTileGrid.LoopBegin();
-            MapTile1_1 previuos = new MapTile1_1();
+            //subTileGrid.LoopBegin();
+            //MapTile1_1 previuos = new MapTile1_1();
 
 
-            while (subTileGrid.LoopNext())
+            //while (subTileGrid.LoopNext())
+            //{
+            //    MapTile1_1 subtile = subTileGrid.LoopValueGet();
+            //    subtile.read(r, ref previuos, subversion);
+            //    subTileGrid.LoopValueSet(subtile);
+
+            //    previuos = subtile;
+            //}
+
+            /*
+            SumTile4_4 prevSumTile = new SumTile4_4();
+            MapTile1_1 prevMapTile = new MapTile1_1();
+
+            for (int sumY = 0; sumY < sumtileGrid.Size.Y; sumY++)
             {
-                MapTile1_1 subtile = subTileGrid.LoopValueGet();
-                subtile.read(r, ref previuos, subversion);
-                subTileGrid.LoopValueSet(subtile);
+                for (int sumX = 0; sumX < sumtileGrid.Size.X; sumX++)
+                {
+                    ref var sumtile = ref sumtileGrid.GetRef(sumX, sumY);
+                    sumtile.readMapFile(r, ref prevSumTile, subversion);
+                    //sumtileGrid.Set(sumX, sumY, sumtile);
+                    prevSumTile = sumtile;
 
-                previuos = subtile;
+                    for (int localY = 0; localY < SumTile4_4.TileWidth; ++localY)
+                    {
+                        for (int localX = 0; localX < SumTile4_4.TileWidth; ++localX)
+                        {
+                            ref var maptile = ref subTileGrid.GetRef(sumX * SumTile4_4.TileWidth + localX, sumY * SumTile4_4.TileWidth + localY);
+                            maptile.read(r, ref prevMapTile, subversion);
+                            prevMapTile = maptile;
+                        }
+                    }
+                }
             }
-
+            */
             mineLocations = new MineLocations();
             mineLocations.read(r, subversion);
             Debug.ReadCheck(r);
@@ -655,7 +703,7 @@ namespace VikingEngine.DSSWars
                 }
 
                 var tile = DssRef.world.sumtileGrid.Get(loop.Position);
-                tile.writeMapFile(w, previous);
+                tile.writeMapFile(w, ref previous);
 
                 previous = tile;
 
@@ -673,7 +721,7 @@ namespace VikingEngine.DSSWars
             while (loop.Next())
             {
                 var tile = DssRef.world.sumtileGrid.Get(loop.Position);
-                tile.readMapFile(r, previous, int.MaxValue);
+                tile.readMapFile(r, ref previous, int.MaxValue);
                 DssRef.world.sumtileGrid.Set(loop.Position, tile); 
 
                 previous = tile;
@@ -824,18 +872,40 @@ namespace VikingEngine.DSSWars
             Size.write(w);
 
             if (abortLoad) return;
-            
-            //tilesSz.begin(w);
-            ForXYLoop loop = new ForXYLoop(Size);
-            SumTile4_4 previous = new SumTile4_4();
-            while (loop.Next())
-            {
-                var tile = sumtileGrid.Get(loop.Position);
-                tile.writeMapFile(w, previous);
 
-                previous = tile;
+            //tilesSz.begin(w);
+            //ForXYLoop loop = new ForXYLoop(Size);
+            //SumTile4_4 previous = new SumTile4_4();
+            //while (loop.Next())
+            //{
+            //    var tile = sumtileGrid.Get(loop.Position);
+            //    tile.writeMapFile(w, ref previous);
+
+            //    previous = tile;
+            //}
+            SumTile4_4 prevSumTile = new SumTile4_4();
+            MapTile1_1 prevMapTile = new MapTile1_1();
+
+            for (int sumY = 0; sumY < sumtileGrid.Size.Y; sumY++)
+            {
+                for (int sumX = 0; sumX < sumtileGrid.Size.X; sumX++)
+                {
+                    var sumtile = sumtileGrid.Get(sumX, sumY);
+                    sumtile.writeMapFile(w, ref prevSumTile);
+                    prevSumTile = sumtile;
+
+                    for (int localY = 0; localY < SumTile4_4.TileWidth; ++localY)
+                    {
+                        for (int localX = 0; localX < SumTile4_4.TileWidth; ++localX)
+                        {
+                            var maptile = subTileGrid.Get(sumX * SumTile4_4.TileWidth + localX, sumY * SumTile4_4.TileWidth + localY);
+                            maptile.write(w, ref prevMapTile);
+                            prevMapTile = maptile;
+                        }
+                    }
+                }
             }
-            
+
             if (abortLoad) return;
 
             Debug.WriteCheck(w);
@@ -891,13 +961,36 @@ namespace VikingEngine.DSSWars
 
             Size.read(r);
             refreshSize(Size);
-            ForXYLoop loop = new ForXYLoop(Size);
-            SumTile4_4 previous = new SumTile4_4();
-            while (loop.Next())
+            //ForXYLoop loop = new ForXYLoop(Size);
+            //SumTile4_4 previous = new SumTile4_4();
+            //while (loop.Next())
+            //{
+            //    var sumtile = new SumTile4_4(r, ref previous, version);
+            //    sumtileGrid.Set(loop.Position, sumtile);
+            //    previous = sumtile;
+            //}
+            SumTile4_4 prevSumTile = new SumTile4_4();
+            MapTile1_1 prevMapTile = new MapTile1_1();
+
+            for (int sumY = 0; sumY < sumtileGrid.Size.Y; sumY++)
             {
-                var sumtile = new SumTile4_4(r, previous, version);
-                sumtileGrid.Set(loop.Position, sumtile);
-                previous = sumtile;
+                for (int sumX = 0; sumX < sumtileGrid.Size.X; sumX++)
+                {
+                    ref var sumtile = ref sumtileGrid.GetRef(sumX, sumY);
+                    sumtile.readMapFile(r, ref prevSumTile, version);
+                    //sumtileGrid.Set(sumX, sumY, sumtile);
+                    prevSumTile = sumtile;
+
+                    for (int localY = 0; localY < SumTile4_4.TileWidth; ++localY)
+                    {
+                        for (int localX = 0; localX < SumTile4_4.TileWidth; ++localX)
+                        {
+                            ref var maptile = ref subTileGrid.GetRef(sumX * SumTile4_4.TileWidth + localX, sumY * SumTile4_4.TileWidth + localY);
+                            maptile.read(r, ref prevMapTile, version);
+                            prevMapTile = maptile;
+                        }
+                    }
+                }
             }
 
             Debug.ReadCheck(r);

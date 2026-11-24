@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using VikingEngine.Core.DSSWars.Resource;
+using VikingEngine.Core.DSSWars.XP.TechTree;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;

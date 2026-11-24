@@ -8,6 +8,11 @@ namespace VikingEngine.Engine
 
     struct UInt12_flag4
     {
+
+        public static readonly UInt12_flag4 MaxValue = new UInt12_flag4() { _data = ushort.MaxValue };
+
+        public const int Max12BitValue = 4095;
+
         private ushort _data;
 
         // Bits 0-3 (Flags)
@@ -57,7 +62,7 @@ namespace VikingEngine.Engine
             int newValue = Value12Bit + amount;
 
             // Clamp to 12-bit limits (0x000 to 0xFFF)
-            if (newValue > 4095) newValue = 4095;
+            if (newValue > Max12BitValue) newValue = Max12BitValue;
             else if (newValue < 0) newValue = 0;
 
             Value12Bit = (ushort)newValue;

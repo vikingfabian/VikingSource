@@ -1623,7 +1623,7 @@ namespace VikingEngine.DSSWars.Map.MapModels
                     digSite();
                     break;
                 case TerrainMineType.Salt:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 12, wp, scale));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 11, wp, scale));
                     digSite();
                     break;
                 case TerrainMineType.StoneBlock:

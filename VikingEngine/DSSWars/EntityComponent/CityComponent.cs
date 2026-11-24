@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.XP.TechTree;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
@@ -34,14 +35,14 @@ namespace VikingEngine.DSSWars
            
         }
 
-        public TechTreeNodeProgress_City GetTech(int city, TechNodeType nodeType)
-        {
-            return city_techNodes[city * TechTreeNodeProgress_City.NodeCount + (int)nodeType];
-        }
-        public void SetTech(int city, TechNodeType nodeType, TechTreeNodeProgress_City value)
-        { 
-            city_techNodes[city * TechTreeNodeProgress_City.NodeCount + (int)nodeType] = value;
-        }
+        //public TechTreeNodeProgress_City GetTech(int city, TechNodeType nodeType)
+        //{
+        //    return city_techNodes[city * TechTreeNodeProgress_City.NodeCount + (int)nodeType];
+        //}
+        //public void SetTech(int city, TechNodeType nodeType, TechTreeNodeProgress_City value)
+        //{ 
+        //    city_techNodes[city * TechTreeNodeProgress_City.NodeCount + (int)nodeType] = value;
+        //}
 
         public void initWorkerXp(int cityCount)
         {

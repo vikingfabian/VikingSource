@@ -112,7 +112,12 @@ namespace VikingEngine.DSSWars.Resource
         WagonClosed,
         WagonIron,
         WagonSteel,
-        Toolkit,
+
+        Toolkit,        
+        NutLockMechanic,
+        MatchLockMechanic,
+        TriggerLockMechanic,
+
         CoolingFluid,
 
         SoftWood,

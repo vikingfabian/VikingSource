@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.Map.MapData
         public bool IsBorderTile;
         public bool IsFullTile;
 
-        public void writeMapFile(System.IO.BinaryWriter w, SumTile4_4 previuos)
+        public void writeMapFile(System.IO.BinaryWriter w, ref SumTile4_4 previuos)
         {
             bool eqCity = pcity == previuos.pcity;
             bool eqBiom1 = biom1 == previuos.biom1;
@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.Map.MapData
             if (!eqFog) { w.Write(fogExploreLevel); }
         }
 
-        public void readMapFile(System.IO.BinaryReader r, SumTile4_4 previuos, int version)
+        public void readMapFile(System.IO.BinaryReader r, ref SumTile4_4 previuos, int version)
         {
             EightBit bits = new EightBit(r);
             bits.Get(out var eqCity, out var eqBiom1, out var eqBiom2, out var eqBiom2Weight, out var eqColHeight, out var eqFog, out IsBorderTile, out IsFullTile);
@@ -129,10 +129,10 @@ namespace VikingEngine.DSSWars.Map.MapData
             biomHeight = DssRef.map.heigts[biomColorHeight];
         }
 
-        public SumTile4_4(System.IO.BinaryReader r, SumTile4_4 previous, int version)
+        public SumTile4_4(System.IO.BinaryReader r, ref SumTile4_4 previous, int version)
             :this()
         {
-            readMapFile(r, previous, version);
+            readMapFile(r, ref previous, version);
         }
 
         public int mapInflenceCost()

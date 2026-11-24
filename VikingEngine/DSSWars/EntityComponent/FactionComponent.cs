@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
+using VikingEngine.Core.DSSWars.XP.TechTree;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
-using VikingEngine.DSSWars.XP;
 
 namespace VikingEngine.DSSWars
 {
@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars
         const int DefaultFactionCount = 64;
         public GroupedResource[] factionResourceOverviews;
         public WorkPriority[] factionWork;
-        public TechTreeNodeProgress_Faction[] faction_techNodes /*= new TechTreeNodeProgress[DefaultFactionCount * TechTreeNodeProgress.NodeCount]*/;
+        public TechTreeNodeProgress_Faction[] faction_techNodes;
 
         public void init_FactionComponents(int factionCount)
         {

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using VikingEngine.Core.BlackBolts.Scene;
 using VikingEngine.Core.DSSWars.Resource;
 using VikingEngine.Core.DSSWars.Work;
+using VikingEngine.Core.DSSWars.XP.TechTree;
 using VikingEngine.Core.Wand.Scene;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Build;
