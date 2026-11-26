@@ -15,27 +15,24 @@ namespace VikingEngine.Core.DSSWars.XP.TechTree
 
     struct TechFieldBransch
     {
-        public int parentFieldIndex;
+        public int inFieldIndex;
 
         /// <summary>
         /// Starts locked under a parent bransh
         /// </summary>
         public bool locked;
 
-        public int childNode;
+        public int childNodeLevel;
         public bool isOption;
         public PartialList2<TechTreeNode> nodes;
         public PartialList2<TechNodeType> unlockBranshOnComplete;
 
-        //public SpriteName Icon()
-        //{
-        //    return nodes.value1.icon;
-        //}
     }
 
     struct TechTreeNode
     {
-        public int parentBranschIndex;
+        public const int NoParent = -1;
+        public int inBranschIndex;
         public SpriteName icon;
         public TechNodeType type;
         public int pointsCost;
@@ -64,14 +61,30 @@ namespace VikingEngine.Core.DSSWars.XP.TechTree
     enum TechFieldType
     {
         Buildings,
+        FarmsAndAnimals,
         Casting,
-        Iron,
-        Bow,
+        MetalWork,
+        Projectiles,
         Chemistry,
-        NUM
+        NUM_NONE
     }
 
-    enum TechNodeType
+
+    struct FieldResearch
+    {
+        public TechNodeType selected;
+        public TechNodeType parent;
+        public ushort pointsNeeded;
+
+        public FieldResearch(TechTreeNode node)
+        {
+            selected = node.type;
+            parent = selected;
+            pointsNeeded = (ushort)node.pointsCost;
+        }
+    }
+
+    enum TechNodeType : byte
     {
         ironProduction,
         steelProduction,

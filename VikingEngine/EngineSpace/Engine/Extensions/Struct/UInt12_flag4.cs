@@ -44,6 +44,12 @@ namespace VikingEngine.Engine
             set => _data = (ushort)((_data & 0x000F) | ((value & 0x0FFF) << 4));
         }
 
+        public int Value12Bit_int
+        {
+            get => _data >> 4;
+            set => _data = (ushort)((_data & 0x000F) | ((value & 0x0FFF) << 4));
+        }
+
         public UInt12_flag4(bool f1, bool f2, bool f3, bool f4, ushort value12Bit)
         {
             _data = 0;

@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.XP.TechTree;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
@@ -188,12 +189,45 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void addTechPoints(WorkExperienceType experienceType, int gain, TechnologyGainReason reason)
         {
+            //old
             TechnologyTreeType techType = technology.ExperienceToTechField(experienceType);
             if (techType != TechnologyTreeType.NUM_NONE)
             {
                 addTechPoints(techType, gain, reason);
             }
+
+            //new
+            var field = TechTreeStructure.ExperienceToTechField(experienceType);
+            if (field != TechFieldType.NUM_NONE)
+            {
+                addTechPoints2(field, gain, reason);
+            }
         }
+
+        public void addTechPoints2(TechFieldType field, int gain, TechnologyGainReason reason)
+        {
+            var research = GetFieldResearch(field);
+            if (research.parent != TechNodeType.NUM_NONE)
+            {
+                ref var progress = ref GetRefProgress(research.parent);
+                int points = progress.points_bUnlocked_non_bComplete.Value12Bit + gain;
+                if (points >= research.pointsNeeded)
+                {
+                    progress.points_bUnlocked_non_bComplete.Value12Bit = research.pointsNeeded;
+                    progress.points_bUnlocked_non_bComplete.Flag3 = true;
+
+                    //unlock
+                    unlockChildNodes(field, research.parent);
+                    refreshProgressNode(field);
+                }
+                else
+                {
+                    progress.points_bUnlocked_non_bComplete.Value12Bit_int = points;
+                }
+            }
+        }
+
+
         public void addTechPoints(TechnologyTreeType techType, int gain, TechnologyGainReason reason)
         {
             ref var progress = ref TechnologyTemplate.GetResearchProgressRef(ref technology, techType);
@@ -207,7 +241,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 progress.points += gain;
             }
-
+            
             onTechnologyGain(techType, gain, reason, progress);
         }
 

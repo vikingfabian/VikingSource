@@ -1549,6 +1549,11 @@ namespace VikingEngine.DSSWars.GameObject
             setTimeOnAllWorkers();
 
             fogExplored |= DssRef.storage.ruleset_instance.module_fogOfWar == false;
+
+            if (newGame)
+            {
+                autoSelectNextProgressNode(Core.DSSWars.XP.TechTree.TechFieldType.MetalWork);
+            }
         }
 
         
