@@ -49,6 +49,11 @@ namespace VikingEngine
             }
         }
 
+        public int Volume()
+        {
+            return (Max.X - Min.X +1) * (Max.Y - Min.Y +1) * (Max.Z - Min.Z +1);
+        }
+
         public void AddRadius(int radius)
         {
             Min -= radius;

@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Map.Generate
     {
         WorldDataStorage storage;
         protected LoadingState loadingState = 0;
-        bool abort = false;
+        public bool aborting = false;
         bool abortCompleted = false;
 
         TimeStamp abortTime;
@@ -137,7 +137,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 try
                 {
-                    while (!abort && failCount < 10)
+                    while (!aborting && failCount < 10)
                     {
                         List<Task> extraTasks = new List<Task>();
 
@@ -180,7 +180,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                         //if (success)
                         //{
-                            if (!abort)
+                            if (!aborting)
                             {
                                 DssRef.world = dataGenerate.mapBuilder.world;
                             }
@@ -205,7 +205,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         public void Update()
         {
-            if (abort)
+            if (aborting)
             {
                 return;
             }
@@ -254,7 +254,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                                 postGenerate = new Map2PostGenerate(dataGenerate.mapBuilder.world);
                                 //postGenerate.placeTerrain();
                                 new GenerateMapTileContent(dataGenerate.mapBuilder.world).placeTerrain();
-                                postGenerate.citiesAndFactionsSetup(dataGenerate.generateSettings);
+                                postGenerate.citiesAndFactionsSetup(dataGenerate.generateSettings, this);
 
                                 loadingState++;
                             }
@@ -287,7 +287,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         public void Abort()
         { 
-            abort = true;
+            aborting = true;
             abortTime = TimeStamp.Now();
 
             if (storage != null)
@@ -319,7 +319,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         public bool Complete()
         {
-            if (abort)
+            if (aborting)
             {
                 return true;
             }
@@ -333,12 +333,12 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 if (GenerateNewMap())
                 {
-                    if (!abort)
+                    if (!aborting)
                     { DssRef.world = dataGenerate.mapBuilder.world; }
                 }
                 else
                 {
-                    if (!abort)
+                    if (!aborting)
                     { DssRef.world = storage.worldData; }
                 }
                 return true;

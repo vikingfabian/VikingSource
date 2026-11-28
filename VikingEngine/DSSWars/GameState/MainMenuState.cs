@@ -2864,6 +2864,7 @@ namespace VikingEngine.DSSWars
 
         void voxeleditor()
         {
+            mapBackgroundLoading?.Abort();
             storeMenuStack();
 
             new StartEditor(0, true,  EditorType.Voxel);

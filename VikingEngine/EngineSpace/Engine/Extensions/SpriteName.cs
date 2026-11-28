@@ -433,6 +433,8 @@ namespace VikingEngine
         EditorRemoveCross,
         EditorEmptyBlockFrame,
 
+        RectangleOutline_2pix_64w,
+        //EditorBackgroundGradient,
         EditorPencilCube,
         EditorPencilShadow,
         EditorPencilShadow1,
@@ -442,7 +444,10 @@ namespace VikingEngine
         EditorPencilShadow5,
         EditorPencilShadow6,
         EditorFillAreaTexture,
-        
+
+        EditorDottedOutline_Draw,
+        EditorDottedOutline_Select,
+        EditorDottedOutline_Delete,
         LFMenuPointer,
 
         LFAppearHairCol,

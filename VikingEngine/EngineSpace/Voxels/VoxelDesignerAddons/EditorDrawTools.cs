@@ -82,7 +82,7 @@ namespace VikingEngine.Voxels
                 }
                 else
                 {
-                    designer.designerInterface.UpdateMultiSelectionPencil(posDiff);
+                    designer.designerInterface.UpdateMultiSelectionPencil(currentDrawAction.fill, posDiff);
                 }
             }
         }
@@ -558,7 +558,7 @@ namespace VikingEngine.Voxels
         public void selectAll()
         {
             designer.designerInterface.selectionArea = designer.voxelProject.drawLimits;
-            designer.designerInterface.UpdateMultiSelectionPencil(IntVector3.Zero);
+            designer.designerInterface.UpdateMultiSelectionPencil(PaintFillType.Select, IntVector3.Zero);
             //select all
             DrawQueAction selectAction = new DrawQueAction(
                         designer.SelectedMaterial.BlockValue,

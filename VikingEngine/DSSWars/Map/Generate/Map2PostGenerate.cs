@@ -28,17 +28,21 @@ namespace VikingEngine.Core.DSSWars.Map.Generate
          //   noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.metaData.worldId.seed);
         }
 
-        public async void citiesAndFactionsSetup(Map2GenerateSettings generateSettings)
+        public async void citiesAndFactionsSetup(Map2GenerateSettings generateSettings, MapBackgroundLoading backgroundLoading)
         {
             //cityAreaClaim();
 
             world.init_FactionComponents(0);
             world.Init_CityComponents(world.cities.Count);
 
-            var citiesC = DssRef.world.cities.counter();
+            var citiesC = world.cities.counter();
             while (citiesC.Next()) //foreach (var c in world.cities)
             {
                 citiesC.sel.NewCitySetup(world, cityCultureCollection);//world.unitCollAreaGrid.add(citiesC.sel);
+                if (backgroundLoading.aborting)
+                {
+                    return;
+                }
             }
 
             factionStartAreas(world.metaData.mapScale.GetSizeCategory(),

@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using VikingEngine.DataLib;
+using VikingEngine.DSSWars.GameState.VoxelEditor;
 using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.Map.HDvoxel;
 
@@ -21,6 +23,7 @@ namespace VikingEngine.Voxels
         public int roadBelowFill = 2;
         public bool continiousFill = false;
 
+       
         public PaintSettings()
         { }
 
@@ -57,7 +60,7 @@ namespace VikingEngine.Voxels
         public bool DrawFilled = true;//N
         public PaintSettings paintSettings = new PaintSettings();
         public float pencilMoveSpeed = 1;
-        
+        public bool useBgGradient = true;
 
         public FileSortSettings SortSettings = new FileSortSettings();
 
@@ -93,6 +96,16 @@ namespace VikingEngine.Voxels
                 pencilMoveSpeed = value;
             }
             return pencilMoveSpeed;
+        }
+        public bool BgGradientProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                useBgGradient = value;
+                VoxelDesignState scene = Ref.gamestate as VoxelDesignState;
+                scene.refreshColor(Ref.draw.ClrColor, useBgGradient);
+            }
+            return useBgGradient;
         }
     }
 }

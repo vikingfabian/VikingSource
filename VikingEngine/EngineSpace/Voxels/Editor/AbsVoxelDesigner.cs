@@ -23,7 +23,7 @@ namespace VikingEngine.Voxels
         ushort GetVoxel(int frame, IntVector3 drawPoint);
     }
 
-    public abstract class AbsVoxelDesigner : VikingEngine.AbsInput, IVoxelDesigner, IVoxelDesignerInterfaceParent
+    public abstract class AbsVoxelDesigner : VikingEngine.AbsInput, IVoxelDesigner
     {
         protected const float PencilMoveSpeedNomal = 0.01f;
         public VoxelDesignerInterface designerInterface;
@@ -93,13 +93,7 @@ namespace VikingEngine.Voxels
             this.playerIndex = playerIndex;
 
             voxelProject = new VoxelProject(drawLimits);
-            //if (ingameEditor == false)
-            //{
-            //    animationFrames = new VoxelObjGridDataAnimHD();
-            //    animationFrames.Frames = new List<VoxelObjGridDataHD> { new VoxelObjGridDataHD(drawLimits.Max) };
-            //}
-            //this.drawLimits = drawLimits;
-
+            
             camera = new Graphics.TopViewCamera(40, new Vector2(MathHelper.PiOver2 - 0.14f, MathHelper.PiOver4));
             camera.UseTerrainCollisions = false;
             Ref.draw.Camera = camera;
@@ -111,7 +105,7 @@ namespace VikingEngine.Voxels
                 VectorExt.V2(1f), new Align(Dir8.SE), TextLib.EmptyString, Color.Black, ImageLayers.Foreground6);
 
             new AsynchUpdateable(asynchUpdate, "Voxel Editor Update");
-            //Ref.asynchUpdate.AddUpdateThread(asynchUpdate, "Voxel Editor Update", 0);
+            
         }
 
         bool asynchUpdate(int id, float time)
@@ -124,9 +118,7 @@ namespace VikingEngine.Voxels
         {
             if (voxelProject.RemoveCurrentFrame())
             {
-                //animationFrames.Frames.RemoveAt(currentFrame.Value);
                 startUpdateVoxelObj(false);
-                //print("Removed Frame"); 
             }
         }
 
@@ -149,14 +141,12 @@ namespace VikingEngine.Voxels
             List<ushort> result = new List<ushort>();
             bool[] inUse = new bool[ushort.MaxValue];
 
-            //if (animationFrames != null)
-            //{
                 foreach (var m in voxelProject.AnimationFrames.Frames)
                 {
                     var loop = new ForXYZLoop(m.Size);
                     while (loop.Next())
                     {
-                        ushort mat = m.Get(loop.Position);//MaterialGrid[loop.Position.X, loop.Position.Y, loop.Position.Z];
+                        ushort mat = m.Get(loop.Position);
 
                         if (mat != 0 && !inUse[mat])
                         {
@@ -165,7 +155,6 @@ namespace VikingEngine.Voxels
                         }
                     }
                 }
-            //}
 
             if (includePaintCol)
             {
@@ -220,47 +209,22 @@ namespace VikingEngine.Voxels
 
         abstract public void addLoadedModel(VoxelObjGridDataAnimHD loadedModel);
         abstract public void addLoadedProject(VoxelProject project);
-        //public void AddFrame()
-        //{ 
-
-        //}
+       
         public void AddFrame(bool copy)
         {
-            //VoxelObjGridDataHD newFrame;
-            //if (copy)
-            //{
-            //    newFrame = animationFrames.Frames[currentFrame.Value].Clone();
-            //}
-            //else
-            //{
-            //    newFrame = new VoxelObjGridDataHD(animationFrames.Size);
-            //}
-            //int frame = currentFrame.Value + 1;
-            //animationFrames.Frames.Insert(frame, newFrame);
-
-            //updateFrameInfo();
             
-            //currentFrame.Value = frame;
             voxelProject.AddFrame(copy);
             updateFrameInfo();
             updateVoxelObj();
-            //print("Frame Added");
         }
 
         public void nextFrame(bool forward)
         {
-            //if (voxelProject.lockFirstFrame > voxelProject.currentFrame.Max)
-            //{
-            //    voxelProject.lockFirstFrame = null;
-            //}
-
+            
             var counter = voxelProject.currentFrame.AddBound(voxelProject.FrameBounds());
             counter.Next(lib.BoolToLeftRight(forward));
             voxelProject.currentFrame.Value = counter.Value;
-            //do
-            //{
-            //    voxelProject.currentFrame.Next(lib.BoolToLeftRight(forward));
-            //} while (voxelProject.lockFirstFrame != null && voxelProject.currentFrame.Value < voxelProject.lockFirstFrame);
+           
             updateFrameInfo();
             updateVoxelObj();
         }
@@ -279,19 +243,12 @@ namespace VikingEngine.Voxels
         }
         public void updateFrameInfo()
         {
-            //if (animationFrames != null)
-            //{
-            //if (currentFrame.Max != animationFrames.Frames.Count - 1)
-            //{
-            //    currentFrame = new CirkleCounter(currentFrame.Value, 0, animationFrames.Frames.Count - 1);
-            //    currentFrame.Next(1);
-            //    currentFrame.Next(-1);
-            //}
+            
             voxelProject.refreshFrameCount();
 
             frameInfo.Visible = voxelProject.HaveAnimation;
             frameInfo.TextString = "Frame:" + (voxelProject.currentFrame.Value + 1).ToString() + "/" + (voxelProject.currentFrame.Max + 1).ToString();
-            //}
+            
         }
         protected void ExpandDrawLimits(Dimensions dimention, int add)
         {
@@ -299,20 +256,7 @@ namespace VikingEngine.Voxels
 
             var drawLimits = voxelProject.drawLimits;
             drawLimits.Max.AddDimension(dimention, add);
-            //switch (dimention)
-            //{
-            //    case Dimensions.X:
-            //        drawLimits.Max.X += add;
-            //        break;
-            //    case Dimensions.Y:
-            //        drawLimits.Max.Y += add;
-            //        break;
-            //    case Dimensions.Z:
-            //        drawLimits.Max.Z += add;
-            //        break;
-
-            //}
-            //UpdateDrawLimits();
+            
             setDrawLimit(drawLimits);
         }
 
@@ -341,14 +285,6 @@ namespace VikingEngine.Voxels
             }
         }
 
-        ///// <summary>
-        ///// Make sure the limits are the same size as the vox model
-        ///// </summary>
-        ///// <returns>got a new size</returns>
-        //protected bool setDrawLimitFromModel()
-        //{
-        //    return setDrawLimit(new IntervalIntV3(drawLimits.Min, drawLimits.Min + animationFrames.Frames[0].Limits));
-        //}
 
         public void UpdateDrawLimits()
         {
@@ -360,15 +296,7 @@ namespace VikingEngine.Voxels
                 {
                     designerInterface.createGrid(voxelProject.drawLimits);
                 }
-            }
-
-            //if (animationFrames != null)
-            //{
-            //    foreach (VoxelObjGridDataHD frame in animationFrames.Frames)
-            //    {
-            //        frame.Resize(drawLimits.Max + 1);
-            //    }
-            //}
+            }            
         }
 
         public void copySelectedVoxels(bool cut)
@@ -425,8 +353,6 @@ namespace VikingEngine.Voxels
         virtual protected void NewCanvas()
         {
             voxelProject = new VoxelProject(voxelProject.drawLimits);
-            //animationFrames.Frames = new List<VoxelObjGridDataHD> { new VoxelObjGridDataHD(drawLimits.Size) };
-            //currentFrame = new CirkleCounter(0);
             updateVoxelObj();
         }
         
@@ -437,8 +363,7 @@ namespace VikingEngine.Voxels
 
             selectionModel.update();
             designerInterface.Update(HasSelection, drawTools, inputMap.toggleCameraMode.IsDown, SelectedMaterial.flatcolor);
-            //designerInterface.inputDisplay.update(HasSelection, undolist.Count, drawCoordMaterial.HasMaterial(), inputMap);
-
+            
             Ref.draw.Camera.Time_Update(time);
         }
 
@@ -605,7 +530,6 @@ namespace VikingEngine.Voxels
             }
             else
             {
-                //curretVoxelGrid.Rotate(dir, drawLimits, true);
                 voxelProject.Rotate(dir, allFrames, allLayers);
 
                 UpdateVoxelObj();
@@ -677,19 +601,6 @@ namespace VikingEngine.Voxels
                     {
                         storeUndoableAction(allFrames, allLayers);
                     }
-                    //if (repeateOnAllFrames)
-                    //{
-                    //    for (int i = 0; i < animationFrames.Frames.Count; i++)
-                    //    {
-                    //        curretVoxelGrid.Move(dir, drawLimits);
-                    //        nextFrame(true);
-                    //    }
-                    //}
-                    //else
-                    //{
-                        
-                    //    curretVoxelGrid.Move(dir, drawLimits);
-                    //}
                     voxelProject.moveAll(dir, allFrames, allLayers);
 
                     UpdateVoxelObj();
@@ -719,103 +630,6 @@ namespace VikingEngine.Voxels
         virtual protected bool selectionCut
         { get { return true; } }
         
-        //virtual protected void drawInArea(PaintToolType fill, DrawShape tool, RangeIntV3 drawArea, bool isAsynch)
-        //{
-        //    designerInterface.drawSize = IntVector3.One;
-
-        //    FillArea(SelectedMaterial, fill, designerInterface.toolDir, tool, drawArea,
-        //        designerInterface.keyDownDrawCoord, selectedVoxels, selectionCut, this);
-
-        //    if (fill == PaintToolType.Select)
-        //    {
-        //        designerInterface.selectionArea = drawArea;
-        //    }
-        //}
-
-        //public static void FillArea(BlockHD selectedMaterial, PaintToolType fill, Dimensions toolDir, DrawShape drawTool,
-        //    RangeIntV3 selectionArea, IntVector3 keyDownDrawCoord, VoxelObjListDataHD selectedVoxels, bool selectionCut, IVoxelDesigner parent)
-        //{
-        //    BlockHD material = selectedMaterial;
-        //    if (fill == PaintToolType.Delete)
-        //        material = new BlockHD();
-        //    if (toolDir == Dimensions.NON)
-        //        toolDir = Dimensions.Y;
-
-        //    IntVector3 drawPoint = new IntVector3();
-
-        //    Vector3 center = selectionArea.Center;
-        //    Vector3 halfSz = selectionArea.Add.Vec * PublicConstants.Half;
-
-        //    float height = 0;
-        //    if (drawTool == DrawShape.Pyramid || drawTool == DrawShape.Cone)
-        //    {
-        //        center = lib.SetDimention3(center, toolDir, keyDownDrawCoord.GetDimension(toolDir));
-        //        height = selectionArea.Add.GetDimension(toolDir);
-        //    }
-            
-        //    ushort blockValue = material.BlockValue;
-
-        //    for (drawPoint.Z = selectionArea.Min.Z; drawPoint.Z <= selectionArea.Max.Z; drawPoint.Z++)
-        //    {
-        //        for (drawPoint.Y = selectionArea.Min.Y; drawPoint.Y <= selectionArea.Max.Y; drawPoint.Y++)
-        //        {
-        //            for (drawPoint.X = selectionArea.Min.X; drawPoint.X <= selectionArea.Max.X; drawPoint.X++)
-        //            {
-        //                    //see if there already exists one block
-        //                    if (fill == PaintToolType.Select)
-        //                    {
-        //                        ushort m = parent.GetVoxel(drawPoint);
-        //                        if (m != BlockHD.EmptyBlock)
-        //                        {
-        //                            selectedVoxels.Voxels.Add(new VoxelHD(drawPoint, m));
-        //                            if (selectionCut)
-        //                                parent.SetVoxel(drawPoint, BlockHD.EmptyBlock);
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        bool draw = true;
-        //                        switch (drawTool)
-        //                        {
-        //                            case DrawShape.Sphere:
-        //                                Vector3 diff = drawPoint.Vec - center;
-        //                                diff /= halfSz;
-        //                                draw = diff.Length() <= 1.1f;
-        //                                break;
-        //                            case DrawShape.Cylinder:
-        //                                Vector3 diff2 = drawPoint.Vec - center;
-        //                                diff2 /= halfSz;
-        //                                diff2 = lib.SetDimention3(diff2, toolDir, 0);
-        //                                draw = diff2.Length() <= 1.1f;
-        //                                break;
-        //                            case DrawShape.Pyramid:
-        //                                Vector3 diff3 = drawPoint.Vec - center;
-        //                                float radius = 1 - (Math.Abs(lib.GetDimention3(diff3, toolDir)) / height) + 0.1f;
-        //                                diff3 = lib.SetDimention3(diff3, toolDir, 0);
-        //                                diff3 /= halfSz;
-        //                                draw = lib.GetLongestAbsV3Dimention(diff3) <= radius;
-        //                                break;
-        //                            case DrawShape.Cone:
-        //                                Vector3 diff4 = drawPoint.Vec - center;
-        //                                float radius2 = 1 - (Math.Abs(lib.GetDimention3(diff4, toolDir)) / height) + 0.1f;
-        //                                diff4 = lib.SetDimention3(diff4, toolDir, 0);
-        //                                diff4 /= halfSz;
-        //                                draw = diff4.Length() <= radius2;
-        //                                break;
-        //                        }
-
-        //                        if (draw)
-        //                        {
-
-        //                            parent.SetVoxel(drawPoint, blockValue);
-        //                        }
-        //                    }
-        //                //}
-        //            }
-        //        }
-        //    }
-        //}
-
         virtual public ushort GetVoxel(int frame, IntVector3 drawPoint)
         {
             return voxelProject.layers.Selected().GetFrame(frame).Get(drawPoint);
@@ -847,7 +661,7 @@ namespace VikingEngine.Voxels
                     }
                 }
             }
-            return selectedLayerCol;//voxelProject.layers.Selected().GetFrame(voxelProject.currentFrame.Value).GetSafe(drawPoint);
+            return selectedLayerCol;
         }
 
         virtual public void SetVoxel(int frame, IntVector3 drawPoint, ushort material)
@@ -890,11 +704,7 @@ namespace VikingEngine.Voxels
         { }
 
        public BlockHD drawCoordMaterial = new BlockHD();
-        //abstract protected ushort Get(int frame, IntVector3 pos);
-        //protected ushort Get(IntVector3 pos)
-        //{ 
-        //    return voxelProject.CurretVoxelGrid.Get(pos);
-        //}
+       
         protected virtual void UpdatePencilInfo()
         {
             int state_empty0_contact1_inside2 = 0;
@@ -902,12 +712,7 @@ namespace VikingEngine.Voxels
             //update color
             if (voxelProject.drawLimits.pointInBounds(designerInterface.drawCoord))
             {
-                //GetVoxel(
-
-                    //wp = worldPos;
-               // wp.WorldGrindex += designerInterface.drawCoord;
-
-                //int state_empty0_contact1_inside2 = 0;
+               
 
                 if (drawCoordMaterial.HasMaterial())
                 {
@@ -919,46 +724,11 @@ namespace VikingEngine.Voxels
                 }
                 designerInterface.setPencilColor(state_empty0_contact1_inside2);
 
-                //designerInterface.pencilCube.Color = EmptySelection;
-
-                //if (voxels.GetSafe(designerInterface.drawCoord) == BlockHD.EmptyBlock)
-                //{
-                //    for (int i = 0; i < 2; i++)
-                //    {
-                //        int lookdir = i == 0 ? 1 : -1;
-
-                //        IntVector3 x = designerInterface.drawCoord;
-                //        x.X += lookdir;
-                //        IntVector3 y = designerInterface.drawCoord;
-                //        y.Y += lookdir;
-                //        IntVector3 z = designerInterface.drawCoord;
-                //        z.Z += lookdir;
-
-                //        for (Dimensions d = Dimensions.X; d <= Dimensions.Z; d++)
-                //        {
-                //            IntVector3 sidePos = designerInterface.drawCoord;
-                //            sidePos.AddDimension(d, lookdir);
-                //            if (voxels.GetSafe(sidePos) != BlockHD.EmptyBlock)
-                //            {
-                //                //designerInterface.pencilCube.Color = ContactSelection;
-                //                state_empty0_contact1_inside2 = 1;
-                //                return;
-                //            }
-                //        }
-
-                //    }
-                //}
-                //else
-                //{
-                //    state_empty0_contact1_inside2 = 2;
-                //    //designerInterface.pencilCube.Color = InsideSelection;
-                //}
             }
             else
             {
                 state_empty0_contact1_inside2 = -1;
                 drawCoordMaterial = BlockHD.Empty;
-                //designerInterface.pencilCube.Color = Color.Red;
             }
 
             designerInterface.setPencilColor(state_empty0_contact1_inside2);
@@ -973,8 +743,7 @@ namespace VikingEngine.Voxels
                     IntVector3 npos = pos;
                     npos.AddDimension(d, lib.BoolToLeftRight(dir == 0));
 
-                    //bool nMateriel = GetVoxel(npos) != BlockHD.EmptyBlock;
-                    if (GetSafe(npos) != BlockHD.EmptyBlock)//wp.GetNeighborPos(pos).BlockHasMaterial())
+                    if (GetSafe(npos) != BlockHD.EmptyBlock)
                     {
 
                         return true;
@@ -1022,10 +791,6 @@ namespace VikingEngine.Voxels
        protected void UpdateVoxelObj(IntervalIntV3 updateArea)
        {
             updateFrameInfo();
-            //if (voxelObj != null)
-            //{
-            //    voxelObj.DeleteMe();
-            //}
             updateVoxelObj(updateArea);
        }
 
@@ -1061,7 +826,7 @@ namespace VikingEngine.Voxels
        void moveSelectionModel(IntVector3 move)
        {
            selectionModel.move(move);
-           designerInterface.refreshVolumeGui();
+           designerInterface.refreshVolumeGui( PaintFillType.Select);
         }
         
        public void refreshSelectionModel()
@@ -1073,8 +838,7 @@ namespace VikingEngine.Voxels
                     designerInterface.selectionArea = selectedVoxels.getMinMax();
                }
 
-                designerInterface.refreshVolumeGui();
-               //designerInterface.refreshSelectionGui();
+                designerInterface.refreshVolumeGui( PaintFillType.Select);
                selectionModel.refresh(selectedVoxels, voxelProject.drawLimits.Size, designerInterface.offSet);
            }
            else
@@ -1191,7 +955,7 @@ namespace VikingEngine.Voxels
                 absMenuSystem.closeMenu();
 
                 selectedVoxels = copiedVoxels.Clone();
-                designerInterface.UpdateMultiSelectionPencil(IntVector3.Zero);
+                designerInterface.UpdateMultiSelectionPencil( PaintFillType.Select, IntVector3.Zero);
                 refreshSelectionModel();
             }
         }
@@ -1257,90 +1021,6 @@ namespace VikingEngine.Voxels
         Select,
         Delete,
     }
-
-    //class DrawInAreaTimer : AbsUpdateable
-    //{
-    //    AbsVoxelDesigner designer;
-    //    RangeIntV3 selectionArea;
-    //    RangeIntV3 drawLimits;
-    //    PaintFillType fill;
-    //    VoxelObjListData voxels;
-    //    VoxelObjListData selectedVoxels;
-    //    byte selectedMaterial;
-    //    Graphics.Mesh pencilMultiSelection;
-
-    //    public DrawInAreaTimer(AbsVoxelDesigner designer, RangeIntV3 selectionArea, RangeIntV3 drawLimits, PaintFillType fill, 
-    //        VoxelObjListData voxels, VoxelObjListData selectedVoxels, byte selectedMaterial, Graphics.Mesh pencilMultiSelection)
-    //        : base(true)
-    //    {
-    //         this.designer= designer;
-    //         this.selectionArea= selectionArea;
-    //         this.drawLimits= drawLimits;
-    //         this.fill= fill;
-    //         this.voxels= voxels;
-    //         this.selectedVoxels= selectedVoxels;
-    //         this.selectedMaterial= selectedMaterial;
-    //         drawPoint.Z = selectionArea.Min.Z;
-    //         drawPoint.Y = selectionArea.Min.Y;
-
-    //         this.pencilMultiSelection = (Graphics.Mesh)pencilMultiSelection.CloneMe();
-    //         this.pencilMultiSelection.Color = Color.Black;
-    //         this.pencilMultiSelection.Visible = selectionArea.Add != IntVector3.Zero;
-
-    //    }
-
-    //    IntVector3 drawPoint = new IntVector3();
-    //    public override void Time_Update(float time)
-    //    {
-            
-    //        for (drawPoint.X = selectionArea.Min.X; drawPoint.X <= selectionArea.Max.X; drawPoint.X++)
-    //        {
-    //            if (drawLimits.WithinRange(drawPoint))
-    //            {
-    //                //see if there already exists one block
-    //                if (fill == PaintFillType.Select)//e.Button == selectionButton)
-    //                {
-    //                    //select voxel
-    //                    int v = voxels.selectedVoxel(drawPoint);
-    //                    if (v != -1)
-    //                    {
-    //                        selectedVoxels.Voxels.Add(voxels.Voxels[v]);
-    //                        designer.removeBlock(drawPoint);
-    //                    }
-    //                }
-    //                else
-    //                {
-    //                    bool draw = true;
-
-    //                    if (draw)
-    //                    {
-    //                        designer.removeBlock(drawPoint);
-    //                        if (fill != PaintFillType.Delete)
-    //                            voxels.Voxels.Add(new Voxel(drawPoint, selectedMaterial));
-    //                    }
-    //                }
-    //            }
-    //        }
-
-    //        drawPoint.Y++;
-    //        if (drawPoint.Y > selectionArea.Max.Y)
-    //        {
-    //            drawPoint.Y = selectionArea.Min.Y;
-
-    //            drawPoint.Z++;
-    //            if (drawPoint.Z > selectionArea.Max.Z)
-    //            {
-    //                DeleteMe();
-    //                designer.AfterDraw();
-    //            }
-    //        }
-    //    }
-    //    public override void DeleteMe()
-    //    {
-    //        base.DeleteMe();
-    //        pencilMultiSelection.DeleteMe();
-    //    }
-    //}
 
     
 }

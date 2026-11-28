@@ -8,11 +8,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace VikingEngine.Voxels
 {
-    public interface IVoxelDesignerInterfaceParent
-    {
-        void SetPencilBounds(ref Vector3 freePencilGridPos);
-        void NewBlockPosEvent(IntVector3 newCoord, IntVector3 posDiff);
-    }
+    //public interface IVoxelDesignerInterfaceParent
+    //{
+    //    void SetPencilBounds(ref Vector3 freePencilGridPos);
+    //    void NewBlockPosEvent(IntVector3 newCoord, IntVector3 posDiff);
+    //}
 
     public class VoxelDesignerInterface
     {
@@ -20,7 +20,7 @@ namespace VikingEngine.Voxels
         static readonly Color ContactSelection = new Color(255, 200, 255);
         static readonly Color InsideSelection = new Color(255, 255, 120);
 
-        IVoxelDesignerInterfaceParent parent;
+        AbsVoxelDesigner parent;
         public VikingEngine.Voxels.VoxelDesignerSettings settings = new Voxels.VoxelDesignerSettings();
         
         List<IDeleteable> createdObjects;
@@ -35,8 +35,8 @@ namespace VikingEngine.Voxels
         protected Graphics.Mesh xline;
         protected Graphics.Mesh zline;
 
-        Mesh forwardArrow;
-        Graphics.GeneratedObjColor grid;
+        //Mesh forwardArrow;
+        Graphics.GeneratedObjColor gridOutlineModel;
 
         public IntervalIntV3 selectionArea;
         public IntVector3 drawCoord = IntVector3.Zero;
@@ -71,11 +71,11 @@ namespace VikingEngine.Voxels
 
             pencilCube.Color = col;
             freePencil.Color = col;
-            xline.Color = col;
-            zline.Color = col;
+            xline.Color = ColorExt.MultiplyRGBA( col, 0.3f);
+            zline.Color = xline.Color;
         }
 
-        public VoxelDesignerInterface(IVoxelDesignerInterfaceParent parent, EditorInputMap input, int playerIx, Vector3 startPos, Vector3 offset, 
+        public VoxelDesignerInterface(AbsVoxelDesigner parent, EditorInputMap input, int playerIx, Vector3 startPos, Vector3 offset, 
             bool transparentHelpLines, IntervalIntV3? drawLimits,
             Graphics.AbsCamera cam)
         {
@@ -103,13 +103,11 @@ namespace VikingEngine.Voxels
 
             pencilCube = new Graphics.Mesh(LoadedMesh.cube_repeating, Vector3.Zero, new Vector3(1.16f),
                 TextureEffectType.Flat, SpriteName.EditorPencilCube, Color.White);
-                //new Graphics.TextureEffect(TextureEffectType.Flat, SpriteName.EditorPencilCube), 1.16f);
             pencilCube.Opacity = 0.8f;
 
 
             xline = new Graphics.Mesh(LoadedMesh.cube_repeating, startPos + offSet, new Vector3(HelpLineWidth),
-                TextureEffectType.Flat, SpriteName.WhiteArea, Color.White);
-                 //new Graphics.TextureEffect(TextureEffectType.Flat, SpriteName.WhiteArea), HelpLineWidth);
+                TextureEffectType.Flat, SpriteName.WhiteArea, Color.LightGray);
             xline.Opacity = helpLinesTransparentsy;
             zline = (Graphics.Mesh)xline.CloneMe();
 
@@ -243,13 +241,12 @@ namespace VikingEngine.Voxels
             moveFreePencil(Vector3.Zero, false);
         }
 
-        public void UpdateMultiSelectionPencil(IntVector3 drawCoordPosDiff)
+        public void UpdateMultiSelectionPencil(PaintFillType fill, IntVector3 drawCoordPosDiff)
         {
-            selectionArea = IntervalIntV3.FromTwoPoints(drawCoord, keyDownDrawCoord);//RangeIntV3.Zero;
+            selectionArea = IntervalIntV3.FromTwoPoints(drawCoord, keyDownDrawCoord);
             drawSize = selectionArea.Add;
-            //refreshSelectionGui();
 
-            refreshVolumeGui();//volumeGUI.refresh(selectionArea, this.offSet);
+            refreshVolumeGui(fill);
             //calc draw tool dir
             int numExpandedDirs = 0;
             if (drawSize.X > 0)
@@ -282,9 +279,9 @@ namespace VikingEngine.Voxels
 
         }
 
-        public void refreshVolumeGui()
+        public void refreshVolumeGui(PaintFillType fill)
         {
-            volumeGUI.refresh(selectionArea, this.offSet);
+            volumeGUI.refresh(selectionArea, this.offSet, fill, parent.SelectedMaterial.flatcolor);
         }
 
         public void SetDrawLimits(IntervalIntV3 drawLimits, bool resetWhiteLines)
@@ -302,15 +299,34 @@ namespace VikingEngine.Voxels
 
         public void createGrid(IntervalIntV3 volume)
         {
+            //if (forwardArrow == null)
+            //{
+            //    forwardArrow = new Graphics.Mesh(LoadedMesh.plane, Vector3.Zero, new Vector3(8f),
+            //        TextureEffectType.Flat, SpriteName.EditorForwardArrow, Color.White);
+            //    forwardArrow.Opacity = 0.3f;
+            //}
+
+            //forwardArrow.Position = new Vector3(volume.Max.X * PublicConstants.Half, -0.5f, (volume.Max.Z + 2) * 1f);
+            //forwardArrow.Scale = VectorExt.V3(volume.Max.X + 1) * 0.25f;
+            var forwardArrow = Graphics.PolygonColor.QuadXZ(new Vector3(volume.Max.X * PublicConstants.Half, -0.55f, (volume.Max.Z + 2) * 1f),
+                /*VectorExt.V2(volume.Max.X + 1) **/ new Vector2( 1.5f), 0, SpriteName.EditorForwardArrow, Dir4.E, ColorExt.MultiplyRGBA(Color.White, 0.3f));
+
+
             IntVector3 gidSize = volume.Size;
 
             //backgrund grid
-            Sprite gridTexture = DataLib.SpriteCollection.Get(SpriteName.InterfaceBorder);
-            Color gridColorX = Color.Blue;
-            Color gridColorZ = Color.Green;
-            Color gridColorBottom = Color.DarkGray;
+            const float Alpha = 0.4f;
+            Sprite gridTexture = DataLib.SpriteCollection.Get(SpriteName.RectangleOutline_2pix_64w);
+            Color gridColorX = ColorExt.MultiplyRGBA(Color.Blue, Alpha);
+
+            Color gridColorZ = ColorExt.MultiplyRGBA(Color.Green, Alpha);         
+
+            Color gridColorBottom = ColorExt.MultiplyRGBA(Color.Brown, Alpha);
+            //gridColorBottom.A = 50;
+
             Graphics.Face[] faces = Graphics.PolygonLib.createFaces(AbsVoxelDesigner.BlockScale);
-            List<Graphics.PolygonColor> gridPolys = new List<Graphics.PolygonColor>();
+            List<Graphics.PolygonColor> gridPolys = new List<Graphics.PolygonColor>(128);
+            gridPolys.Add(forwardArrow);
 
             Vector3 frontStartPos = volume.Min.Vec * AbsVoxelDesigner.BlockScale + offSet;
             Vector3 backStartPos = frontStartPos;
@@ -368,26 +384,16 @@ namespace VikingEngine.Voxels
                         bottom, gridTexture, gridColorBottom));
                 }
             }
-            if (grid != null)
+            if (gridOutlineModel != null)
             {
-                grid.DeleteMe();
+                gridOutlineModel.DeleteMe();
             }
-            grid = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
+            gridOutlineModel = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
                 gridPolys, null), LoadedTexture.SpriteSheet, true);
 
             moveFreePencil(Vector3.Zero, false);
 
-            if (forwardArrow == null)
-            {
-                forwardArrow = new Graphics.Mesh(LoadedMesh.plane, Vector3.Zero, new Vector3(8f),
-                    TextureEffectType.Flat, SpriteName.EditorForwardArrow, Color.White);
-
-                   // new Graphics.TextureEffect(TextureEffectType.Flat, SpriteName.EditorForwardArrow), 8);
-                forwardArrow.Opacity = 0.3f;
-            }
-
-            forwardArrow.Position = new Vector3(volume.Max.X * PublicConstants.Half, -0.5f, (volume.Max.Z + 2) * 1f);
-            forwardArrow.Scale = VectorExt.V3(volume.Max.X + 1) * 0.25f;
+           
         }
 
         public static SpriteName ToolIcon(PaintToolType tool)
@@ -418,10 +424,10 @@ namespace VikingEngine.Voxels
             pencilShadow.hide();
             
             
-            if (grid != null)
+            if (gridOutlineModel != null)
             {
-                grid.Visible = show;
-                forwardArrow.Visible = show;
+                gridOutlineModel.Visible = show;
+                //forwardArrow.Visible = show;
             }
         }
 
@@ -434,12 +440,11 @@ namespace VikingEngine.Voxels
             }
             hudElements.DeleteAll();
             pencilShadow.DeleteMe();
-            //inputDisplay.DeleteMe();
 
-            if (grid != null)
+            if (gridOutlineModel != null)
             {
-                grid.DeleteMe();
-                forwardArrow.DeleteMe();
+                gridOutlineModel.DeleteMe();
+                //forwardArrow.DeleteMe();
             }
         }
     }

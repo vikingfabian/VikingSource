@@ -3159,6 +3159,11 @@ namespace VikingEngine
 
                     addWithSizeDef(SpriteName.WarsTextureGroupSquare, currentIndex, 64, 48);
                     addWithSizeDef(SpriteName.WarsTextureGroupSquareMelee, currentIndex, 64, 48);
+                    add(SpriteName.EditorPencilCube, 2, 2);
+                    add(SpriteName.EditorDottedOutline_Draw, 2, 2);
+                    add(SpriteName.EditorDottedOutline_Select, 2, 2);
+                    add(SpriteName.EditorDottedOutline_Delete, 2, 2);
+
                 }
             }
 
@@ -3255,8 +3260,8 @@ namespace VikingEngine
                 add(SpriteName.cgSacrificeForMana, currentIndex, 4, 2);
                 //currentIndex += 2;
                 add(SpriteName.birdSkyTex, currentIndex, 2, 2);
-                currentIndex += 14;
-                add(SpriteName.EditorPencilCube, 2, 2);
+                currentIndex += 16;
+                add(SpriteName.RectangleOutline_2pix_64w, 2, 2);//Change
                 add(SpriteName.EditorFillAreaTexture, 2, 2);
 
                 add(SpriteName.cmdTileOpenWater, currentIndex, 2, 2);

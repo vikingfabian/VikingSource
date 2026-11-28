@@ -974,13 +974,17 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             content.newLine();
             content.Add(new RbText(DssRef.lang.Editor_Settings_BackgroundColor + ":", HudLib.TitleColor_Label));
             content.Add(new RbSpace());
-            List<Color> bgcolors = new List<Color>() { Color.White, Color.CornflowerBlue, Color.Black };
+            List<Color> bgcolors = new List<Color>() { new Color(248, 245, 220), Color.CornflowerBlue, VoxelDesignState.DefaultBgCol, new Color(128, 128, 128), ColorExt.VeryDarkGray };
             foreach (Color color in bgcolors)
             {
                 content.Add(new ArtOption(color == Ref.draw.ClrColor, new List<AbsRichBoxMember> { new RbImage(SpriteName.WhiteArea, 0.8f, color) },
-                    new RbAction1Arg<Color>((col) => { Ref.draw.ClrColor = col; }, color, RbSoundType.Option)));
+                    new RbAction1Arg<Color>((Color selected) => {
+                        VoxelDesignState scene = Ref.gamestate as VoxelDesignState;
+                        scene.refreshColor(selected, designer.Settings.useBgGradient);
+                    }, color, RbSoundType.Option)));
             }
-
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Gradient") }, designer.Settings.BgGradientProperty));
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Settings_HideHUD) },
                 new RbAction(designer.LinkHideHUD)));
@@ -1015,8 +1019,6 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             colorTintButton(brighter2, Color.White, false, SpriteName.MissingImage, DssRef.lang.Editor_Color_BrighterPlus, content, designer.pickColorLink);
             colorTintButton(brighter, Color.White, false, SpriteName.MissingImage, DssRef.lang.Editor_Color_Brighter, content, designer.pickColorLink);
-
-            //colorTintButton(current, curr, true, SpriteName.MissingImage, "Current", content, designer.pickColorLink);
 
             colorTintButton(darker, Color.Black, false, SpriteName.MissingImage, DssRef.lang.Editor_Color_Darker, content, designer.pickColorLink);
             colorTintButton(darker2, Color.Black, false, SpriteName.MissingImage, DssRef.lang.Editor_Color_DarkerPlus, content, designer.pickColorLink);

@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using VikingEngine.Core.DSSWars.GameState.VoxelEditor;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 
@@ -19,6 +20,11 @@ namespace VikingEngine.Voxels
         {
             base.FirstUpdate();
             Ref.draw.ClrColor = Color.CornflowerBlue;
+        }
+
+        protected override void createDrawManager()
+        {
+            draw = new VoxelDraw();
         }
 
         HUD.ButtonLayout buttonLayout = null;

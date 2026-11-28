@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.GameState
     class StartEditor : AbsDssState
     {
         EditorType editor;
-        int waitUpdates = 2;
+        int waitUpdates = 64;
         int ProfileIx;
         bool controller;
         public StartEditor(int ProfileIx, bool controller, EditorType editor)

@@ -598,7 +598,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             menusystem.closeMenu();
 
             designerInterface.selectionArea = new IntervalIntV3(designerInterface.drawCoord, designerInterface.drawCoord + grid.Limits);
-            designerInterface.refreshVolumeGui();
+            designerInterface.refreshVolumeGui( PaintFillType.Select);
             //designerInterface.refreshSelectionGui();
             templateSent = false;
         }
