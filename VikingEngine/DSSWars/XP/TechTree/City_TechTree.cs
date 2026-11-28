@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml.Linq;
 using VikingEngine.Core.DSSWars.XP.TechTree;
 using VikingEngine.DSSWars.GameObject.ObjectPointer;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Engine;
 
@@ -13,6 +14,17 @@ namespace VikingEngine.DSSWars.GameObject
     //TECH TREE
     partial class City
     {
+        bool generalizedResearch;
+
+        public bool GeneralizedResearchProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                generalizedResearch = value;
+            }
+            return generalizedResearch;
+        }
+
         public TechTreeNodeProgress_City GetProgress(TechNodeType nodeType)
         {
             return DssRef.world.city_techNodes[myIndex * TechTreeNodeProgress_City.NodeCount + (int)nodeType];
@@ -24,6 +36,10 @@ namespace VikingEngine.DSSWars.GameObject
         public void SetProgress(TechNodeType nodeType, TechTreeNodeProgress_City progress)
         {
             DssRef.world.city_techNodes[myIndex * TechTreeNodeProgress_City.NodeCount + (int)nodeType] = progress;
+        }
+        public void UnlockNode(TechNodeType nodeType)
+        {
+            SetProgress(nodeType, TechTreeNodeProgress_City.Unlocked);
         }
         public FieldResearch GetFieldResearch(TechFieldType fieldType)
         {
@@ -134,7 +150,11 @@ namespace VikingEngine.DSSWars.GameObject
             SetFieldResearch((int)fieldtype, research);
         }
 
-
+        public void ProfileSelectProgressNode(TechNodeType node)
+        {
+            XpLib.TechTree.findNode(TechFieldType.NUM_NONE, node, out var nodeResult, out _, out _);
+            SelectProgressNode(nodeResult);
+        }
 
         public void SelectProgressNode(TechTreeNode node)
         {
@@ -164,21 +184,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             SetFieldResearch(field, select);
-
-            //var branshes = XpLib.TechTree.fields.Array[field].branshes;
-            //for (int branschIx = branshes.StartIndex; branschIx < branshes.ExEndIndex; branschIx++)
-            //{
-            //    var nodes = XpLib.TechTree.bransches_all.Array[branschIx].nodes;
-
-            //    for (int nodeIx = nodes.StartIndex; nodeIx < nodes.ExEndIndex; nodeIx++)
-            //    {
-            //        var nType = XpLib.TechTree.nodes_all.Array[nodeIx].type;
-            //        bool set = nType == node.type;
-            //        //var progress = GetProgress(nType);
-            //        progress.points_bUnlocked_non_bComplete.Flag2 = set;
-            //        SetProgress(nType, progress);
-            //    }
-            //}
 
             bool NodeIsUnlocked(TechTreeNode node)
             {

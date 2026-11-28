@@ -112,15 +112,17 @@ namespace VikingEngine.DSSWars.Data
 
         public void Load()
         {
-            DataStream.FileToDiskManager.TryReadBinaryIO(path, read);
-            if (StartupSettings.Saves)
-            {
-                meta.Load();
-            }
-            flagStorage.Load();
-            characterStorage.Load();
-            profileStorage.Load();
-            cityProfileStorage.Load();
+            
+                DataStream.FileToDiskManager.TryReadBinaryIO(path, read);
+                if (StartupSettings.Saves)
+                {
+                    meta.Load();
+                }
+                flagStorage.Load();
+                characterStorage.Load();
+                profileStorage.Load();
+                cityProfileStorage.Load();
+            
         }
 
        

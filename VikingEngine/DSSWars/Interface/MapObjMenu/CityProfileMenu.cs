@@ -3,12 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Xml.Linq;
 using VikingEngine.Core.DSSWars.Data;
 using VikingEngine.Core.DSSWars.Work;
+using VikingEngine.Core.DSSWars.XP.TechTree;
 using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
@@ -28,10 +31,11 @@ namespace VikingEngine.Core.DSSWars.Interface.MapObjMenu
         const string EditProfileMenu = "edit_profile";
         const string EditProfileWorkMenu = "edit_profile_work";
         const string EditProfileResourcesMenu = "edit_profile_resources";
-const string EditProfileBuildingsMenu = "edit_profile_buildings";
+        const string EditProfileBuildingsMenu = "edit_profile_buildings";
+        const string EditProfileResearchMenu = "edit_profile_research";
         RichMenu menu;
 
-        public void ToHud(City city, RichMenu menu, RichBoxContent content)
+        public void ToHud(City city, RichMenu menu, RichBoxContent content, LocalPlayer player)
         {
             this.menu = menu;
 
@@ -105,146 +109,215 @@ const string EditProfileBuildingsMenu = "edit_profile_buildings";
                             AutoApplyProperty, new RbTooltip_Text("All your new cities will automatically apply this profile")));
 
                         content.newParagraph();
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                        for (CityProfileMenuTab tab = 0; tab < CityProfileMenuTab.NUM; tab++)
+                        {
+                            int count = 0;
+                            string caption;
+                            switch (tab)
+                            {
+                                default:
+                                case CityProfileMenuTab.Work:
+                                    caption = DssRef.lang.MenuTab_Work;
+                                    count = profile.workProfiles.Count;
+                                    break;
+                                case CityProfileMenuTab.Resources:
+                                    caption = DssRef.lang.MenuTab_Resources;
+                                    count = profile.resourceProfiles.Count;
+                                    break;
+                                case CityProfileMenuTab.Buildings:
+                                    caption = DssRef.lang.InputActionName_Build;
+                                    count = profile.buildProfiles.Count;
+                                    break;
+                                case CityProfileMenuTab.Research:
+                                    caption = DssRef.lang.Research_Tab;
+                                    count = profile.research.Count;
+                                    break;
+
+                            }
+                            content.Add(new ArtButton(tab == player.cityProfileTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                               new List<AbsRichBoxMember> { new RbText($"{caption} ({count})") }, new RbAction1Arg<CityProfileMenuTab>((CityProfileMenuTab selected) =>
+                               {
+                                   player.cityProfileTab = selected;
+                               }, tab)));
+                        }
+                           
+
+                            content.newParagraph();
+                            switch (player.cityProfileTab)
+                            {
+                                case CityProfileMenuTab.Work:
+
+                                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.EditorToolOptionToggle),
                             new RbSpace(0.5f),
                             new RbText("Add/Remove work") },
-                             new RbAction2Arg<string, StackOption>(menu.OpenMenu, EditProfileWorkMenu, StackOption.Stack)));
-                        if (profile.workProfiles.HasValue())
-                        {
-                            for (int i = 0; i < profile.workProfiles.Count; i++)
-                            {
-                                content.newParagraph();
-                                var workProfile = profile.workProfiles[i];
-                                var prop = WorkPropertyColl.Get(workProfile.workType);
+                                         new RbAction2Arg<string, StackOption>(menu.OpenMenu, EditProfileWorkMenu, StackOption.Stack)));
+                                    if (profile.workProfiles.HasValue())
+                                    {
+                                        for (int i = 0; i < profile.workProfiles.Count; i++)
+                                        {
+                                            content.newParagraph();
+                                            var workProfile = profile.workProfiles[i];
+                                            var prop = WorkPropertyColl.Get(workProfile.workType);
 
-                                content.Add(new RbImage(prop.icon1));
-                                if (prop.icon2 != SpriteName.NO_IMAGE)
-                                {
-                                    content.Add(new RbImage(prop.icon2));
-                                }
-                                content.hspace();
-                                content.Add(new RbText(prop.name));
+                                            content.Add(new RbImage(prop.icon1));
+                                            if (prop.icon2 != SpriteName.NO_IMAGE)
+                                            {
+                                                content.Add(new RbImage(prop.icon2));
+                                            }
+                                            content.hspace();
+                                            content.Add(new RbText(prop.name));
 
-                                content.newLine();
-                                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.todoLang.Language_IncludeX, DssRef.lang.Work_OrderPrioTitle)) },
-                                    WorkPriorityProperty)
-                                { propertyTag = i });
-                                if (workProfile.bPriority)
-                                {
-                                    content.newLine();
-                                    content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
-                                    content.space();
-                                    workProfile.workPriority.toHud(workProfile.workType, null, content, null, city.pfaction.GetFaction(), i);//workTemplate.cityProfileHud(workProfile.workType, i);
-                                }
-                                content.newLine();
-                                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.todoLang.Language_IncludeX, DssRef.todoLang.Work_WorkerCount)) },
-                                    WorkWorkerCountProperty)
-                                { propertyTag = i });
-                                if (workProfile.bWorkerCount)
-                                {
-                                    content.newLine();
-                                    content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
-                                    content.space();
-                                    workerLimitMenu.cityProfileHud(workProfile.workType, i);
-                                }
-                            }
-                        }
-                        content.Add(new RbSeperationLine());
+                                            content.newLine();
+                                            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.todoLang.Language_IncludeX, DssRef.lang.Work_OrderPrioTitle)) },
+                                                WorkPriorityProperty)
+                                            { propertyTag = i });
+                                            if (workProfile.bPriority)
+                                            {
+                                                content.newLine();
+                                                content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
+                                                content.space();
+                                                workProfile.workPriority.toHud(workProfile.workType, null, content, null, city.pfaction.GetFaction(), i);//workTemplate.cityProfileHud(workProfile.workType, i);
+                                            }
+                                            content.newLine();
+                                            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.todoLang.Language_IncludeX, DssRef.todoLang.Work_WorkerCount)) },
+                                                WorkWorkerCountProperty)
+                                            { propertyTag = i });
+                                            if (workProfile.bWorkerCount)
+                                            {
+                                                content.newLine();
+                                                content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
+                                                content.space();
+                                                workerLimitMenu.cityProfileHud(workProfile.workType, i);
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case CityProfileMenuTab.Resources:
 
-                        content.newParagraph();
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+
+                                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.EditorToolOptionToggle),
                             new RbSpace(0.5f),
                             new RbText("Add/Remove Resources") },
-                             new RbAction2Arg<string, StackOption>(menu.OpenMenu, EditProfileResourcesMenu, StackOption.Stack)));
-                        if (profile.resourceProfiles.HasValue())
-                        {
-                            for (int i = 0; i < profile.resourceProfiles.Count; i++)
-                            {
-                                content.newParagraph();
+                                         new RbAction2Arg<string, StackOption>(menu.OpenMenu, EditProfileResourcesMenu, StackOption.Stack)));
+                                    if (profile.resourceProfiles.HasValue())
+                                    {
+                                        for (int i = 0; i < profile.resourceProfiles.Count; i++)
+                                        {
+                                            content.newParagraph();
 
-                                var resProfile = profile.resourceProfiles[i];
-                                IconName.Item(resProfile.resourceType, out var icon, out string name);
-                                content.Add(new RbImage(icon));
-                                content.hspace();
-                                content.Add(new RbText(name));
+                                            var resProfile = profile.resourceProfiles[i];
+                                            IconName.Item(resProfile.resourceType, out var icon, out string name);
+                                            content.Add(new RbImage(icon));
+                                            content.hspace();
+                                            content.Add(new RbText(name));
 
-                                content.newLine();
-                                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.todoLang.Language_IncludeX, DssRef.lang.Resource_Tab_Stockpile)) },
-                                    ResourceStockpileProperty)
-                                { propertyTag = i });
+                                            content.newLine();
+                                            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.todoLang.Language_IncludeX, DssRef.lang.Resource_Tab_Stockpile)) },
+                                                ResourceStockpileProperty)
+                                            { propertyTag = i });
 
-                                if (resProfile.bStockpile)
-                                {
-                                    content.newLine();
-                                    content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
-                                    content.space();
-                                    stockPileMenu.cityProfileHud(resProfile.resourceType, i);
-                                }
-                                content.newLine();
-                                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.todoLang.Language_IncludeX, DssRef.todoLang.Resource_RequestDelivery)) },
-                                    ResourceRequestDeliveryProperty)
-                                { propertyTag = i });
-                                if (resProfile.bRequestDelivery)
-                                {
-                                    content.newLine();
-                                    content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
-                                    content.space();
-                                    requestMenu.cityProfileHud(resProfile.resourceType, i);
-                                }
-                            }
-                        }
+                                            if (resProfile.bStockpile)
+                                            {
+                                                content.newLine();
+                                                content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
+                                                content.space();
+                                                stockPileMenu.cityProfileHud(resProfile.resourceType, i);
+                                            }
+                                            content.newLine();
+                                            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.todoLang.Language_IncludeX, DssRef.todoLang.Resource_RequestDelivery)) },
+                                                ResourceRequestDeliveryProperty)
+                                            { propertyTag = i });
+                                            if (resProfile.bRequestDelivery)
+                                            {
+                                                content.newLine();
+                                                content.Add(new RbImage(SpriteName.WarsHudIconChildArrow));
+                                                content.space();
+                                                requestMenu.cityProfileHud(resProfile.resourceType, i);
+                                            }
+                                        }
+                                    }
 
-                        content.Add(new RbSeperationLine());
+                                    break;
+                                case CityProfileMenuTab.Buildings:
 
-                        content.newParagraph();
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                            new RbImage(SpriteName.EditorToolOptionToggle),
-                            new RbSpace(0.5f),
-                            new RbText("Add/Remove Buildings") },
-                             new RbAction2Arg<string, StackOption>(menu.OpenMenu, EditProfileBuildingsMenu, StackOption.Stack)));
 
-                        if (profile.buildProfiles.HasValue())
-                        {
-                            for (int i = 0; i < profile.buildProfiles.Count; i++)
-                            {
-                                content.newParagraph();
+                                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                                    new RbImage(SpriteName.EditorToolOptionToggle),
+                                    new RbSpace(0.5f),
+                                    new RbText("Add/Remove Buildings") },
+                                         new RbAction2Arg<string, StackOption>(menu.OpenMenu, EditProfileBuildingsMenu, StackOption.Stack)));
 
-                                var itemProfile = profile.buildProfiles[i];
-                                IconName.Building(itemProfile.buildType, out var icon, out string name);
-                                content.Add(new RbImage(icon));
-                                content.hspace();
-                                content.Add(new RbText(name));
+                                    if (profile.buildProfiles.HasValue())
+                                    {
+                                        for (int i = 0; i < profile.buildProfiles.Count; i++)
+                                        {
+                                            content.newParagraph();
 
-                                content.newLine();
-                                RbDragButton.RbDragButtonGroup(content, new List<float> { 10 },
-                                    new DragButtonSettings(1, 100, 1), buildCountProperty, false, i);
+                                            var itemProfile = profile.buildProfiles[i];
+                                            IconName.Building(itemProfile.buildType, out var icon, out string name);
+                                            content.Add(new RbImage(icon));
+                                            content.hspace();
+                                            content.Add(new RbText(name));
 
-                                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Accumilative") },
-                                    buildCountAccProperty)
-                                { propertyTag = i });
+                                            content.newLine();
+                                            RbDragButton.RbDragButtonGroup(content, new List<float> { 10 },
+                                                new DragButtonSettings(1, 100, 1), buildCountProperty, false, i);
 
-                                content.newLine();
-                                for (int prio = 1; prio <= WorkTemplate.MaxPrio; prio++)
-                                {
-                                    var button = new ArtToggle(prio == itemProfile.buildPriority, new List<AbsRichBoxMember> {
+                                            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("Accumilative") },
+                                                buildCountAccProperty)
+                                            { propertyTag = i });
+
+                                            content.newLine();
+                                            for (int prio = 1; prio <= WorkTemplate.MaxPrio; prio++)
+                                            {
+                                                var button = new ArtToggle(prio == itemProfile.buildPriority, new List<AbsRichBoxMember> {
                                         new RbText(prio.ToString())
                                     },
-                                    new RbAction1Arg<int>((int selected) =>
-                                    {
-                                        profile.buildProfiles.Array[i].buildPriority = (byte)selected;
-                                    }, prio));
+                                                new RbAction1Arg<int>((int selected) =>
+                                                {
+                                                    profile.buildProfiles.Array[i].buildPriority = (byte)selected;
+                                                }, prio));
 
-                                    content.Add(button);
-                                    if (prio == 0)
-                                    {
-                                        content.space();
+                                                content.Add(button);
+                                                if (prio == 0)
+                                                {
+                                                    content.space();
+                                                }
+                                            }
+                                        }
                                     }
-                                }
-                            }
+                                    break;
+                                case CityProfileMenuTab.Research:
+
+                                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                                    new RbImage(SpriteName.EditorToolOptionToggle),
+                                    new RbSpace(0.5f),
+                                    new RbText("Add/Remove Research") },
+                                         new RbAction2Arg<string, StackOption>(menu.OpenMenu, EditProfileResearchMenu, StackOption.Stack)));
+
+                                    content.newLine();
+                                    if (profile.research.HasValue())
+                                    {
+                                        for (int i = 0; i < profile.research.Count; i++)
+                                        {
+                                            var prop = TechNodePropertyLib.Get(profile.research.Array[i]);
+                                            content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> {
+                                            new RbImage(prop.sprite),
+                                            new RbSpace(0.5f),
+                                            new RbText(prop.name)
+                                        }, null, null));
+                                        }
+                                    }
+                                    break;
+
+                            
                         }
-                                // content.newParagraph();
+
+
+
+                            // content.newParagraph();
 
                     }
                     break;
@@ -375,6 +448,57 @@ const string EditProfileBuildingsMenu = "edit_profile_buildings";
                             new RbText(DssRef.lang.Hud_Apply, HudLib.Color_SuperPrimary) },
                             new RbAction(menu.menuBack)));
 
+                    }
+                    break;
+
+                case EditProfileResearchMenu:
+                    {
+                        CityProfile profile = profiles.profiles.Sel();
+
+                        HashSet<TechNodeType> existingResources = new HashSet<TechNodeType>();
+                        if (profile.research.HasValue())
+                        {
+                            foreach (var m in profile.research)
+                            {
+                                existingResources.Add(m);
+                            }
+                        }
+
+                        for (TechNodeType techNode = 0; techNode < TechNodeType.NUM_NONE; ++techNode)
+                        {
+                            var prop = TechNodePropertyLib.Get(techNode);
+                            bool contains = existingResources.Contains(techNode);
+                            content.Add(new ArtToggle(contains,
+                                new List<AbsRichBoxMember>{
+                                        new RbImage(prop.sprite),
+                                        new RbSpace(0.5f),
+                                        new RbText(prop.name),
+                                },
+                                new RbAction2Arg<TechNodeType, bool>((TechNodeType selected, bool add) =>
+                                {
+                                    if (add)
+                                    {
+                                        if (profile.research.IsEmpty())
+                                            profiles.profiles.SelRef().research = new List2<TechNodeType>(4);
+                                        profiles.profiles.SelRef().research.Add(selected);
+                                    }
+                                    else
+                                    {
+                                        if (profile.resourceProfiles.HasValue())
+                                        {
+                                            //profile.resourceProfiles.Array.RemoveAll(rp => rp.resourceType == selected);
+                                            for (int i = 0; i < profile.resourceProfiles.Count; i++)
+                                            {
+                                                if (profile.research[i] == selected)
+                                                {
+                                                    profiles.profiles.SelRef().research.RemoveAt(i);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }, techNode, !contains)));
+                        }
                     }
                     break;
 
@@ -634,5 +758,14 @@ const string EditProfileBuildingsMenu = "edit_profile_buildings";
             }
             return profile.buildProfiles[itemIndex].accumulate;
         }
+    }
+
+    enum CityProfileMenuTab
+    { 
+        Work,
+        Resources,
+        Buildings,
+        Research,
+        NUM
     }
 }

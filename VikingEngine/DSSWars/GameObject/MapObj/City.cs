@@ -14,6 +14,7 @@ using VikingEngine.Core.DSSWars.Interface.MapObjMenu;
 using VikingEngine.Core.DSSWars.Map.MapData;
 using VikingEngine.Core.DSSWars.Map.MapProcess;
 using VikingEngine.Core.DSSWars.Map.MapProcess.CityStructure;
+using VikingEngine.Core.DSSWars.XP.TechTree;
 using VikingEngine.Core.EngineSpace.Engine.Extensions.Struct;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Build;
@@ -840,9 +841,10 @@ namespace VikingEngine.DSSWars.GameObject
 
                 writeAutomation(w);
 
+
                 Tag.write(w);
 
-                w.Write(res_food_safeguard);
+                w.Write(generalizedResearch);
 
                 technology.writeGameState(w, false);
                 money.write(w);
@@ -973,7 +975,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             Tag.read(r);
             
-            res_food_safeguard = r.ReadBoolean();
+            generalizedResearch = r.ReadBoolean();
 
             technology.readGameState(r, subversion, false);
 
@@ -1552,7 +1554,10 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (newGame)
             {
-                autoSelectNextProgressNode(Core.DSSWars.XP.TechTree.TechFieldType.MetalWork);
+                for (TechFieldType fieldType = 0; fieldType < TechFieldType.NUM_NONE; fieldType++)
+                {
+                    autoSelectNextProgressNode(fieldType);
+                }
             }
         }
 

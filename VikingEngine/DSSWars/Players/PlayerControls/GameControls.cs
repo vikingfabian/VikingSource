@@ -809,25 +809,25 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     case MenuTab.Progress:
                         switch (player.progressSubTab)
                         {
-                            case ProgressSubTab.Schools:
-                                if (input.StopStart.DownEvent)
-                                {
-                                    bool start = city.toggleSchoolStop(city.selectedSchool);
-                                    player.hud.needRefresh = true;
-                                    (start ? SoundLib.start : SoundLib.stop).Play();
-                                }
-                                if (input.Copy.DownEvent)
-                                {
-                                    city.copySchool(player);
-                                    SoundLib.copy.Play();
-                                }
-                                if (input.Paste.DownEvent)
-                                {
-                                    city.pasteSchool(player);
-                                    SoundLib.paste.Play();
-                                    player.hud.needRefresh = true;
-                                }
-                                break;
+                            //case ProgressSubTab.Schools:
+                            //    if (input.StopStart.DownEvent)
+                            //    {
+                            //        bool start = city.toggleSchoolStop(city.selectedSchool);
+                            //        player.hud.needRefresh = true;
+                            //        (start ? SoundLib.start : SoundLib.stop).Play();
+                            //    }
+                            //    if (input.Copy.DownEvent)
+                            //    {
+                            //        city.copySchool(player);
+                            //        SoundLib.copy.Play();
+                            //    }
+                            //    if (input.Paste.DownEvent)
+                            //    {
+                            //        city.pasteSchool(player);
+                            //        SoundLib.paste.Play();
+                            //        player.hud.needRefresh = true;
+                            //    }
+                            //    break;
                             case ProgressSubTab.Research:
                                 if (input.StopStart.DownEvent)
                                 {

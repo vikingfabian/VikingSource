@@ -936,13 +936,13 @@ namespace VikingEngine.DSSWars.Players
                     }
                     break;
 
-                case SelectTileResult.School:
-                    {
-                        player.cityTab = MenuTab.Progress;
-                        player.progressSubTab = ProgressSubTab.Schools;
-                        selectedSubTile.city.selectedSchool = selectedSubTile.city.SchoolIxFromSubTile(selectedSubTile.subTilePos);
-                    }
-                    break;
+                //case SelectTileResult.School:
+                //    {
+                //        player.cityTab = MenuTab.Progress;
+                //        player.progressSubTab = ProgressSubTab.Schools;
+                //        selectedSubTile.city.selectedSchool = selectedSubTile.city.SchoolIxFromSubTile(selectedSubTile.subTilePos);
+                //    }
+                //    break;
 
                 case SelectTileResult.ResearchCenter:
                 case SelectTileResult.BookPress:

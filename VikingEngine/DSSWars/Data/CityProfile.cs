@@ -3,6 +3,7 @@ using Sentry;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using VikingEngine.Core.DSSWars.XP.TechTree;
 using VikingEngine.DataStream;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
@@ -175,6 +176,7 @@ namespace VikingEngine.Core.DSSWars.Data
         public List2<WorkProfile> workProfiles;
         public List2<ResourceProfile> resourceProfiles;
         public List2<BuidingProfile> buildProfiles;
+        public List2<TechNodeType> research;
         
 
         public CityProfile()
@@ -213,6 +215,13 @@ namespace VikingEngine.Core.DSSWars.Data
                     buildProfile.applyToCity(city);
                 }
             }
+            if (research.HasValue())
+            {
+                foreach (var node in research)
+                {
+                    city.ProfileSelectProgressNode(node);
+                }
+            }
         }
 
         public void write(System.IO.BinaryWriter w)
@@ -247,6 +256,15 @@ namespace VikingEngine.Core.DSSWars.Data
                 foreach (var m in buildProfiles)
                 {
                     m.write(w);
+                }
+            }
+
+            w.Write(research.Count);
+            if (research.HasValue())
+            {
+                foreach (var m in research)
+                {
+                    w.Write((byte)m);
                 }
             }
 
@@ -288,6 +306,16 @@ namespace VikingEngine.Core.DSSWars.Data
                 for (int i = 0; i < buidingProfilesCount; ++i)
                 {
                     buildProfiles.Add(new BuidingProfile(r, version.sub));
+                }
+            }
+
+            int researchCount = r.ReadInt32();
+            if (researchCount > 0)
+            { 
+                research = new List2<TechNodeType>(Math.Min(4, researchCount));
+                for (int i = 0; i < researchCount; ++i)
+                {
+                    research.Add((TechNodeType)r.ReadByte());
                 }
             }
 
@@ -453,21 +481,30 @@ namespace VikingEngine.Core.DSSWars.Data
 
         public void LoadProfileList_Async()
         {
-            profiles.Clear();
-
-            //TODO: if using workshop, these have to be moved over as a copy
-
-            var list = FilePath.ListFilesInStorageDir2(ProfilePath(Guid_8char.Empty));
-            foreach (var path in list)
+            try
             {
-                var profile = LoadProfile_Async(path, null);
-                profiles.Add(profile);
+                profiles.Clear();
+
+                //TODO: if using workshop, these have to be moved over as a copy
+
+                var list = FilePath.ListFilesInStorageDir2(ProfilePath(Guid_8char.Empty));
+                foreach (var path in list)
+                {
+                    var profile = LoadProfile_Async(path, null);
+                    profiles.Add(profile);
+                }
+                if (list.Count > 0)
+                {
+                    FilePath metapath = MetaPath();
+                    DataStream.BeginReadWrite.BinaryIO(false, metapath, null, readMeta, null, false);
+                }
             }
-            if (list.Count > 0)
+            catch (Exception e)
             {
-                FilePath metapath = MetaPath();
-                DataStream.BeginReadWrite.BinaryIO(false, metapath, null, readMeta, null, false);
+                profiles.Clear();
+                lib.DoNothing();
             }
+            
         }
 
         public CityProfile LoadProfile_Async(FilePath path, Action<IconWorldData> onComplete)

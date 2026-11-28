@@ -388,21 +388,21 @@ namespace VikingEngine.DSSWars.Build
             { buildInArea = BuildInAreaOptions.Anywhere };
 
             new BuildOption(BuildAndExpandType.GravelRoad, TerrainMainType.Road, (int)TerrainRoadType.GravelRoad, BuildingGroundRequirement.BuildLight,
-                SpriteName.warsFoliageDirtRoad, DssRef.todoLang.BuildingType_GravelRoad, null,
+                SpriteName.DssMapTextureGravelRoad1, DssRef.todoLang.BuildingType_GravelRoad, null,
                 CraftBuildingLib.DirtRoad, false,
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small)
             { buildInArea = BuildInAreaOptions.Anywhere };
 
             new BuildOption(BuildAndExpandType.CobblestoneRoad, TerrainMainType.Road, (int)TerrainRoadType.CobblestoneRoad, BuildingGroundRequirement.BuildMedium,
-                SpriteName.warsFoliageDirtRoad, DssRef.todoLang.BuildingType_CobblestoneRoad, null,
+                SpriteName.DssMapTextureCobbleRoad1, DssRef.todoLang.BuildingType_CobblestoneRoad, null,
                 CraftBuildingLib.DirtRoad, false,
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small)
             { buildInArea = BuildInAreaOptions.Anywhere };
 
             new BuildOption(BuildAndExpandType.PavedRoad, TerrainMainType.Road, (int)TerrainRoadType.PavedRoad, BuildingGroundRequirement.BuildMedium,
-                SpriteName.warsFoliageDirtRoad, DssRef.todoLang.BuildingType_PavedRoad, null,
+                SpriteName.DssMapTexturePavedRoad1, DssRef.todoLang.BuildingType_PavedRoad, null,
                 CraftBuildingLib.DirtRoad, false,
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small)

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
+using VikingEngine.Core.DSSWars.XP.TechTree;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
@@ -25,8 +26,8 @@ using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
-using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Map.Path3;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
@@ -407,7 +408,7 @@ namespace VikingEngine.DSSWars
 
             updateMouseVisible();
             Ref.music.OnGameStart();
-
+            TechNodePropertyLib.Init();
             if (host)
             {
                 DssRef.difficulty.refreshSettings();

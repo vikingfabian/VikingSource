@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.GameObject
         //public GroupedResource res_water = new GroupedResource();
         
 
-        public bool res_food_safeguard = true;
+        //public bool res_food_safeguard = true;
         public int resourceComponentStartIndex;
 
         bool followFaction_Stockpile_Resources = true;

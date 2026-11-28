@@ -257,7 +257,7 @@ namespace VikingEngine.DSSWars.Interface
                 RichBoxContent secondMenuContent = null;
                 if (menu.menuStack.Count > 0)
                 {
-                    new CityProfileMenu().ToHud(obj.GetCity(), menu, content);
+                    new CityProfileMenu().ToHud(obj.GetCity(), menu, content, player);
                     _inMenuStack = true;
                 }
                 else

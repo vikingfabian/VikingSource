@@ -6,7 +6,9 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using VikingEngine.Core.DSSWars.Interface.MapObjMenu;
 using VikingEngine.Core.DSSWars.Map.MapData;
+using VikingEngine.Core.DSSWars.XP.TechTree;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Communication;
@@ -97,6 +99,8 @@ namespace VikingEngine.DSSWars.Players
         //const double MercenaryMarketAddPerSec_Speed2 = 0.3;
         //public FloatingInt mercenaryMarket = new FloatingInt() { value = DssLib.MercenaryPurchaseCount * 2 };
 
+        public CityProfileMenuTab cityProfileTab = 0;
+        public TechFieldType techFieldTab = TechFieldType.Buildings;
         public MenuTab factionTab = MenuTab.NUM_NONE;
         public MenuTab cityTab;
         public MenuTab armyTab = MapObjMenu.ArmyTabs[0];

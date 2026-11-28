@@ -21,11 +21,9 @@ namespace VikingEngine.Core.DSSWars.XP.TechTree
         /// Starts locked under a parent bransh
         /// </summary>
         public bool locked;
-
         public int childNodeLevel;
         public bool isOption;
         public PartialList2<TechTreeNode> nodes;
-        public PartialList2<TechNodeType> unlockBranshOnComplete;
 
     }
 
@@ -33,13 +31,13 @@ namespace VikingEngine.Core.DSSWars.XP.TechTree
     {
         public const int NoParent = -1;
         public int inBranschIndex;
-        public SpriteName icon;
+        //public SpriteName icon;
         public TechNodeType type;
         public int pointsCost;
 
-        public TechTreeNode(TechNodeType type, SpriteName icon, double pointsCost)
+        public TechTreeNode(TechNodeType type, double pointsCost)
         {
-            this.icon = icon;
+            //this.icon = icon;
             this.type = type;
             this.pointsCost = (int)pointsCost;
 #if DEBUG
@@ -64,7 +62,7 @@ namespace VikingEngine.Core.DSSWars.XP.TechTree
         FarmsAndAnimals,
         Casting,
         MetalWork,
-        Projectiles,
+        Wood,
         Chemistry,
         NUM_NONE
     }
@@ -86,35 +84,53 @@ namespace VikingEngine.Core.DSSWars.XP.TechTree
 
     enum TechNodeType : byte
     {
+        //BUILDINGS
+        Logistics, CraftBuildings, Logistics2,
+        CityHall_village, CityHall_town, CityHall_capital,
+        ImmigrantTent, Delivery, DeliveryUpgraded,
+        CommonHall, LordSeat1, LordSeat2, LordSeat3,
+        Stakes, WoodWall, StoneWall,
+        NobelHouse,Embassy, Bank,
+        GravelRoad, CobblestoneRoad, PavedRoad, DecorRoad,
+
+        //FARM
+        Trapper, 
+            PenTier1, PenTier2, DraftPen, WarPen,
+            WildPenTier1, WildPenTier2, WildWarPen,
+        BasePlant, Hemp, TreePlant, UpgradedFarm,
+        GardenGrass, GardenPlants,
+
+        //CAST
+        CastCopper, CastBronze, CastBronzeGun, CastBronzeCannon,
+        CastIron, CastIronGun, CastIronCannon,
+        CastSilverGold, CastTinLead, CastMithril,
+
+        //METAL
         ironProduction,
         steelProduction,
-        mithrilProduction,
+       // mithrilProduction,
 
         ironCraft_base,
-        shortsword,
-        sword,
-        longsword,
-        steelsword,
-        zweihänder,
+        shortsword, sword, longsword, steelsword, zweihänder,
 
         HeaterShield, BucklerShield, TowerShield,
 
-        lightIronArmor,
-        heavyIronArmor,
-        steelarmor,
-        warhammer,
-        heavySteelarmor,
+        heavyPaddedArmor, lightIronArmor, heavyIronArmor, steelarmor, warhammer, heavySteelarmor,
 
-        mechanics_base,
-        wagon4,
-        wagonClosed,
-        ironwagon,
-        steelwagon,
+        mechanics_base, 
+        wagon4, wagonClosed, ironwagon, steelwagon,
+        toolkit, NutLockMechanic, MatchLockMechanic,
 
+        //WOOD
+        woodBase, //container
+        javelin, shortBow, LongBow, CrossBow,
+        ballista, catapult, manuballista,
 
-        toolkit,
-        NutLockMechanic,
-        MatchLockMechanic,
+        //CHEMISTRY
+        coalPit,
+        foodConservation, foodStorage,
+        beer, coolingFluid,
+        blackPowder, gunPowder, 
 
         NUM_NONE
     }

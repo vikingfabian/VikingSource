@@ -507,14 +507,46 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
         void progressTab(RichBoxContent content)
         {
             //bool foodSafeGuard = false;
-
+           
             for (ProgressSubTab workSubTab = 0; workSubTab < ProgressSubTab.NUM; ++workSubTab)
             {
+                
                 var tabContent = new RichBoxContent();
                 string description = null;
                 //string text = null;
                 switch (workSubTab)
                 {
+                    default:
+                        TechFieldType fieldTab = (TechFieldType)workSubTab;
+                        SpriteName fieldIcon = SpriteName.MissingImage;
+                        switch (fieldTab)
+                        {
+                            case TechFieldType.Buildings:
+                                fieldIcon = SpriteName.WarsCityHall;
+                                break;
+                            case TechFieldType.Casting:
+                                fieldIcon = SpriteName.WarsWorkCasting;
+                                break;
+                            case TechFieldType.Chemistry:
+                                fieldIcon = SpriteName.WarsBuild_Chemist;
+                                break;
+                            case TechFieldType.FarmsAndAnimals:
+                                fieldIcon = SpriteName.WarsBuild_WheatFarms;
+                                break;
+                            case TechFieldType.MetalWork:
+                                fieldIcon = SpriteName.WarsBuild_Smith;
+                                break;
+                            case TechFieldType.Wood:
+                                fieldIcon = SpriteName.WarsBuild_Carpenter;
+                                break;
+                        }
+                        tabContent.Add(new RbImage(fieldIcon));
+                        break;
+
+                    case ProgressSubTab.TechFieldNUM:
+                        content.space();
+                        continue;
+
                     case ProgressSubTab.Technology:
                         tabContent.Add(new RbImage(SpriteName.WarsTechnology_Unlocked));
                         tabContent.space(0.6f);
@@ -529,13 +561,13 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                         description = DssRef.lang.Experience_Description;
                         break;
 
-                    case ProgressSubTab.Schools:
-                        tabContent.Add(new RbImage(SpriteName.WarsBuild_School));
-                        tabContent.space(0.6f);
-                        tabContent.Add(new RbText(DssRef.lang.BuildingType_School_Tab));
-                        description = DssRef.lang.BuildingType_School_Description + Environment.NewLine +
-                             DssRef.lang.Building_ListDescription;
-                        break;
+                    //case ProgressSubTab.Schools:
+                    //    tabContent.Add(new RbImage(SpriteName.WarsBuild_School));
+                    //    tabContent.space(0.6f);
+                    //    tabContent.Add(new RbText(DssRef.lang.BuildingType_School_Tab));
+                    //    description = DssRef.lang.BuildingType_School_Description + Environment.NewLine +
+                    //         DssRef.lang.Building_ListDescription;
+                    //    break;
                     case ProgressSubTab.Research:
                         tabContent.Add(new RbImage(SpriteName.WarsBuild_ResearchCenter));
                         tabContent.space(0.6f);
@@ -558,9 +590,10 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
             switch (player.progressSubTab)
             {
                 default:
-                    
-                    new TechtreeMenu().ToHud(city, player, content, player.hud.objMenu.menu);
-
+                    TechFieldType fieldTab = (TechFieldType)player.progressSubTab;
+                    new TechtreeMenu().ToHud(city, player, content, player.hud.objMenu.menu, fieldTab);
+                    break;
+                case ProgressSubTab.Technology:
                     content.newParagraph();
                     new TechnologyHud(player, city).technologyHud(content, city.pfaction.GetFaction());
                     break;
@@ -569,9 +602,9 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
                     experienceTab(content);
                     break;
 
-                case ProgressSubTab.Schools:
-                    new SchoolMenu().ToHud(city, player, content);
-                    break;
+                //case ProgressSubTab.Schools:
+                //    new SchoolMenu().ToHud(city, player, content);
+                //    break;
 
                 case ProgressSubTab.Research:
                     new ResearchMenu().ToHud(city, player, content, player.hud.objMenu.menu);
@@ -1515,9 +1548,11 @@ namespace VikingEngine.DSSWars.Interface.MapObjMenu
 
     enum ProgressSubTab
     { 
+        TechFieldStart,
+        TechFieldNUM = TechFieldType.NUM_NONE,
         Technology,
         Experience,
-        Schools,
+        //Schools,
         Research,
         NUM
     }

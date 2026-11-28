@@ -1726,16 +1726,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                 onPartSuccess();
                             }
                             
-                            if (player.cityTab == MenuTab.Progress && player.progressSubTab == ProgressSubTab.Schools)
-                            {
-                                if (!educateBurner_schoolTab.Value1)
-                                {
-                                    educateBurner_schoolTab.Value1 = true;
-                                    onPartSuccess(educateBurner_schoolTab.Value2);
-                                    educateBurner_schoolTab.Value2 = true;
-                                }
-                            }
-                            else
+                            //if (player.cityTab == MenuTab.Progress && player.progressSubTab == ProgressSubTab.Schools)
+                            //{
+                            //    if (!educateBurner_schoolTab.Value1)
+                            //    {
+                            //        educateBurner_schoolTab.Value1 = true;
+                            //        onPartSuccess(educateBurner_schoolTab.Value2);
+                            //        educateBurner_schoolTab.Value2 = true;
+                            //    }
+                            //}
+                            //else
                             {
                                 if (educateBurner_schoolTab.Value1)
                                 {
